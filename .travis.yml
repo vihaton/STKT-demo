@@ -1,4 +1,9 @@
 language: android
 android:
  components:
-   - android-19
+   - platform-tools
+   - build-tools-23.0.1
+   - android-23
+
+script:
+ - ./gradlew build connectedCheck
