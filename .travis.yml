@@ -1,3 +1,4 @@
 language: android
 android:
- - android-19
+ components:
+   - android-19
