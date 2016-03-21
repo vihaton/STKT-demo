@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- english version strings-->
+<resources>
+
+    <string name="app_name">STKT demo</string>
+    <string name="node_name">Example node 666</string>
+
+</resources>
