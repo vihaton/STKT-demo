@@ -74,12 +74,12 @@ project(":core") {
 
         testCompile "org.mockito:mockito-core:1.+" //testausta helpottava otus
 	    testCompile "junit:junit:4.1+"
-
-        testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-        testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
-
-        testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        testCompile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+//
+//        testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+//        testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
+//
+//        testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+//        testCompile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     }
 }
 
@@ -99,9 +99,6 @@ project(":tests") {
 
         testCompile 'junit:junit:4.+'
         testCompile "org.mockito:mockito-all:1.9.+"
-
-        testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-        testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
 }
