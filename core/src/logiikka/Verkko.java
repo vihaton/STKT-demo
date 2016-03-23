@@ -44,10 +44,10 @@ public class Verkko {
 
         ArrayDeque<Solmu> jono = luoEnsimmainenTaso(6);
         ArrayList<Solmu> toinenTaso = new ArrayList<>();
-//        for (Solmu s:jono) {
-//            toinenTaso.addAll(luoLapset(s));
-//        }
-//        asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
+        for (Solmu s:jono) {
+            toinenTaso.addAll(luoLapset(s));
+        }
+        asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
 
         jono.addAll(toinenTaso);
         while (!jono.isEmpty()) {
@@ -77,13 +77,13 @@ public class Verkko {
         int montako = tasonSolmut.size();
 
         //paritetaan ensimmäinen ja viimeinen solmu
-        Solmu vasen = solmut.get(montako - 1);
-        Solmu s = solmut.get(0);
+        Solmu vasen = tasonSolmut.get(montako - 1);
+        Solmu s = tasonSolmut.get(0);
         asetaSisaruksiksi(s, vasen);
 
         for (int i = 1; i < montako; i++) {
-            vasen = solmut.get(i - 1);
-            s = solmut.get(i);
+            vasen = tasonSolmut.get(i - 1);
+            s = tasonSolmut.get(i);
             asetaSisaruksiksi(s, vasen);
         }
     }
