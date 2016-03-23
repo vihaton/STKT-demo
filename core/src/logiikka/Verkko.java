@@ -7,6 +7,8 @@ package logiikka;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
+import sun.rmi.runtime.Log;
+
 /**
  * Selviytyjän purjeiden solmujen kokoelma. Vastaa solmujen luomisesta ja ylläpidosta.
  */
@@ -30,9 +32,7 @@ public class Verkko {
 
         ArrayDeque<Solmu> jono = luoEnsimmainenTaso(6);
 
-        for (Solmu s: jono) {
-            System.out.println(s.getID());
-        }
+
     }
 
     private ArrayDeque<Solmu> luoEnsimmainenTaso(int montako) {
