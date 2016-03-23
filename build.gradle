@@ -76,6 +76,7 @@ project(":core") {
         testCompile "org.mockito:mockito-core:1.+" //testausta helpottava otus
 	    testCompile "junit:junit:4.11"
         testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     }
