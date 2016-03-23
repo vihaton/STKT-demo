@@ -51,6 +51,8 @@ public class Verkko {
         solmut.addAll(toinenTaso);
 
         asetaOtsikotJaSisallot();
+
+        asetaSijainnit();
     }
 
     private ArrayList<Solmu> luoEnsimmainenTaso(int montako) {
@@ -106,6 +108,10 @@ public class Verkko {
             String sisalto = myBundle.format("solmun_sisalto_" + s.getID());
             s.setSisalto(sisalto);
         }
+    }
+
+    private void asetaSijainnit() {
+        //TODO aseta solmuille sijainnit
     }
 
     public ArrayList<Solmu> getSolmut() {
