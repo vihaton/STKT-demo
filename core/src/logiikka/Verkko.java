@@ -6,9 +6,9 @@ package logiikka;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.GdxBuild;
 import com.badlogic.gdx.utils.I18NBundle;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 /**
@@ -21,9 +21,13 @@ public class Verkko {
 
     public Verkko() {
         solmut = new ArrayList<>();
-        FileHandle baseFileHandle = Gdx.files.internal("solmut/solmut");
-        myBundle = I18NBundle.createBundle(baseFileHandle);
-
+        String polkuTiedostolle = "solmut/solmut";
+        FileHandle baseFileHandle = Gdx.files.internal(polkuTiedostolle);
+        try {
+            myBundle = I18NBundle.createBundle(baseFileHandle);
+        } catch (Exception e) {
+            myBundle = I18NBundle.createBundle(Gdx.files.internal("android/assets/" + polkuTiedostolle));
+        }
 //        //englanninkielisen version testaamiseen
 //        Locale locale = new Locale("en");
 //        myBundle = I18NBundle.createBundle(baseFileHandle, locale);
@@ -35,7 +39,7 @@ public class Verkko {
         solmut.addAll(luoEnsimmainenTaso(6));
 
         ArrayList<Solmu> toinenTaso = new ArrayList<>();
-        for (Solmu s:solmut) {
+        for (Solmu s : solmut) {
             toinenTaso.addAll(luoLapset(s));
         }
         asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
@@ -93,7 +97,7 @@ public class Verkko {
     }
 
     private void asetaOtsikotJaSisallot() {
-        for (Solmu s:solmut) {
+        for (Solmu s : solmut) {
             String otsikko = myBundle.format("solmun_otsikko_" + s.getID());
             s.setOtsikko(otsikko);
             String sisalto = myBundle.format("solmun_sisalto_" + s.getID());
