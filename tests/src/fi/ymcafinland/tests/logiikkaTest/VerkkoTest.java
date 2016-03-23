@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 
-import fi.ymcafinland.demo.SelviytyjanPurjeet;
 import fi.ymcafinland.tests.GdxTestaus;
 import logiikka.Solmu;
 import logiikka.Verkko;
