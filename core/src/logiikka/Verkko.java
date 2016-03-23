@@ -21,8 +21,6 @@ public class Verkko {
 
     public Verkko() {
         solmut = new ArrayList<>();
-        boolean exists = Gdx.files.isLocalStorageAvailable();
-
         FileHandle baseFileHandle = Gdx.files.internal("solmut/solmut");
         myBundle = I18NBundle.createBundle(baseFileHandle);
 
@@ -33,13 +31,6 @@ public class Verkko {
     }
 
     private void generoiSolmut() {
-
-        /*
-        TODO metodi, joka luo selviytyjän purjeiden solmut.
-        Solmusta 1 lähtien: luodaan solmu ja sen lapset,
-        asetetaan lapsisolmut mutsin lapsiksi ja lapset toistensa sisaruksiksi, sen jälkeen jatketaan rekursiivisesti
-        lapsiin, kunnes solmuja ei enää ole. Tiedot sukulaisuuksista, tekstit ym tiedot luetaan toisesta tiedostosta.
-         */
 
         solmut.addAll(luoEnsimmainenTaso(6));
 
