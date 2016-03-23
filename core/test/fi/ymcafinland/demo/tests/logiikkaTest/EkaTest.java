@@ -11,8 +11,8 @@ public class EkaTest {
         assertTrue(true);
     }
 
-    @Test
-    @Ignore
-    public void ignoreTest() {
-    }
+//    @Test
+//    @Ignore
+//    public void ignoreTest() {
+//    }
 }

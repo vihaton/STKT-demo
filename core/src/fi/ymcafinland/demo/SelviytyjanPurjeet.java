@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import fi.ymcafinland.demo.scenes.HUD;
+import logiikka.Verkko;
 
 public class SelviytyjanPurjeet extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -21,9 +22,11 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 	public final static int V_HEIGHT = 300;
 	private Viewport viewPort;
 	private HUD hud;
+	private Verkko verkko;
 	
 	@Override
 	public void create () {
+		verkko = new Verkko();
 		camera = new OrthographicCamera();
 		viewPort = new FitViewport(V_WIDTH,V_HEIGHT,camera);
 		batch = new SpriteBatch();

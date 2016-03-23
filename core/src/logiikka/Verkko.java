@@ -5,9 +5,12 @@ package logiikka;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Selviytyjän purjeiden solmujen kokoelma. Vastaa solmujen luomisesta ja ylläpidosta.
@@ -15,9 +18,18 @@ import java.util.ArrayList;
 public class Verkko {
 
     private ArrayList<Solmu> solmut;
+    private I18NBundle myBundle;
 
     public Verkko() {
         solmut = new ArrayList<>();
+        boolean exists = Gdx.files.isLocalStorageAvailable();
+
+        FileHandle baseFileHandle = Gdx.files.internal("solmut/solmut");
+        myBundle = I18NBundle.createBundle(baseFileHandle);
+
+//        //englanninkielisen version testaamiseen
+//        Locale locale = new Locale("en");
+//        myBundle = I18NBundle.createBundle(baseFileHandle, locale);
         generoiSolmut();
     }
 
@@ -31,10 +43,19 @@ public class Verkko {
          */
 
         ArrayDeque<Solmu> jono = luoEnsimmainenTaso(6);
+        ArrayList<Solmu> toinenTaso = new ArrayList<>();
+//        for (Solmu s:jono) {
+//            toinenTaso.addAll(luoLapset(s));
+//        }
+//        asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
 
+        jono.addAll(toinenTaso);
         while (!jono.isEmpty()) {
             Solmu s = jono.pollFirst();
-
+            String otsikko = myBundle.format("solmun_otsikko_" + s.getID());
+            s.setOtsikko(otsikko);
+            String sisalto = myBundle.format("solmun_sisalto_" + s.getID());
+            s.setSisalto(sisalto);
         }
     }
 
@@ -46,24 +67,42 @@ public class Verkko {
             solmut.add(s);
         }
 
-        Solmu vasen = solmut.get(montako - 1);
-        Solmu s = solmut.get(0);
-
-        asetaSisaruksiksi(s, vasen);
-
-        for (int i = 1; i < montako; i++) {
-            vasen = solmut.get(i-1);
-            s = solmut.get(i);
-            asetaSisaruksiksi(s, vasen);
-        }
+        asetaTasonSolmutToistensaSisaruksiksi(solmut);
 
         jono.addAll(solmut);
         return jono;
     }
 
+    private void asetaTasonSolmutToistensaSisaruksiksi(ArrayList<Solmu> tasonSolmut) {
+        int montako = tasonSolmut.size();
+
+        //paritetaan ensimmäinen ja viimeinen solmu
+        Solmu vasen = solmut.get(montako - 1);
+        Solmu s = solmut.get(0);
+        asetaSisaruksiksi(s, vasen);
+
+        for (int i = 1; i < montako; i++) {
+            vasen = solmut.get(i - 1);
+            s = solmut.get(i);
+            asetaSisaruksiksi(s, vasen);
+        }
+    }
+
     private void asetaSisaruksiksi(Solmu s, Solmu vasen) {
         s.setVasenSisarus(vasen);
         vasen.setOikeaSisarus(s);
+    }
+
+    private ArrayList<Solmu> luoLapset(Solmu s) {
+        int mutsinID = Integer.parseInt(s.getID());
+        int lapsenID = 7 + (mutsinID - 1) * 3;
+
+        ArrayList<Solmu> lapset = new ArrayList<>();
+        for (int i = lapsenID; i < lapsenID + 3; i++) {
+            Solmu lapsi = new Solmu("" + i, s);
+            lapset.add(lapsi);
+        }
+        return lapset;
     }
 
     public ArrayList<Solmu> getSolmut() {
