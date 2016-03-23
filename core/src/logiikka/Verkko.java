@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Selviytyjän purjeiden solmujen kokoelma. Vastaa solmujen luomisesta ja ylläpidosta.
@@ -42,25 +41,20 @@ public class Verkko {
         lapsiin, kunnes solmuja ei enää ole. Tiedot sukulaisuuksista, tekstit ym tiedot luetaan toisesta tiedostosta.
          */
 
-        ArrayDeque<Solmu> jono = luoEnsimmainenTaso(6);
+        solmut.addAll(luoEnsimmainenTaso(6));
+
         ArrayList<Solmu> toinenTaso = new ArrayList<>();
-        for (Solmu s:jono) {
+        for (Solmu s:solmut) {
             toinenTaso.addAll(luoLapset(s));
         }
         asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
+        solmut.addAll(toinenTaso);
 
-        jono.addAll(toinenTaso);
-        while (!jono.isEmpty()) {
-            Solmu s = jono.pollFirst();
-            String otsikko = myBundle.format("solmun_otsikko_" + s.getID());
-            s.setOtsikko(otsikko);
-            String sisalto = myBundle.format("solmun_sisalto_" + s.getID());
-            s.setSisalto(sisalto);
-        }
+        asetaOtsikotJaSisallot();
     }
 
-    private ArrayDeque<Solmu> luoEnsimmainenTaso(int montako) {
-        ArrayDeque<Solmu> jono = new ArrayDeque<>();
+    private ArrayList<Solmu> luoEnsimmainenTaso(int montako) {
+        ArrayList<Solmu> lista = new ArrayList<>();
 
         for (int i = 1; i < montako + 1; i++) {
             Solmu s = new Solmu("" + i, null);
@@ -69,8 +63,8 @@ public class Verkko {
 
         asetaTasonSolmutToistensaSisaruksiksi(solmut);
 
-        jono.addAll(solmut);
-        return jono;
+        lista.addAll(solmut);
+        return lista;
     }
 
     private void asetaTasonSolmutToistensaSisaruksiksi(ArrayList<Solmu> tasonSolmut) {
@@ -103,6 +97,17 @@ public class Verkko {
             lapset.add(lapsi);
         }
         return lapset;
+    }
+
+    private void asetaOtsikotJaSisallot() {
+        for (Solmu s:solmut) {
+            String otsikko = myBundle.format("solmun_otsikko_" + s.getID());
+            s.setOtsikko(otsikko);
+            String sisalto = myBundle.format("solmun_sisalto_" + s.getID());
+            s.setSisalto(sisalto);
+
+            solmut.add(s);
+        }
     }
 
     public ArrayList<Solmu> getSolmut() {
