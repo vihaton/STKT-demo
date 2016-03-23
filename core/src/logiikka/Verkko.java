@@ -4,10 +4,10 @@ package logiikka;
  * Created by xvixvi on 20.3.2016.
  */
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-
-import sun.rmi.runtime.Log;
 
 /**
  * Selviytyjän purjeiden solmujen kokoelma. Vastaa solmujen luomisesta ja ylläpidosta.
@@ -31,13 +31,18 @@ public class Verkko {
          */
 
         ArrayDeque<Solmu> jono = luoEnsimmainenTaso(6);
+
+        while (!jono.isEmpty()) {
+            Solmu s = jono.pollFirst();
+
+        }
     }
 
     private ArrayDeque<Solmu> luoEnsimmainenTaso(int montako) {
         ArrayDeque<Solmu> jono = new ArrayDeque<>();
 
         for (int i = 1; i < montako + 1; i++) {
-            Solmu s = new Solmu(i, null);
+            Solmu s = new Solmu("" + i, null);
             solmut.add(s);
         }
 

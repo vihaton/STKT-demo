@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Solmu {
 
-    private final int id;
+    private final String id;
     private final Solmu mutsi;
     private String otsikko;
     private String sisalto;
@@ -30,7 +30,7 @@ public class Solmu {
      * @param id    yksilöllinen luku, 1-24.
      * @param mutsi solmun vanhempi.
      */
-    public Solmu(int id, Solmu mutsi) {
+    public Solmu(String id, Solmu mutsi) {
         this.id = id;
         this.mutsi = mutsi;
         lapset = new ArrayList<>();
@@ -79,7 +79,7 @@ public class Solmu {
         return y;
     }
 
-    public int getID() {
+    public String getID() {
         return id;
     }
 
