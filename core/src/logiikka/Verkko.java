@@ -105,8 +105,6 @@ public class Verkko {
             s.setOtsikko(otsikko);
             String sisalto = myBundle.format("solmun_sisalto_" + s.getID());
             s.setSisalto(sisalto);
-
-            solmut.add(s);
         }
     }
 
