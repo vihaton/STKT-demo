@@ -25,14 +25,12 @@ public class Verkko {
 
         /*
         TODO metodi, joka luo selviytyjän purjeiden solmut.
-        Solmusta 01 lähtien: luodaan solmu ja sen lapset,
+        Solmusta 1 lähtien: luodaan solmu ja sen lapset,
         asetetaan lapsisolmut mutsin lapsiksi ja lapset toistensa sisaruksiksi, sen jälkeen jatketaan rekursiivisesti
         lapsiin, kunnes solmuja ei enää ole. Tiedot sukulaisuuksista, tekstit ym tiedot luetaan toisesta tiedostosta.
          */
 
         ArrayDeque<Solmu> jono = luoEnsimmainenTaso(6);
-
-
     }
 
     private ArrayDeque<Solmu> luoEnsimmainenTaso(int montako) {
@@ -43,7 +41,7 @@ public class Verkko {
             solmut.add(s);
         }
 
-        Solmu vasen = solmut.get(montako);
+        Solmu vasen = solmut.get(montako - 1);
         Solmu s = solmut.get(0);
 
         asetaSisaruksiksi(s, vasen);
@@ -61,6 +59,10 @@ public class Verkko {
     private void asetaSisaruksiksi(Solmu s, Solmu vasen) {
         s.setVasenSisarus(vasen);
         vasen.setOikeaSisarus(s);
+    }
+
+    public ArrayList<Solmu> getSolmut() {
+        return solmut;
     }
 
 }
