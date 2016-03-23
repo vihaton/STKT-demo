@@ -11,16 +11,18 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import fi.ymcafinland.demo.scenes.HUD;
+import logiikka.Solmu;
 
 public class SelviytyjanPurjeet extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	private OrthographicCamera camera;
+	OrthographicCamera camera;
 	private Sprite sprite;
 	public final static int V_WIDTH = 180;
 	public final static int V_HEIGHT = 300;
 	private Viewport viewPort;
 	private HUD hud;
+	Solmu solmu;
 	
 	@Override
 	public void create () {
@@ -31,7 +33,7 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 		sprite = new Sprite(img);
 		sprite.setOrigin(0,0);
 		sprite.setPosition((-sprite.getWidth() / 2 + 150), -sprite.getHeight() / 2 + 100);
-		hud = new HUD(batch);
+		hud = new HUD(batch, solmu, camera);
 	}
 
 	@Override

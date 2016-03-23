@@ -66,6 +66,8 @@ public class Solmu {
         return oikeaSisarus;
     }
 
+    public Solmu getMutsi(){ return mutsi; }
+
     public void setSijainti(int x, int y) {
         this.x = x;
         this.y = y;
@@ -98,5 +100,6 @@ public class Solmu {
     public String getSisalto() {
         return sisalto;
     }
+
 
 }
