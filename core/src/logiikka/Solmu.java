@@ -27,13 +27,13 @@ public class Solmu {
     /**
      * Luo solmun, jolla on tunnusluku ja vanhempi.
      *
-     * @param id    yksilöllinen kaksinumeroinen luku, esim 04.
+     * @param id    yksilöllinen luku, 1-24.
      * @param mutsi solmun vanhempi.
      */
     public Solmu(int id, Solmu mutsi) {
         this.id = id;
         this.mutsi = mutsi;
-        lapset = new ArrayList<Solmu>();
+        lapset = new ArrayList<>();
         vasenSisarus = null;
         oikeaSisarus = null;
         sisalto = "Omia selviytymiskeinoja pystyy aina vahvistamaan!";
