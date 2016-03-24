@@ -9,6 +9,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxBuild;
 import com.badlogic.gdx.utils.I18NBundle;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -23,15 +26,41 @@ public class Verkko {
         solmut = new ArrayList<>();
         String polkuTiedostolle = "solmut/solmut";
         FileHandle baseFileHandle = Gdx.files.internal(polkuTiedostolle);
+
+        /*
+        try-catch rakenne testaamista ja pöytäkonetta varten, voidaan poistaa(/kommentoida) kun demo valmis.
+        Androidilla toimii moitteetta try-lohkossa oleva rivi, koska android poikkeuksetta on asetettu
+        etsimään internal-memoryä assets-kansiosta (jossa solmut/solmut.properties sijaitsee.
+         */
         try {
             myBundle = I18NBundle.createBundle(baseFileHandle);
         } catch (Exception e) {
-            myBundle = I18NBundle.createBundle(Gdx.files.internal("android/assets/" + polkuTiedostolle));
+            String absolutePath = getAbsolutePathToFile();
+            baseFileHandle = Gdx.files.absolute(absolutePath);
+            myBundle = I18NBundle.createBundle(baseFileHandle);
         }
+
 //        //englanninkielisen version testaamiseen
 //        Locale locale = new Locale("en");
 //        myBundle = I18NBundle.createBundle(baseFileHandle, locale);
         generoiSolmut();
+    }
+
+    public String getAbsolutePathToFile() {
+        String ap = Paths.get("").toAbsolutePath().toString();
+        String[] hakemistot = ap.split("/");
+        int i = hakemistot.length - 1;
+        while (!hakemistot[i].equalsIgnoreCase("STKT-demo")) {
+            i--;
+        }
+
+        String fileSeparator = File.separator;
+        ap = "";
+        for (int j = 0; j < i + 1; j++) {
+            ap = ap.concat(hakemistot[j]) + fileSeparator;
+        }
+        ap = ap.concat("android" + fileSeparator + "assets" + fileSeparator + "solmut" + fileSeparator + "solmut");
+        return ap;
     }
 
     private void generoiSolmut() {
@@ -112,5 +141,4 @@ public class Verkko {
     public ArrayList<Solmu> getSolmut() {
         return solmut;
     }
-
 }
