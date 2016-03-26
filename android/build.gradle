@@ -16,7 +16,7 @@ android {
     }
     defaultConfig {
         applicationId "fi.ymcafinland.demo"
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 23
     }
     lintOptions {
@@ -86,8 +86,8 @@ eclipse {
     }
 
     jdt {
-        sourceCompatibility = 1.6
-        targetCompatibility = 1.6
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
     }
 
     classpath {
