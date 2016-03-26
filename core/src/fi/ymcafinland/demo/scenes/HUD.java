@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -47,11 +48,11 @@ public class HUD {
 
 
 
-    public HUD(SpriteBatch sb, Solmu solmu, final OrthographicCamera camera){
+    public HUD(final SelviytyjanPurjeet sp, SpriteBatch sb, Solmu solmu){
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         Gdx.input.setInputProcessor(stage);
-        this.camera = camera;
+
         s1 = new Solmu(1,null);
         s2 = new Solmu(2,s1);
         s3 = new Solmu(3,s1);
@@ -62,7 +63,7 @@ public class HUD {
 
 
         s1.setOtsikko("Kappasolmu");
-        s1.setSijainti(1, 1);
+        s1.setSijainti(0, 0);
         s2.setOtsikko("Disaster");
         s2.setVasenSisarus(s3);
         s2.setOikeaSisarus(s4);
@@ -82,11 +83,13 @@ public class HUD {
 
 
 
-        parent.addListener(new ClickListener() {
-            public void clicked(Actor actor, float x, float y) {
+        parent.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
                 //ToDo Nothing happens here. Renderer needed?
-                camera.translate(s2.getMutsi().getXKoordinaatti(), s2.getMutsi().getYKoordinaatti());
-                camera.update();
+
+                //camera.position.set(s2.getMutsi().getXKoordinaatti(), s2.getMutsi().getYKoordinaatti(), 0f);
+                //camera.update();
+                sp.setSolmu(s2.getMutsi());
             }
         });
 
