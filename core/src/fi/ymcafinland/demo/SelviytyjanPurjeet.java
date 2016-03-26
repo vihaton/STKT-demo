@@ -29,17 +29,7 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		camera = new OrthographicCamera();
-		viewPort = new FitViewport(V_WIDTH,V_HEIGHT,camera);
-		batch = new SpriteBatch();
-		//  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
-		img = new Texture("pallokuva.png");
-		camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
-		sprite = new Sprite(img);
-		sprite.setOrigin(0, 0);
-		sprite.setPosition((-sprite.getWidth() / 2 + 150), -sprite.getHeight() / 2 + 100);
-		hud = new HUD(this, batch, solmu);
-		camera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
+		//ToDo oikea verkkorakenne tänne käytettäväksi.
 
 		//TURHAA SHITTIII TESTAUSTA VARTEN
 		Solmu s1 = new Solmu(1,null);
@@ -64,6 +54,18 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 		this.solmu = s2;
 		//TÄHÄN ASTI
 
+		camera = new OrthographicCamera();
+		viewPort = new FitViewport(V_WIDTH,V_HEIGHT,camera);
+		batch = new SpriteBatch();
+		//  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
+		img = new Texture("pallokuva.png");
+
+		sprite = new Sprite(img);
+		sprite.setOrigin(0, 0);
+		sprite.setPosition((-sprite.getWidth() / 2 + 150), -sprite.getHeight() / 2 + 100);
+		hud = new HUD(this, batch, s2);
+		camera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
+
 
 	}
 
@@ -72,8 +74,9 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 		float rgbJakaja = 255f;
 		Gdx.gl.glClearColor(0, 0, 139 / rgbJakaja, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
-
+		//ToDo Sulava siirtyminen. camera.translate vektorin mukaan?
 		camera.position.set(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0);
 		camera.update();
 
@@ -91,5 +94,17 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 	}
 	public void setSolmu(Solmu solmu){
 		this.solmu = solmu;
+	}
+
+	public void resize(boolean in) {
+		//ToDo Koko kuvan kokoinen zoom-out. (camera.zoom -= 100000000000000000) tai kunnes kuvan rajat tulee vastaan? Miten tehdä sulava?
+		if(in == true) {
+			camera.zoom -= 1;
+
+		}
+		else{
+			camera.zoom += 1;
+		}
+
 	}
 }

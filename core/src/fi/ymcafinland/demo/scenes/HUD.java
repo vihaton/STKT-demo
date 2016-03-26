@@ -48,7 +48,7 @@ public class HUD {
 
 
 
-    public HUD(final SelviytyjanPurjeet sp, SpriteBatch sb, Solmu solmu){
+    public HUD(final SelviytyjanPurjeet sp, SpriteBatch sb, final Solmu solmu){
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         Gdx.input.setInputProcessor(stage);
@@ -82,22 +82,52 @@ public class HUD {
         createTable();
 
 
-
+        //ToDo Copypastat vittuun ja child 1 2 3 entä jos erimäärä lapsia?
         parent.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                //ToDo Nothing happens here. Renderer needed?
+                sp.setSolmu(solmu.getMutsi());
+            }
+        });
+        rightSister.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
 
-                //camera.position.set(s2.getMutsi().getXKoordinaatti(), s2.getMutsi().getYKoordinaatti(), 0f);
-                //camera.update();
-                sp.setSolmu(s2.getMutsi());
+                sp.setSolmu(solmu.getOikeaSisarus());
+            }
+        });
+        leftSister.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+
+                sp.setSolmu(solmu.getVasenSisarus());
+            }
+        });
+        child1.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+            ArrayList<Solmu> laps = solmu.getLapset();
+                sp.setSolmu(laps.get(0));
+            }
+        });
+        child2.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                ArrayList<Solmu> laps = solmu.getLapset();
+                sp.setSolmu(laps.get(1));
+            }
+        });
+        child3.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                ArrayList<Solmu> laps = solmu.getLapset();
+                sp.setSolmu(laps.get(3));
             }
         });
 
-        //ToDo Tee napille karttatoiminta. ZOom Out And Shiz.
+
         karttaNappi.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Clicked! Is checked: " + karttaNappi.isChecked());
-                karttaNappi.setText("Good job!");
+                if(!karttaNappi.isChecked()) {
+                    sp.resize(true);
+                }
+                else{
+                    sp.resize(false);
+                }
             }
         });
 
