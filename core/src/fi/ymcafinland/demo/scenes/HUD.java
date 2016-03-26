@@ -52,7 +52,7 @@ public class HUD {
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         Gdx.input.setInputProcessor(stage);
-
+        //TURHAA SETTII TESTASUSTA VARTEN
         s1 = new Solmu(1,null);
         s2 = new Solmu(2,s1);
         s3 = new Solmu(3,s1);
@@ -63,7 +63,7 @@ public class HUD {
 
 
         s1.setOtsikko("Kappasolmu");
-        s1.setSijainti(0, 0);
+        s1.setSijainti(10, 10);
         s2.setOtsikko("Disaster");
         s2.setVasenSisarus(s3);
         s2.setOikeaSisarus(s4);
@@ -72,7 +72,7 @@ public class HUD {
         testiS.add(s6);
         testiS.add(s7);
         s2.setLapset(testiS);
-
+        //TÄHÄN ASTI
         skinAndStyleCreation();
 
 

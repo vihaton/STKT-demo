@@ -41,6 +41,7 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 		hud = new HUD(this, batch, solmu);
 		camera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
 
+		//TURHAA SHITTIII TESTAUSTA VARTEN
 		Solmu s1 = new Solmu(1,null);
 		Solmu s2 = new Solmu(2,s1);
 		Solmu s3 = new Solmu(3,s1);
@@ -51,7 +52,7 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 
 
 		s1.setOtsikko("Kappasolmu");
-		s1.setSijainti(1, 1);
+		s2.setSijainti(100, 100);
 		s2.setOtsikko("Disaster");
 		s2.setVasenSisarus(s3);
 		s2.setOikeaSisarus(s4);
@@ -61,7 +62,7 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 		testiS.add(s7);
 		s2.setLapset(testiS);
 		this.solmu = s2;
-
+		//TÄHÄN ASTI
 
 
 	}
