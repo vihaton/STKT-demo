@@ -33,7 +33,7 @@ public class Solmu {
     public Solmu(String id, Solmu mutsi) {
         this.id = id;
         this.mutsi = mutsi;
-        lapset = new ArrayList<>();
+        lapset = new ArrayList();
         vasenSisarus = null;
         oikeaSisarus = null;
         sisalto = "Omia selviytymiskeinoja pystyy aina vahvistamaan!";
@@ -65,6 +65,8 @@ public class Solmu {
     public Solmu getOikeaSisarus() {
         return oikeaSisarus;
     }
+
+    public Solmu getMutsi(){ return mutsi; }
 
     public void setSijainti(int x, int y) {
         this.x = x;
@@ -98,5 +100,6 @@ public class Solmu {
     public String getSisalto() {
         return sisalto;
     }
+
 
 }

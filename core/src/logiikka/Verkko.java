@@ -23,7 +23,7 @@ public class Verkko {
     private I18NBundle myBundle;
 
     public Verkko() {
-        solmut = new ArrayList<>();
+        solmut = new ArrayList();
         String polkuTiedostolle = "solmut/solmut";
         FileHandle baseFileHandle = Gdx.files.internal(polkuTiedostolle);
 
@@ -67,7 +67,7 @@ public class Verkko {
 
         solmut.addAll(luoEnsimmainenTaso(6));
 
-        ArrayList<Solmu> toinenTaso = new ArrayList<>();
+        ArrayList<Solmu> toinenTaso = new ArrayList();
         for (Solmu s : solmut) {
             toinenTaso.addAll(luoLapset(s));
         }
@@ -80,7 +80,7 @@ public class Verkko {
     }
 
     private ArrayList<Solmu> luoEnsimmainenTaso(int montako) {
-        ArrayList<Solmu> lista = new ArrayList<>();
+        ArrayList<Solmu> lista = new ArrayList();
 
         for (int i = 1; i < montako + 1; i++) {
             Solmu s = new Solmu("" + i, null);
@@ -116,8 +116,7 @@ public class Verkko {
     private ArrayList<Solmu> luoLapset(Solmu s) {
         int mutsinID = Integer.parseInt(s.getID());
         int lapsenID = 7 + (mutsinID - 1) * 3;
-
-        ArrayList<Solmu> lapset = new ArrayList<>();
+        ArrayList<Solmu> lapset = new ArrayList();
         for (int i = lapsenID; i < lapsenID + 3; i++) {
             Solmu lapsi = new Solmu("" + i, s);
             lapset.add(lapsi);
