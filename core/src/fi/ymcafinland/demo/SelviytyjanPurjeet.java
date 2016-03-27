@@ -98,9 +98,8 @@ public class SelviytyjanPurjeet extends ApplicationAdapter {
 
 	public void resize(boolean in) {
 		//ToDo Koko kuvan kokoinen zoom-out. (camera.zoom -= 100000000000000000) tai kunnes kuvan rajat tulee vastaan? Miten tehdä sulava?
-		if(in == true) {
+		if (in) {
 			camera.zoom -= 1;
-
 		}
 		else{
 			camera.zoom += 1;
