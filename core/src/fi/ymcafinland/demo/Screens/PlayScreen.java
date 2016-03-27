@@ -34,6 +34,7 @@ public class PlayScreen implements Screen {
     private Viewport viewPort;
     private HUD hud;
     Solmu solmu;
+    CameraTransition transition;
 
     public PlayScreen(SelviytyjanPurjeet sp){
         this.sp = sp;
@@ -71,6 +72,7 @@ public class PlayScreen implements Screen {
         sprite.setPosition((-sprite.getWidth() / 2 + 150), -sprite.getHeight() / 2 + 100);
         hud = new HUD(this, batch, s2);
         camera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
+        setSolmu(s2);
 
 
     }
@@ -86,18 +88,10 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
-        //ToDo Sulava siirtyminen. camera.translate vektorin mukaan?
-        //EI VITTU TOIMI
-        float lerp = 0.1f;
-        if(camera.position.x != solmu.getXKoordinaatti() && camera.position.y != solmu.getYKoordinaatti()) {
-            Vector3 position = camera.position;
-            position.x += (solmu.getXKoordinaatti() - position.x) * lerp * delta;
-            position.y += (solmu.getYKoordinaatti() - position.y) * lerp * delta;
-            camera.position.x = position.x;
-            camera.position.y = position.y;
-            //camera.translate(position);
-            //camera.position.set(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0);
-        }
+        //ToDo Sulava siirtyminen.
+
+
+        transition.act(delta);
 
         camera.update();
 
@@ -124,6 +118,8 @@ public class PlayScreen implements Screen {
 
     public void setSolmu(Solmu solmu){
             this.solmu = solmu;
+        Vector3 position = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
+        transition = new CameraTransition(camera.position, position,1f);
         }
 
     @Override
