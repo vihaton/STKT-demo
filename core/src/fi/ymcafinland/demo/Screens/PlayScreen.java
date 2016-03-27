@@ -58,7 +58,7 @@ public class PlayScreen implements Screen {
         testiS.add(s6);
         testiS.add(s7);
         s2.setLapset(testiS);
-        this.solmu = s2;
+
         //TÄHÄN ASTI
 
         camera = new OrthographicCamera();
@@ -70,9 +70,13 @@ public class PlayScreen implements Screen {
         sprite = new Sprite(img);
         sprite.setOrigin(0, 0);
         sprite.setPosition((-sprite.getWidth() / 2 + 150), -sprite.getHeight() / 2 + 100);
-        hud = new HUD(this, batch, s2);
+
+
         camera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
+        hud = new HUD(this, batch, s2);
+        this.solmu = s1;
         setSolmu(s2);
+
 
 
     }
@@ -92,6 +96,9 @@ public class PlayScreen implements Screen {
 
 
         transition.act(delta);
+        if(solmu.getXKoordinaatti() == camera.position.x && solmu.getYKoordinaatti() == camera.position.y){
+            camera.position.set(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(),0f);
+        }
 
         camera.update();
 
@@ -117,9 +124,11 @@ public class PlayScreen implements Screen {
     }
 
     public void setSolmu(Solmu solmu){
+        if(!this.solmu.equals(solmu)) {
             this.solmu = solmu;
-        Vector3 position = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
-        transition = new CameraTransition(camera.position, position,1f);
+            Vector3 position = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
+            transition = new CameraTransition(camera.position, position, 1f);
+        }
         }
 
     @Override
