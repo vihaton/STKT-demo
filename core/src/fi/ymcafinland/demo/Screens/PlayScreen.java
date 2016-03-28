@@ -38,6 +38,7 @@ public class PlayScreen implements Screen {
     CameraTransition transition;
     float timeSinceTransition = 0;
     boolean trans = false;
+    Vector3 polttopiste;
 
     public PlayScreen(SelviytyjanPurjeet sp){
         this.sp = sp;
@@ -63,7 +64,7 @@ public class PlayScreen implements Screen {
         s2.setLapset(testiS);
 
         //TÄHÄN ASTI
-
+        polttopiste = new Vector3(s2.getXKoordinaatti(),s2.getYKoordinaatti(),0f);
         camera = new OrthographicCamera();
         viewPort = new FitViewport(V_WIDTH,V_HEIGHT,camera);
 
@@ -104,12 +105,12 @@ public class PlayScreen implements Screen {
         if(timeSinceTransition >= 1.0f){
             //WHATS WRONG WITH YOU
 
-            camera.position.set(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(), 0f);
 
+            polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             //WHATS WRONG WITH YOU ^
             trans = false;
         }
-
+        camera.position.set(polttopiste);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -140,7 +141,7 @@ public class PlayScreen implements Screen {
 
             this.solmu = solmu;
             trans = true;
-            transition = new CameraTransition(camera.position, goal, 1f);
+            transition = new CameraTransition(polttopiste, goal, 1f);
             timeSinceTransition = 0;
 
 
