@@ -128,17 +128,19 @@ public class PlayScreen implements Screen {
         }
     }
 
+    /**
+     * HUDista tulee kutsu riippuen mitä solmua painaa. Päivittää tiedot renderille.
+     * Päivittää myös HUDin seuraavalle solmulle.
+     * @param solmu
+     */
     public void setSolmu(Solmu solmu){
         if(!this.solmu.equals(solmu)) {
-
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
-
             this.solmu = solmu;
             trans = true;
             transition = new CameraTransition(polttopiste, goal, 1f);
             timeSinceTransition = 0;
-
-
+            hud.update(solmu);
         }
     }
 
