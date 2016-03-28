@@ -1,5 +1,7 @@
 package fi.ymcafinland.tests.logiikkaTest;
 
+import com.badlogic.gdx.graphics.Texture;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 
@@ -22,7 +24,7 @@ public class VerkkoTest {
 
         @Before
         public void setVerkko() throws Exception {
-                verkko = new Verkko();
+                verkko = new Verkko(2000, 2000);
         }
 
         @Test

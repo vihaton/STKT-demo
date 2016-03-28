@@ -147,7 +147,6 @@ public class Verkko {
         final int keskiX = leveysPalikka * 50;
         final int keskiY = korkeusPalikka * 50;
 
-
     }
 
     public ArrayList<Solmu> getSolmut() {
