@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -35,6 +36,8 @@ public class PlayScreen implements Screen {
     private HUD hud;
     Solmu solmu;
     CameraTransition transition;
+    float timeSinceTransition = 0;
+    boolean trans = false;
 
     public PlayScreen(SelviytyjanPurjeet sp){
         this.sp = sp;
@@ -94,11 +97,16 @@ public class PlayScreen implements Screen {
 
         //ToDo Sulava siirtyminen.
 
-
-        transition.act(delta);
-        if(solmu.getXKoordinaatti() == camera.position.x && solmu.getYKoordinaatti() == camera.position.y){
-            camera.position.set(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(),0f);
+        if(trans == true) {
+            transition.act(delta);
+            timeSinceTransition+=delta;
         }
+        if(timeSinceTransition >= 1.0f){
+            camera.position.set(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(), 0f);
+            timeSinceTransition = 0;
+            trans = false;
+        }
+
 
         camera.update();
 
@@ -125,11 +133,13 @@ public class PlayScreen implements Screen {
 
     public void setSolmu(Solmu solmu){
         if(!this.solmu.equals(solmu)) {
+            Solmu solmu2 = solmu;
+            Vector3 goal = new Vector3(solmu2.getXKoordinaatti(), solmu2.getYKoordinaatti(), 0f);
+            trans = true;
+            transition = new CameraTransition(camera.position, goal, 1f);
             this.solmu = solmu;
-            Vector3 position = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
-            transition = new CameraTransition(camera.position, position, 1f);
         }
-        }
+    }
 
     @Override
     public void resize(int width, int height) {
