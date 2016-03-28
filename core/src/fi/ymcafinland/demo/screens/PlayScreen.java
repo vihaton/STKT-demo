@@ -72,8 +72,10 @@ public class PlayScreen implements Screen {
 
         //Tästä poistettu muuttuja 'img' koska sitä käytettiin vaan yhessä rivissä, pistetään takas jos on tarvis
         map = new Sprite(new Texture("pallokuva.png"));
-        map.setOrigin(0, 0);
-        map.setPosition((-map.getWidth() / 2 + 150), -map.getHeight() / 2 + 100);
+
+        //TODO kuvan asettamisessa on jotain pahasti pielessä, kamera siirtyy luontevan oloisesti solmusta toiseeen, mutta solmujen koordinaatit eivät edes osu kuvaan!
+//        map.setOrigin(map.getWidth() / 2, map.getHeight());
+//        map.setPosition((-map.getWidth() / 2 + 150), -map.getHeight() / 2 + 100);
 
         //Todo alla oleva camera.position.set -rivi ei tee yhtään mitään havaittavaa?
 //        camera.position.set(aloitussolmu.getXKoordinaatti(), aloitussolmu.getYKoordinaatti(), 0);

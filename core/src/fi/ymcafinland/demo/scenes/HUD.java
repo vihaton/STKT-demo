@@ -40,6 +40,7 @@ public class HUD {
     protected TextButton child1;
     protected TextButton child2;
     protected TextButton child3;
+    protected boolean montaLasta;
 
     PlayScreen screen;
     SpriteBatch sb;
@@ -55,6 +56,8 @@ public class HUD {
         this.sb = sb;
         Gdx.input.setInputProcessor(stage);
         hasParent = solmu.getMutsi() != null;
+        montaLasta = solmu.getLapset().size() > 1;
+
 
         skinAndStyleCreation();
         buttonCreation(solmu);
@@ -66,6 +69,7 @@ public class HUD {
 
     /**
      * Tapahtumankuuntelijat nappuloille
+     *
      * @param screen
      * @param solmu
      */
@@ -98,7 +102,11 @@ public class HUD {
         child2.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 ArrayList<Solmu> laps = solmu.getLapset();
-                screen.setSolmu(laps.get(1));
+                if (montaLasta) {
+                    screen.setSolmu(laps.get(0));
+                } else {
+                    screen.setSolmu(laps.get(1));
+                }
             }
         });
         child3.addListener(new ChangeListener() {
@@ -123,9 +131,10 @@ public class HUD {
 
     /**
      * Päivittää HUDin tiedot
+     *
      * @param solmu
      */
-    public void update(Solmu solmu){
+    public void update(Solmu solmu) {
         stage.clear();
         this.solmu = solmu;
         buttonCreation(solmu);
@@ -165,6 +174,7 @@ public class HUD {
 
     /**
      * Luo nappulat HUDiin
+     *
      * @param solmu
      */
     private void buttonCreation(Solmu solmu) {
