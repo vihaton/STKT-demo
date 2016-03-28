@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
+import fi.ymcafinland.demo.Screens.PlayScreen;
 import fi.ymcafinland.demo.SelviytyjanPurjeet;
 import logiikka.Solmu;
 
@@ -48,7 +49,7 @@ public class HUD {
 
 
 
-    public HUD(final SelviytyjanPurjeet sp, SpriteBatch sb, final Solmu solmu){
+    public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu){
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         Gdx.input.setInputProcessor(stage);
@@ -85,37 +86,37 @@ public class HUD {
         //ToDo Copypastat vittuun ja child 1 2 3 entä jos erimäärä lapsia?
         parent.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                sp.setSolmu(solmu.getMutsi());
+                screen.setSolmu(solmu.getMutsi());
             }
         });
         rightSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
 
-                sp.setSolmu(solmu.getOikeaSisarus());
+                screen.setSolmu(solmu.getOikeaSisarus());
             }
         });
         leftSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
 
-                sp.setSolmu(solmu.getVasenSisarus());
+                screen.setSolmu(solmu.getVasenSisarus());
             }
         });
         child1.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
             ArrayList<Solmu> laps = solmu.getLapset();
-                sp.setSolmu(laps.get(0));
+                screen.setSolmu(laps.get(0));
             }
         });
         child2.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 ArrayList<Solmu> laps = solmu.getLapset();
-                sp.setSolmu(laps.get(1));
+                screen.setSolmu(laps.get(1));
             }
         });
         child3.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 ArrayList<Solmu> laps = solmu.getLapset();
-                sp.setSolmu(laps.get(3));
+                screen.setSolmu(laps.get(3));
             }
         });
 
@@ -123,10 +124,10 @@ public class HUD {
         karttaNappi.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 if(!karttaNappi.isChecked()) {
-                    sp.resize(true);
+                    screen.zoom(true);
                 }
                 else{
-                    sp.resize(false);
+                    screen.zoom(false);
                 }
             }
         });

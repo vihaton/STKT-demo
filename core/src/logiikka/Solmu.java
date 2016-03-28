@@ -21,8 +21,8 @@ public class Solmu {
     private Solmu vasenSisarus;
     private Solmu oikeaSisarus;
     private ArrayList<Solmu> lapset;
-    private int x;
-    private int y;
+    private float x;
+    private float y;
 
     /**
      * Luo solmun, jolla on tunnusluku ja vanhempi.
@@ -73,11 +73,11 @@ public class Solmu {
         this.y = y;
     }
 
-    public int getXKoordinaatti() {
+    public float getXKoordinaatti() {
         return x;
     }
 
-    public int getYKoordinaatti() {
+    public float getYKoordinaatti() {
         return y;
     }
 
