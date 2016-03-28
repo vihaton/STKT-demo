@@ -1,4 +1,4 @@
-package logiikka;
+package fi.ymcafinland.demo.logiikka;
 
 /*
  * Created by xvixvi on 20.3.2016.
@@ -69,13 +69,7 @@ public class Verkko {
     private void generoiSolmut() {
 
         solmut.addAll(luoEnsimmainenTaso(6));
-
-        ArrayList<Solmu> toinenTaso = new ArrayList<>();
-        for (Solmu s : solmut) {
-            toinenTaso.addAll(luoLapset(s));
-        }
-        asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
-        solmut.addAll(toinenTaso);
+        solmut.addAll(luoToinenTaso());
 
         //TODO kolmannen tason väittämät toisen tason lapsiksi
 
@@ -87,13 +81,24 @@ public class Verkko {
 
         for (int i = 1; i < montako + 1; i++) {
             Solmu s = new Solmu("" + i, null);
-            solmut.add(s);
+            lista.add(s);
         }
 
-        asetaTasonSolmutToistensaSisaruksiksi(solmut);
+        asetaTasonSolmutToistensaSisaruksiksi(lista);
+        asetaTasonSolmujenSijainnit(lista, leveysPalikka * 10);
 
-        lista.addAll(solmut);
         return lista;
+    }
+
+    private ArrayList<Solmu> luoToinenTaso() {
+        ArrayList<Solmu> toinenTaso = new ArrayList<>();
+        for (Solmu s : solmut) {
+            toinenTaso.addAll(luoLapset(s));
+        }
+
+        asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
+        asetaTasonSolmujenSijainnit(toinenTaso, leveysPalikka * 30);
+        return toinenTaso;
     }
 
     private void asetaTasonSolmutToistensaSisaruksiksi(ArrayList<Solmu> tasonSolmut) {
@@ -137,16 +142,27 @@ public class Verkko {
     }
 
     /**
-     * Metodi asettaa yhden tason solmut ympyrään taustakuvan keskipisteen ympärille.
+     * Metodi asettaa yhden tason solmut ympyrään taustakuvan keskipisteen ympärille. Asettaa solmut siten, että ympyrässä seuraava solmu vastapäivään on solmun oikea sisar.
      *
      * @param tasonSolmut ympyrään asetettavat solmut.
-     * @param sade muodostettavan ympyrän säde.
+     * @param sade        muodostettavan ympyrän säde.
      */
     private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, int sade) {
-        //TODO VILI aseta solmuille sijainnit
         final int keskiX = leveysPalikka * 50;
         final int keskiY = korkeusPalikka * 50;
+        int solmuja = tasonSolmut.size();
 
+        final double kulma = Math.toRadians(360 / solmuja);
+        double k = kulma;
+        Solmu s = tasonSolmut.get(0);
+
+        for (int i = 0; i < solmuja; i++) {
+            int x = (int) (sade * Math.cos(k)) + keskiX;
+            int y = (int) (sade * Math.sin(k) + keskiY);
+            s.setSijainti(x, y);
+            s = s.getVasenSisarus();
+            k += kulma;
+        }
     }
 
     public ArrayList<Solmu> getSolmut() {
