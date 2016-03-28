@@ -38,14 +38,7 @@ public class HUD {
     TextButton child1;
     TextButton child2;
     TextButton child3;
-    OrthographicCamera camera;
-    Solmu s1;
-    Solmu s2;
-    Solmu s3;
-    Solmu s4;
-    Solmu s5;
-    Solmu s6;
-    Solmu s7;
+
 
 
 
