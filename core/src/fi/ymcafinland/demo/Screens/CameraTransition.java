@@ -26,7 +26,6 @@ class CameraTransition {
 
         alpha = MathUtils.clamp(stateTime / duration, 0.0f, 1.0f);
 
-
         return startPos.lerp(goalPos, -2 * alpha*alpha*alpha + 3 * alpha*alpha);
     }
 

@@ -22,22 +22,25 @@ import logiikka.Solmu;
  */
 public class PlayScreen implements Screen {
 
-
-    private SelviytyjanPurjeet sp;
-
-    SpriteBatch batch;
-    Texture img;
-    OrthographicCamera camera;
-    private Sprite sprite;
     public final static int V_WIDTH = 180;
     public final static int V_HEIGHT = 300;
+
+    protected SpriteBatch batch;
+    protected OrthographicCamera camera;
+    protected Solmu solmu;
+    protected CameraTransition transition;
+    protected float timeSinceTransition = 0;
+    protected boolean trans = false;
+    protected Vector3 polttopiste;
+
+    private SelviytyjanPurjeet sp;
+    private Sprite map;
     private Viewport viewPort;
     private HUD hud;
-    Solmu solmu;
-    CameraTransition transition;
 
-    public PlayScreen(SelviytyjanPurjeet sp){
+    public PlayScreen(SelviytyjanPurjeet sp) {
         this.sp = sp;
+
         //TURHAA SHITTIII TESTAUSTA VARTEN
         Solmu s1 = new Solmu("1",null);
         Solmu s2 = new Solmu("2",s1);
@@ -58,28 +61,26 @@ public class PlayScreen implements Screen {
         testiS.add(s6);
         testiS.add(s7);
         s2.setLapset(testiS);
-
         //TÄHÄN ASTI
-
+        polttopiste = new Vector3(s2.getXKoordinaatti(),s2.getYKoordinaatti(),0f);
         camera = new OrthographicCamera();
         viewPort = new FitViewport(V_WIDTH,V_HEIGHT,camera);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
-        img = new Texture("pallokuva.png");
         batch = new SpriteBatch();
-        sprite = new Sprite(img);
-        sprite.setOrigin(0, 0);
-        sprite.setPosition((-sprite.getWidth() / 2 + 150), -sprite.getHeight() / 2 + 100);
+
+        //Tästä poistettu muuttuja 'img' koska sitä käytettiin vaan yhessä rivissä, pistetään takas jos on tarvis
+        map = new Sprite(new Texture("pallokuva.png"));
+        map.setOrigin(0, 0);
+        map.setPosition((-map.getWidth() / 2 + 150), -map.getHeight() / 2 + 100);
 
 
         camera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
         hud = new HUD(this, batch, s2);
         this.solmu = s1;
         setSolmu(s2);
-
-
-
     }
+
     @Override
     public void show() {
 
@@ -94,21 +95,24 @@ public class PlayScreen implements Screen {
 
         //ToDo Sulava siirtyminen.
 
-
-        transition.act(delta);
-        if(solmu.getXKoordinaatti() == camera.position.x && solmu.getYKoordinaatti() == camera.position.y){
-            camera.position.set(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(),0f);
+        if (trans && timeSinceTransition < 1.0f) {
+            transition.act(delta);
+            timeSinceTransition+=delta;
         }
 
+        if (timeSinceTransition >= 1.0f){
+            //WHATS WRONG WITH YOU
+            polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
+        }
+
+        camera.position.set(polttopiste);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        sprite.draw(batch);
+        map.draw(batch);
         batch.end();
-
-
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
@@ -125,11 +129,17 @@ public class PlayScreen implements Screen {
 
     public void setSolmu(Solmu solmu){
         if(!this.solmu.equals(solmu)) {
+
+            Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
+
             this.solmu = solmu;
-            Vector3 position = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
-            transition = new CameraTransition(camera.position, position, 1f);
+            trans = true;
+            transition = new CameraTransition(polttopiste, goal, 1f);
+            timeSinceTransition = 0;
+
+
         }
-        }
+    }
 
     @Override
     public void resize(int width, int height) {
