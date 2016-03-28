@@ -28,6 +28,8 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 public class HUD {
     public Stage stage;
 
+    private Solmu solmu;
+
     protected OrthographicCamera camera;
     protected Skin skin;
     protected TextButton karttaNappi;
@@ -39,20 +41,35 @@ public class HUD {
     protected TextButton child2;
     protected TextButton child3;
 
+    PlayScreen screen;
+    SpriteBatch sb;
+
     private Viewport viewport;
 
 
     public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu) {
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
+        this.solmu = solmu;
+        this.screen = screen;
+        this.sb = sb;
         Gdx.input.setInputProcessor(stage);
         hasParent = solmu.getMutsi() != null;
 
         skinAndStyleCreation();
         buttonCreation(solmu);
         createTable();
+        createListeners(screen, solmu);
 
 
+    }
+
+    /**
+     * Tapahtumankuuntelijat nappuloille
+     * @param screen
+     * @param solmu
+     */
+    private void createListeners(final PlayScreen screen, final Solmu solmu) {
         //ToDo Copypastat vittuun ja child 1 2 3 entä jos erimäärä lapsia?
 
         if (hasParent) {
@@ -104,7 +121,21 @@ public class HUD {
 
     }
 
+    /**
+     * Päivittää HUDin tiedot
+     * @param solmu
+     */
+    public void update(Solmu solmu){
+        stage.clear();
+        this.solmu = solmu;
+        buttonCreation(solmu);
+        createTable();
+        createListeners(screen, solmu);
+    }
 
+    /**
+     * Layout hudille
+     */
     private void createTable() {
         Table tableTop = new Table();
         tableTop.top();
@@ -132,6 +163,10 @@ public class HUD {
         stage.addActor(tableBot);
     }
 
+    /**
+     * Luo nappulat HUDiin
+     * @param solmu
+     */
     private void buttonCreation(Solmu solmu) {
         karttaNappi = new TextButton("Kartta", skin);
         if (hasParent) {
@@ -156,6 +191,9 @@ public class HUD {
         }
     }
 
+    /**
+     * Grafiikkaa nappuloille
+     */
     private void skinAndStyleCreation() {
         skin = new Skin();
 
