@@ -29,23 +29,25 @@ import logiikka.Solmu;
  */
 public class HUD {
     public Stage stage;
+
+    protected OrthographicCamera camera;
+    protected Skin skin;
+    protected TextButton karttaNappi;
+    protected TextButton parent;
+    protected TextButton leftSister;
+    protected TextButton rightSister;
+    protected TextButton child1;
+    protected TextButton child2;
+    protected TextButton child3;
+
     private Viewport viewport;
-    TextButton karttaNappi;
-    Skin skin;
-    TextButton parent;
-    TextButton leftSister;
-    TextButton rightSister;
-    TextButton child1;
-    TextButton child2;
-    TextButton child3;
-
-
 
 
     public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu){
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         Gdx.input.setInputProcessor(stage);
+
         skinAndStyleCreation();
         buttonCreation(solmu);
         createTable();
@@ -84,7 +86,7 @@ public class HUD {
         child3.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 ArrayList<Solmu> laps = solmu.getLapset();
-                screen.setSolmu(laps.get(3));
+                screen.setSolmu(laps.get(2));
             }
         });
 
