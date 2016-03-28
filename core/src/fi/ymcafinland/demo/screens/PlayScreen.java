@@ -1,4 +1,4 @@
-package fi.ymcafinland.demo.Screens;
+package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,9 +13,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
-import fi.ymcafinland.demo.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.scenes.HUD;
-import logiikka.Solmu;
+import fi.ymcafinland.demo.logiikka.Solmu;
 
 /**
  * Created by Sasu on 27.3.2016.
@@ -56,7 +56,7 @@ public class PlayScreen implements Screen {
         s2.setOtsikko("Disaster");
         s2.setVasenSisarus(s3);
         s2.setOikeaSisarus(s4);
-        ArrayList<Solmu> testiS = new ArrayList<Solmu>();
+        ArrayList<Solmu> testiS = new ArrayList<>();
         testiS.add(s5);
         testiS.add(s6);
         testiS.add(s7);

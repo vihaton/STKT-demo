@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import fi.ymcafinland.demo.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override

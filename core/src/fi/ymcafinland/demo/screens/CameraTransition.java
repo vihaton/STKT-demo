@@ -1,4 +1,4 @@
-package fi.ymcafinland.demo.Screens;
+package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;

@@ -1,4 +1,4 @@
-package logiikka;
+package fi.ymcafinland.demo.logiikka;
 
 /*
  * Created by xvixvi on 20.3.2016.
@@ -33,7 +33,7 @@ public class Solmu {
     public Solmu(String id, Solmu mutsi) {
         this.id = id;
         this.mutsi = mutsi;
-        lapset = new ArrayList();
+        lapset = new ArrayList<>();
         vasenSisarus = null;
         oikeaSisarus = null;
         sisalto = "Omia selviytymiskeinoja pystyy aina vahvistamaan!";

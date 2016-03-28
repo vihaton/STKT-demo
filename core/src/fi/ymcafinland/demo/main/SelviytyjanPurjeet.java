@@ -1,23 +1,11 @@
-package fi.ymcafinland.demo;
+package fi.ymcafinland.demo.main;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapRenderer;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.ArrayList;
-
-import fi.ymcafinland.demo.Screens.PlayScreen;
-import fi.ymcafinland.demo.scenes.HUD;
-import logiikka.Verkko;
+import fi.ymcafinland.demo.screens.PlayScreen;
+import fi.ymcafinland.demo.logiikka.Verkko;
 
 public class SelviytyjanPurjeet extends Game {
 	SpriteBatch batch;
@@ -34,9 +22,6 @@ public class SelviytyjanPurjeet extends Game {
 		//ToDo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
 		Texture taustakuva = new Texture("pallokuva.png");
 		verkko = new Verkko(taustakuva.getWidth(), taustakuva.getHeight());
-
-
-
 
 		//TODO VILI Playscreenille konstruktorissa aloitussolmu
 		setScreen(new PlayScreen(this));
