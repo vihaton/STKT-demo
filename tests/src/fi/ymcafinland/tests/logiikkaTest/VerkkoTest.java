@@ -1,15 +1,13 @@
 package fi.ymcafinland.tests.logiikkaTest;
 
-import com.badlogic.gdx.graphics.Texture;
-
 import org.junit.*;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 
 import fi.ymcafinland.tests.GdxTestaus;
-import logiikka.Solmu;
-import logiikka.Verkko;
+import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.logiikka.Verkko;
 
 import static org.junit.Assert.*;
 
