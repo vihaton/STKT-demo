@@ -100,15 +100,16 @@ public class PlayScreen implements Screen {
         if(trans == true) {
             transition.act(delta);
             timeSinceTransition+=delta;
+
+
         }
         if(timeSinceTransition > 1.0f){
             //WHATS WRONG WITH YOU
             camera.position.set(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(), 0f);
             //WHATS WRONG WITH YOU ^
-            timeSinceTransition = 0;
+
             trans = false;
         }
-
 
         camera.update();
 
@@ -135,10 +136,13 @@ public class PlayScreen implements Screen {
 
     public void setSolmu(Solmu solmu){
         if(!this.solmu.equals(solmu)) {
-            this.solmu = solmu;
+
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
+
+            this.solmu = solmu;
             trans = true;
             transition = new CameraTransition(camera.position, goal, 1f);
+            timeSinceTransition = 0;
 
 
         }
