@@ -24,7 +24,7 @@ public class SelviytyjanPurjeet extends Game {
 		verkko = new Verkko(taustakuva.getWidth(), taustakuva.getHeight());
 
 		//TODO VILI Playscreenille konstruktorissa aloitussolmu
-		setScreen(new PlayScreen(this));
+		setScreen(new PlayScreen(this, verkko.getSolmut().get(0)));
 
 	}
 	@Override

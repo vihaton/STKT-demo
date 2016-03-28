@@ -38,8 +38,9 @@ public class PlayScreen implements Screen {
     private Viewport viewPort;
     private HUD hud;
 
-    public PlayScreen(SelviytyjanPurjeet sp) {
+    public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu) {
         this.sp = sp;
+
 
         //TURHAA SHITTIII TESTAUSTA VARTEN
         Solmu s1 = new Solmu("1",null);
