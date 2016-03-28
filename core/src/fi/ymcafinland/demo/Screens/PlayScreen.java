@@ -97,17 +97,16 @@ public class PlayScreen implements Screen {
 
         //ToDo Sulava siirtyminen.
 
-        if(trans == true) {
+        if(trans == true && timeSinceTransition < 1.0f) {
             transition.act(delta);
             timeSinceTransition+=delta;
-
-
         }
-        if(timeSinceTransition > 1.0f){
+        if(timeSinceTransition >= 1.0f){
             //WHATS WRONG WITH YOU
-            camera.position.set(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(), 0f);
-            //WHATS WRONG WITH YOU ^
 
+            camera.position.set(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(), 0f);
+
+            //WHATS WRONG WITH YOU ^
             trans = false;
         }
 
