@@ -137,8 +137,9 @@ public class PlayScreen implements Screen {
         if(!this.solmu.equals(solmu)) {
             this.solmu = solmu;
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
-            transition = new CameraTransition(camera.position, goal, 1f);
             trans = true;
+            transition = new CameraTransition(camera.position, goal, 1f);
+
 
         }
     }
