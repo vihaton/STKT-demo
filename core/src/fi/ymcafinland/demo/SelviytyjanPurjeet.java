@@ -17,24 +17,28 @@ import java.util.ArrayList;
 
 import fi.ymcafinland.demo.Screens.PlayScreen;
 import fi.ymcafinland.demo.scenes.HUD;
-import logiikka.Solmu;
+import logiikka.Verkko;
 
 public class SelviytyjanPurjeet extends Game {
 	SpriteBatch batch;
+	private Verkko verkko;
 	public final static int V_WIDTH = 180;
 	public final static int V_HEIGHT = 300;
 
 	
 	@Override
 	public void create() {
-		//ToDo oikea verkkorakenne tänne käytettäväksi.
+		//ToDo VILI oikea verkkorakenne tänne käytettäväksi.
+
+
+		//ToDo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
+		Texture taustakuva = new Texture("pallokuva.png");
+		verkko = new Verkko(taustakuva.getWidth(), taustakuva.getHeight());
 
 
 
 
-
-
-
+		//TODO VILI Playscreenille konstruktorissa aloitussolmu
 		setScreen(new PlayScreen(this));
 
 	}

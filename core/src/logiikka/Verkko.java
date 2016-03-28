@@ -6,11 +6,9 @@ package logiikka;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.GdxBuild;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.io.File;
-import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -21,9 +19,13 @@ public class Verkko {
 
     private ArrayList<Solmu> solmut;
     private I18NBundle myBundle;
+    private final int leveysPalikka;
+    private final int korkeusPalikka;
 
-    public Verkko() {
-        solmut = new ArrayList();
+    public Verkko(int taustakuvanLeveys, int taustakuvanKorkeus) {
+        this.leveysPalikka = taustakuvanLeveys / 100;
+        this.korkeusPalikka = taustakuvanKorkeus / 100;
+        solmut = new ArrayList<>();
         String polkuTiedostolle = "solmut/solmut";
         FileHandle baseFileHandle = Gdx.files.internal(polkuTiedostolle);
 
@@ -46,7 +48,8 @@ public class Verkko {
         generoiSolmut();
     }
 
-    public String getAbsolutePathToFile() {
+    //Jesarimetodi korjaamaan ajettavuus desktopille ja testeille androidin lisäksi.
+    private String getAbsolutePathToFile() {
         String ap = Paths.get("").toAbsolutePath().toString();
         String[] hakemistot = ap.split("/");
         int i = hakemistot.length - 1;
@@ -67,20 +70,20 @@ public class Verkko {
 
         solmut.addAll(luoEnsimmainenTaso(6));
 
-        ArrayList<Solmu> toinenTaso = new ArrayList();
+        ArrayList<Solmu> toinenTaso = new ArrayList<>();
         for (Solmu s : solmut) {
             toinenTaso.addAll(luoLapset(s));
         }
         asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
         solmut.addAll(toinenTaso);
 
-        asetaOtsikotJaSisallot();
+        //TODO kolmannen tason väittämät toisen tason lapsiksi
 
-        asetaSijainnit();
+        asetaOtsikotJaSisallot();
     }
 
     private ArrayList<Solmu> luoEnsimmainenTaso(int montako) {
-        ArrayList<Solmu> lista = new ArrayList();
+        ArrayList<Solmu> lista = new ArrayList<>();
 
         for (int i = 1; i < montako + 1; i++) {
             Solmu s = new Solmu("" + i, null);
@@ -116,7 +119,7 @@ public class Verkko {
     private ArrayList<Solmu> luoLapset(Solmu s) {
         int mutsinID = Integer.parseInt(s.getID());
         int lapsenID = 7 + (mutsinID - 1) * 3;
-        ArrayList<Solmu> lapset = new ArrayList();
+        ArrayList<Solmu> lapset = new ArrayList<>();
         for (int i = lapsenID; i < lapsenID + 3; i++) {
             Solmu lapsi = new Solmu("" + i, s);
             lapset.add(lapsi);
@@ -133,8 +136,18 @@ public class Verkko {
         }
     }
 
-    private void asetaSijainnit() {
-        //TODO aseta solmuille sijainnit
+    /**
+     * Metodi asettaa yhden tason solmut ympyrään taustakuvan keskipisteen ympärille.
+     *
+     * @param tasonSolmut ympyrään asetettavat solmut.
+     * @param sade muodostettavan ympyrän säde.
+     */
+    private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, int sade) {
+        //TODO VILI aseta solmuille sijainnit
+        final int keskiX = leveysPalikka * 50;
+        final int keskiY = korkeusPalikka * 50;
+
+
     }
 
     public ArrayList<Solmu> getSolmut() {
