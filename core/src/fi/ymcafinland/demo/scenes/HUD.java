@@ -32,6 +32,7 @@ public class HUD {
     protected Skin skin;
     protected TextButton karttaNappi;
     protected TextButton parent;
+    protected boolean hasParent;
     protected TextButton leftSister;
     protected TextButton rightSister;
     protected TextButton child1;
@@ -41,10 +42,11 @@ public class HUD {
     private Viewport viewport;
 
 
-    public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu){
+    public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu) {
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         Gdx.input.setInputProcessor(stage);
+        hasParent = solmu.getMutsi() != null;
 
         skinAndStyleCreation();
         buttonCreation(solmu);
@@ -52,26 +54,27 @@ public class HUD {
 
 
         //ToDo Copypastat vittuun ja child 1 2 3 entä jos erimäärä lapsia?
-        parent.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                screen.setSolmu(solmu.getMutsi());
-            }
-        });
+
+        if (hasParent) {
+            parent.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    screen.setSolmu(solmu.getMutsi());
+                }
+            });
+        }
         rightSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-
                 screen.setSolmu(solmu.getOikeaSisarus());
             }
         });
         leftSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-
                 screen.setSolmu(solmu.getVasenSisarus());
             }
         });
         child1.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-            ArrayList<Solmu> laps = solmu.getLapset();
+                ArrayList<Solmu> laps = solmu.getLapset();
                 screen.setSolmu(laps.get(0));
             }
         });
@@ -91,10 +94,9 @@ public class HUD {
 
         karttaNappi.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                if(!karttaNappi.isChecked()) {
+                if (!karttaNappi.isChecked()) {
                     screen.zoom(true);
-                }
-                else{
+                } else {
                     screen.zoom(false);
                 }
             }
@@ -128,30 +130,34 @@ public class HUD {
         tableBot.add(child2).expand().bottom().padBottom(2);
         tableBot.add(child3).expand().bottom().right().padBottom(2);
         stage.addActor(tableBot);
-
-
     }
 
     private void buttonCreation(Solmu solmu) {
         karttaNappi = new TextButton("Kartta", skin);
-        parent = new TextButton(solmu.getMutsi().getOtsikko(), skin);
+        if (hasParent) {
+            parent = new TextButton(solmu.getMutsi().getOtsikko(), skin);
+        }
         leftSister = new TextButton(solmu.getVasenSisarus().getOtsikko(), skin);
         rightSister = new TextButton(solmu.getOikeaSisarus().getOtsikko(), skin);
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 
         //ToDo mitä jos eri määrä lapsia?
+        //tiedetään, että lapsia on vain yksi -V
 
-        if(lapset.size()== 3 ) {
+        if (lapset.size() == 3) {
             child1 = new TextButton(lapset.get(0).getOtsikko(), skin);
             child2 = new TextButton(lapset.get(1).getOtsikko(), skin);
             child3 = new TextButton(lapset.get(2).getOtsikko(), skin);
+        } else if (lapset.size() == 1) {
+            child1.setVisible(false);
+            child2 = new TextButton(lapset.get(0).getOtsikko(), skin);
+            child3.setVisible(false);
         }
     }
 
     private void skinAndStyleCreation() {
         skin = new Skin();
-
 
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);

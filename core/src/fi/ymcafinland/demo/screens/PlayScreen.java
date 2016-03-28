@@ -75,11 +75,11 @@ public class PlayScreen implements Screen {
         map.setOrigin(0, 0);
         map.setPosition((-map.getWidth() / 2 + 150), -map.getHeight() / 2 + 100);
 
-
-        camera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
-        hud = new HUD(this, batch, s2);
-        this.solmu = s1;
-        setSolmu(s2);
+        //Todo alla oleva camera.position.set -rivi ei tee yhtään mitään havaittavaa?
+//        camera.position.set(aloitussolmu.getXKoordinaatti(), aloitussolmu.getYKoordinaatti(), 0);
+        hud = new HUD(this, batch, aloitussolmu);
+        this.solmu = aloitussolmu;
+//        setSolmu(s2);
     }
 
     @Override

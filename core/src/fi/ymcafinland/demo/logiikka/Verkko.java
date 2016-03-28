@@ -97,7 +97,7 @@ public class Verkko {
         }
 
         asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
-        asetaTasonSolmujenSijainnit(toinenTaso, leveysPalikka * 30);
+        asetaTasonSolmujenSijainnit(toinenTaso, leveysPalikka * 20);
         return toinenTaso;
     }
 
@@ -129,6 +129,7 @@ public class Verkko {
             Solmu lapsi = new Solmu("" + i, s);
             lapset.add(lapsi);
         }
+        s.setLapset(lapset);
         return lapset;
     }
 
