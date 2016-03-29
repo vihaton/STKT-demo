@@ -116,7 +116,7 @@ public class PlayScreen implements Screen {
 
         float angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
 
-        camera.rotate(angleToPoint1);
+        camera.rotate(-angleToPoint1+90);
 
         camera.position.set(polttopiste);
         camera.update();
@@ -132,6 +132,12 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Hakee kulman pisteiden välillä;
+     * @param start
+     * @param target
+     * @return
+     */
     private float getAngleToPoint(Vector3 start, Vector3 target) {
         float angleToPoint = (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
 
