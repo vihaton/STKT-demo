@@ -8,11 +8,13 @@ import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.logiikka.Verkko;
 
 public class SelviytyjanPurjeet extends Game {
-	SpriteBatch batch;
-	private Verkko verkko;
 	public final static int V_WIDTH = 180;
 	public final static int V_HEIGHT = 300;
 
+	protected SpriteBatch batch;
+
+	private Verkko verkko;
+	private Kysymys kysymys;
 	
 	@Override
 	public void create() {
@@ -29,7 +31,11 @@ public class SelviytyjanPurjeet extends Game {
 	}
 	@Override
 	public void render () {
-		super.render();
+		if (kysymys != null) {
+			kysymys.render();
+		} else {
+			super.render();
+		}
 	}
 
 
@@ -41,7 +47,9 @@ public class SelviytyjanPurjeet extends Game {
 		batch.dispose();
 	}
 
-
+	public void setKysymys(Kysymys kysymys) {
+		this.kysymys = kysymys;
+	}
 
 	}
 
