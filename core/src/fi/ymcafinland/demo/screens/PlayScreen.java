@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -32,6 +33,7 @@ public class PlayScreen implements Screen {
     protected float timeSinceTransition = 0;
     protected boolean trans = false;
     protected Vector3 polttopiste;
+    protected Vector3 keskipiste;
 
     private SelviytyjanPurjeet sp;
     private Sprite map;
@@ -64,6 +66,7 @@ public class PlayScreen implements Screen {
         s2.setLapset(testiS);
         //TÄHÄN ASTI
         polttopiste = new Vector3(s2.getXKoordinaatti(),s2.getYKoordinaatti(),0f);
+
         camera = new OrthographicCamera();
         viewPort = new FitViewport(V_WIDTH,V_HEIGHT,camera);
 
@@ -77,6 +80,8 @@ public class PlayScreen implements Screen {
 //        map.setOrigin(map.getWidth() / 2, map.getHeight());
 //        map.setPosition((-map.getWidth() / 2 + 150), -map.getHeight() / 2 + 100);
 
+        //keskipiste toivottavasti?
+        keskipiste = new Vector3(map.getWidth()/2,map.getHeight()/2,0f);
 
         hud = new HUD(this, batch, aloitussolmu);
         this.solmu = aloitussolmu;
@@ -107,6 +112,12 @@ public class PlayScreen implements Screen {
             polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
         }
 
+        //float camAngle = -(float)Math.atan2(camera.up.x, camera.up.y)* MathUtils.radiansToDegrees + 180;
+
+        float angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
+
+        camera.rotate(angleToPoint1);
+
         camera.position.set(polttopiste);
         camera.update();
 
@@ -120,6 +131,13 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
 
     }
+
+    private float getAngleToPoint(Vector3 start, Vector3 target) {
+        float angleToPoint = (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
+
+        return angleToPoint;
+    }
+
     public void zoom(boolean in) {
         //ToDo Koko kuvan kokoinen zoom-out. (camera.zoom -= 100000000000000000) tai kunnes kuvan rajat tulee vastaan? Miten tehdä sulava?
         if (in) {
