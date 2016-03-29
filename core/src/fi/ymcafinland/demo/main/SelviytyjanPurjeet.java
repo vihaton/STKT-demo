@@ -2,6 +2,7 @@ package fi.ymcafinland.demo.main;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import fi.ymcafinland.demo.screens.PlayScreen;
@@ -12,12 +13,16 @@ public class SelviytyjanPurjeet extends Game {
 	public final static int V_HEIGHT = 300;
 
 	protected SpriteBatch batch;
+	protected BitmapFont font;
+	protected Verkko verkko;
 
-	private Verkko verkko;
 	private Kysymys kysymys;
 	
 	@Override
 	public void create() {
+		//testifontti kysymykselle
+		font = new BitmapFont();
+
 		//ToDo VILI oikea verkkorakenne tänne käytettäväksi.
 
 
@@ -27,15 +32,12 @@ public class SelviytyjanPurjeet extends Game {
 
 		//TODO VILI Playscreenille konstruktorissa aloitussolmu
 		setScreen(new PlayScreen(this, verkko.getSolmut().get(0)));
+		setScreen(new Kysymys(this));
 
 	}
 	@Override
 	public void render () {
-		if (kysymys != null) {
-			kysymys.render();
-		} else {
-			super.render();
-		}
+		super.render();
 	}
 
 
