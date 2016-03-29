@@ -16,14 +16,14 @@ public class SelviytyjanPurjeet extends Game {
 	
 	@Override
 	public void create() {
-		//ToDo VILI oikea verkkorakenne tänne käytettäväksi.
+
 
 
 		//ToDo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
 		Texture taustakuva = new Texture("pallokuva.png");
 		verkko = new Verkko(taustakuva.getWidth(), taustakuva.getHeight());
 
-		//TODO VILI Playscreenille konstruktorissa aloitussolmu
+
 		setScreen(new PlayScreen(this, verkko.getSolmut().get(0)));
 
 	}

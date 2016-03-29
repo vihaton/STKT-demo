@@ -77,8 +77,7 @@ public class PlayScreen implements Screen {
 //        map.setOrigin(map.getWidth() / 2, map.getHeight());
 //        map.setPosition((-map.getWidth() / 2 + 150), -map.getHeight() / 2 + 100);
 
-        //Todo alla oleva camera.position.set -rivi ei tee yhtään mitään havaittavaa?
-//        camera.position.set(aloitussolmu.getXKoordinaatti(), aloitussolmu.getYKoordinaatti(), 0);
+
         hud = new HUD(this, batch, aloitussolmu);
         this.solmu = aloitussolmu;
 //        setSolmu(s2);
@@ -96,7 +95,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
 
-        //ToDo Sulava siirtyminen.
+        //ToDo Sulava siirtyminen. Rotation
 
         if (trans && timeSinceTransition < 1.0f) {
             transition.act(delta);
@@ -104,7 +103,7 @@ public class PlayScreen implements Screen {
         }
 
         if (timeSinceTransition >= 1.0f){
-            //WHATS WRONG WITH YOU
+
             polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
         }
 
