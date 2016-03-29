@@ -1,12 +1,15 @@
 package fi.ymcafinland.demo.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -28,10 +31,11 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 public class HUD {
     public Stage stage;
 
-    private Solmu solmu;
+    protected Solmu solmu;
 
     protected OrthographicCamera camera;
     protected Skin skin;
+    protected Sprite map;
     protected TextButton karttaNappi;
     protected TextButton parent;
     protected boolean hasParent;
@@ -48,13 +52,18 @@ public class HUD {
     private Viewport viewport;
 
 
-    public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu) {
-        viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, sb);
+    public HUD(final PlayScreen screen, final Sprite map, SpriteBatch sb, final Solmu solmu) {
+        this.camera = new OrthographicCamera();
+        viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
+        this.stage = new Stage(viewport, sb);
+        GestureDetector gd = new GestureDetector(new HUDListener (this, viewport, map, sb));
+        InputMultiplexer im = new InputMultiplexer(gd, stage);
+        Gdx.input.setInputProcessor(im);
+
+        this.map = map;
         this.solmu = solmu;
         this.screen = screen;
         this.sb = sb;
-        Gdx.input.setInputProcessor(stage);
         hasParent = solmu.getMutsi() != null;
         montaLasta = solmu.getLapset().size() > 1;
 

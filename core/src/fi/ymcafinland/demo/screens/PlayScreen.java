@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -22,7 +21,6 @@ import fi.ymcafinland.demo.logiikka.Solmu;
  * Created by Sasu on 27.3.2016.
  */
 public class PlayScreen implements Screen {
-
     public final static int V_WIDTH = 180;
     public final static int V_HEIGHT = 300;
 
@@ -83,7 +81,7 @@ public class PlayScreen implements Screen {
         //keskipiste toivottavasti?
         keskipiste = new Vector3(map.getWidth()/2,map.getHeight()/2,0f);
 
-        hud = new HUD(this, batch, aloitussolmu);
+        hud = new HUD(this, map, batch, aloitussolmu);
         this.solmu = aloitussolmu;
 //        setSolmu(s2);
     }
