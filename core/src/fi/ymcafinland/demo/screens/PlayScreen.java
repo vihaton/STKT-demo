@@ -1,4 +1,4 @@
-package fi.ymcafinland.demo.Screens;
+package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,9 +13,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
-import fi.ymcafinland.demo.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.scenes.HUD;
-import logiikka.Solmu;
+import fi.ymcafinland.demo.logiikka.Solmu;
 
 /**
  * Created by Sasu on 27.3.2016.
@@ -38,8 +38,9 @@ public class PlayScreen implements Screen {
     private Viewport viewPort;
     private HUD hud;
 
-    public PlayScreen(SelviytyjanPurjeet sp) {
+    public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu) {
         this.sp = sp;
+
 
         //TURHAA SHITTIII TESTAUSTA VARTEN
         Solmu s1 = new Solmu("1",null);
@@ -56,7 +57,7 @@ public class PlayScreen implements Screen {
         s2.setOtsikko("Disaster");
         s2.setVasenSisarus(s3);
         s2.setOikeaSisarus(s4);
-        ArrayList<Solmu> testiS = new ArrayList<Solmu>();
+        ArrayList<Solmu> testiS = new ArrayList<>();
         testiS.add(s5);
         testiS.add(s6);
         testiS.add(s7);
@@ -71,14 +72,16 @@ public class PlayScreen implements Screen {
 
         //Tästä poistettu muuttuja 'img' koska sitä käytettiin vaan yhessä rivissä, pistetään takas jos on tarvis
         map = new Sprite(new Texture("pallokuva.png"));
-        map.setOrigin(0, 0);
-        map.setPosition((-map.getWidth() / 2 + 150), -map.getHeight() / 2 + 100);
 
+        //TODO kuvan asettamisessa on jotain pahasti pielessä, kamera siirtyy luontevan oloisesti solmusta toiseeen, mutta solmujen koordinaatit eivät edes osu kuvaan!
+//        map.setOrigin(map.getWidth() / 2, map.getHeight());
+//        map.setPosition((-map.getWidth() / 2 + 150), -map.getHeight() / 2 + 100);
 
-        camera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2, 0);
-        hud = new HUD(this, batch, s2);
-        this.solmu = s1;
-        setSolmu(s2);
+        //Todo alla oleva camera.position.set -rivi ei tee yhtään mitään havaittavaa?
+//        camera.position.set(aloitussolmu.getXKoordinaatti(), aloitussolmu.getYKoordinaatti(), 0);
+        hud = new HUD(this, batch, aloitussolmu);
+        this.solmu = aloitussolmu;
+//        setSolmu(s2);
     }
 
     @Override
@@ -127,17 +130,19 @@ public class PlayScreen implements Screen {
         }
     }
 
+    /**
+     * HUDista tulee kutsu riippuen mitä solmua painaa. Päivittää tiedot renderille.
+     * Päivittää myös HUDin seuraavalle solmulle.
+     * @param solmu
+     */
     public void setSolmu(Solmu solmu){
         if(!this.solmu.equals(solmu)) {
-
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
-
             this.solmu = solmu;
             trans = true;
             transition = new CameraTransition(polttopiste, goal, 1f);
             timeSinceTransition = 0;
-
-
+            hud.update(solmu);
         }
     }
 

@@ -7,22 +7,20 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
-import fi.ymcafinland.demo.Screens.PlayScreen;
-import fi.ymcafinland.demo.SelviytyjanPurjeet;
-import logiikka.Solmu;
+import fi.ymcafinland.demo.screens.PlayScreen;
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.logiikka.Solmu;
 
 /**
  * Created by Sasu on 20.3.2016.
@@ -30,57 +28,85 @@ import logiikka.Solmu;
 public class HUD {
     public Stage stage;
 
+    private Solmu solmu;
+
     protected OrthographicCamera camera;
     protected Skin skin;
     protected TextButton karttaNappi;
     protected TextButton parent;
+    protected boolean hasParent;
     protected TextButton leftSister;
     protected TextButton rightSister;
     protected TextButton child1;
     protected TextButton child2;
     protected TextButton child3;
+    protected boolean montaLasta;
+
+    PlayScreen screen;
+    SpriteBatch sb;
 
     private Viewport viewport;
 
 
-    public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu){
+    public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu) {
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
+        this.solmu = solmu;
+        this.screen = screen;
+        this.sb = sb;
         Gdx.input.setInputProcessor(stage);
+        hasParent = solmu.getMutsi() != null;
+        montaLasta = solmu.getLapset().size() > 1;
+
 
         skinAndStyleCreation();
         buttonCreation(solmu);
         createTable();
+        createListeners(screen, solmu);
 
 
+    }
+
+    /**
+     * Tapahtumankuuntelijat nappuloille
+     *
+     * @param screen
+     * @param solmu
+     */
+    private void createListeners(final PlayScreen screen, final Solmu solmu) {
         //ToDo Copypastat vittuun ja child 1 2 3 entä jos erimäärä lapsia?
-        parent.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                screen.setSolmu(solmu.getMutsi());
-            }
-        });
+
+        if (hasParent) {
+            parent.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    screen.setSolmu(solmu.getMutsi());
+                }
+            });
+        }
         rightSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-
                 screen.setSolmu(solmu.getOikeaSisarus());
             }
         });
         leftSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-
                 screen.setSolmu(solmu.getVasenSisarus());
             }
         });
         child1.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-            ArrayList<Solmu> laps = solmu.getLapset();
+                ArrayList<Solmu> laps = solmu.getLapset();
                 screen.setSolmu(laps.get(0));
             }
         });
         child2.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 ArrayList<Solmu> laps = solmu.getLapset();
-                screen.setSolmu(laps.get(1));
+                if (montaLasta) {
+                    screen.setSolmu(laps.get(0));
+                } else {
+                    screen.setSolmu(laps.get(1));
+                }
             }
         });
         child3.addListener(new ChangeListener() {
@@ -93,10 +119,9 @@ public class HUD {
 
         karttaNappi.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                if(!karttaNappi.isChecked()) {
+                if (!karttaNappi.isChecked()) {
                     screen.zoom(true);
-                }
-                else{
+                } else {
                     screen.zoom(false);
                 }
             }
@@ -104,7 +129,22 @@ public class HUD {
 
     }
 
+    /**
+     * Päivittää HUDin tiedot
+     *
+     * @param solmu
+     */
+    public void update(Solmu solmu) {
+        stage.clear();
+        this.solmu = solmu;
+        buttonCreation(solmu);
+        createTable();
+        createListeners(screen, solmu);
+    }
 
+    /**
+     * Layout hudille
+     */
     private void createTable() {
         Table tableTop = new Table();
         tableTop.top();
@@ -130,30 +170,42 @@ public class HUD {
         tableBot.add(child2).expand().bottom().padBottom(2);
         tableBot.add(child3).expand().bottom().right().padBottom(2);
         stage.addActor(tableBot);
-
-
     }
 
+    /**
+     * Luo nappulat HUDiin
+     *
+     * @param solmu
+     */
     private void buttonCreation(Solmu solmu) {
         karttaNappi = new TextButton("Kartta", skin);
-        parent = new TextButton(solmu.getMutsi().getOtsikko(), skin);
+        if (hasParent) {
+            parent = new TextButton(solmu.getMutsi().getOtsikko(), skin);
+        }
         leftSister = new TextButton(solmu.getVasenSisarus().getOtsikko(), skin);
         rightSister = new TextButton(solmu.getOikeaSisarus().getOtsikko(), skin);
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 
         //ToDo mitä jos eri määrä lapsia?
+        //tiedetään, että lapsia on vain yksi -V
 
-        if(lapset.size()== 3 ) {
+        if (lapset.size() == 3) {
             child1 = new TextButton(lapset.get(0).getOtsikko(), skin);
             child2 = new TextButton(lapset.get(1).getOtsikko(), skin);
             child3 = new TextButton(lapset.get(2).getOtsikko(), skin);
+        } else if (lapset.size() == 1) {
+            child1.setVisible(false);
+            child2 = new TextButton(lapset.get(0).getOtsikko(), skin);
+            child3.setVisible(false);
         }
     }
 
+    /**
+     * Grafiikkaa nappuloille
+     */
     private void skinAndStyleCreation() {
         skin = new Skin();
-
 
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
