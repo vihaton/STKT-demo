@@ -37,11 +37,7 @@ public class SelviytyjanPurjeet extends Game {
 	@Override
 	public void dispose() {
 		super.dispose();
-
 		batch.dispose();
 	}
-
-
-
 	}
 

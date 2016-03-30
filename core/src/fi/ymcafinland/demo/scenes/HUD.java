@@ -203,9 +203,9 @@ public class HUD {
             child3 = new TextButton(lapset.get(2).getOtsikko(), skin);
         } else {
             if(!lapset.isEmpty()) {
-                child1.setVisible(false);
+
                 child2 = new TextButton(lapset.get(0).getOtsikko(), skin);
-                child3.setVisible(false);
+
             }
         }
     }
