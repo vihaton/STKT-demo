@@ -53,8 +53,8 @@ public class HUD {
 
 
     public HUD(final PlayScreen screen, final Sprite map, SpriteBatch sb, final Solmu solmu) {
-        this.camera = new OrthographicCamera();
-        viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
+
+        viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         this.stage = new Stage(viewport, sb);
         GestureDetector gd = new GestureDetector(new HUDListener (this, viewport, map, sb));
         InputMultiplexer im = new InputMultiplexer(gd, stage);

@@ -151,6 +151,10 @@ public class PlayScreen implements Screen {
         }
     }
 
+    public void setZoom(float ratio) {
+        camera.zoom += ratio;
+    }
+
     /**
      * HUDista tulee kutsu riippuen mitä solmua painaa. Päivittää tiedot renderille.
      * Päivittää myös HUDin seuraavalle solmulle.

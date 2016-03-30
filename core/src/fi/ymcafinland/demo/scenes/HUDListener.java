@@ -58,9 +58,11 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
-        float ratio = initialDistance / distance;
-        map.setSize(initialDistance * ratio, initialDistance * ratio);
-
+        if (initialDistance < distance) {
+            hud.screen.setZoom(-0.03f);
+        } else {
+            hud.screen.setZoom(0.03f);
+        }
         return true;
     }
 
