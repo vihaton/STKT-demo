@@ -129,7 +129,6 @@ public class HUD {
                 } else {
                     screen.zoom(false);
 
-
                 }
             }
         });
