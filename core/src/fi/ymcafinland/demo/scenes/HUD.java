@@ -128,6 +128,8 @@ public class HUD {
                     screen.zoom(true);
                 } else {
                     screen.zoom(false);
+
+
                 }
             }
         });
