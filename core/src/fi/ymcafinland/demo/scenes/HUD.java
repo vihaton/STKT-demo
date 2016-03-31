@@ -94,28 +94,32 @@ public class HUD {
                 screen.setSolmu(solmu.getOikeaSisarus());
             }
         });
-        child1.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                ArrayList<Solmu> laps = solmu.getLapset();
-                screen.setSolmu(laps.get(0));
-            }
-        });
+        if(montaLasta) {
+            child1.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    ArrayList<Solmu> laps = solmu.getLapset();
+                    screen.setSolmu(laps.get(0));
+                }
+            });
+        }
         child2.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 ArrayList<Solmu> laps = solmu.getLapset();
-                if (montaLasta) {
+                if (!montaLasta) {
                     screen.setSolmu(laps.get(0));
                 } else {
                     screen.setSolmu(laps.get(1));
                 }
             }
         });
-        child3.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                ArrayList<Solmu> laps = solmu.getLapset();
-                screen.setSolmu(laps.get(2));
-            }
-        });
+        if(montaLasta) {
+            child3.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    ArrayList<Solmu> laps = solmu.getLapset();
+                    screen.setSolmu(laps.get(2));
+                }
+            });
+        }
 
 
         karttaNappi.addListener(new ChangeListener() {
@@ -124,6 +128,7 @@ public class HUD {
                     screen.zoom(true);
                 } else {
                     screen.zoom(false);
+
                 }
             }
         });
@@ -138,6 +143,8 @@ public class HUD {
     public void update(Solmu solmu) {
         stage.clear();
         this.solmu = solmu;
+        hasParent = solmu.getMutsi() != null;
+        montaLasta = solmu.getLapset().size() > 1;
         buttonCreation(solmu);
         createTable();
         createListeners(screen, solmu);
@@ -191,14 +198,16 @@ public class HUD {
         //ToDo mitä jos eri määrä lapsia?
         //tiedetään, että lapsia on vain yksi -V
 
-        if (lapset.size() == 3) {
+        if (montaLasta) {
             child1 = new TextButton(lapset.get(0).getOtsikko(), skin);
             child2 = new TextButton(lapset.get(1).getOtsikko(), skin);
             child3 = new TextButton(lapset.get(2).getOtsikko(), skin);
-        } else if (lapset.size() == 1) {
-            child1.setVisible(false);
-            child2 = new TextButton(lapset.get(0).getOtsikko(), skin);
-            child3.setVisible(false);
+        } else {
+            if(!lapset.isEmpty()) {
+
+                child2 = new TextButton(lapset.get(0).getOtsikko(), skin);
+
+            }
         }
     }
 
