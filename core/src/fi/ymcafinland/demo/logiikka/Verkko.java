@@ -161,7 +161,7 @@ public class Verkko {
             int x = (int) (sade * Math.cos(k)) + keskiX;
             int y = (int) (sade * Math.sin(k) + keskiY);
             s.setSijainti(x, y);
-            s = s.getVasenSisarus();
+            s = s.getOikeaSisarus();
             k += kulma;
         }
     }

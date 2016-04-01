@@ -39,5 +39,9 @@ public class SelviytyjanPurjeet extends Game {
 		super.dispose();
 		batch.dispose();
 	}
+
+	public Verkko getVerkko() {
+		return verkko;
+	}
 	}
 
