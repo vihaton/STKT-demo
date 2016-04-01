@@ -6,5 +6,9 @@ Sosiaalinen toimintakyky tutuksi -materiaalia demonstroiva sovellus. Selviytyjä
 ##Sprintti 1
 
 1. Kolmiportainen rakenne
+  - Kolmoskerros osaksi rakennetta
 2. Kameraa voi liikuttaa ja tarkentaa yksityiskohtiin
+  - Solmusta toiseen liikkuminen toimii
+  - Missään tapauksessa ohjelma ei kaadu
+  - Toiselta tasolta päästään kolmannelle
 3. Kameran voi zoomata kokonaisuuteen
