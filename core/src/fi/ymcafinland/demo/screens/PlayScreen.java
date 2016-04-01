@@ -96,9 +96,9 @@ public class PlayScreen implements Screen {
 
         batch.begin();
         map.draw(batch);
+        solmunPiirtaja.piirra(batch);
         batch.end();
 
-        solmunPiirtaja.piirra(batch, camera);
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();

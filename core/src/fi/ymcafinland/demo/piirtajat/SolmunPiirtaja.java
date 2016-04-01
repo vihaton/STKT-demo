@@ -23,16 +23,10 @@ public class SolmunPiirtaja {
         sade = pallonKuva.getWidth() / 2;
     }
 
-    public void piirra(SpriteBatch batch, Camera camera) {
-        //Todo fori vs batch.end !?!?
+    public void piirra(SpriteBatch batch) {
         for (int i = 0; i < solmut.size(); i++) {
             Solmu s = solmut.get(i);
-
-            batch.setProjectionMatrix(camera.combined);
-
-            batch.begin();
             batch.draw(pallonKuva, s.getXKoordinaatti() - sade, s.getYKoordinaatti() - sade);
-            batch.end();
         }
     }
 
