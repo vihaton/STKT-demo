@@ -118,7 +118,7 @@ public class PlayScreen implements Screen {
     }
 
     public void zoom(boolean in) {
-        //ToDo Koko kuvan kokoinen zoom-out. (camera.zoom -= 100000000000000000) tai kunnes kuvan rajat tulee vastaan? Miten tehdä sulava?
+        //ToDo korjaa bugi
         if (in) {
             camera.zoom -= 1;
         } else {

@@ -23,6 +23,8 @@ public class SolmunPiirtaja {
     private SpriteBatch spriteFont;
     private Matrix4 mx4Font;
     private BitmapFont fontti;
+    private Matrix4 oldTransformMatrix;
+
 
     public SolmunPiirtaja(Verkko verkko) {
         solmut = verkko.getSolmut();
@@ -35,6 +37,8 @@ public class SolmunPiirtaja {
     }
 
     public void piirra(SpriteBatch batch, Camera camera) {
+        oldTransformMatrix = batch.getTransformMatrix().cpy();
+
         for (int i = 0; i < solmut.size(); i++) {
             Solmu s = solmut.get(i);
 
@@ -43,12 +47,17 @@ public class SolmunPiirtaja {
             batch.end();
 
 
-            mx4Font.setToRotation(new Vector3(200, 200, 0), 180);
-            spriteFont.setTransformMatrix(mx4Font);
-            spriteFont.begin();
-            fontti.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-            fontti.draw(spriteFont, "kommunisti ruma huora", 100, 110);
-            spriteFont.end();
+        }
+        for (int i = 0; i < solmut.size(); i++) {
+            Solmu s = solmut.get(i);
+
+            mx4Font.setToRotation(new Vector3(1, 1, 0), 0);
+            mx4Font.trn(s.getXKoordinaatti(), s.getYKoordinaatti(), 0);
+            batch.setTransformMatrix(mx4Font);
+            batch.begin();
+            fontti.draw(batch, "jäbä", 0, 0);
+            batch.end();
+            batch.setTransformMatrix(oldTransformMatrix);
 
         }
     }
