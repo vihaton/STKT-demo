@@ -22,8 +22,6 @@ import fi.ymcafinland.demo.logiikka.Solmu;
  * Created by Sasu on 27.3.2016.
  */
 public class PlayScreen implements Screen {
-    public final static int V_WIDTH = 180;
-    public final static int V_HEIGHT = 300;
 
     protected SpriteBatch batch;
     protected OrthographicCamera camera;
@@ -40,7 +38,7 @@ public class PlayScreen implements Screen {
     private HUD hud;
     private SolmunPiirtaja solmunPiirtaja;
 
-    public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu) {
+    public PlayScreen(SelviytyjanPurjeet sp, Texture taustakuva, Solmu aloitussolmu) {
         this.sp = sp;
         solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko());
         this.solmu = aloitussolmu;
@@ -48,13 +46,13 @@ public class PlayScreen implements Screen {
         polttopiste = new Vector3(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(),0f);
 
         camera = new OrthographicCamera();
-        viewPort = new FitViewport(V_WIDTH,V_HEIGHT,camera);
+        viewPort = new FitViewport(sp.V_WIDTH,sp.V_HEIGHT,camera);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         batch = new SpriteBatch();
 
         //Tästä poistettu muuttuja 'img' koska sitä käytettiin vaan yhessä rivissä, pistetään takas jos on tarvis
-        map = new Sprite(new Texture("pallokuva.png"));
+        map = new Sprite(taustakuva);
 
         //keskipiste toivottavasti?
         keskipiste = new Vector3(map.getWidth()/2,map.getHeight()/2,0f);
@@ -73,7 +71,7 @@ public class PlayScreen implements Screen {
         float rgbJakaja = 255f;
         Gdx.gl.glClearColor(0, 0, 139 / rgbJakaja, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
+        camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
 
         if (trans && timeSinceTransition < 1.0f) {
             transition.act(delta);
@@ -100,7 +98,7 @@ public class PlayScreen implements Screen {
         map.draw(batch);
         batch.end();
 
-        solmunPiirtaja.piirra(batch);
+        solmunPiirtaja.piirra(batch, camera);
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();

@@ -1,5 +1,7 @@
 package fi.ymcafinland.demo.piirtajat;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -11,13 +13,27 @@ import fi.ymcafinland.demo.logiikka.*;
  */
 public class SolmunPiirtaja {
 
-    ArrayList<Solmu> solmut;
+    private ArrayList<Solmu> solmut;
+    private Texture pallonKuva;
+    private final int sade;
 
     public SolmunPiirtaja(Verkko verkko) {
         solmut = verkko.getSolmut();
+        pallonKuva = new Texture("emptynode.png");
+        sade = pallonKuva.getWidth() / 2;
     }
 
-    public void piirra(SpriteBatch batch) {
+    public void piirra(SpriteBatch batch, Camera camera) {
+        //Todo fori vs batch.end !?!?
+        for (int i = 0; i < solmut.size(); i++) {
+            Solmu s = solmut.get(i);
+
+            batch.setProjectionMatrix(camera.combined);
+
+            batch.begin();
+            batch.draw(pallonKuva, s.getXKoordinaatti() - sade, s.getYKoordinaatti() - sade);
+            batch.end();
+        }
     }
 
 }
