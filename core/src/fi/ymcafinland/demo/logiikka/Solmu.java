@@ -53,6 +53,9 @@ public class Solmu {
     public void setVasenSisarus(Solmu solmu) {
         vasenSisarus = solmu;
     }
+    public String getMiniKuva(){
+        return "mini_" + getID();
+    }
 
     public void setOikeaSisarus(Solmu solmu) {
         oikeaSisarus = solmu;
