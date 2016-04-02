@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -36,15 +38,18 @@ public class HUD {
     protected OrthographicCamera camera;
     protected Skin skin;
     protected Sprite map;
-    protected TextButton karttaNappi;
-    protected TextButton parent;
+    protected Button karttaNappi;
+    protected Button parent;
     protected boolean hasParent;
-    protected TextButton leftSister;
-    protected TextButton rightSister;
-    protected TextButton child1;
-    protected TextButton child2;
-    protected TextButton child3;
+    protected Button leftSister;
+    protected Button rightSister;
+    protected Button child1;
+    protected Button child2;
+    protected Button child3;
     protected boolean montaLasta;
+    Skin karttaSkin;
+    TextureAtlas atlas;
+
 
     PlayScreen screen;
     SpriteBatch sb;
@@ -59,6 +64,9 @@ public class HUD {
         GestureDetector gd = new GestureDetector(new HUDListener (this, viewport, map, sb));
         InputMultiplexer im = new InputMultiplexer(gd, stage);
         Gdx.input.setInputProcessor(im);
+        atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
+        skin = new Skin();
+        skin.addRegions(atlas);
 
         this.map = map;
         this.solmu = solmu;
@@ -195,12 +203,21 @@ public class HUD {
      * @param solmu
      */
     private void buttonCreation(Solmu solmu) {
-        karttaNappi = new TextButton("Kartta", skin);
+        Button.ButtonStyle styleParent = new Button.ButtonStyle();
+        Button.ButtonStyle styleLeft = new Button.ButtonStyle();
+        Button.ButtonStyle styleRight = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild1 = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild2 = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild3 = new Button.ButtonStyle();
+        karttaNappi = new TextButton("Kartta", karttaSkin);
         if (hasParent) {
-            parent = new TextButton(solmu.getMutsi().getOtsikko(), skin);
+            styleParent.up = skin.getDrawable(solmu.getMutsi().getMiniKuva());
+            parent = new Button(styleParent);
         }
-        leftSister = new TextButton(solmu.getVasenSisarus().getOtsikko(), skin);
-        rightSister = new TextButton(solmu.getOikeaSisarus().getOtsikko(), skin);
+        styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMiniKuva());
+        leftSister = new Button(styleLeft);
+        styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMiniKuva());
+        rightSister = new Button(styleRight);
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 
@@ -208,13 +225,16 @@ public class HUD {
         //tiedetään, että lapsia on vain yksi -V
 
         if (montaLasta) {
-            child1 = new TextButton(lapset.get(0).getOtsikko(), skin);
-            child2 = new TextButton(lapset.get(1).getOtsikko(), skin);
-            child3 = new TextButton(lapset.get(2).getOtsikko(), skin);
+            styleChild1.up = skin.getDrawable(lapset.get(0).getMiniKuva());
+            child1 = new Button(styleChild1);
+            styleChild2.up = skin.getDrawable(lapset.get(1).getMiniKuva());
+            child2 = new Button(styleChild2);
+            styleChild3.up = skin.getDrawable(lapset.get(2).getMiniKuva());
+            child3 = new Button(styleChild2);
         } else {
             if(!lapset.isEmpty()) {
-
-                child2 = new TextButton(lapset.get(0).getOtsikko(), skin);
+                styleChild2.up = skin.getDrawable(lapset.get(0).getMiniKuva());
+                child2 = new Button(styleChild2);
 
             }
         }
@@ -224,21 +244,22 @@ public class HUD {
      * Grafiikkaa nappuloille
      */
     private void skinAndStyleCreation() {
-        skin = new Skin();
+
+    karttaSkin = new Skin();
 
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
-        skin.add("white", new Texture(pixmap));
+        karttaSkin.add("white", new Texture(pixmap));
 
-        skin.add("default", new BitmapFont());
+        karttaSkin.add("default", new BitmapFont());
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default", textButtonStyle);
+        textButtonStyle.up = karttaSkin.newDrawable("white", Color.DARK_GRAY);
+        textButtonStyle.down = karttaSkin.newDrawable("white", Color.DARK_GRAY);
+        textButtonStyle.checked = karttaSkin.newDrawable("white", Color.BLUE);
+        textButtonStyle.over = karttaSkin.newDrawable("white", Color.LIGHT_GRAY);
+        textButtonStyle.font = karttaSkin.getFont("default");
+        karttaSkin.add("default", textButtonStyle);
     }
 }
