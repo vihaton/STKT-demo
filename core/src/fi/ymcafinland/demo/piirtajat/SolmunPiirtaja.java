@@ -33,7 +33,7 @@ public class SolmunPiirtaja {
 
         spriteFont = new SpriteBatch();
         mx4Font = new Matrix4();
-        fontti = new BitmapFont(Gdx.files.internal("fontti/fontti.fnt"), Gdx.files.internal("fontti/fontti.png"), true); //must be set true to be flipped
+        fontti = new BitmapFont(Gdx.files.internal("fontti/fontti.fnt"), Gdx.files.internal("fontti/fontti.png"), false); //must be set true to be flipped
     }
 
     public void piirra(SpriteBatch batch, Camera camera) {
@@ -51,7 +51,7 @@ public class SolmunPiirtaja {
         for (int i = 0; i < solmut.size(); i++) {
             Solmu s = solmut.get(i);
 
-            mx4Font.setToRotation(new Vector3(1, 1, 0), 0);
+            mx4Font.setToRotation(new Vector3(s.getXKoordinaatti(), s.getYKoordinaatti(), 0), 0);
             mx4Font.trn(s.getXKoordinaatti(), s.getYKoordinaatti(), 0);
             batch.setTransformMatrix(mx4Font);
             batch.begin();
@@ -61,5 +61,6 @@ public class SolmunPiirtaja {
 
         }
     }
+
 
 }
