@@ -203,16 +203,21 @@ public class HUD {
      * @param solmu
      */
     private void buttonCreation(Solmu solmu) {
-        Button.ButtonStyle style = new Button.ButtonStyle();
+        Button.ButtonStyle styleParent = new Button.ButtonStyle();
+        Button.ButtonStyle styleLeft = new Button.ButtonStyle();
+        Button.ButtonStyle styleRight = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild1 = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild2 = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild3 = new Button.ButtonStyle();
         karttaNappi = new TextButton("Kartta", karttaSkin);
         if (hasParent) {
-            style.up = skin.getDrawable(solmu.getMutsi().getMiniKuva());
-            parent = new Button(style);
+            styleParent.up = skin.getDrawable(solmu.getMutsi().getMiniKuva());
+            parent = new Button(styleParent);
         }
-        style.up = skin.getDrawable(solmu.getVasenSisarus().getMiniKuva());
-        leftSister = new Button(style);
-        style.up = skin.getDrawable(solmu.getOikeaSisarus().getMiniKuva());
-        rightSister = new Button(style);
+        styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMiniKuva());
+        leftSister = new Button(styleLeft);
+        styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMiniKuva());
+        rightSister = new Button(styleRight);
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 
@@ -220,16 +225,16 @@ public class HUD {
         //tiedetään, että lapsia on vain yksi -V
 
         if (montaLasta) {
-            style.up = skin.getDrawable(lapset.get(0).getMiniKuva());
-            child1 = new Button(style);
-            style.up = skin.getDrawable(lapset.get(1).getMiniKuva());
-            child2 = new Button(style);
-            style.up = skin.getDrawable(lapset.get(2).getMiniKuva());
-            child3 = new Button(style);
+            styleChild1.up = skin.getDrawable(lapset.get(0).getMiniKuva());
+            child1 = new Button(styleChild1);
+            styleChild2.up = skin.getDrawable(lapset.get(1).getMiniKuva());
+            child2 = new Button(styleChild2);
+            styleChild3.up = skin.getDrawable(lapset.get(2).getMiniKuva());
+            child3 = new Button(styleChild2);
         } else {
             if(!lapset.isEmpty()) {
-                style.up = skin.getDrawable(lapset.get(0).getMiniKuva());
-                child2 = new Button(style);
+                styleChild2.up = skin.getDrawable(lapset.get(0).getMiniKuva());
+                child2 = new Button(styleChild2);
 
             }
         }
