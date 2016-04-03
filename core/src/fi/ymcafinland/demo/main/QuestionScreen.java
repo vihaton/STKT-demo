@@ -13,21 +13,21 @@ import fi.ymcafinland.demo.screens.PlayScreen;
 /**
  * Created by jwinter on 29.3.2016.
  *
- * Kysymys luokalla käsitellään Selviytyjän purjeiden "kolmatta tasoa", ja sen kysymyksistä tulevaa
+ * QuestionScreen luokalla käsitellään Selviytyjän purjeiden "kolmatta tasoa", ja sen kysymyksistä tulevaa
  * dataa.
  */
-public class Kysymys implements Screen {
+public class QuestionScreen implements Screen {
     protected SpriteBatch batch;
 
     private final SelviytyjanPurjeet sp;
     private FitViewport viewport;
     private OrthographicCamera camera;
 
-    public Kysymys(final SelviytyjanPurjeet sp) {
+    public QuestionScreen(final SelviytyjanPurjeet sp) {
         this.sp = sp;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(400, 600, camera);
+        this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         camera.setToOrtho(false, 400, 600);
     }
 
@@ -53,11 +53,11 @@ public class Kysymys implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        sp.font.draw(batch, "Yer a wizard, harry", 10, 15);
+        //sp.font.draw(batch, "Yer a wizard, harry", 10, 15);
         batch.end();
 
         if (Gdx.input.isTouched()) {
-            sp.setScreen(new PlayScreen(this.sp, sp.verkko.getSolmut().get(0)));
+            //sp.setScreen(new PlayScreen(this.sp, sp.verkko.getSolmut().get(0)));
             dispose();
         }
 
@@ -89,7 +89,7 @@ public class Kysymys implements Screen {
      */
     @Override
     public void dispose() {
-        this.sp.setKysymys(null);
+        //this.sp.setKysymys(null);
     }
 
 }
