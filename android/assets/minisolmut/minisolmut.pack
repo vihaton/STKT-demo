@@ -171,3 +171,10 @@ mini_24
   orig: 64, 64
   offset: 0, 0
   index: -1
+mini_kysymys
+  rotate: false
+  xy: 463, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1

@@ -46,6 +46,7 @@ public class HUD {
     protected Button child1;
     protected Button child2;
     protected Button child3;
+    Button kysymys;
     protected boolean montaLasta;
     Skin karttaSkin;
     TextureAtlas atlas;
@@ -91,7 +92,7 @@ public class HUD {
      * @param solmu
      */
     private void createListeners(final PlayScreen screen, final Solmu solmu) {
-        //ToDo Copypastat vittuun ja child 1 2 3 entä jos erimäärä lapsia?
+        //ToDo Listener kysymysnapille.
 
         if (hasParent) {
             parent.addListener(new ChangeListener() {
@@ -118,18 +119,16 @@ public class HUD {
                     screen.setSolmu(laps.get(0));
                 }
             });
-        }
-        child2.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                ArrayList<Solmu> laps = solmu.getLapset();
-                if (!montaLasta) {
-                    screen.setSolmu(laps.get(0));
-                } else {
-                    screen.setSolmu(laps.get(1));
+
+            child2.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    ArrayList<Solmu> laps = solmu.getLapset();
+
+                        screen.setSolmu(laps.get(1));
+
                 }
-            }
-        });
-        if(montaLasta) {
+            });
+
             child3.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     ArrayList<Solmu> laps = solmu.getLapset();
@@ -161,7 +160,7 @@ public class HUD {
         stage.clear();
         this.solmu = solmu;
         hasParent = solmu.getMutsi() != null;
-        montaLasta = solmu.getLapset().size() > 1;
+        montaLasta = solmu.getLapset().size() > 0;
         buttonCreation(solmu);
         createTable();
         createListeners(screen, solmu);
@@ -191,9 +190,14 @@ public class HUD {
         Table tableBot = new Table();
         tableBot.bottom();
         tableBot.setFillParent(true);
-        tableBot.add(child1).expand().bottom().left().padBottom(2);
-        tableBot.add(child2).expand().bottom().padBottom(2);
-        tableBot.add(child3).expand().bottom().right().padBottom(2);
+        if(montaLasta) {
+            tableBot.add(child1).expand().bottom().left().padBottom(2);
+            tableBot.add(child2).expand().bottom().padBottom(2);
+            tableBot.add(child3).expand().bottom().right().padBottom(2);
+        }
+        else {
+            tableBot.add(kysymys).expand().bottom().padBottom(2);
+        }
         stage.addActor(tableBot);
     }
 
@@ -221,31 +225,43 @@ public class HUD {
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 
-        //ToDo mitä jos eri määrä lapsia?
-        //tiedetään, että lapsia on vain yksi -V
+
 
         if (montaLasta) {
+            if(kysymys != null) {
+                kysymys.setVisible(false);
+                kysymys.setDisabled(true);
+            }
             styleChild1.up = skin.getDrawable(lapset.get(0).getMiniKuva());
             child1 = new Button(styleChild1);
             styleChild2.up = skin.getDrawable(lapset.get(1).getMiniKuva());
             child2 = new Button(styleChild2);
             styleChild3.up = skin.getDrawable(lapset.get(2).getMiniKuva());
             child3 = new Button(styleChild2);
-        } else {
-            if(!lapset.isEmpty()) {
-                styleChild2.up = skin.getDrawable(lapset.get(0).getMiniKuva());
-                child2 = new Button(styleChild2);
+        } else{
 
-            }
+            child1.setVisible(false);
+            child2.setVisible(false);
+            child3.setVisible(false);
+            child1.setDisabled(true);
+            child2.setDisabled(true);
+            child3.setDisabled(true);
+
+
+            Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
+            styleKysymys.up = skin.getDrawable("mini_kysymys");
+            kysymys = new Button(styleKysymys);
+
         }
     }
+
 
     /**
      * Grafiikkaa nappuloille
      */
     private void skinAndStyleCreation() {
 
-    karttaSkin = new Skin();
+        karttaSkin = new Skin();
 
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
