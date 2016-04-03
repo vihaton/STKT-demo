@@ -48,7 +48,7 @@ public class HUD {
     protected Button child3;
     Button kysymys;
     protected boolean montaLasta;
-    Skin karttaSkin;
+
     TextureAtlas atlas;
 
 
@@ -77,7 +77,7 @@ public class HUD {
         montaLasta = solmu.getLapset().size() > 1;
 
 
-        skinAndStyleCreation();
+
         buttonCreation(solmu);
         createTable();
         createListeners(screen, solmu);
@@ -173,8 +173,12 @@ public class HUD {
         Table tableTop = new Table();
         tableTop.top();
         tableTop.setFillParent(true);
-        tableTop.add(parent).top().padTop(5).padLeft(50);
-        tableTop.add(karttaNappi).top().right();
+        if(hasParent) {
+            tableTop.add(parent).top();
+            tableTop.add(karttaNappi).expandX().right();
+        }else{
+            tableTop.add(karttaNappi).expandX().right();
+        }
 
         stage.addActor(tableTop);
 
@@ -213,7 +217,10 @@ public class HUD {
         Button.ButtonStyle styleChild1 = new Button.ButtonStyle();
         Button.ButtonStyle styleChild2 = new Button.ButtonStyle();
         Button.ButtonStyle styleChild3 = new Button.ButtonStyle();
-        karttaNappi = new TextButton("Kartta", karttaSkin);
+        Button.ButtonStyle styleKartta = new Button.ButtonStyle();
+
+        styleKartta.up = skin.getDrawable("mini_karttakuva");
+        karttaNappi = new Button(styleKartta);
         if (hasParent) {
             styleParent.up = skin.getDrawable(solmu.getMutsi().getMiniKuva());
             parent = new Button(styleParent);
@@ -256,26 +263,5 @@ public class HUD {
     }
 
 
-    /**
-     * Grafiikkaa nappuloille
-     */
-    private void skinAndStyleCreation() {
 
-        karttaSkin = new Skin();
-
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        karttaSkin.add("white", new Texture(pixmap));
-
-        karttaSkin.add("default", new BitmapFont());
-
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = karttaSkin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = karttaSkin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.checked = karttaSkin.newDrawable("white", Color.BLUE);
-        textButtonStyle.over = karttaSkin.newDrawable("white", Color.LIGHT_GRAY);
-        textButtonStyle.font = karttaSkin.getFont("default");
-        karttaSkin.add("default", textButtonStyle);
-    }
 }
