@@ -85,7 +85,7 @@ public class Verkko {
         }
 
         asetaTasonSolmutToistensaSisaruksiksi(lista);
-        asetaTasonSolmujenSijainnit(lista, leveysPalikka * 10);
+        asetaTasonSolmujenSijainnit(lista, false, leveysPalikka * 10);
 
         return lista;
     }
@@ -97,7 +97,7 @@ public class Verkko {
         }
 
         asetaTasonSolmutToistensaSisaruksiksi(toinenTaso);
-        asetaTasonSolmujenSijainnit(toinenTaso, leveysPalikka * 20);
+        asetaTasonSolmujenSijainnit(toinenTaso, true, leveysPalikka * 20);
         return toinenTaso;
     }
 
@@ -148,7 +148,7 @@ public class Verkko {
      * @param tasonSolmut ympyrään asetettavat solmut.
      * @param sade        muodostettavan ympyrän säde.
      */
-    private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, int sade) {
+    private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, boolean toinenTaso, int sade) {
         final int keskiX = leveysPalikka * 50;
         final int keskiY = korkeusPalikka * 50;
         int solmuja = tasonSolmut.size();
@@ -157,11 +157,16 @@ public class Verkko {
         double k = kulma;
         Solmu s = tasonSolmut.get(0);
 
+        if (toinenTaso) {
+            s = tasonSolmut.get(solmuja - 1);
+        }
+
         for (int i = 0; i < solmuja; i++) {
             int x = (int) (sade * Math.cos(k)) + keskiX;
             int y = (int) (sade * Math.sin(k) + keskiY);
+
             s.setSijainti(x, y);
-            s = s.getVasenSisarus();
+            s = s.getOikeaSisarus();
             k += kulma;
         }
     }
