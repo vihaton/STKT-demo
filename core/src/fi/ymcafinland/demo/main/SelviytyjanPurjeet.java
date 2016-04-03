@@ -21,7 +21,7 @@ public class SelviytyjanPurjeet extends Game {
         Texture taustakuva = new Texture("vitunisovalkoinentausta.png");
         verkko = new Verkko(taustakuva.getWidth(), taustakuva.getHeight());
 
-        setScreen(new PlayScreen(this, verkko.getSolmut().get(0)));
+        setScreen(new PlayScreen(this, taustakuva, verkko.getSolmut().get(0)));
 
     }
 

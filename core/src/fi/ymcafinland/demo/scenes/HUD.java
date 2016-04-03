@@ -1,14 +1,19 @@
 package fi.ymcafinland.demo.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -28,19 +33,23 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 public class HUD {
     public Stage stage;
 
-    private Solmu solmu;
+    protected Solmu solmu;
 
     protected OrthographicCamera camera;
     protected Skin skin;
-    protected TextButton karttaNappi;
-    protected TextButton parent;
+    protected Sprite map;
+    protected Button karttaNappi;
+    protected Button parent;
     protected boolean hasParent;
-    protected TextButton leftSister;
-    protected TextButton rightSister;
-    protected TextButton child1;
-    protected TextButton child2;
-    protected TextButton child3;
+    protected Button leftSister;
+    protected Button rightSister;
+    protected Button child1;
+    protected Button child2;
+    protected Button child3;
     protected boolean montaLasta;
+    Skin karttaSkin;
+    TextureAtlas atlas;
+
 
     PlayScreen screen;
     SpriteBatch sb;
@@ -48,13 +57,21 @@ public class HUD {
     private Viewport viewport;
 
 
-    public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu) {
+    public HUD(final PlayScreen screen, final Sprite map, SpriteBatch sb, final Solmu solmu) {
+
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, sb);
+        this.stage = new Stage(viewport, sb);
+        GestureDetector gd = new GestureDetector(new HUDListener (this, viewport, map, sb));
+        InputMultiplexer im = new InputMultiplexer(gd, stage);
+        Gdx.input.setInputProcessor(im);
+        atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
+        skin = new Skin();
+        skin.addRegions(atlas);
+
+        this.map = map;
         this.solmu = solmu;
         this.screen = screen;
         this.sb = sb;
-        Gdx.input.setInputProcessor(stage);
         hasParent = solmu.getMutsi() != null;
         montaLasta = solmu.getLapset().size() > 1;
 
@@ -93,28 +110,32 @@ public class HUD {
                 screen.setSolmu(solmu.getVasenSisarus());
             }
         });
-        child1.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                ArrayList<Solmu> laps = solmu.getLapset();
-                screen.setSolmu(laps.get(0));
-            }
-        });
+        if(montaLasta) {
+            child1.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    ArrayList<Solmu> laps = solmu.getLapset();
+                    screen.setSolmu(laps.get(0));
+                }
+            });
+        }
         child2.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 ArrayList<Solmu> laps = solmu.getLapset();
-                if (montaLasta) {
+                if (!montaLasta) {
                     screen.setSolmu(laps.get(0));
                 } else {
                     screen.setSolmu(laps.get(1));
                 }
             }
         });
-        child3.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                ArrayList<Solmu> laps = solmu.getLapset();
-                screen.setSolmu(laps.get(2));
-            }
-        });
+        if(montaLasta) {
+            child3.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    ArrayList<Solmu> laps = solmu.getLapset();
+                    screen.setSolmu(laps.get(2));
+                }
+            });
+        }
 
 
         karttaNappi.addListener(new ChangeListener() {
@@ -123,6 +144,7 @@ public class HUD {
                     screen.zoom(true);
                 } else {
                     screen.zoom(false);
+
                 }
             }
         });
@@ -137,6 +159,8 @@ public class HUD {
     public void update(Solmu solmu) {
         stage.clear();
         this.solmu = solmu;
+        hasParent = solmu.getMutsi() != null;
+        montaLasta = solmu.getLapset().size() > 1;
         buttonCreation(solmu);
         createTable();
         createListeners(screen, solmu);
@@ -178,26 +202,40 @@ public class HUD {
      * @param solmu
      */
     private void buttonCreation(Solmu solmu) {
-        karttaNappi = new TextButton("Kartta", skin);
+        Button.ButtonStyle styleParent = new Button.ButtonStyle();
+        Button.ButtonStyle styleLeft = new Button.ButtonStyle();
+        Button.ButtonStyle styleRight = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild1 = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild2 = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild3 = new Button.ButtonStyle();
+        karttaNappi = new TextButton("Kartta", karttaSkin);
         if (hasParent) {
-            parent = new TextButton(solmu.getMutsi().getOtsikko(), skin);
+            styleParent.up = skin.getDrawable(solmu.getMutsi().getMiniKuva());
+            parent = new Button(styleParent);
         }
-        leftSister = new TextButton(solmu.getVasenSisarus().getOtsikko(), skin);
-        rightSister = new TextButton(solmu.getOikeaSisarus().getOtsikko(), skin);
+        styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMiniKuva());
+        leftSister = new Button(styleLeft);
+        styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMiniKuva());
+        rightSister = new Button(styleRight);
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 
         //ToDo mitä jos eri määrä lapsia?
         //tiedetään, että lapsia on vain yksi -V
 
-        if (lapset.size() == 3) {
-            child1 = new TextButton(lapset.get(0).getOtsikko(), skin);
-            child2 = new TextButton(lapset.get(1).getOtsikko(), skin);
-            child3 = new TextButton(lapset.get(2).getOtsikko(), skin);
-        } else if (lapset.size() == 1) {
-            child1.setVisible(false);
-            child2 = new TextButton(lapset.get(0).getOtsikko(), skin);
-            child3.setVisible(false);
+        if (montaLasta) {
+            styleChild1.up = skin.getDrawable(lapset.get(0).getMiniKuva());
+            child1 = new Button(styleChild1);
+            styleChild2.up = skin.getDrawable(lapset.get(1).getMiniKuva());
+            child2 = new Button(styleChild2);
+            styleChild3.up = skin.getDrawable(lapset.get(2).getMiniKuva());
+            child3 = new Button(styleChild2);
+        } else {
+            if(!lapset.isEmpty()) {
+                styleChild2.up = skin.getDrawable(lapset.get(0).getMiniKuva());
+                child2 = new Button(styleChild2);
+
+            }
         }
     }
 
@@ -205,21 +243,22 @@ public class HUD {
      * Grafiikkaa nappuloille
      */
     private void skinAndStyleCreation() {
-        skin = new Skin();
+
+    karttaSkin = new Skin();
 
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
-        skin.add("white", new Texture(pixmap));
+        karttaSkin.add("white", new Texture(pixmap));
 
-        skin.add("default", new BitmapFont());
+        karttaSkin.add("default", new BitmapFont());
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default", textButtonStyle);
+        textButtonStyle.up = karttaSkin.newDrawable("white", Color.DARK_GRAY);
+        textButtonStyle.down = karttaSkin.newDrawable("white", Color.DARK_GRAY);
+        textButtonStyle.checked = karttaSkin.newDrawable("white", Color.BLUE);
+        textButtonStyle.over = karttaSkin.newDrawable("white", Color.LIGHT_GRAY);
+        textButtonStyle.font = karttaSkin.getFont("default");
+        karttaSkin.add("default", textButtonStyle);
     }
 }
