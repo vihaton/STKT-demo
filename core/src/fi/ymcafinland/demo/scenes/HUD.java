@@ -100,15 +100,14 @@ public class HUD {
                 }
             });
         }
-        //INVERSED LEFT AND RIGHT
         rightSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                screen.setSolmu(solmu.getVasenSisarus());
+                screen.setSolmu(solmu.getOikeaSisarus());
             }
         });
         leftSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                screen.setSolmu(solmu.getOikeaSisarus());
+                screen.setSolmu(solmu.getVasenSisarus());
             }
         });
         if(montaLasta) {
