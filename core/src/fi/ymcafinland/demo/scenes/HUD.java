@@ -239,6 +239,8 @@ public class HUD {
         }
     }
 
+    //Todo nätimpi grafiikka karttanappulalle / karttanappulasta myös image button
+
     /**
      * Grafiikkaa nappuloille
      */
