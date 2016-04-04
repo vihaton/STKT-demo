@@ -3,67 +3,116 @@ taustat.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+emptynode
+  rotate: false
+  xy: 1, 1315
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
 tausta1
   rotate: false
-  xy: 1, 1029
-  size: 512, 512
-  orig: 512, 512
+  xy: 1, 877
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta10
+  rotate: false
+  xy: 439, 1315
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta11
+  rotate: false
+  xy: 1, 439
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta12
+  rotate: false
+  xy: 439, 877
+  size: 436, 436
+  orig: 436, 436
   offset: 0, 0
   index: -1
 tausta13
   rotate: false
-  xy: 1, 515
-  size: 512, 512
-  orig: 512, 512
+  xy: 877, 1315
+  size: 436, 436
+  orig: 436, 436
   offset: 0, 0
   index: -1
-tausta17
-  rotate: false
-  xy: 515, 1029
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta6
+tausta14
   rotate: false
   xy: 1, 1
-  size: 512, 512
-  orig: 512, 512
+  size: 436, 436
+  orig: 436, 436
   offset: 0, 0
   index: -1
-tausta9
+tausta15
   rotate: false
-  xy: 515, 515
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta2
-  rotate: false
-  xy: 1029, 1029
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta21
-  rotate: false
-  xy: 515, 1
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta24
-  rotate: false
-  xy: 1029, 515
-  size: 512, 512
-  orig: 512, 512
+  xy: 439, 439
+  size: 436, 436
+  orig: 436, 436
   offset: 0, 0
   index: -1
 tausta16
   rotate: false
-  xy: 1029, 1
-  size: 512, 512
-  orig: 512, 512
+  xy: 877, 877
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta17
+  rotate: false
+  xy: 1315, 1315
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta18
+  rotate: false
+  xy: 439, 1
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta19
+  rotate: false
+  xy: 877, 439
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta2
+  rotate: false
+  xy: 1315, 877
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta20
+  rotate: false
+  xy: 877, 1
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta21
+  rotate: false
+  xy: 1315, 439
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta22
+  rotate: false
+  xy: 1315, 1
+  size: 436, 436
+  orig: 436, 436
   offset: 0, 0
   index: -1
 
@@ -71,113 +120,66 @@ taustat2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-tausta20
-  rotate: false
-  xy: 1, 1029
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta18
-  rotate: false
-  xy: 1, 515
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta19
-  rotate: false
-  xy: 515, 1029
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta10
-  rotate: false
-  xy: 1, 1
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
 tausta23
   rotate: false
-  xy: 515, 515
-  size: 512, 512
-  orig: 512, 512
+  xy: 1, 1315
+  size: 436, 436
+  orig: 436, 436
   offset: 0, 0
   index: -1
-tausta14
+tausta24
   rotate: false
-  xy: 1029, 1029
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta5
-  rotate: false
-  xy: 515, 1
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta12
-  rotate: false
-  xy: 1029, 515
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta15
-  rotate: false
-  xy: 1029, 1
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-
-taustat3.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-tausta7
-  rotate: false
-  xy: 1, 1029
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta4
-  rotate: false
-  xy: 1, 515
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta8
-  rotate: false
-  xy: 515, 1029
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-tausta22
-  rotate: false
-  xy: 1, 1
-  size: 512, 512
-  orig: 512, 512
+  xy: 1, 877
+  size: 436, 436
+  orig: 436, 436
   offset: 0, 0
   index: -1
 tausta3
   rotate: false
-  xy: 515, 515
-  size: 512, 512
-  orig: 512, 512
+  xy: 439, 1315
+  size: 436, 436
+  orig: 436, 436
   offset: 0, 0
   index: -1
-tausta11
+tausta4
   rotate: false
-  xy: 1029, 1029
-  size: 512, 512
-  orig: 512, 512
+  xy: 1, 439
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta5
+  rotate: false
+  xy: 439, 877
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta6
+  rotate: false
+  xy: 877, 1315
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta7
+  rotate: false
+  xy: 1, 1
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta8
+  rotate: false
+  xy: 439, 439
+  size: 436, 436
+  orig: 436, 436
+  offset: 0, 0
+  index: -1
+tausta9
+  rotate: false
+  xy: 877, 877
+  size: 436, 436
+  orig: 436, 436
   offset: 0, 0
   index: -1
