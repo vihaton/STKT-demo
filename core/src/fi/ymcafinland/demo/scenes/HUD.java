@@ -46,8 +46,9 @@ public class HUD {
     protected Button child1;
     protected Button child2;
     protected Button child3;
+    Button kysymys;
     protected boolean montaLasta;
-    Skin karttaSkin;
+
     TextureAtlas atlas;
 
 
@@ -76,7 +77,7 @@ public class HUD {
         montaLasta = solmu.getLapset().size() > 1;
 
 
-        skinAndStyleCreation();
+
         buttonCreation(solmu);
         createTable();
         createListeners(screen, solmu);
@@ -91,7 +92,7 @@ public class HUD {
      * @param solmu
      */
     private void createListeners(final PlayScreen screen, final Solmu solmu) {
-        //ToDo Copypastat vittuun ja child 1 2 3 entä jos erimäärä lapsia?
+        //ToDo Listener kysymysnapille.
 
         if (hasParent) {
             parent.addListener(new ChangeListener() {
@@ -117,18 +118,16 @@ public class HUD {
                     screen.setSolmu(laps.get(0));
                 }
             });
-        }
-        child2.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                ArrayList<Solmu> laps = solmu.getLapset();
-                if (!montaLasta) {
-                    screen.setSolmu(laps.get(0));
-                } else {
-                    screen.setSolmu(laps.get(1));
+
+            child2.addListener(new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    ArrayList<Solmu> laps = solmu.getLapset();
+
+                        screen.setSolmu(laps.get(1));
+
                 }
-            }
-        });
-        if(montaLasta) {
+            });
+
             child3.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     ArrayList<Solmu> laps = solmu.getLapset();
@@ -149,6 +148,12 @@ public class HUD {
             }
         });
 
+        kysymys.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                screen.getSp().setQuestionScreen();
+            }
+        });
+
     }
 
     /**
@@ -160,7 +165,7 @@ public class HUD {
         stage.clear();
         this.solmu = solmu;
         hasParent = solmu.getMutsi() != null;
-        montaLasta = solmu.getLapset().size() > 1;
+        montaLasta = solmu.getLapset().size() > 0;
         buttonCreation(solmu);
         createTable();
         createListeners(screen, solmu);
@@ -173,8 +178,12 @@ public class HUD {
         Table tableTop = new Table();
         tableTop.top();
         tableTop.setFillParent(true);
-        tableTop.add(parent).top().padTop(5).padLeft(50);
-        tableTop.add(karttaNappi).top().right();
+        if(hasParent) {
+            tableTop.add(parent).top();
+            tableTop.add(karttaNappi).expandX().right();
+        }else{
+            tableTop.add(karttaNappi).expandX().right();
+        }
 
         stage.addActor(tableTop);
 
@@ -190,9 +199,14 @@ public class HUD {
         Table tableBot = new Table();
         tableBot.bottom();
         tableBot.setFillParent(true);
-        tableBot.add(child1).expand().bottom().left().padBottom(2);
-        tableBot.add(child2).expand().bottom().padBottom(2);
-        tableBot.add(child3).expand().bottom().right().padBottom(2);
+        if(montaLasta) {
+            tableBot.add(child1).expand().bottom().left().padBottom(2);
+            tableBot.add(child2).expand().bottom().padBottom(2);
+            tableBot.add(child3).expand().bottom().right().padBottom(2);
+        }
+        else {
+            tableBot.add(kysymys).expand().bottom().padBottom(2);
+        }
         stage.addActor(tableBot);
     }
 
@@ -208,7 +222,10 @@ public class HUD {
         Button.ButtonStyle styleChild1 = new Button.ButtonStyle();
         Button.ButtonStyle styleChild2 = new Button.ButtonStyle();
         Button.ButtonStyle styleChild3 = new Button.ButtonStyle();
-        karttaNappi = new TextButton("Kartta", karttaSkin);
+        Button.ButtonStyle styleKartta = new Button.ButtonStyle();
+
+        styleKartta.up = skin.getDrawable("mini_karttakuva");
+        karttaNappi = new Button(styleKartta);
         if (hasParent) {
             styleParent.up = skin.getDrawable(solmu.getMutsi().getMiniKuva());
             parent = new Button(styleParent);
@@ -220,18 +237,21 @@ public class HUD {
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 
-        //ToDo mitä jos eri määrä lapsia?
-        //tiedetään, että lapsia on vain yksi -V
+
 
         if (montaLasta) {
+            if(kysymys != null) {
+                kysymys.setVisible(false);
+                kysymys.setDisabled(true);
+            }
             styleChild1.up = skin.getDrawable(lapset.get(0).getMiniKuva());
             child1 = new Button(styleChild1);
             styleChild2.up = skin.getDrawable(lapset.get(1).getMiniKuva());
             child2 = new Button(styleChild2);
             styleChild3.up = skin.getDrawable(lapset.get(2).getMiniKuva());
-            child3 = new Button(styleChild3);
-        } else {
-            
+            child3 = new Button(styleChild2);
+        } else{
+
             child1.setVisible(false);
             child2.setVisible(false);
             child3.setVisible(false);
@@ -240,28 +260,11 @@ public class HUD {
             child3.setDisabled(true);
 
         }
+        Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
+        styleKysymys.up = skin.getDrawable("mini_kysymys");
+        kysymys = new Button(styleKysymys);
     }
 
-    /**
-     * Grafiikkaa nappuloille
-     */
-    private void skinAndStyleCreation() {
 
-    karttaSkin = new Skin();
 
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        karttaSkin.add("white", new Texture(pixmap));
-
-        karttaSkin.add("default", new BitmapFont());
-
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = karttaSkin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = karttaSkin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.checked = karttaSkin.newDrawable("white", Color.BLUE);
-        textButtonStyle.over = karttaSkin.newDrawable("white", Color.LIGHT_GRAY);
-        textButtonStyle.font = karttaSkin.getFont("default");
-        karttaSkin.add("default", textButtonStyle);
-    }
 }
