@@ -36,13 +36,13 @@ public class QuestionScreen implements Screen {
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
 
-    /**
-     * sendData lähettää saadun datan eteenpäin. sendData konfirmoi kysymykseen laitetun tiedon, ja
-     * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
-     */
-    public void sendData() {
+/**
+ * sendData lähettää saadun datan eteenpäin. sendData konfirmoi kysymykseen laitetun tiedon, ja
+ * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
+ */
+public void sendData() {
 
-    }
+}
 
     @Override
     public void show() {
