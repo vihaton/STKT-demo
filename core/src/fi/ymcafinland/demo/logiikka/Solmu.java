@@ -23,6 +23,7 @@ public class Solmu {
     private ArrayList<Solmu> lapset;
     private float x;
     private float y;
+    private float kulma;
 
     /**
      * Luo solmun, jolla on tunnusluku ja vanhempi.
@@ -55,7 +56,11 @@ public class Solmu {
     }
 
     public String getMiniKuva(){
-        return "mini_" + getID();
+        return "mini_" + id;
+    }
+
+    public String getTaustaKuva() {
+        return "tausta" + id;
     }
 
     public void setOikeaSisarus(Solmu solmu) {
@@ -105,5 +110,13 @@ public class Solmu {
         return sisalto;
     }
 
+
+    public void setKulma(float kulma) {
+        this.kulma = kulma;
+    }
+
+    public float getKulma() {
+        return this.kulma;
+    }
 
 }

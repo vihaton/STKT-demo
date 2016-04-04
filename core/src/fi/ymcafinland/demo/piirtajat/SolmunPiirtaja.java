@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
@@ -19,8 +21,10 @@ public class SolmunPiirtaja {
 
     private ArrayList<Solmu> solmut;
     private Texture pallonKuva;
+    private TextureRegion palloregion;
     private final int sade;
     private SpriteBatch spriteFont;
+    private TextureAtlas atlas;
     private Matrix4 mx4Font;
     private BitmapFont fontti;
     private Matrix4 oldTransformMatrix;
@@ -30,6 +34,8 @@ public class SolmunPiirtaja {
         solmut = verkko.getSolmut();
         pallonKuva = new Texture("emptynode.png");
         sade = pallonKuva.getWidth() / 2;
+
+        atlas = new TextureAtlas(Gdx.files.internal("taustat/taustat.pack"));
 
         spriteFont = new SpriteBatch();
         mx4Font = new Matrix4();
@@ -42,25 +48,29 @@ public class SolmunPiirtaja {
 
         for (int i = 0; i < solmut.size(); i++) {
             Solmu s = solmut.get(i);
+            palloregion = atlas.findRegion(s.getTaustaKuva());
+            pallonKuva = palloregion.getTexture();
+            float leveys = palloregion.getRegionWidth();
+            float korkeus = palloregion.getRegionHeight();
 
             batch.begin();
-            batch.draw(pallonKuva, s.getXKoordinaatti() - sade, s.getYKoordinaatti() - sade);
+            batch.draw(palloregion, s.getXKoordinaatti() - leveys / 2, s.getYKoordinaatti() - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, s.getKulma());
             batch.end();
 
 
         }
-        for (int i = 0; i < solmut.size(); i++) {
-            Solmu s = solmut.get(i);
-
-            mx4Font.setToRotation(new Vector3(s.getXKoordinaatti(), s.getYKoordinaatti(), 0), 0);
-            mx4Font.trn(s.getXKoordinaatti(), s.getYKoordinaatti(), 0);
-            batch.setTransformMatrix(mx4Font);
-            batch.begin();
-            fontti.draw(batch, "jäbä", 0, 0);
-            batch.end();
-            batch.setTransformMatrix(oldTransformMatrix);
-
-        }
+//        for (int i = 0; i < solmut.size(); i++) {
+//            Solmu s = solmut.get(i);
+//
+//            mx4Font.setToRotation(new Vector3(s.getXKoordinaatti(), s.getYKoordinaatti(), 0), 0);
+//            mx4Font.trn(s.getXKoordinaatti(), s.getYKoordinaatti(), 0);
+//            batch.setTransformMatrix(mx4Font);
+//            batch.begin();
+//            fontti.draw(batch, "jäbä", 0, 0);
+//            batch.end();
+//            batch.setTransformMatrix(oldTransformMatrix);
+//
+//        }
     }
 
 
