@@ -33,7 +33,7 @@ public class SolmunPiirtaja {
 
         spriteFont = new SpriteBatch();
         mx4Font = new Matrix4();
-        fontti = new BitmapFont(Gdx.files.internal("fontti/fontti.fnt"), Gdx.files.internal("fontti/fontti.png"), false); //must be set true to be flipped
+        fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
     }
 
     public void piirra(SpriteBatch batch, Camera camera) {

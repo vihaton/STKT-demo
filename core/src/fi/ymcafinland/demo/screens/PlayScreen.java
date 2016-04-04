@@ -87,7 +87,7 @@ public class PlayScreen implements Screen {
 
         float angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
 
-        camera.rotate(-angleToPoint1+90);
+        camera.rotate(-angleToPoint1 + 90);
 
         camera.position.set(polttopiste);
         camera.update();
@@ -128,6 +128,11 @@ public class PlayScreen implements Screen {
 
     public void setZoom(float ratio) {
         camera.zoom += ratio;
+    }
+
+    //Purkkaviritelmä Selviytyjän purjeiden screeninvaihtometodia varten
+    public SelviytyjanPurjeet getSp() {
+        return this.sp;
     }
 
     /**

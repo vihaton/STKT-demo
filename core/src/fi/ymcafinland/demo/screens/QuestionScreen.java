@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -23,13 +24,16 @@ public class QuestionScreen implements Screen {
     private final SelviytyjanPurjeet sp;
     private FitViewport viewport;
     private OrthographicCamera camera;
+    private BitmapFont fontti;
 
-    public QuestionScreen(final SelviytyjanPurjeet sp) {
+    public QuestionScreen(SelviytyjanPurjeet sp) {
         this.sp = sp;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
-        camera.setToOrtho(false, 400, 600);
+        this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
+
+        camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
 
     /**
@@ -54,11 +58,11 @@ public class QuestionScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        //sp.font.draw(batch, "Yer a wizard, harry", 10, 15);
+        fontti.draw(batch, "Kysymyksiä", 100, 550);
         batch.end();
 
         if (Gdx.input.isTouched()) {
-            //sp.setScreen(new PlayScreen(this.sp, sp.verkko.getSolmut().get(0)));
+            sp.resetPlayScreen();
             dispose();
         }
 
@@ -90,7 +94,7 @@ public class QuestionScreen implements Screen {
      */
     @Override
     public void dispose() {
-        //this.sp.setKysymys(null);
+
     }
 
 }

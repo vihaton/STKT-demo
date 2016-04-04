@@ -148,6 +148,12 @@ public class HUD {
             }
         });
 
+        kysymys.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                screen.getSp().setQuestionScreen();
+            }
+        });
+
     }
 
     /**
@@ -253,12 +259,10 @@ public class HUD {
             child2.setDisabled(true);
             child3.setDisabled(true);
 
-
-            Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
-            styleKysymys.up = skin.getDrawable("mini_kysymys");
-            kysymys = new Button(styleKysymys);
-
         }
+        Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
+        styleKysymys.up = skin.getDrawable("mini_kysymys");
+        kysymys = new Button(styleKysymys);
     }
 
 
