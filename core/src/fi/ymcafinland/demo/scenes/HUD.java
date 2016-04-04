@@ -155,13 +155,19 @@ public class HUD {
      * @param solmu
      */
     public void update(Solmu solmu) {
+        boolean zoomedOut = false;
+        if(karttaNappi.isChecked()){
+             zoomedOut = true;
+        }
         stage.clear();
         this.solmu = solmu;
         hasParent = solmu.getMutsi() != null;
         montaLasta = solmu.getLapset().size() > 0;
         buttonCreation(solmu);
         createTable();
+        karttaNappi.setChecked(zoomedOut);
         createListeners(screen, solmu);
+
     }
 
     /**
@@ -171,15 +177,15 @@ public class HUD {
         Table tableTop = new Table();
         tableTop.top();
         tableTop.setFillParent(true);
-        //Todo vanhemman nappula keskelle yläreunaa
+        Table tableTop2 = new Table();
+        tableTop2.setFillParent(true);
         if(hasParent) {
-            tableTop.add(parent).top();
-            tableTop.add(karttaNappi).expandX().right();
-        }else{
-            tableTop.add(karttaNappi).expandX().right();
+            tableTop2.top().add(parent);
         }
+        tableTop.right().add(karttaNappi);
 
         stage.addActor(tableTop);
+        stage.addActor(tableTop2);
 
         Table tableMid = new Table();
         tableMid.center();

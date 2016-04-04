@@ -12,3 +12,5 @@ Sosiaalinen toimintakyky tutuksi -materiaalia demonstroiva sovellus. Selviytyjä
 2. Kameraa voi liikuttaa ja tarkentaa yksityiskohtiin
   - nappula vanhempaan keskelle yläreunaa
 3. Kameran voi zoomata kokonaisuuteen
+
+:microphone: Everyday is a farssi day when you live it the farssi way :microphone:
