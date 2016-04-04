@@ -231,15 +231,16 @@ public class HUD {
             styleChild3.up = skin.getDrawable(lapset.get(2).getMiniKuva());
             child3 = new Button(styleChild3);
         } else {
-            if(!lapset.isEmpty()) {
-                styleChild2.up = skin.getDrawable(lapset.get(0).getMiniKuva());
-                child2 = new Button(styleChild2);
+            
+            child1.setVisible(false);
+            child2.setVisible(false);
+            child3.setVisible(false);
+            child1.setDisabled(true);
+            child2.setDisabled(true);
+            child3.setDisabled(true);
 
-            }
         }
     }
-
-    //Todo nätimpi grafiikka karttanappulalle / karttanappulasta myös image button
 
     /**
      * Grafiikkaa nappuloille
