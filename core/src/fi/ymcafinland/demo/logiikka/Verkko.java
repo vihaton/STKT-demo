@@ -6,6 +6,8 @@ package fi.ymcafinland.demo.logiikka;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.io.File;
@@ -21,10 +23,12 @@ public class Verkko {
     private I18NBundle myBundle;
     private final int leveysPalikka;
     private final int korkeusPalikka;
+    private final Vector2 keskipiste;
 
     public Verkko(int taustakuvanLeveys, int taustakuvanKorkeus) {
         this.leveysPalikka = taustakuvanLeveys / 100;
         this.korkeusPalikka = taustakuvanKorkeus / 100;
+        keskipiste = new Vector2(korkeusPalikka * 50, leveysPalikka * 50);
         solmut = new ArrayList<>();
         String polkuTiedostolle = "solmuja/solmut";
         FileHandle baseFileHandle = Gdx.files.internal(polkuTiedostolle);
@@ -147,8 +151,8 @@ public class Verkko {
      * @param sade        muodostettavan ympyrän säde.
      */
     private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, boolean toinenTaso, int sade) {
-        final int keskiX = leveysPalikka * 50;
-        final int keskiY = korkeusPalikka * 50;
+        final int keskiX = (int) keskipiste.x;
+        final int keskiY = (int) keskipiste.y;
         int solmuja = tasonSolmut.size();
 
         final double kulma = Math.toRadians(360 / solmuja);
@@ -164,9 +168,22 @@ public class Verkko {
             int y = (int) (sade * Math.sin(k) + keskiY);
 
             s.setSijainti(x, y);
+            asetaSolmulleKulmaKeskipisteeseen(s);
             s = s.getOikeaSisarus();
             k += kulma;
         }
+    }
+
+    /**
+     * Asettaa solmulle kulman kohti keskipistettä.
+     *
+     * @param solmu
+     */
+    private void asetaSolmulleKulmaKeskipisteeseen(Solmu solmu) {
+        Vector2 lahto = new Vector2(solmu.getXKoordinaatti(), solmu.getYKoordinaatti());
+        float angleToPoint = (float) Math.toDegrees(Math.atan2(keskipiste.y - lahto.y, keskipiste.x - lahto.x));
+
+        solmu.setKulma(angleToPoint - 90f);
     }
 
     public ArrayList<Solmu> getSolmut() {
