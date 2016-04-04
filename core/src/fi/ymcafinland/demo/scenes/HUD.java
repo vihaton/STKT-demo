@@ -76,13 +76,9 @@ public class HUD {
         hasParent = solmu.getMutsi() != null;
         montaLasta = solmu.getLapset().size() > 1;
 
-
-
         buttonCreation(solmu);
         createTable();
         createListeners(screen, solmu);
-
-
     }
 
     /**
@@ -92,7 +88,6 @@ public class HUD {
      * @param solmu
      */
     private void createListeners(final PlayScreen screen, final Solmu solmu) {
-        //ToDo Listener kysymysnapille.
 
         if (hasParent) {
             parent.addListener(new ChangeListener() {
@@ -136,14 +131,12 @@ public class HUD {
             });
         }
 
-
         karttaNappi.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 if (!karttaNappi.isChecked()) {
                     screen.zoom(true);
                 } else {
                     screen.zoom(false);
-
                 }
             }
         });
@@ -178,6 +171,7 @@ public class HUD {
         Table tableTop = new Table();
         tableTop.top();
         tableTop.setFillParent(true);
+        //Todo vanhemman nappula keskelle yläreunaa
         if(hasParent) {
             tableTop.add(parent).top();
             tableTop.add(karttaNappi).expandX().right();

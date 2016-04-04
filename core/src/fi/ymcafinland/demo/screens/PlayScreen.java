@@ -118,7 +118,7 @@ public class PlayScreen implements Screen {
     }
 
     public void zoom(boolean in) {
-        //ToDo korjaa bugi
+        //ToDo korjaa bugi (zoom + liikkuminen + zoom etäännyttää kuvaa loputtomasti)
         if (in) {
             camera.zoom -= 1;
         } else {

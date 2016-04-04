@@ -71,8 +71,6 @@ public class Verkko {
         solmut.addAll(luoEnsimmainenTaso(6));
         solmut.addAll(luoToinenTaso());
 
-        //TODO kolmannen tason väittämät toisen tason lapsiksi
-
         asetaOtsikotJaSisallot();
     }
 

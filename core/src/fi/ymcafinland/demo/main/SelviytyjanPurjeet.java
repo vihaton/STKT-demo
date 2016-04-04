@@ -21,9 +21,8 @@ public class SelviytyjanPurjeet extends Game {
 	@Override
 	public void create() {
 
-
-
-		//ToDo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
+		//ToDo later
+		// kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
 		Texture taustakuva = new Texture("vitunisovalkoinentausta.png");
 		verkko = new Verkko(taustakuva.getWidth(), taustakuva.getHeight());
 

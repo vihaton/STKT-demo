@@ -36,6 +36,7 @@ public class SolmunPiirtaja {
         fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
     }
 
+    //Todo piirtäminen: piirtää kuvan, joka on oikein päin ja jossa on teksti
     public void piirra(SpriteBatch batch, Camera camera) {
         oldTransformMatrix = batch.getTransformMatrix().cpy();
 
