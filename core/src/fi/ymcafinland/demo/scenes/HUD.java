@@ -229,7 +229,7 @@ public class HUD {
             styleChild2.up = skin.getDrawable(lapset.get(1).getMiniKuva());
             child2 = new Button(styleChild2);
             styleChild3.up = skin.getDrawable(lapset.get(2).getMiniKuva());
-            child3 = new Button(styleChild2);
+            child3 = new Button(styleChild3);
         } else {
             if(!lapset.isEmpty()) {
                 styleChild2.up = skin.getDrawable(lapset.get(0).getMiniKuva());
