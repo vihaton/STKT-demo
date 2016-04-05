@@ -1,7 +1,7 @@
 package fi.ymcafinland.demo.piirtajat;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,8 +22,6 @@ public class SolmunPiirtaja {
     private ArrayList<Solmu> solmut;
     private Texture pallonKuva;
     private TextureRegion palloregion;
-    private final int sade;
-    private SpriteBatch spriteFont;
     private TextureAtlas atlas;
     private Matrix4 mx4Font;
     private BitmapFont fontti;
@@ -33,44 +31,58 @@ public class SolmunPiirtaja {
     public SolmunPiirtaja(Verkko verkko) {
         solmut = verkko.getSolmut();
         pallonKuva = new Texture("emptynode.png");
-        sade = pallonKuva.getWidth() / 2;
 
         atlas = new TextureAtlas(Gdx.files.internal("taustat/taustat.pack"));
 
-        spriteFont = new SpriteBatch();
         mx4Font = new Matrix4();
         fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
     }
 
-    //Todo piirtäminen: piirtää kuvan, joka on oikein päin ja jossa on teksti
-    public void piirra(SpriteBatch batch, Camera camera) {
-        oldTransformMatrix = batch.getTransformMatrix().cpy();
+    /**
+     * Piirtää kaikki solmut.
+     *
+     * @param batch vastaa piirtämisestä.
+     * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
+     */
+    public void piirra(SpriteBatch batch, float angleToPointCamera) {
+        piirraPallonKuva(batch, angleToPointCamera);
+//        piirraPalloJaTekstiErikseen(batch);
+    }
 
+    private void piirraPallonKuva(SpriteBatch batch, float angleToPointCamera) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // This cryptic line clears the screen.
+
+        batch.begin();
         for (int i = 0; i < solmut.size(); i++) {
             Solmu s = solmut.get(i);
-            palloregion = atlas.findRegion(s.getTaustaKuva());
-            pallonKuva = palloregion.getTexture();
+            palloregion = atlas.findRegion(s.getTaustakuvanNimi());
             float leveys = palloregion.getRegionWidth();
             float korkeus = palloregion.getRegionHeight();
 
-            batch.begin();
-            batch.draw(palloregion, s.getXKoordinaatti() - leveys / 2, s.getYKoordinaatti() - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, s.getKulma());
-            batch.end();
+//            //Vaihtoehto1, pallot pysyvät samassa asennossa. Kulma = s.getKulma()
+//            batch.draw(palloregion, s.getXKoordinaatti() - leveys / 2, s.getYKoordinaatti() - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, s.getKulma());
 
+            //Vaihtoehto2, pallojen tekstit aina alaspäin. Kulma = angleToPointCamera
+            batch.draw(palloregion, s.getXKoordinaatti() - leveys / 2, s.getYKoordinaatti() - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, angleToPointCamera - 90);
+        }
+        batch.end();
+    }
+
+    private void piirraPalloJaTekstiErikseen(SpriteBatch batch) {
+
+        oldTransformMatrix = batch.getTransformMatrix().cpy();
+        for (int i = 0; i < solmut.size(); i++) {
+            Solmu s = solmut.get(i);
+
+            mx4Font.setToRotation(new Vector3(s.getXKoordinaatti(), s.getYKoordinaatti(), 0), 0);
+            mx4Font.trn(s.getXKoordinaatti(), s.getYKoordinaatti(), 0);
+            batch.setTransformMatrix(mx4Font);
+            batch.begin();
+            fontti.draw(batch, "jäbä", 0, 0);
+            batch.end();
+            batch.setTransformMatrix(oldTransformMatrix);
 
         }
-//        for (int i = 0; i < solmut.size(); i++) {
-//            Solmu s = solmut.get(i);
-//
-//            mx4Font.setToRotation(new Vector3(s.getXKoordinaatti(), s.getYKoordinaatti(), 0), 0);
-//            mx4Font.trn(s.getXKoordinaatti(), s.getYKoordinaatti(), 0);
-//            batch.setTransformMatrix(mx4Font);
-//            batch.begin();
-//            fontti.draw(batch, "jäbä", 0, 0);
-//            batch.end();
-//            batch.setTransformMatrix(oldTransformMatrix);
-//
-//        }
     }
 
 
