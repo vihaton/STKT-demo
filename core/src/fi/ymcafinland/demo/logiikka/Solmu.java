@@ -55,11 +55,11 @@ public class Solmu {
         vasenSisarus = solmu;
     }
 
-    public String getMiniKuva(){
+    public String getMinikuvanNimi(){
         return "mini_" + id;
     }
 
-    public String getTaustaKuva() {
+    public String getTaustakuvanNimi() {
         return "tausta" + id;
     }
 

@@ -2,11 +2,7 @@ package fi.ymcafinland.demo.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -143,7 +138,7 @@ public class HUD {
 
         kysymys.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                screen.getSp().setQuestionScreen();
+                screen.getSp().setQuestionScreen(solmu);
             }
         });
 
@@ -227,12 +222,12 @@ public class HUD {
         styleKartta.up = skin.getDrawable("mini_karttakuva");
         karttaNappi = new Button(styleKartta);
         if (hasParent) {
-            styleParent.up = skin.getDrawable(solmu.getMutsi().getMiniKuva());
+            styleParent.up = skin.getDrawable(solmu.getMutsi().getMinikuvanNimi());
             parent = new Button(styleParent);
         }
-        styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMiniKuva());
+        styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMinikuvanNimi());
         leftSister = new Button(styleLeft);
-        styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMiniKuva());
+        styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMinikuvanNimi());
         rightSister = new Button(styleRight);
 
         ArrayList<Solmu> lapset = solmu.getLapset();
@@ -244,11 +239,11 @@ public class HUD {
                 kysymys.setVisible(false);
                 kysymys.setDisabled(true);
             }
-            styleChild1.up = skin.getDrawable(lapset.get(0).getMiniKuva());
+            styleChild1.up = skin.getDrawable(lapset.get(0).getMinikuvanNimi());
             child1 = new Button(styleChild1);
-            styleChild2.up = skin.getDrawable(lapset.get(1).getMiniKuva());
+            styleChild2.up = skin.getDrawable(lapset.get(1).getMinikuvanNimi());
             child2 = new Button(styleChild2);
-            styleChild3.up = skin.getDrawable(lapset.get(2).getMiniKuva());
+            styleChild3.up = skin.getDrawable(lapset.get(2).getMinikuvanNimi());
             child3 = new Button(styleChild2);
         } else{
 
