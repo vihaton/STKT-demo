@@ -15,8 +15,8 @@ public class SelviytyjanPurjeet extends Game {
 
     //ToDo later
     // kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
-    public static final int T_LEVEYS = 4096;
-    public static final int T_KORKEUS = 4096;
+    public static final int T_LEVEYS = 8192;
+    public static final int T_KORKEUS = 8192;
 
     protected SpriteBatch batch;
 
