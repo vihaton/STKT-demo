@@ -5,9 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.screens.PlayScreen;
 
@@ -22,12 +24,15 @@ public class QuestionScreen implements Screen {
     protected SpriteBatch batch;
 
     private final SelviytyjanPurjeet sp;
+    private Solmu solmu;
     private FitViewport viewport;
     private OrthographicCamera camera;
+    private static GlyphLayout glyphLayout = new GlyphLayout();
     private BitmapFont fontti;
 
-    public QuestionScreen(SelviytyjanPurjeet sp) {
+    public QuestionScreen(SelviytyjanPurjeet sp, Solmu solmu) {
         this.sp = sp;
+        this.solmu = solmu;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
@@ -57,8 +62,15 @@ public class QuestionScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
+        glyphLayout.setText(fontti, "Kolmannen tason");
+        float x = (sp.V_WIDTH - glyphLayout.width) / 2;
+        float y = (sp.V_HEIGHT  / 2 + glyphLayout.height);
+
         batch.begin();
-        fontti.draw(batch, "Kysymyksiä", 100, 550);
+        fontti.draw(batch, glyphLayout, x, y);
+        y -= glyphLayout.height;
+        glyphLayout.setText(fontti, "väittämät");
+        fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
         batch.end();
 
         if (Gdx.input.isTouched()) {
