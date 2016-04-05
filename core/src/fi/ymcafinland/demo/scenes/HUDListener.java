@@ -12,17 +12,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * Created by jwinter on 29.3.2016.
  */
 public class HUDListener implements GestureDetector.GestureListener {
-    private Sprite map;
     private Viewport viewport;
     private SpriteBatch sb;
     private GestureDetector detector;
     private HUD hud;
 
 
-    public HUDListener(HUD hud, Viewport viewport, Sprite map, SpriteBatch sb) {
+    public HUDListener(HUD hud, Viewport viewport, SpriteBatch sb) {
         this.hud = hud;
         this.viewport = viewport;
-        this.map = map;
         this.sb = sb;
     }
 

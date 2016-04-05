@@ -34,12 +34,11 @@ public class PlayScreen implements Screen {
     protected Vector3 keskipiste;
 
     private SelviytyjanPurjeet sp;
-    private Sprite map;
     private Viewport viewPort;
     private HUD hud;
     private SolmunPiirtaja solmunPiirtaja;
 
-    public PlayScreen(SelviytyjanPurjeet sp, Texture taustakuva, Solmu aloitussolmu) {
+    public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu) {
         this.sp = sp;
         solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko());
         this.solmu = aloitussolmu;
@@ -53,12 +52,9 @@ public class PlayScreen implements Screen {
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         batch = new SpriteBatch();
 
-        //Tästä poistettu muuttuja 'img' koska sitä käytettiin vaan yhessä rivissä, pistetään takas jos on tarvis
-        map = new Sprite(taustakuva);
+        keskipiste = new Vector3(sp.T_LEVEYS / 2, sp.T_KORKEUS / 2, 0f);
 
-        keskipiste = new Vector3(map.getWidth() / 2, map.getHeight() / 2, 0f);
-
-        hud = new HUD(this, map, batch, aloitussolmu);
+        hud = new HUD(this, batch, aloitussolmu);
     }
 
     @Override
@@ -99,11 +95,6 @@ public class PlayScreen implements Screen {
         camera.position.set(polttopiste);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-
-        //piirtää taustakuvan
-//        batch.begin();
-//        map.draw(batch);
-//        batch.end();
 
         solmunPiirtaja.piirra(batch, angleToPoint1);
 

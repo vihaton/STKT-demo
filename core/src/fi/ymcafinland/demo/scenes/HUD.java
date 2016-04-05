@@ -53,11 +53,11 @@ public class HUD {
     private Viewport viewport;
 
 
-    public HUD(final PlayScreen screen, final Sprite map, SpriteBatch sb, final Solmu solmu) {
+    public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu) {
 
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         this.stage = new Stage(viewport, sb);
-        GestureDetector gd = new GestureDetector(new HUDListener (this, viewport, map, sb));
+        GestureDetector gd = new GestureDetector(new HUDListener (this, viewport, sb));
         InputMultiplexer im = new InputMultiplexer(gd, stage);
         Gdx.input.setInputProcessor(im);
         atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));

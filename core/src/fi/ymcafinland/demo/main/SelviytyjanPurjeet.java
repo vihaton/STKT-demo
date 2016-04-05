@@ -2,7 +2,6 @@ package fi.ymcafinland.demo.main;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import fi.ymcafinland.demo.logiikka.Solmu;
@@ -14,6 +13,11 @@ public class SelviytyjanPurjeet extends Game {
     public final static int V_WIDTH = 576;
     public final static int V_HEIGHT = 1024;
 
+    //ToDo later
+    // kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
+    public static final int T_LEVEYS = 4096;
+    public static final int T_KORKEUS = 4096;
+
     protected SpriteBatch batch;
 
     private Verkko verkko;
@@ -22,15 +26,15 @@ public class SelviytyjanPurjeet extends Game {
 
     @Override
     public void create() {
+        Gdx.app.log("SP", "SelviytyjänPurjeet -luokan create() -metodia kutsuttiin");
 
-        //ToDo later
-        // kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
-        Texture taustakuva = new Texture("vitunisovalkoinentausta.png");
-        verkko = new Verkko(taustakuva.getWidth(), taustakuva.getHeight());
+        Gdx.app.log("SP", "Verkon luominen aloitetaan");
+        verkko = new Verkko(T_LEVEYS, T_KORKEUS);
+        Gdx.app.log("SP", "Verkko luominen on valmis");
 
-        this.playscreen = new PlayScreen(this, taustakuva, verkko.getSolmut().get(0));
+        this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
         setScreen(playscreen);
-
+        Gdx.app.log("SP", "ruuduksi asetettiin playscreen, create() metodi päättyy");
     }
 
     @Override
