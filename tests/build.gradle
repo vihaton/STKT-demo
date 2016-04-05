@@ -16,3 +16,6 @@ sourceSets {
 eclipse.project {
     name = appName + "-tests"
 }
+dependencies {
+    compile 'junit:junit:4.12'
+}
