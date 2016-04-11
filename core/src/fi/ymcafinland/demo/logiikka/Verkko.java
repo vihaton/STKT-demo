@@ -54,14 +54,14 @@ public class Verkko {
 
     //Jesarimetodi korjaamaan ajettavuus desktopille ja testeille androidin lisäksi.
     private String getAbsolutePathToFile() {
+        String fileSeparator = File.separator;
         String ap = Paths.get("").toAbsolutePath().toString();
-        String[] hakemistot = ap.split("/");
+        String[] hakemistot = ap.split(fileSeparator);
         int i = hakemistot.length - 1;
-        while (!hakemistot[i].equalsIgnoreCase("STKT-demo") || i > 0) {
+        while (!hakemistot[i].equalsIgnoreCase("STKT-demo") && i > 0) {
             i--;
         }
 
-        String fileSeparator = File.separator;
         ap = "";
         for (int j = 0; j < i + 1; j++) {
             ap = ap.concat(hakemistot[j]) + fileSeparator;
