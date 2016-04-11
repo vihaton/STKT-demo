@@ -6,11 +6,7 @@ Sosiaalinen toimintakyky tutuksi -materiaalia demonstroiva sovellus. Selviytyjä
 ##Sprintti 1
 
 1. Kolmiportainen rakenne
-  - solmujen piirtäminen kuntoon:
-    1. kuvat piirtyvät oikein päin
-    2. kuvissa on teksti (sekin oikein päin)
 2. Kameraa voi liikuttaa ja tarkentaa yksityiskohtiin
-  - nappula vanhempaan keskelle yläreunaa
 3. Kameran voi zoomata kokonaisuuteen
 
 :microphone: Everyday is a farssi day when you live it the farssi way :microphone:
