@@ -57,7 +57,7 @@ public class Verkko {
         String ap = Paths.get("").toAbsolutePath().toString();
         String[] hakemistot = ap.split("/");
         int i = hakemistot.length - 1;
-        while (!hakemistot[i].equalsIgnoreCase("STKT-demo")) {
+        while (!hakemistot[i].equalsIgnoreCase("STKT-demo") || i > 0) {
             i--;
         }
 
