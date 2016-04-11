@@ -51,12 +51,12 @@ public class PalauteScreen implements Screen {
 
         glyphLayout.setText(fontti, "PalautettaJÄBILLE: ");
         float x = (sp.V_WIDTH - glyphLayout.width) / 2;
-        float y = (sp.V_HEIGHT  / 2 + glyphLayout.height);
+        float y = (sp.V_HEIGHT / 2 + glyphLayout.height);
 
         batch.begin();
         fontti.draw(batch, glyphLayout, x, y);
-        y -= glyphLayout.height;
-        glyphLayout.setText(fontti, "OLET HOMO");
+        glyphLayout.setText(fontti, "OLET KULTAA");
+        y -= glyphLayout.height * 1.3f;
         fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
         batch.end();
 
