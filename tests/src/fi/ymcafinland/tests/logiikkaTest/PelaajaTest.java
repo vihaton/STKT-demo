@@ -18,7 +18,7 @@ public class PelaajaTest {
 private Pelaaja pelaaja;
 
     @Before
-    public void setVerkko() throws Exception {
+    public void luoPelaaja() throws Exception {
         pelaaja = new Pelaaja();
     }
     @Test
