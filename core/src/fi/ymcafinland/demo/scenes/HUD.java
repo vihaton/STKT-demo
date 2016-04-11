@@ -154,6 +154,7 @@ public class HUD {
         if(karttaNappi.isChecked()){
              zoomedOut = true;
         }
+
         stage.clear();
         this.solmu = solmu;
         hasParent = solmu.getMutsi() != null;
@@ -162,6 +163,51 @@ public class HUD {
         createTable();
         karttaNappi.setChecked(zoomedOut);
         createListeners(screen, solmu);
+        if(zoomedOut){
+            setZoomedOutState();
+        }else{
+            setZoomedInState();
+        }
+
+
+    }
+
+    private void setZoomedInState() {
+        if(hasParent) {
+            parent.setVisible(true);
+            parent.setDisabled(false);
+        }
+        leftSister.setVisible(true);
+        rightSister.setVisible(true);
+        child1.setVisible(true);
+        child2.setVisible(true);
+        child3.setVisible(true);
+        kysymys.setVisible(true);
+        leftSister.setDisabled(false);
+        rightSister.setDisabled(false);
+        child1.setDisabled(false);
+        child2.setDisabled(false);
+        child3.setDisabled(false);
+        kysymys.setDisabled(false);
+    }
+
+    private void setZoomedOutState() {
+        if(hasParent) {
+            parent.setVisible(false);
+            parent.setDisabled(true);
+        }
+        leftSister.setVisible(false);
+        rightSister.setVisible(false);
+        child1.setVisible(false);
+        child2.setVisible(false);
+        child3.setVisible(false);
+        kysymys.setVisible(false);
+        leftSister.setDisabled(true);
+        rightSister.setDisabled(true);
+        child1.setDisabled(true);
+        child2.setDisabled(true);
+        child3.setDisabled(true);
+        kysymys.setDisabled(true);
 
     }
 

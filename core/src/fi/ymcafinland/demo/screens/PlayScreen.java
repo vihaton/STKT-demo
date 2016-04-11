@@ -28,14 +28,15 @@ public class PlayScreen implements Screen {
     protected OrthographicCamera camera;
     protected Solmu solmu;
     protected CameraTransition transition;
-    protected float timeSinceTransition = 0;
+    protected float timeSinceTransitionZoom = 0;
     protected boolean trans = false;
     boolean zoomedOut = false;
     boolean zoomed = false;
 
     protected Vector3 polttopiste;
     protected Vector3 keskipiste;
-
+    float angleToPoint1;
+    float angleToPoint2;
     private SelviytyjanPurjeet sp;
     private Viewport viewPort;
     private HUD hud;
@@ -57,7 +58,7 @@ public class PlayScreen implements Screen {
 
         keskipiste = new Vector3(sp.T_LEVEYS / 2, sp.T_KORKEUS / 2, 0f);
 
-
+        angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
         hud = new HUD(this, batch, aloitussolmu);
     }
 
@@ -85,37 +86,45 @@ public class PlayScreen implements Screen {
 
         //float camAngle = -(float)Math.atan2(camera.up.x, camera.up.y)* MathUtils.radiansToDegrees + 180;
 
-        float angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
 
-        camera.rotate(-angleToPoint1 + 90);
+        camera.position.set(polttopiste);
+
 
         if(!zoomedOut && zoomed) {
 
-            if(timeSinceTransition < 1.0f){
+            if(timeSinceTransitionZoom < 1.0f){
                 camera.zoom -= delta*3;
-                timeSinceTransition += delta;
+                timeSinceTransitionZoom += delta;
             }
-            if(timeSinceTransition >= 1.0f){
+            if(timeSinceTransitionZoom >= 1.0f){
                 zoomed = false;
             }
         }
         if(zoomedOut && zoomed){
 
-            if(timeSinceTransition < 1.0f){
+            if(timeSinceTransitionZoom < 1.0f){
                 camera.zoom += delta*3;
-                timeSinceTransition += delta;
+                timeSinceTransitionZoom += delta;
             }
-            if(timeSinceTransition >= 1.0f){
+            if(timeSinceTransitionZoom >= 1.0f){
                 zoomed = false;
             }
         }
-
-            camera.position.set(polttopiste);
-
+        if(zoomedOut){
+            angleToPoint2 = getAngleToPoint(keskipiste, new Vector3(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(),0f));
+            camera.rotate(-angleToPoint2 + 90 -180);
+        }else {
+            angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
+            camera.rotate(-angleToPoint1 + 90);
+        }
+        if(zoomedOut && timeSinceTransitionZoom >= 1.0f ) {
+            camera.position.set(keskipiste);
+        }
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
         solmunPiirtaja.piirra(batch, angleToPoint1);
+
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
@@ -139,17 +148,18 @@ public class PlayScreen implements Screen {
         //ToDo ZOOMOUT MAPROTATION GLITCH
         if (in) {
             trans = true;
-            timeSinceTransition = 0;
+            timeSinceTransitionZoom = 0;
             transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), 1f);
             zoomedOut = false;
             zoomed = true;
         } else {
             trans = true;
-            timeSinceTransition = 0;
+            timeSinceTransitionZoom = 0;
             transition = new CameraTransition(polttopiste, keskipiste, 1f);
             zoomedOut = true;
             zoomed = true;
         }
+        hud.update(solmu);
     }
 
     public void setZoom(float ratio) {
@@ -173,7 +183,6 @@ public class PlayScreen implements Screen {
             this.solmu = solmu;
             trans = true;
             transition = new CameraTransition(polttopiste, goal, 1f);
-            timeSinceTransition = 0;
             hud.update(solmu);
         }
     }
