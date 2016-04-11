@@ -42,6 +42,7 @@ public class HUD {
     protected Button child2;
     protected Button child3;
     Button kysymys;
+    Button palaute;
     protected boolean montaLasta;
 
     TextureAtlas atlas;
@@ -142,6 +143,12 @@ public class HUD {
             }
         });
 
+        palaute.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                screen.getSp().setPalauteScreen();
+            }
+        });
+
     }
 
     /**
@@ -174,13 +181,18 @@ public class HUD {
         tableTop.setFillParent(true);
         Table tableTop2 = new Table();
         tableTop2.setFillParent(true);
+        Table tableTop3 = new Table();
+        tableTop3.setFillParent(true);
+        tableTop3.top();
         if(hasParent) {
             tableTop2.top().add(parent);
         }
         tableTop.right().add(karttaNappi);
+        tableTop3.left().add(palaute);
 
         stage.addActor(tableTop);
         stage.addActor(tableTop2);
+        stage.addActor(tableTop3);
 
         Table tableMid = new Table();
         tableMid.center();
@@ -218,8 +230,10 @@ public class HUD {
         Button.ButtonStyle styleChild2 = new Button.ButtonStyle();
         Button.ButtonStyle styleChild3 = new Button.ButtonStyle();
         Button.ButtonStyle styleKartta = new Button.ButtonStyle();
+        Button.ButtonStyle stylePalaute = new Button.ButtonStyle();
 
         styleKartta.up = skin.getDrawable("mini_karttakuva");
+
         karttaNappi = new Button(styleKartta);
         if (hasParent) {
             styleParent.up = skin.getDrawable(solmu.getMutsi().getMinikuvanNimi());
@@ -258,6 +272,9 @@ public class HUD {
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
         styleKysymys.up = skin.getDrawable("mini_kysymys");
         kysymys = new Button(styleKysymys);
+        //ToDo Palautenäkymänappulalle oma kuva!
+        stylePalaute.up = skin.getDrawable("mini_karttakuva");
+        palaute = new Button(stylePalaute);
     }
 
 

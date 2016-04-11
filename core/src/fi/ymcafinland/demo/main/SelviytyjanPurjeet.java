@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.screens.QuestionScreen;
@@ -52,6 +53,10 @@ public class SelviytyjanPurjeet extends Game {
     //Luo toistaiseksi aina "uudet" kysymykset
     public void setQuestionScreen(Solmu solmu) {
         setScreen(new QuestionScreen(this, solmu));
+    }
+    //Luo palautescreenin jatkossa konstruktoriin pelaaja?
+    public void setPalauteScreen() {
+        setScreen(new PalauteScreen(this));
     }
 
     public void resetPlayScreen() {
