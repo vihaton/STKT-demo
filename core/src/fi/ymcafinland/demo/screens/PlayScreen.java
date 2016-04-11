@@ -145,7 +145,6 @@ public class PlayScreen implements Screen {
     }
 
     public void zoom(boolean in) {
-        //ToDo ZOOMOUT MAPROTATION GLITCH
         if (in) {
             trans = true;
             timeSinceTransitionZoom = 0;
