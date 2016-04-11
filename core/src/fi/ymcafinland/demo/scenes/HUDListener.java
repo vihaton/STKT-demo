@@ -59,9 +59,9 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean zoom(float initialDistance, float distance) {
         //TODO zoomille jotkut rajat (pienin/suurin mahdollinen zoomaus, kuvan rajat)
-        if (initialDistance < distance) {
+        if (initialDistance < distance && hud.screen.getZoom() > -2f) {
             hud.screen.setZoom(-0.03f);
-        } else {
+        } else if (hud.screen.getZoom() < 5f) {
             hud.screen.setZoom(0.03f);
         }
         return true;
