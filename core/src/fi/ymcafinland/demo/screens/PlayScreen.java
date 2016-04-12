@@ -93,7 +93,9 @@ public class PlayScreen implements Screen {
         if(!zoomedOut && zoomed) {
 
             if(timeSinceTransitionZoom < 1.0f){
-                camera.zoom -= delta*3;
+                if(camera.zoom >= 1) {
+                    camera.zoom -= delta * 3;
+                }
                 timeSinceTransitionZoom += delta;
             }
             if(timeSinceTransitionZoom >= 1.0f){
@@ -103,7 +105,9 @@ public class PlayScreen implements Screen {
         if(zoomedOut && zoomed){
 
             if(timeSinceTransitionZoom < 1.0f){
-                camera.zoom += delta*3;
+                if(camera.zoom <= 4) {
+                    camera.zoom += delta * 3;
+                }
                 timeSinceTransitionZoom += delta;
             }
             if(timeSinceTransitionZoom >= 1.0f){

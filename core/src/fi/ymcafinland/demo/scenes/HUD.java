@@ -163,53 +163,31 @@ public class HUD {
         createTable();
         karttaNappi.setChecked(zoomedOut);
         createListeners(screen, solmu);
-        if(zoomedOut){
-            setZoomedOutState();
-        }else{
-            setZoomedInState();
-        }
+        setZoomedHUDState(zoomedOut);
 
 
     }
 
-    private void setZoomedInState() {
+
+    private void setZoomedHUDState(boolean zoomedOut) {
         if(hasParent) {
-            parent.setVisible(true);
-            parent.setDisabled(false);
+            parent.setVisible(!zoomedOut);
+            parent.setDisabled(zoomedOut);
         }
-        leftSister.setVisible(true);
-        rightSister.setVisible(true);
-        child1.setVisible(true);
-        child2.setVisible(true);
-        child3.setVisible(true);
-        kysymys.setVisible(true);
-        leftSister.setDisabled(false);
-        rightSister.setDisabled(false);
-        child1.setDisabled(false);
-        child2.setDisabled(false);
-        child3.setDisabled(false);
-        kysymys.setDisabled(false);
+        leftSister.setVisible(!zoomedOut);
+        rightSister.setVisible(!zoomedOut);
+        child1.setVisible(!zoomedOut);
+        child2.setVisible(!zoomedOut);
+        child3.setVisible(!zoomedOut);
+        kysymys.setVisible(!zoomedOut);
+        leftSister.setDisabled(zoomedOut);
+        rightSister.setDisabled(zoomedOut);
+        child1.setDisabled(zoomedOut);
+        child2.setDisabled(zoomedOut);
+        child3.setDisabled(zoomedOut);
+        kysymys.setDisabled(zoomedOut);
     }
 
-    private void setZoomedOutState() {
-        if(hasParent) {
-            parent.setVisible(false);
-            parent.setDisabled(true);
-        }
-        leftSister.setVisible(false);
-        rightSister.setVisible(false);
-        child1.setVisible(false);
-        child2.setVisible(false);
-        child3.setVisible(false);
-        kysymys.setVisible(false);
-        leftSister.setDisabled(true);
-        rightSister.setDisabled(true);
-        child1.setDisabled(true);
-        child2.setDisabled(true);
-        child3.setDisabled(true);
-        kysymys.setDisabled(true);
-
-    }
 
     /**
      * Layout hudille
