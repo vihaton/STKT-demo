@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -30,6 +31,7 @@ public class InfoScreen implements Screen {
     private BitmapFont fontti;
     private Sprite tausta;
     private ScrollPane pane;
+    private Stage stage;
 
     private static final String reallyLongString =
             "This is a really long string that has lots of lines and repeats itself over and over again This is a really long string that has" +
@@ -45,11 +47,13 @@ public class InfoScreen implements Screen {
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.tausta = new Sprite(new Texture("sails02.png"));
+        this.stage = new Stage();
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-
         TextArea textArea = new TextArea(reallyLongString, skin);
-
         this.pane = new ScrollPane(textArea, skin);
+
+        stage.addActor(pane);
+
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
@@ -69,6 +73,7 @@ public class InfoScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        pane.draw(batch, 500);
         tausta.draw(batch);
         fontti.draw(batch, "Selviytyjän purjeet", 25 , 900);
         batch.end();
