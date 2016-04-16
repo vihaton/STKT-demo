@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -19,6 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -39,6 +44,7 @@ public class InfoScreen implements Screen {
     private Stage stage;
     Table table;
     TextField textField;
+    private Button exitButton;
 
 
     private static final String reallyLongString =
@@ -58,8 +64,7 @@ public class InfoScreen implements Screen {
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.tausta = new Sprite(new Texture("sails02.png"));
         this.stage = new Stage(viewport);
-
-
+        createExitButton(sp);
 
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -79,15 +84,34 @@ public class InfoScreen implements Screen {
         pane.layout();
         pane.setTouchable(Touchable.enabled);
         table = new Table();
+        this.stage = new Stage(viewport);
+        table = new Table();
+        table.setFillParent(true);
+        table.top().right();
+        table.add(exitButton);
+        stage.addActor(table);
 
         table.add(pane).fill().expand();
 
 
         stage.addActor(pane);
 
-
-
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
+    }
+
+    public void createExitButton(final SelviytyjanPurjeet sp) {
+        Button.ButtonStyle styleExit = new Button.ButtonStyle();
+        Texture texture = new Texture("ruksi.png");
+
+        styleExit.up = new TextureRegionDrawable(new TextureRegion(texture));
+        exitButton = new Button(styleExit);
+        exitButton.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                sp.resetPlayScreen();
+                stage.dispose();
+                dispose();
+            }
+        });
     }
 
     @Override
