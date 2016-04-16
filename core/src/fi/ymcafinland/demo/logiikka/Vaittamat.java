@@ -120,4 +120,8 @@ public class Vaittamat {
             karttaSolmujenVaittamista.put(id, solmunVaittamat); //talletetaan väittämälista karttaan kyseisen solmun id.llä
         }
     }
+
+    public HashMap<String, ArrayList<Vaittama>> getKarttaSolmujenVaittamista() {
+        return karttaSolmujenVaittamista;
+    }
 }
