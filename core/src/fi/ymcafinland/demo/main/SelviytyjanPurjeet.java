@@ -21,7 +21,6 @@ public class SelviytyjanPurjeet extends Game {
     public static final int T_KORKEUS = 8192;
 
     protected SpriteBatch batch;
-    Pelaaja pelaaja;
     private Verkko verkko;
     private PlayScreen playscreen;
     private PalauteScreen palauteScreen;
@@ -36,8 +35,8 @@ public class SelviytyjanPurjeet extends Game {
         verkko = new Verkko(T_LEVEYS, T_KORKEUS);
         Gdx.app.log("SP", "Verkko luominen on valmis");
 
-        pelaaja = new Pelaaja();
-        questionScreen = new QuestionScreen(this);
+        Pelaaja pelaaja = new Pelaaja();
+        questionScreen = new QuestionScreen(this, pelaaja);
         palauteScreen = new PalauteScreen(this, pelaaja);
 
         this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
@@ -57,12 +56,10 @@ public class SelviytyjanPurjeet extends Game {
         batch.dispose();
     }
 
-    //Luo toistaiseksi aina "uudet" kysymykset
     public void setQuestionScreen(Solmu solmu) {
         questionScreen.setSolmu(solmu);
         setScreen(questionScreen);
     }
-    //Luo palautescreenin jatkossa konstruktoriin pelaaja?
     public void setPalauteScreen() {
         setScreen(palauteScreen);
     }
