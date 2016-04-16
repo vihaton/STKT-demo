@@ -130,4 +130,14 @@ public class Vaittamat {
     public HashMap<String, ArrayList<Vaittama>> getKarttaSolmujenVaittamista() {
         return karttaSolmujenVaittamista;
     }
+
+    /**
+     * Palauttaa toisen tason solmun id.tä vastaavan listan väittämistä.
+     *
+     * @param solmunID 7-24
+     * @return lista väittämistä
+     */
+    public ArrayList<Vaittama> getYhdenSolmunVaittamat(String solmunID) {
+        return karttaSolmujenVaittamista.get(solmunID);
+    }
 }

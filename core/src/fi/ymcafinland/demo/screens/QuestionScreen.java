@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.screens.PlayScreen;
@@ -33,8 +35,10 @@ public class QuestionScreen implements Screen {
     private OrthographicCamera camera;
     private static GlyphLayout glyphLayout = new GlyphLayout();
     private BitmapFont fontti;
+    private BitmapFont toinenFontti;
     private final Pelaaja pelaaja;
     private final Vaittamat vaittamat;
+    private ArrayList<Vaittama> solmunVaittamat;
     private Random rnd;
 
     public QuestionScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja, Vaittamat vaittamat) {
@@ -44,9 +48,11 @@ public class QuestionScreen implements Screen {
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
+        this.toinenFontti = new BitmapFont();
         solmu = null;
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
+        solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
         rnd = new Random();
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
@@ -77,13 +83,22 @@ public class QuestionScreen implements Screen {
 
         glyphLayout.setText(fontti, "Kolmannen tason");
         float x = (sp.V_WIDTH - glyphLayout.width) / 2;
-        float y = (sp.V_HEIGHT  / 2 + glyphLayout.height);
+        float y = (sp.V_HEIGHT - 2 * glyphLayout.height);
 
         batch.begin();
         fontti.draw(batch, glyphLayout, x, y);
         y -= glyphLayout.height;
         glyphLayout.setText(fontti, "väittämät");
         fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
+        y -= 2 * glyphLayout.height;
+        x = sp.V_WIDTH / 10;
+
+        for (int i = 0; i < solmunVaittamat.size(); i++) {
+            glyphLayout.setText(toinenFontti, solmunVaittamat.get(i).getTeksti());
+            toinenFontti.draw(batch, glyphLayout, x, y);
+            y -= 1.5 * glyphLayout.height;
+        }
+
         batch.end();
 
         if (Gdx.input.isTouched()) {
@@ -111,6 +126,7 @@ public class QuestionScreen implements Screen {
 
     public void setSolmu(Solmu solmu) {
         this.solmu = solmu;
+        solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmu.getID());
     }
 
     @Override
