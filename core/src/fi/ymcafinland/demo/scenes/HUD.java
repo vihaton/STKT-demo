@@ -47,7 +47,6 @@ public class HUD {
 
     TextureAtlas atlas;
 
-
     PlayScreen screen;
     SpriteBatch sb;
 

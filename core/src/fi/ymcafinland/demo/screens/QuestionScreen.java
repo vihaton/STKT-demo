@@ -30,13 +30,14 @@ public class QuestionScreen implements Screen {
     private static GlyphLayout glyphLayout = new GlyphLayout();
     private BitmapFont fontti;
 
-    public QuestionScreen(SelviytyjanPurjeet sp, Solmu solmu) {
+    public QuestionScreen(SelviytyjanPurjeet sp) {
         this.sp = sp;
         this.solmu = solmu;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
+        solmu = null;
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
@@ -90,9 +91,13 @@ public class QuestionScreen implements Screen {
 
     }
 
+    public void setSolmu(Solmu solmu) {
+        this.solmu = solmu;
+    }
+
     @Override
     public void resume() {
-
+        Gdx.app.log("QS", "QuestionScreenin resume() -metodia kutsuttiin");
     }
 
     @Override

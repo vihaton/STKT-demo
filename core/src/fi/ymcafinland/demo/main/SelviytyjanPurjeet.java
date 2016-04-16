@@ -24,6 +24,8 @@ public class SelviytyjanPurjeet extends Game {
     Pelaaja pelaaja;
     private Verkko verkko;
     private PlayScreen playscreen;
+    private PalauteScreen palauteScreen;
+    private QuestionScreen questionScreen;
 
 
     @Override
@@ -33,7 +35,11 @@ public class SelviytyjanPurjeet extends Game {
         Gdx.app.log("SP", "Verkon luominen aloitetaan");
         verkko = new Verkko(T_LEVEYS, T_KORKEUS);
         Gdx.app.log("SP", "Verkko luominen on valmis");
+
         pelaaja = new Pelaaja();
+        questionScreen = new QuestionScreen(this);
+        palauteScreen = new PalauteScreen(this, pelaaja);
+
         this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
         setScreen(playscreen);
         Gdx.app.log("SP", "ruuduksi asetettiin playscreen, create() metodi päättyy");
@@ -53,11 +59,12 @@ public class SelviytyjanPurjeet extends Game {
 
     //Luo toistaiseksi aina "uudet" kysymykset
     public void setQuestionScreen(Solmu solmu) {
-        setScreen(new QuestionScreen(this, solmu));
+        questionScreen.setSolmu(solmu);
+        setScreen(questionScreen);
     }
     //Luo palautescreenin jatkossa konstruktoriin pelaaja?
     public void setPalauteScreen() {
-        setScreen(new PalauteScreen(this, pelaaja));
+        setScreen(palauteScreen);
     }
 
     public void resetPlayScreen() {
