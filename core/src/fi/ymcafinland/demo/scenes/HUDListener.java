@@ -1,11 +1,8 @@
 package fi.ymcafinland.demo.scenes;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
@@ -58,9 +55,9 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean zoom(float initialDistance, float distance) {
         //TODO zoomille jotkut rajat (pienin/suurin mahdollinen zoomaus, kuvan rajat)
         if (initialDistance < distance) {
-            hud.screen.setZoom(-0.03f);
+            hud.playScreen.setZoom(-0.03f);
         } else {
-            hud.screen.setZoom(0.03f);
+            hud.playScreen.setZoom(0.03f);
         }
         return true;
     }

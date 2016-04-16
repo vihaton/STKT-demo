@@ -1,0 +1,27 @@
+//kaikkien luokkien "esittely"
+[Vaittamat]
+[Vaittama]
+[Pelaaja]
+[Solmu]
+[QS]
+[PalS]
+[PlayS]
+[SP]
+[HUD]
+[Verkko]
+
+//suhteet
+[SP] - [QS]
+[SP] - [PalS]
+[SP] - [PlayS]
+[SP] -> [Verkko]
+[SP] -> [Vaittamat]
+
+[QS]hakee väittämät -> [Vaittamat]
+[PlayS] - [HUD]
+[PlayS] -> [Solmu]
+[HUD] -> [Solmu]
+[Vaittamat] -> luo[Vaittama]
+[QS]muuttaa tiedot -> [Pelaaja]
+[Verkko] -> [Solmu]
+[PalS]hakee tiedot -> [Pelaaja]

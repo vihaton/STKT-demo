@@ -22,7 +22,7 @@ public class VerkkoTest {
 
         @Before
         public void setVerkko() throws Exception {
-                verkko = new Verkko(2000, 2000);
+                verkko = new Verkko(2048, 2048);
         }
 
         @Test
