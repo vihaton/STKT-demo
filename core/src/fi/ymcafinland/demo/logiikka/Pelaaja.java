@@ -60,23 +60,23 @@ public class Pelaaja {
         return selviytyisArvot[0];
     }
 
-    public double getAlyllinen() {
+    public float getAlyllinen() {
         return selviytyisArvot[1];
     }
 
-    public double getEettinen() {
+    public float getEettinen() {
         return selviytyisArvot[2];
     }
 
-    public double getTunteellinen() {
+    public float getTunteellinen() {
         return selviytyisArvot[3];
     }
 
-    public double getSosiaalinen() {
+    public float getSosiaalinen() {
         return selviytyisArvot[4];
     }
 
-    public double getLuova() {
+    public float getLuova() {
         return selviytyisArvot[5];
     }
 
