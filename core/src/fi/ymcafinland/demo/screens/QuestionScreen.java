@@ -62,6 +62,13 @@ public class QuestionScreen implements Screen {
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
+        this.toinenFontti = new BitmapFont();
+        solmu = null;
+        this.pelaaja = pelaaja;
+        this.vaittamat = vaittamat;
+        solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
+        rnd = new Random();
+
         createExitButton(sp);
         this.stage = new Stage(viewport);
         table = new Table();
@@ -70,12 +77,6 @@ public class QuestionScreen implements Screen {
         table.add(exitButton);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
-        this.toinenFontti = new BitmapFont();
-        solmu = null;
-        this.pelaaja = pelaaja;
-        this.vaittamat = vaittamat;
-        solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
-        rnd = new Random();
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
