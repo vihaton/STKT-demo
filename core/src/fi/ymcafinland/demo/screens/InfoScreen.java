@@ -2,6 +2,7 @@ package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +11,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -34,6 +37,9 @@ public class InfoScreen implements Screen {
     private Sprite tausta;
     private ScrollPane pane;
     private Stage stage;
+    Table table;
+    TextField textField;
+
 
     private static final String reallyLongString =
             "This is a really long string that has lots of lines and repeats itself over and over again This is a really long string that has" +
@@ -51,19 +57,34 @@ public class InfoScreen implements Screen {
 
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.tausta = new Sprite(new Texture("sails02.png"));
-        this.stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+        this.stage = new Stage(viewport);
 
-        stage.setViewport(viewport);
+
+
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        TextArea textArea = new TextArea(reallyLongString, skin);
-        TextField textField = new TextField("Selviytyjän purjeet", skin);
-        this.pane = new ScrollPane(textArea, skin);
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = new BitmapFont();
+        labelStyle.fontColor = Color.valueOf("A07E10FF");
+
+        textField = new TextField("Selviytyjän purjeet", skin);
+        Label label = new Label(reallyLongString, labelStyle);
+        label.setWidth(sp.V_WIDTH / 3);
+        label.setWrap(true);
+        label.setFontScale(2);
+        label.pack();
+        label.setFillParent(true);
+        pane = new ScrollPane(label);
+        pane.setBounds(sp.V_WIDTH / 3.5f, sp.V_HEIGHT / 5, sp.V_WIDTH / 2, sp.V_HEIGHT / 2); //This should be the bounds of the scroller and the scrollable content need to be inside this
+        pane.layout();
+        pane.setTouchable(Touchable.enabled);
+        table = new Table();
+
+        table.add(pane).fill().expand();
 
 
-        stage.addActor(textField);
         stage.addActor(pane);
+
 
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
@@ -79,20 +100,22 @@ public class InfoScreen implements Screen {
         float rgbJakaja = 255f;
         Gdx.gl.glClearColor(0, 0, 139 / rgbJakaja, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        Gdx.input.setInputProcessor(stage);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
         tausta.draw(batch);
-        stage.draw();
+
         //fontti.draw(batch, "Selviytyjän purjeet", 25 , 900);
         batch.end();
+        pane.act(delta);
+        stage.draw();
 
-        if (Gdx.input.isTouched()) {
-            sp.resetPlayScreen();
-            dispose();
-        }
+//        if (Gdx.input.isTouched()) {
+//            sp.resetPlayScreen();
+//            dispose();
+//        }
     }
 
     @Override
