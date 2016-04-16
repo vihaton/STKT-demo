@@ -1,0 +1,13 @@
+//kaikkien luokkien "esittely"
+[Vaittama]
+[Pelaaja]
+[Solmu]
+[QS]
+[HUD]
+
+//suhteet
+[HUD] -> [Solmu]
+[HUD] -> [QS]
+[Solmu] -> [Vaittama]
+[QS] -> [Pelaaja]
+[QS] -> [Solmu]
