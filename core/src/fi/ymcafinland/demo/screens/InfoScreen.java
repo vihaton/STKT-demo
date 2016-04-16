@@ -8,6 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -23,6 +29,14 @@ public class InfoScreen implements Screen {
     private OrthographicCamera camera;
     private BitmapFont fontti;
     private Sprite tausta;
+    private ScrollPane pane;
+
+    private static final String reallyLongString =
+            "This is a really long string that has lots of lines and repeats itself over and over again This is a really long string that has" +
+                    " lots of lines and repeats itself over and over again This is a really long string that has lots of lines and repeats itself over and over"+
+                    " again This is a really long string that has lots of lines and repeats itself over and over again"+
+                    " This is a really long string that has lots of lines and repeats itself over and over again This is a really long string that has lots"+
+                    " of lines and repeats itself over and over again";
 
     public InfoScreen(SelviytyjanPurjeet sp) {
         this.sp = sp;
@@ -31,7 +45,11 @@ public class InfoScreen implements Screen {
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.tausta = new Sprite(new Texture("sails02.png"));
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+        TextArea textArea = new TextArea(reallyLongString, skin);
+
+        this.pane = new ScrollPane(textArea, skin);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
@@ -51,7 +69,6 @@ public class InfoScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-
         tausta.draw(batch);
         fontti.draw(batch, "Selviytyjän purjeet", 25 , 900);
         batch.end();
