@@ -167,6 +167,10 @@ public class PlayScreen implements Screen {
         hud.update(solmu);
     }
 
+    public void resetInputProcessor() {
+        this.hud.resetInputProcessor();
+    }
+
     public void setZoom(float ratio) {
         camera.zoom += ratio;
     }

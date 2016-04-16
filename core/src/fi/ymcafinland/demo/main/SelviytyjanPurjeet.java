@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import fi.ymcafinland.demo.screens.InfoScreen;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
@@ -32,6 +33,7 @@ public class SelviytyjanPurjeet extends Game {
     public void create() {
         Gdx.app.log("SP", "SelviytyjänPurjeet -luokan create() -metodia kutsuttiin");
 
+
         Gdx.app.log("SP", "Verkon luominen aloitetaan");
         verkko = new Verkko(T_LEVEYS, T_KORKEUS);
         Gdx.app.log("SP", "Verkko luominen on valmis");
@@ -43,10 +45,10 @@ public class SelviytyjanPurjeet extends Game {
         Pelaaja pelaaja = new Pelaaja();
         questionScreen = new QuestionScreen(this, pelaaja, vaittamat);
         palauteScreen = new PalauteScreen(this, pelaaja);
+        playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
 
-        this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
-        setScreen(playscreen);
-        Gdx.app.log("SP", "ruuduksi asetettiin playscreen, create() metodi päättyy");
+        setScreen(new InfoScreen(this));
+        Gdx.app.log("SP", "ruuduksi asetettiin infoscreen, create() metodi päättyy");
     }
 
     @Override
@@ -72,6 +74,7 @@ public class SelviytyjanPurjeet extends Game {
     }
 
     public void resetPlayScreen() {
+		playscreen.resetInputProcessor();
         setScreen(playscreen);
     }
 
