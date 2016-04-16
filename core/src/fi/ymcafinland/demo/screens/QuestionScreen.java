@@ -7,6 +7,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -40,6 +48,14 @@ public class QuestionScreen implements Screen {
     private final Vaittamat vaittamat;
     private ArrayList<Vaittama> solmunVaittamat;
     private Random rnd;
+    //SLIDER TEST V
+    final Slider slider;
+    Skin skin;
+    private TextureAtlas atlas;
+    Slider.SliderStyle style;
+    Table table;
+    Stage stage;
+    //SLIDER TEST ^
 
     public QuestionScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja, Vaittamat vaittamat) {
         Gdx.app.log("QS", "QS konstruktoria kutsuttiin");
@@ -54,6 +70,35 @@ public class QuestionScreen implements Screen {
         this.vaittamat = vaittamat;
         solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
         rnd = new Random();
+        this.stage = new Stage(viewport);
+
+        //SLIDER TEST V
+        atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
+        skin = new Skin();
+        skin.addRegions(atlas);
+        style = new Slider.SliderStyle(skin.getDrawable("sliderbackground"), skin.getDrawable("sliderknob"));
+        slider = new Slider(-5, 5, .2f, false, style);
+        slider.setAnimateDuration(0.3f);
+        table = new Table();
+        table.setFillParent(true);
+        table.bottom();
+        table.add(slider);
+        slider.setValue(0);
+
+        slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("UITest", "slider: " + slider.getValue());
+
+
+            }
+        });
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
+
+        //SLIDER TEST ^
+
+
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
@@ -100,11 +145,15 @@ public class QuestionScreen implements Screen {
         }
 
         batch.end();
+        //SLIDER TEST V
+        slider.act(delta);
+        stage.draw();
+        //SLIDER TEST ^
 
-        if (Gdx.input.isTouched()) {
-            sp.resetPlayScreen();
-            dispose();
-        }
+//        if (Gdx.input.isTouched()) {
+//            sp.resetPlayScreen();
+//            dispose();
+//        }
 
     }
 
@@ -131,6 +180,7 @@ public class QuestionScreen implements Screen {
 
     @Override
     public void resume() {
+
     }
 
     @Override
