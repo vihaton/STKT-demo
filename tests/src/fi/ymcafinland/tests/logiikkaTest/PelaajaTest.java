@@ -24,7 +24,7 @@ private Pelaaja pelaaja;
     @Test
     public void lisaysPositiivisellaTest(){
         pelaaja.lisaaAlyllista(1);
-        Assert.assertEquals(pelaaja.getAlyllinen(), 1f);
+        Assert.assertEquals(pelaaja.getAlyllinen(), 1.0);
     }
 
 }
