@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.Random;
+
+import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.screens.PlayScreen;
@@ -29,17 +32,22 @@ public class QuestionScreen implements Screen {
     private OrthographicCamera camera;
     private static GlyphLayout glyphLayout = new GlyphLayout();
     private BitmapFont fontti;
+    private final Pelaaja pelaaja;
+    private Random rnd;
 
-    public QuestionScreen(SelviytyjanPurjeet sp) {
+    public QuestionScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja) {
+        Gdx.app.log("QS", "QS konstruktoria kutsuttiin");
         this.sp = sp;
-        this.solmu = solmu;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         solmu = null;
+        this.pelaaja = pelaaja;
+        rnd = new Random();
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
+        Gdx.app.log("QS", "QS konstruktori on valmis");
     }
 
     /**
@@ -52,7 +60,9 @@ public class QuestionScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.app.log("QS", "QuestionScreenin show() -metodia kutsuttiin");
+        Gdx.app.log("QS", "lisätään satunnaista selviytymistä");
+        lisaaSatunnaistaSelviytymista();
     }
 
     @Override
@@ -81,6 +91,11 @@ public class QuestionScreen implements Screen {
 
     }
 
+    private void lisaaSatunnaistaSelviytymista() {
+        int kasvatettava = rnd.nextInt(6);
+        pelaaja.lisaaSelviytymisarvoIndeksissa(kasvatettava, 1f);
+    }
+
     @Override
     public void resize(int width, int height) {
 
@@ -97,7 +112,6 @@ public class QuestionScreen implements Screen {
 
     @Override
     public void resume() {
-        Gdx.app.log("QS", "QuestionScreenin resume() -metodia kutsuttiin");
     }
 
     @Override
