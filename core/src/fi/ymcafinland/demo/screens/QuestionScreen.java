@@ -64,7 +64,6 @@ public class QuestionScreen implements Screen {
     @Override
     public void show() {
         Gdx.app.log("QS", "QuestionScreenin show() -metodia kutsuttiin");
-        Gdx.app.log("QS", "lisätään satunnaista selviytymistä");
         lisaaSatunnaistaSelviytymista();
     }
 
@@ -95,6 +94,7 @@ public class QuestionScreen implements Screen {
     }
 
     private void lisaaSatunnaistaSelviytymista() {
+        Gdx.app.log("QS", "lisätään satunnaista selviytymistä");
         int kasvatettava = rnd.nextInt(6);
         pelaaja.lisaaSelviytymisarvoIndeksissa(kasvatettava, 1f);
     }

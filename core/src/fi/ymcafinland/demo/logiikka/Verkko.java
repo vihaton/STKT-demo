@@ -30,7 +30,7 @@ public class Verkko {
         this.korkeusPalikka = taustakuvanKorkeus / 100;
         keskipiste = new Vector2(korkeusPalikka * 50, leveysPalikka * 50);
         solmut = new ArrayList<>();
-        String polkuTiedostolle = "solmuja/solmut";
+        String polkuTiedostolle = "solmujentekstit/solmut";
         FileHandle baseFileHandle = Gdx.files.internal(polkuTiedostolle);
 
         /*
@@ -66,7 +66,7 @@ public class Verkko {
         for (int j = 0; j < i + 1; j++) {
             ap = ap.concat(hakemistot[j]) + fileSeparator;
         }
-        ap = ap.concat("android" + fileSeparator + "assets" + fileSeparator + "solmuja" + fileSeparator + "solmut");
+        ap = ap.concat("android" + fileSeparator + "assets" + fileSeparator + "solmujentekstit" + fileSeparator + "solmut");
         return ap;
     }
 
