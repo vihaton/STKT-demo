@@ -7,6 +7,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fi.ymcafinland.demo.logiikka.Solmu;
@@ -29,6 +37,14 @@ public class QuestionScreen implements Screen {
     private OrthographicCamera camera;
     private static GlyphLayout glyphLayout = new GlyphLayout();
     private BitmapFont fontti;
+    //SLIDER TEST V
+    final Slider slider;
+    Skin skin;
+    private TextureAtlas atlas;
+    Slider.SliderStyle style;
+    Table table;
+    Stage stage;
+    //SLIDER TEST ^
 
     public QuestionScreen(SelviytyjanPurjeet sp, Solmu solmu) {
         this.sp = sp;
@@ -37,6 +53,33 @@ public class QuestionScreen implements Screen {
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
+        this.stage = new Stage(viewport);
+
+        //SLIDER TEST V
+        atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
+        skin = new Skin();
+        skin.addRegions(atlas);
+        style = new Slider.SliderStyle(skin.getDrawable("sliderbackground"), skin.getDrawable("sliderknob"));
+        slider = new Slider(-5, 5, .2f, false, style);
+        slider.setAnimateDuration(0.3f);
+        table = new Table();
+        table.setFillParent(true);
+        table.bottom();
+        table.add(slider);
+        slider.setValue(0);
+        slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("UITest", "slider: " + slider.getValue());
+
+            }
+        });
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
+
+        //SLIDER TEST ^
+
+
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
@@ -72,11 +115,14 @@ public class QuestionScreen implements Screen {
         glyphLayout.setText(fontti, "väittämät");
         fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
         batch.end();
+        //SLIDER TEST V
+        stage.draw();
+        //SLIDER TEST ^
 
-        if (Gdx.input.isTouched()) {
-            sp.resetPlayScreen();
-            dispose();
-        }
+//        if (Gdx.input.isTouched()) {
+//            sp.resetPlayScreen();
+//            dispose();
+//        }
 
     }
 
