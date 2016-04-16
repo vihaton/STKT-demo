@@ -6,12 +6,18 @@ package fi.ymcafinland.demo.logiikka;
 public class Vaittama {
 
     private String teksti;
+    private String solmunID;
 
-    public Vaittama(String txt) {
+    public Vaittama(String txt, String solmunID) {
         this.teksti = txt;
+        this.solmunID = solmunID;
     }
 
     public String getTeksti() {
         return teksti;
+    }
+
+    public String getSolmunID() {
+        return solmunID;
     }
 }
