@@ -47,13 +47,13 @@ public class HUD {
 
     TextureAtlas atlas;
 
-    PlayScreen screen;
+    PlayScreen playScreen;
     SpriteBatch sb;
 
     private Viewport viewport;
 
 
-    public HUD(final PlayScreen screen, SpriteBatch sb, final Solmu solmu) {
+    public HUD(final PlayScreen playScreen, SpriteBatch sb, final Solmu solmu) {
 
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         this.stage = new Stage(viewport, sb);
@@ -66,46 +66,46 @@ public class HUD {
 
         this.map = map;
         this.solmu = solmu;
-        this.screen = screen;
+        this.playScreen = playScreen;
         this.sb = sb;
         hasParent = solmu.getMutsi() != null;
         montaLasta = solmu.getLapset().size() > 1;
 
         buttonCreation(solmu);
         createTable();
-        createListeners(screen, solmu);
+        createListeners(playScreen, solmu);
     }
 
     /**
      * Tapahtumankuuntelijat nappuloille
      *
-     * @param screen
+     * @param playScreen
      * @param solmu
      */
-    private void createListeners(final PlayScreen screen, final Solmu solmu) {
+    private void createListeners(final PlayScreen playScreen, final Solmu solmu) {
 
         if (hasParent) {
             parent.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
-                    screen.setSolmu(solmu.getMutsi());
+                    playScreen.setSolmu(solmu.getMutsi());
                 }
             });
         }
         rightSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                screen.setSolmu(solmu.getOikeaSisarus());
+                playScreen.setSolmu(solmu.getOikeaSisarus());
             }
         });
         leftSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                screen.setSolmu(solmu.getVasenSisarus());
+                playScreen.setSolmu(solmu.getVasenSisarus());
             }
         });
         if(montaLasta) {
             child1.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     ArrayList<Solmu> laps = solmu.getLapset();
-                    screen.setSolmu(laps.get(0));
+                    playScreen.setSolmu(laps.get(0));
                 }
             });
 
@@ -113,7 +113,7 @@ public class HUD {
                 public void changed(ChangeEvent event, Actor actor) {
                     ArrayList<Solmu> laps = solmu.getLapset();
 
-                        screen.setSolmu(laps.get(1));
+                        playScreen.setSolmu(laps.get(1));
 
                 }
             });
@@ -121,7 +121,7 @@ public class HUD {
             child3.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     ArrayList<Solmu> laps = solmu.getLapset();
-                    screen.setSolmu(laps.get(2));
+                    playScreen.setSolmu(laps.get(2));
                 }
             });
         }
@@ -129,22 +129,22 @@ public class HUD {
         karttaNappi.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 if (!karttaNappi.isChecked()) {
-                    screen.zoom(true);
+                    playScreen.zoom(true);
                 } else {
-                    screen.zoom(false);
+                    playScreen.zoom(false);
                 }
             }
         });
 
         kysymys.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                screen.getSp().setQuestionScreen(solmu);
+                playScreen.getSp().setQuestionScreen(solmu);
             }
         });
 
         palaute.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                screen.getSp().setPalauteScreen();
+                playScreen.getSp().setPalauteScreen();
             }
         });
 
@@ -168,7 +168,7 @@ public class HUD {
         buttonCreation(solmu);
         createTable();
         karttaNappi.setChecked(zoomedOut);
-        createListeners(screen, solmu);
+        createListeners(playScreen, solmu);
         setZoomedHUDState(zoomedOut);
 
 
