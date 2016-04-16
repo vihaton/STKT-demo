@@ -8,113 +8,115 @@ import java.util.HashMap;
  */
 public class Pelaaja {
     private String nimi;
-    HashMap<String, Float> mappi;
-    private double fyysinen;
-    private double eettinen;
-    private double luova;
-    private double alyllinen;
-    private double sosiaalinen;
-    private double tunteellinen;
+    float[] selviytyisArvot;
 
     /**
-     * Pelaajalla on selviytymisarvosanat joihin vaikutetaan vastaamalla väittämiin
+     * Pelaajalla on selviytymisarvosanat joihin vaikutetaan vastaamalla väittämiin.
      */
 
-    public Pelaaja(){
+    public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
-        this.alyllinen =0;
-        this.eettinen =0;
-        this.fyysinen = 0;
-        this.luova = 0;
-        this.sosiaalinen = 0;
-        this.tunteellinen = 0;
-//        mappi.put("Fyysinen", fyysinen);
-//        mappi.put("Eettinen", eettinen);
-//        mappi.put("Luova", luova);
-//        mappi.put("Älyllinen", alyllinen);
-//        mappi.put("Sosiaalinen", sosiaalinen);
-//        mappi.put("Tunteellinen", tunteellinen);
-
-
-
+        selviytyisArvot = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
     }
 
-    public void lisaaEettista(float maara){
-        this.eettinen += maara;
+    /**
+     * indeksit:
+     * 0 - Fyysinen
+     * 1 - Älyllinen
+     * 2 - Eettinen
+     * 3 - Tunteellinen
+     * 4 - Sosiaalinen
+     * 5 - Luova
+     */
+    public void lisaaSelviytymisarvoIndeksissa(int i, float maara) {
+        selviytyisArvot[i] += maara;
     }
-    public void lisaaAlyllista(float maara){
-        this.alyllinen += maara;
+
+    public void lisaaFyysista(float maara) {
+        lisaaSelviytymisarvoIndeksissa(0, maara);
     }
-    public void lisaaFyysista(float maara){
-        this.fyysinen += maara;
+
+    public void lisaaAlyllista(float maara) {
+        lisaaSelviytymisarvoIndeksissa(1, maara);
     }
-    public void lisaaLuovuutta(float maara){
-        this.luova += maara;
+
+    public void lisaaEettista(float maara) {
+        lisaaSelviytymisarvoIndeksissa(2, maara);
     }
-    public void lisaaSosiaalista(float maara){
-        this.sosiaalinen += maara;
+
+    public void lisaaTunteellista(float maara) {
+        lisaaSelviytymisarvoIndeksissa(3, maara);
     }
-    public void lisaaTunteellista(float maara){
-        this.tunteellinen += maara;
+
+    public void lisaaSosiaalista(float maara) {
+        lisaaSelviytymisarvoIndeksissa(4, maara);
     }
-    public double getEettinen() {
-        return eettinen;
-    }
-    public void setEettinen(float eettinen) {
-        this.eettinen = eettinen;
+
+    public void lisaaLuovuutta(float maara) {
+        lisaaSelviytymisarvoIndeksissa(5, maara);
     }
 
     public double getFyysinen() {
-        return fyysinen;
-    }
-    public void setFyysinen(float fyysinen) {
-        this.fyysinen = fyysinen;
-    }
-
-    public double getLuova() {
-        return luova;
-    }
-
-    public void setLuova(float luova) {
-        this.luova = luova;
+        return selviytyisArvot[0];
     }
 
     public double getAlyllinen() {
-        return alyllinen;
+        return selviytyisArvot[1];
     }
 
-    public void setAlyllinen(float alyllinen) {
-        this.alyllinen = alyllinen;
-    }
-
-    public double getSosiaalinen() {
-        return sosiaalinen;
-    }
-
-    public void setSosiaalinen(float sosiaalinen) {
-        this.sosiaalinen = sosiaalinen;
+    public double getEettinen() {
+        return selviytyisArvot[2];
     }
 
     public double getTunteellinen() {
-        return tunteellinen;
+        return selviytyisArvot[3];
+    }
+
+    public double getSosiaalinen() {
+        return selviytyisArvot[4];
+    }
+
+    public double getLuova() {
+        return selviytyisArvot[5];
+    }
+
+    public void setFyysinen(float fyysinen) {
+        selviytyisArvot[0] = fyysinen;
+    }
+
+    public void setAlyllinen(float alyllinen) {
+        selviytyisArvot[1] = alyllinen;
+    }
+
+    public void setEettinen(float eettinen) {
+        selviytyisArvot[2] = eettinen;
     }
 
     public void setTunteellinen(float tunteellinen) {
-        this.tunteellinen = tunteellinen;
+        selviytyisArvot[3] = tunteellinen;
     }
+
+    public void setSosiaalinen(float sosiaalinen) {
+        selviytyisArvot[4] = sosiaalinen;
+    }
+
+    public void setLuova(float luova) {
+        selviytyisArvot[5] = luova;
+    }
+
     //ToDo maxselviytyminen
-    public String getMaxSelviytyminen(){
-     return"";
+    public String getMaxSelviytyminen() {
+        return "";
     }
 
     @Override
     public String toString() {
-        return  "Fyysinen: " + fyysinen + "\n" +
-                "Eettinen: " + eettinen +  "\n" +
-                "Luova: " + luova +  "\n" +
-                "Älyllinen: " + alyllinen +  "\n" +
-                "Sosiaalinen: " + sosiaalinen +  "\n" +
-                "Tunteellinen: " + tunteellinen +  "\n";
+        return "Fyysinen: " + selviytyisArvot[0] + "\n" +
+                "Älyllinen: " + selviytyisArvot[1] + "\n" +
+                "Eettinen: " + selviytyisArvot[2] + "\n" +
+                "Tunteellinen: " + selviytyisArvot[3] + "\n" +
+                "Sosiaalinen: " + selviytyisArvot[4] + "\n" +
+                "Luova: " + selviytyisArvot[5] + "\n";
     }
 
     public String getNimi() {
