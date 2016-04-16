@@ -36,4 +36,6 @@ public class VerkkoTest {
                         assertTrue(s.getVasenSisarus() != null);
                 }
         }
+
+        //Todo testejä verkolle
 }

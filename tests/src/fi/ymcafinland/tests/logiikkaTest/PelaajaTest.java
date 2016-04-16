@@ -28,4 +28,6 @@ private Pelaaja pelaaja;
         Assert.assertEquals(pelaaja.getAlyllinen(), alkuarvo + 1f);
     }
 
+    //Todo testejä pelaajalle
+
 }
