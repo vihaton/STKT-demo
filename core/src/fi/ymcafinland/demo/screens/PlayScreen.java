@@ -77,9 +77,11 @@ public class PlayScreen implements Screen {
 
         //valkoinen
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT );
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
+        Gdx.input.setInputProcessor(hud.stage);
+
         if(trans) {
             transition.act(delta);
         }
