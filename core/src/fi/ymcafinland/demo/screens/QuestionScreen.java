@@ -13,6 +13,7 @@ import java.util.Random;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.screens.PlayScreen;
 
@@ -33,9 +34,10 @@ public class QuestionScreen implements Screen {
     private static GlyphLayout glyphLayout = new GlyphLayout();
     private BitmapFont fontti;
     private final Pelaaja pelaaja;
+    private final Vaittamat vaittamat;
     private Random rnd;
 
-    public QuestionScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja) {
+    public QuestionScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja, Vaittamat vaittamat) {
         Gdx.app.log("QS", "QS konstruktoria kutsuttiin");
         this.sp = sp;
         this.batch = new SpriteBatch();
@@ -44,6 +46,7 @@ public class QuestionScreen implements Screen {
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         solmu = null;
         this.pelaaja = pelaaja;
+        this.vaittamat = vaittamat;
         rnd = new Random();
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);

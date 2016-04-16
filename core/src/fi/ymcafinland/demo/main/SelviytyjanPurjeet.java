@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.logiikka.Verkko;
@@ -25,6 +26,7 @@ public class SelviytyjanPurjeet extends Game {
     private PlayScreen playscreen;
     private PalauteScreen palauteScreen;
     private QuestionScreen questionScreen;
+    private Vaittamat vaittamat;
 
 
     @Override
@@ -35,8 +37,12 @@ public class SelviytyjanPurjeet extends Game {
         verkko = new Verkko(T_LEVEYS, T_KORKEUS);
         Gdx.app.log("SP", "Verkko luominen on valmis");
 
+        Gdx.app.log("SP", "Vaittamien luominen aloitetaan");
+        vaittamat = new Vaittamat();
+        Gdx.app.log("SP", "Vaittamien luominen on valmis");
+
         Pelaaja pelaaja = new Pelaaja();
-        questionScreen = new QuestionScreen(this, pelaaja);
+        questionScreen = new QuestionScreen(this, pelaaja, vaittamat);
         palauteScreen = new PalauteScreen(this, pelaaja);
 
         this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
