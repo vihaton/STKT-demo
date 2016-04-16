@@ -106,8 +106,7 @@ public class InfoScreen implements Screen {
 
         batch.begin();
         tausta.draw(batch);
-
-        //fontti.draw(batch, "Selviytyjän purjeet", 25 , 900);
+        fontti.draw(batch, "Selviytyjän purjeet", 25 , 900);
         batch.end();
         pane.act(delta);
         stage.draw();
