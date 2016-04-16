@@ -11,9 +11,13 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 
@@ -31,6 +35,9 @@ public class SolmunPiirtaja {
     private BitmapFont fontti;
     private BitmapFont toinenFontti;
     private static GlyphLayout glyphLayout = new GlyphLayout();
+    private Container<Label> sailio;
+    private Skin skin;
+    private Label.LabelStyle labelStyle;
 
     public SolmunPiirtaja(Verkko verkko) {
         solmut = verkko.getSolmut();
@@ -40,6 +47,11 @@ public class SolmunPiirtaja {
 
         fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
         toinenFontti = new BitmapFont();
+        sailio = new Container<>();
+        skin = new Skin();
+        labelStyle = new Label.LabelStyle(fontti, Color.BLACK);
+        skin.add("default", labelStyle);
+        skin.add("default", fontti);
     }
 
     /**
@@ -87,8 +99,22 @@ public class SolmunPiirtaja {
 
             batch.draw(pallonKuva, x - leveys / 2, y - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int) leveys, (int) korkeus, false, false);
 
-            glyphLayout.setText(fontti, s.getOtsikko());
-            fontti.draw(batch, glyphLayout, x - glyphLayout.width / 2, y + glyphLayout.height);
+            //todo tän sotkun selvittäminen
+
+//            glyphLayout.setText(fontti, s.getOtsikko());
+//            fontti.draw(batch, glyphLayout, x - glyphLayout.width / 2, y + glyphLayout.height);
+
+            Label otsikko = new Label(s.getOtsikko(), skin);
+//            otsikko.setPosition(x,y);
+//            otsikko.rotateBy(180);
+//            otsikko.draw(batch, 1f);
+
+            sailio.setPosition(x, y);
+            sailio.setActor(otsikko);
+            sailio.fill();
+            sailio.setTransform(true);
+            sailio.rotateBy(angleToPointCamera);
+            sailio.draw(batch, 1f);
         }
         batch.end();
     }
