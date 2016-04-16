@@ -99,21 +99,13 @@ public class SolmunPiirtaja {
 
             batch.draw(pallonKuva, x - leveys / 2, y - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int) leveys, (int) korkeus, false, false);
 
-            //todo tän sotkun selvittäminen
-
-//            glyphLayout.setText(fontti, s.getOtsikko());
-//            fontti.draw(batch, glyphLayout, x - glyphLayout.width / 2, y + glyphLayout.height);
-
             Label otsikko = new Label(s.getOtsikko(), skin);
-//            otsikko.setPosition(x,y);
-//            otsikko.rotateBy(180);
-//            otsikko.draw(batch, 1f);
 
             sailio.setPosition(x, y);
             sailio.setActor(otsikko);
             sailio.fill();
             sailio.setTransform(true);
-            sailio.rotateBy(angleToPointCamera);
+            sailio.setRotation(angleToPointCamera - 90);
             sailio.draw(batch, 1f);
         }
         batch.end();
