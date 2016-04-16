@@ -24,14 +24,17 @@ public class PalauteScreen implements Screen {
     private FitViewport viewport;
     private OrthographicCamera camera;
     private static GlyphLayout glyphLayout = new GlyphLayout();
-    private BitmapFont fontti;
+    private final BitmapFont fontti;
+    private final BitmapFont toinenFontti;
     private Pelaaja pelaaja;
+
     public PalauteScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja) {
         this.sp = sp;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
+        this.toinenFontti = new BitmapFont();
         this.pelaaja = pelaaja;
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
@@ -39,7 +42,7 @@ public class PalauteScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.app.log("PalS", "PalauteScreenin show() -metodia kutsuttiin");
     }
 
     @Override
@@ -51,14 +54,16 @@ public class PalauteScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         glyphLayout.setText(fontti, pelaaja.getNimi());
-        float x = (sp.V_WIDTH - glyphLayout.width) / 3f ;
-        float y = (sp.V_HEIGHT / 1.2f  + glyphLayout.height);
+        float x = (sp.V_WIDTH - glyphLayout.width) / 3f;
+        float y = (sp.V_HEIGHT / 1.2f + glyphLayout.height);
 
         batch.begin();
         fontti.draw(batch, glyphLayout, x, y);
-        y -= glyphLayout.height;
-        glyphLayout.setText(fontti, "\n"+pelaaja.toString());
-        fontti.draw(batch, glyphLayout, (sp.V_WIDTH/1.2f - glyphLayout.width), y);
+        y -= 2 * glyphLayout.height;
+
+        glyphLayout.setText(toinenFontti, "\n" + pelaaja.toString());
+
+        toinenFontti.draw(batch, glyphLayout, (sp.V_WIDTH / 2f - glyphLayout.width), y);
         batch.end();
 
         if (Gdx.input.isTouched()) {
@@ -80,7 +85,6 @@ public class PalauteScreen implements Screen {
 
     @Override
     public void resume() {
-
     }
 
     @Override
