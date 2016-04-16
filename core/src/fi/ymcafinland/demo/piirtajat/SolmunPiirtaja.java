@@ -1,6 +1,7 @@
 package fi.ymcafinland.demo.piirtajat;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -29,8 +31,6 @@ public class SolmunPiirtaja {
     private BitmapFont fontti;
     private BitmapFont toinenFontti;
     private static GlyphLayout glyphLayout = new GlyphLayout();
-
-
 
     public SolmunPiirtaja(Verkko verkko) {
         solmut = verkko.getSolmut();
@@ -85,13 +85,10 @@ public class SolmunPiirtaja {
             float x = s.getXKoordinaatti();
             float y = s.getYKoordinaatti();
 
-            batch.draw(pallonKuva, x - leveys / 2, y - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int)leveys, (int)korkeus, false, false);
+            batch.draw(pallonKuva, x - leveys / 2, y - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int) leveys, (int) korkeus, false, false);
 
-//            fontti.draw(batch, s.getOtsikko(), x, y);
-            Label myLabel = new Label("My Text", new Skin());
-            myLabel.setPosition(x, y);
-            myLabel.setRotation(-angleToPointCamera - 90);
-            myLabel.draw(batch, 1);
+            glyphLayout.setText(fontti, s.getOtsikko());
+            fontti.draw(batch, glyphLayout, x - glyphLayout.width / 2, y + glyphLayout.height);
         }
         batch.end();
     }
