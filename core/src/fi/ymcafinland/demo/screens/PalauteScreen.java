@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
@@ -24,14 +25,14 @@ public class PalauteScreen implements Screen {
     private OrthographicCamera camera;
     private static GlyphLayout glyphLayout = new GlyphLayout();
     private BitmapFont fontti;
-
-    public PalauteScreen(SelviytyjanPurjeet sp) {
+    private Pelaaja pelaaja;
+    public PalauteScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja) {
         this.sp = sp;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
-
+        this.pelaaja = pelaaja;
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
 
@@ -49,15 +50,15 @@ public class PalauteScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        glyphLayout.setText(fontti, "PalautettaJÄBILLE: ");
-        float x = (sp.V_WIDTH - glyphLayout.width) / 2;
-        float y = (sp.V_HEIGHT / 2 + glyphLayout.height);
+        glyphLayout.setText(fontti, pelaaja.getNimi());
+        float x = (sp.V_WIDTH - glyphLayout.width) / 3f ;
+        float y = (sp.V_HEIGHT / 1.2f  + glyphLayout.height);
 
         batch.begin();
         fontti.draw(batch, glyphLayout, x, y);
-        glyphLayout.setText(fontti, "OLET KULTAA");
-        y -= glyphLayout.height * 1.3f;
-        fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
+        y -= glyphLayout.height;
+        glyphLayout.setText(fontti, "\n"+pelaaja.toString());
+        fontti.draw(batch, glyphLayout, (sp.V_WIDTH/1.2f - glyphLayout.width), y);
         batch.end();
 
         if (Gdx.input.isTouched()) {

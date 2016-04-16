@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
@@ -20,7 +21,7 @@ public class SelviytyjanPurjeet extends Game {
     public static final int T_KORKEUS = 8192;
 
     protected SpriteBatch batch;
-
+    Pelaaja pelaaja;
     private Verkko verkko;
     private PlayScreen playscreen;
 
@@ -32,7 +33,7 @@ public class SelviytyjanPurjeet extends Game {
         Gdx.app.log("SP", "Verkon luominen aloitetaan");
         verkko = new Verkko(T_LEVEYS, T_KORKEUS);
         Gdx.app.log("SP", "Verkko luominen on valmis");
-
+        pelaaja = new Pelaaja();
         this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
         setScreen(playscreen);
         Gdx.app.log("SP", "ruuduksi asetettiin playscreen, create() metodi päättyy");
@@ -56,7 +57,7 @@ public class SelviytyjanPurjeet extends Game {
     }
     //Luo palautescreenin jatkossa konstruktoriin pelaaja?
     public void setPalauteScreen() {
-        setScreen(new PalauteScreen(this));
+        setScreen(new PalauteScreen(this, pelaaja));
     }
 
     public void resetPlayScreen() {
