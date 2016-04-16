@@ -126,6 +126,10 @@ public class PlayScreen implements Screen {
         }
     }
 
+    public void resetInputProcessor() {
+        this.hud.resetInputProcessor();
+    }
+
     public void setZoom(float ratio) {
         camera.zoom += ratio;
     }

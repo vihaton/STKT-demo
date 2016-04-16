@@ -46,8 +46,10 @@ public class HUD {
     protected Button child1;
     protected Button child2;
     protected Button child3;
-    Button kysymys;
+    protected Button kysymys;
     protected boolean montaLasta;
+
+    protected InputMultiplexer im;
 
     TextureAtlas atlas;
 
@@ -63,7 +65,7 @@ public class HUD {
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         this.stage = new Stage(viewport, sb);
         GestureDetector gd = new GestureDetector(new HUDListener (this, viewport, map, sb));
-        InputMultiplexer im = new InputMultiplexer(gd, stage);
+        this.im = new InputMultiplexer(gd, stage);
         Gdx.input.setInputProcessor(im);
         atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
         skin = new Skin();
@@ -170,6 +172,10 @@ public class HUD {
 
     }
 
+    public void resetInputProcessor() {
+        Gdx.input.setInputProcessor(im);
+    }
+
     /**
      * Layout hudille
      */
@@ -238,9 +244,8 @@ public class HUD {
         ArrayList<Solmu> lapset = solmu.getLapset();
 
 
-
         if (montaLasta) {
-            if(kysymys != null) {
+            if (kysymys != null) {
                 kysymys.setVisible(false);
                 kysymys.setDisabled(true);
             }
@@ -250,7 +255,7 @@ public class HUD {
             child2 = new Button(styleChild2);
             styleChild3.up = skin.getDrawable(lapset.get(2).getMiniKuva());
             child3 = new Button(styleChild2);
-        } else{
+        } else {
 
             child1.setVisible(false);
             child2.setVisible(false);
@@ -264,7 +269,5 @@ public class HUD {
         styleKysymys.up = skin.getDrawable("mini_kysymys");
         kysymys = new Button(styleKysymys);
     }
-
-
 
 }
