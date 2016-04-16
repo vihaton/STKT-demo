@@ -63,6 +63,8 @@ public class SelviytyjanPurjeet extends Game {
 
     public void setQuestionScreen(Solmu solmu) {
         questionScreen.setSolmu(solmu);
+        questionScreen.createExitButton(this);
+        questionScreen.stagenluonti();
         setScreen(questionScreen);
     }
     public void setPalauteScreen() {

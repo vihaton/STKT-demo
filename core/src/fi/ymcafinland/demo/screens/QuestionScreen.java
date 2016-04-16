@@ -68,21 +68,25 @@ public class QuestionScreen implements Screen {
         this.vaittamat = vaittamat;
         solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
         rnd = new Random();
-
         createExitButton(sp);
+        stagenluonti();
+
+
+
+        camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
+        Gdx.app.log("QS", "QS konstruktori on valmis");
+    }
+
+    public void stagenluonti() {
         this.stage = new Stage(viewport);
         table = new Table();
         table.setFillParent(true);
         table.top().right();
         table.add(exitButton);
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
-
-        camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
-        Gdx.app.log("QS", "QS konstruktori on valmis");
     }
 
-    private void createExitButton(final SelviytyjanPurjeet sp) {
+    public void createExitButton(final SelviytyjanPurjeet sp) {
         Button.ButtonStyle styleExit = new Button.ButtonStyle();
         texture = new Texture("ruksi.png");
 
@@ -116,8 +120,11 @@ public class QuestionScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        Gdx.input.setInputProcessor(stage);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+
+
 
         glyphLayout.setText(fontti, "Kolmannen tason");
         float x = (sp.V_WIDTH - glyphLayout.width) / 2;
@@ -166,6 +173,7 @@ public class QuestionScreen implements Screen {
 
     @Override
     public void resume() {
+
     }
 
     @Override
