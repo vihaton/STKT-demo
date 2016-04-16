@@ -49,9 +49,8 @@ public class SolmunPiirtaja {
         toinenFontti = new BitmapFont();
         sailio = new Container<>();
         skin = new Skin();
-        labelStyle = new Label.LabelStyle(fontti, Color.BLACK);
+        labelStyle = new Label.LabelStyle(fontti, fontti.getColor());
         skin.add("default", labelStyle);
-        skin.add("default", fontti);
     }
 
     /**
