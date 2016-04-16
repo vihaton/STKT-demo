@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.logiikka.Verkko;
@@ -15,15 +16,16 @@ public class SelviytyjanPurjeet extends Game {
     public final static int V_WIDTH = 576;
     public final static int V_HEIGHT = 1024;
 
-    //ToDo later
-    // kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
+    //Todo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
     public static final int T_LEVEYS = 8192;
     public static final int T_KORKEUS = 8192;
 
     protected SpriteBatch batch;
-    Pelaaja pelaaja;
     private Verkko verkko;
     private PlayScreen playscreen;
+    private PalauteScreen palauteScreen;
+    private QuestionScreen questionScreen;
+    private Vaittamat vaittamat;
 
 
     @Override
@@ -33,7 +35,15 @@ public class SelviytyjanPurjeet extends Game {
         Gdx.app.log("SP", "Verkon luominen aloitetaan");
         verkko = new Verkko(T_LEVEYS, T_KORKEUS);
         Gdx.app.log("SP", "Verkko luominen on valmis");
-        pelaaja = new Pelaaja();
+
+        Gdx.app.log("SP", "Vaittamien luominen aloitetaan");
+        vaittamat = new Vaittamat();
+        Gdx.app.log("SP", "Vaittamien luominen on valmis");
+
+        Pelaaja pelaaja = new Pelaaja();
+        questionScreen = new QuestionScreen(this, pelaaja, vaittamat);
+        palauteScreen = new PalauteScreen(this, pelaaja);
+
         this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
         setScreen(playscreen);
         Gdx.app.log("SP", "ruuduksi asetettiin playscreen, create() metodi päättyy");
@@ -51,13 +61,12 @@ public class SelviytyjanPurjeet extends Game {
         batch.dispose();
     }
 
-    //Luo toistaiseksi aina "uudet" kysymykset
     public void setQuestionScreen(Solmu solmu) {
-        setScreen(new QuestionScreen(this, solmu));
+        questionScreen.setSolmu(solmu);
+        setScreen(questionScreen);
     }
-    //Luo palautescreenin jatkossa konstruktoriin pelaaja?
     public void setPalauteScreen() {
-        setScreen(new PalauteScreen(this, pelaaja));
+        setScreen(palauteScreen);
     }
 
     public void resetPlayScreen() {

@@ -30,7 +30,7 @@ public class Verkko {
         this.korkeusPalikka = taustakuvanKorkeus / 100;
         keskipiste = new Vector2(korkeusPalikka * 50, leveysPalikka * 50);
         solmut = new ArrayList<>();
-        String polkuTiedostolle = "solmuja/solmut";
+        String polkuTiedostolle = "solmujentekstit/solmut";
         FileHandle baseFileHandle = Gdx.files.internal(polkuTiedostolle);
 
         /*
@@ -54,19 +54,19 @@ public class Verkko {
 
     //Jesarimetodi korjaamaan ajettavuus desktopille ja testeille androidin lisäksi.
     private String getAbsolutePathToFile() {
+        String fileSeparator = File.separator;
         String ap = Paths.get("").toAbsolutePath().toString();
-        String[] hakemistot = ap.split("/");
+        String[] hakemistot = ap.split(fileSeparator);
         int i = hakemistot.length - 1;
-        while (!hakemistot[i].equalsIgnoreCase("STKT-demo")) {
+        while (!hakemistot[i].equalsIgnoreCase("STKT-demo") && i > 0) {
             i--;
         }
 
-        String fileSeparator = File.separator;
         ap = "";
         for (int j = 0; j < i + 1; j++) {
             ap = ap.concat(hakemistot[j]) + fileSeparator;
         }
-        ap = ap.concat("android" + fileSeparator + "assets" + fileSeparator + "solmuja" + fileSeparator + "solmut");
+        ap = ap.concat("android" + fileSeparator + "assets" + fileSeparator + "solmujentekstit" + fileSeparator + "solmut");
         return ap;
     }
 

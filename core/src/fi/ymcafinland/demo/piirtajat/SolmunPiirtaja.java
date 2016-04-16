@@ -68,6 +68,7 @@ public class SolmunPiirtaja {
         batch.end();
     }
 
+    //Todo tekstit irti balloista
     private void piirraPalloJaTekstiErikseen(SpriteBatch batch) {
 
         oldTransformMatrix = batch.getTransformMatrix().cpy();
