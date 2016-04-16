@@ -67,10 +67,12 @@ public class QuestionScreen implements Screen {
         table.bottom();
         table.add(slider);
         slider.setValue(0);
+
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("UITest", "slider: " + slider.getValue());
+
 
             }
         });
@@ -116,6 +118,7 @@ public class QuestionScreen implements Screen {
         fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
         batch.end();
         //SLIDER TEST V
+        slider.act(delta);
         stage.draw();
         //SLIDER TEST ^
 
