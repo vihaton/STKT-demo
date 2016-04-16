@@ -104,7 +104,7 @@ public class Vaittamat {
         Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
 
         for (int i = 0; i < 18; i++) { //jokaisen solmun...
-            String id = "" + (i+7);
+            String id = "" + (i + 7);
             ArrayList<Vaittama> solmunVaittamat = new ArrayList<>();
 
             for (int j = 2; j < rivit.size(); j++) { //...jokaiselle väittämäriville...
@@ -121,6 +121,12 @@ public class Vaittamat {
         }
     }
 
+    /**
+     * palauttaa kartan, johon väittämät on talletettu avaimena toisen tason solmun id (7-24) ja
+     * arvona kyseiseen solmuun liittyvät väittämät listassa.
+     *
+     * @return kartta, jossa on väittämälistoja
+     */
     public HashMap<String, ArrayList<Vaittama>> getKarttaSolmujenVaittamista() {
         return karttaSolmujenVaittamista;
     }
