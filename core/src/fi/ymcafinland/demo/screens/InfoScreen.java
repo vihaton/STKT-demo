@@ -83,15 +83,14 @@ public class InfoScreen implements Screen {
         pane.setBounds(sp.V_WIDTH / 3.5f, sp.V_HEIGHT / 5, sp.V_WIDTH / 2, sp.V_HEIGHT / 2); //This should be the bounds of the scroller and the scrollable content need to be inside this
         pane.layout();
         pane.setTouchable(Touchable.enabled);
-        table = new Table();
         this.stage = new Stage(viewport);
+
         table = new Table();
         table.setFillParent(true);
-        table.top().right();
-        table.add(exitButton);
+
+        table.bottom().add(exitButton);
         stage.addActor(table);
 
-        table.add(pane).fill().expand();
 
 
         stage.addActor(pane);
