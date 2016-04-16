@@ -4,9 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fi.ymcafinland.demo.logiikka.Solmu;
@@ -29,16 +39,41 @@ public class QuestionScreen implements Screen {
     private OrthographicCamera camera;
     private static GlyphLayout glyphLayout = new GlyphLayout();
     private BitmapFont fontti;
-
-    public QuestionScreen(SelviytyjanPurjeet sp, Solmu solmu) {
+    private Button exitButton;
+    private Texture texture;
+    Table table;
+    Stage stage;
+    public QuestionScreen(final SelviytyjanPurjeet sp, Solmu solmu) {
         this.sp = sp;
         this.solmu = solmu;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
-
+        createExitButton(sp);
+        this.stage = new Stage(viewport);
+        table = new Table();
+        table.setFillParent(true);
+        table.top().right();
+        table.add(exitButton);
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
+    }
+
+    private void createExitButton(final SelviytyjanPurjeet sp) {
+        Button.ButtonStyle styleExit = new Button.ButtonStyle();
+        texture = new Texture("ruksi.png");
+
+        styleExit.up = new TextureRegionDrawable(new TextureRegion(texture));
+        exitButton = new Button(styleExit);
+        exitButton.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                sp.resetPlayScreen();
+                stage.dispose();
+                dispose();
+            }
+        });
     }
 
     /**
@@ -72,11 +107,8 @@ public class QuestionScreen implements Screen {
         glyphLayout.setText(fontti, "väittämät");
         fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
         batch.end();
+        stage.draw();
 
-        if (Gdx.input.isTouched()) {
-            sp.resetPlayScreen();
-            dispose();
-        }
 
     }
 

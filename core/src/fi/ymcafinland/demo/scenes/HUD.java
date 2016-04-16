@@ -3,9 +3,11 @@ package fi.ymcafinland.demo.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -46,6 +49,7 @@ public class HUD {
     protected boolean montaLasta;
 
     TextureAtlas atlas;
+    Texture textureHahmo;
 
 
     PlayScreen screen;
@@ -297,7 +301,10 @@ public class HUD {
         styleKysymys.up = skin.getDrawable("mini_kysymys");
         kysymys = new Button(styleKysymys);
         //ToDo Palautenäkymänappulalle oma kuva!
-        stylePalaute.up = skin.getDrawable("mini_karttakuva");
+        textureHahmo = new Texture("hahmo.png");
+
+        stylePalaute.up = new TextureRegionDrawable(new TextureRegion(textureHahmo));
+
         palaute = new Button(stylePalaute);
     }
 
