@@ -91,13 +91,13 @@ project(":tests") {
     dependencies {
         compile project(":core")
 
-        compile "junit:junit:4.+"
+        compile "junit:junit:4.12"
         compile "org.mockito:mockito-all:1.9.+"
 
         compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
 
-        testCompile 'junit:junit:4.+'
+        testCompile 'junit:junit:4.12'
         testCompile "org.mockito:mockito-all:1.9.+"
         testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
