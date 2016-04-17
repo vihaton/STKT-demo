@@ -1,14 +1,23 @@
 package fi.ymcafinland.demo.piirtajat;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 
@@ -23,10 +32,11 @@ public class SolmunPiirtaja {
     private Texture pallonKuva;
     private TextureRegion palloregion;
     private TextureAtlas atlas;
-    private Matrix4 mx4Font;
     private BitmapFont fontti;
-    private Matrix4 oldTransformMatrix;
-
+    private BitmapFont toinenFontti;
+    private Container<Label> sailio;
+    private Skin skin;
+    private Label.LabelStyle labelStyle;
 
     public SolmunPiirtaja(Verkko verkko) {
         solmut = verkko.getSolmut();
@@ -34,8 +44,12 @@ public class SolmunPiirtaja {
 
         atlas = new TextureAtlas(Gdx.files.internal("taustat/taustat.pack"));
 
-        mx4Font = new Matrix4();
         fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
+        toinenFontti = new BitmapFont();
+        sailio = new Container<>();
+        skin = new Skin();
+        labelStyle = new Label.LabelStyle(fontti, fontti.getColor());
+        skin.add("default", labelStyle);
     }
 
     /**
@@ -45,8 +59,8 @@ public class SolmunPiirtaja {
      * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
      */
     public void piirra(SpriteBatch batch, float angleToPointCamera) {
-        piirraPallonKuva(batch, angleToPointCamera);
-//        piirraPalloJaTekstiErikseen(batch);
+//        piirraPallonKuva(batch, angleToPointCamera);
+        piirraPalloJaTekstiErikseen(batch, angleToPointCamera);
     }
 
     private void piirraPallonKuva(SpriteBatch batch, float angleToPointCamera) {
@@ -69,21 +83,29 @@ public class SolmunPiirtaja {
     }
 
     //Todo tekstit irti balloista
-    private void piirraPalloJaTekstiErikseen(SpriteBatch batch) {
+    private void piirraPalloJaTekstiErikseen(SpriteBatch batch, float angleToPointCamera) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // This cryptic line clears the screen.
 
-        oldTransformMatrix = batch.getTransformMatrix().cpy();
+        float leveys = pallonKuva.getWidth();
+        float korkeus = pallonKuva.getHeight();
+
+        batch.begin();
         for (int i = 0; i < solmut.size(); i++) {
             Solmu s = solmut.get(i);
+            float x = s.getXKoordinaatti();
+            float y = s.getYKoordinaatti();
 
-            mx4Font.setToRotation(new Vector3(s.getXKoordinaatti(), s.getYKoordinaatti(), 0), 0);
-            mx4Font.trn(s.getXKoordinaatti(), s.getYKoordinaatti(), 0);
-            batch.setTransformMatrix(mx4Font);
-            batch.begin();
-            fontti.draw(batch, "jäbä", 0, 0);
-            batch.end();
-            batch.setTransformMatrix(oldTransformMatrix);
+            batch.draw(pallonKuva, x - leveys / 2, y - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int) leveys, (int) korkeus, false, false);
 
+            Label otsikko = new Label(s.getOtsikko(), skin);
+
+            sailio.setPosition(x, y);
+            sailio.setActor(otsikko);
+            sailio.setTransform(true);
+            sailio.setRotation(angleToPointCamera - 90);
+            sailio.draw(batch, 1f);
         }
+        batch.end();
     }
 
 
