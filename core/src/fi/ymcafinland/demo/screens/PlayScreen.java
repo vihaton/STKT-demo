@@ -95,7 +95,7 @@ public class PlayScreen implements Screen {
         Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
 
         if(trans) {
-            if(stateTime < 2000) {
+            if(stateTime < 1500) {
                 transition.act(delta);
                 Gdx.graphics.requestRendering();
                 stateTime += System.currentTimeMillis()-timer;
@@ -115,25 +115,25 @@ public class PlayScreen implements Screen {
 
         if(!zoomedOut && zoomed) {
 
-            if(timeSinceTransitionZoom < 1.0f){
+            if(stateTime < 1000){
                 if(camera.zoom >= 1) {
                     camera.zoom -= delta * 3;
                 }
-                timeSinceTransitionZoom += delta;
+
             }
-            if(timeSinceTransitionZoom >= 1.0f){
+            if(stateTime >= 1000){
                 zoomed = false;
             }
         }
         if(zoomedOut && zoomed){
 
-            if(timeSinceTransitionZoom < 1.0f){
+            if(stateTime < 1000){
                 if(camera.zoom <= 4) {
                     camera.zoom += delta * 3;
                 }
-                timeSinceTransitionZoom += delta;
+
             }
-            if(timeSinceTransitionZoom >= 1.0f){
+            if(stateTime >= 1000){
                 zoomed = false;
             }
         }
@@ -172,18 +172,17 @@ public class PlayScreen implements Screen {
     }
 
     public void zoom(boolean in) {
+        trans = true;
+        timeSinceTransitionZoom = 0;
+        stateTime = 0;
+        timer = System.currentTimeMillis();
+        zoomed = true;
         if (in) {
-            trans = true;
-            timeSinceTransitionZoom = 0;
-            transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), 1f);
+            transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), 1.0f);
             zoomedOut = false;
-            zoomed = true;
         } else {
-            trans = true;
-            timeSinceTransitionZoom = 0;
-            transition = new CameraTransition(polttopiste, keskipiste, 1f);
+            transition = new CameraTransition(polttopiste, keskipiste, 1.0f);
             zoomedOut = true;
-            zoomed = true;
         }
         hud.update(solmu);
     }
