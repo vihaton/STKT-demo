@@ -44,7 +44,8 @@ public class PlayScreen implements Screen {
     private SolmunPiirtaja solmunPiirtaja;
     long stateTime;
     long timer;
-    float alkutime;
+    final float moveDuration = 1.0f;
+    final float zoomDuration = 0.5f;
 
     public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu) {
         this.sp = sp;
@@ -95,7 +96,7 @@ public class PlayScreen implements Screen {
         Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
 
         if(trans) {
-            if(stateTime < 1500) {
+            if(stateTime < Math.max(moveDuration*1000, zoomDuration*1000) + 250) {
                 transition.act(delta);
                 Gdx.graphics.requestRendering();
                 stateTime += System.currentTimeMillis()-timer;
@@ -107,33 +108,31 @@ public class PlayScreen implements Screen {
             }
         }
 
-        //float camAngle = -(float)Math.atan2(camera.up.x, camera.up.y)* MathUtils.radiansToDegrees + 180;
-
 
         camera.position.set(polttopiste);
 
 
         if(!zoomedOut && zoomed) {
 
-            if(stateTime < 1000){
+            if(stateTime < zoomDuration*1000){
                 if(camera.zoom >= 1) {
-                    camera.zoom -= delta * 3;
+                    camera.zoom -= delta * 3 * (1/zoomDuration);
                 }
 
             }
-            if(stateTime >= 1000){
+            if(stateTime >= zoomDuration*1000){
                 zoomed = false;
             }
         }
         if(zoomedOut && zoomed){
 
-            if(stateTime < 1000){
+            if(stateTime < zoomDuration*1000){
                 if(camera.zoom <= 4) {
-                    camera.zoom += delta * 3;
+                    camera.zoom += delta * 3 * (1/zoomDuration);
                 }
 
             }
-            if(stateTime >= 1000){
+            if(stateTime >= zoomDuration*1000){
                 zoomed = false;
             }
         }
@@ -144,7 +143,7 @@ public class PlayScreen implements Screen {
             angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
             camera.rotate(-angleToPoint1 + 90);
         }
-        if(zoomedOut && timeSinceTransitionZoom >= 1.0f ) {
+        if(zoomedOut && timeSinceTransitionZoom >= zoomDuration*1000) {
             camera.position.set(keskipiste);
         }
         camera.update();
@@ -178,10 +177,10 @@ public class PlayScreen implements Screen {
         timer = System.currentTimeMillis();
         zoomed = true;
         if (in) {
-            transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), 1.0f);
+            transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), zoomDuration);
             zoomedOut = false;
         } else {
-            transition = new CameraTransition(polttopiste, keskipiste, 1.0f);
+            transition = new CameraTransition(polttopiste, keskipiste, zoomDuration);
             zoomedOut = true;
         }
         hud.update(solmu);
@@ -213,7 +212,7 @@ public class PlayScreen implements Screen {
             trans = true;
             stateTime = 0;
             timer = System.currentTimeMillis();
-            transition = new CameraTransition(polttopiste, goal, 1f);
+            transition = new CameraTransition(polttopiste, goal, moveDuration);
             hud.update(solmu);
         }
     }
