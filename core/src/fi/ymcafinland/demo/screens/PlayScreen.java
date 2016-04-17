@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.piirtajat.SolmunPiirtaja;
@@ -41,6 +42,9 @@ public class PlayScreen implements Screen {
     private Viewport viewPort;
     private HUD hud;
     private SolmunPiirtaja solmunPiirtaja;
+    long stateTime;
+    long timer;
+    float alkutime;
 
     public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu) {
         this.sp = sp;
@@ -57,9 +61,13 @@ public class PlayScreen implements Screen {
         batch = new SpriteBatch();
 
         keskipiste = new Vector3(sp.T_LEVEYS / 2, sp.T_KORKEUS / 2, 0f);
-
+        timer = System.currentTimeMillis();
         angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
         hud = new HUD(this, batch, aloitussolmu);
+        stateTime = 0;
+        Gdx.graphics.setContinuousRendering(false);
+        Gdx.graphics.requestRendering();
+
     }
 
     @Override
@@ -81,9 +89,22 @@ public class PlayScreen implements Screen {
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.input.setInputProcessor(hud.stage);
+        if(delta > 0.1f){
+            delta = 0.03f;
+        }
+        Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
 
         if(trans) {
-            transition.act(delta);
+            if(stateTime < 2000) {
+                transition.act(delta);
+                Gdx.graphics.requestRendering();
+                stateTime += System.currentTimeMillis()-timer;
+                timer = System.currentTimeMillis();
+
+            }else{
+                trans = false;
+                stateTime = 0;
+            }
         }
 
         //float camAngle = -(float)Math.atan2(camera.up.x, camera.up.y)* MathUtils.radiansToDegrees + 180;
@@ -191,6 +212,8 @@ public class PlayScreen implements Screen {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
             trans = true;
+            stateTime = 0;
+            timer = System.currentTimeMillis();
             transition = new CameraTransition(polttopiste, goal, 1f);
             hud.update(solmu);
         }
