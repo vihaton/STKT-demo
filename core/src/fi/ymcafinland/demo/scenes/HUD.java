@@ -44,9 +44,12 @@ public class HUD {
     protected Button child1;
     protected Button child2;
     protected Button child3;
-    Button kysymys;
-    Button palaute;
+    protected Button kysymys;
+    protected Button palaute;
+
     protected boolean montaLasta;
+
+    protected InputMultiplexer im;
 
     TextureAtlas atlas;
     Texture textureHahmo;
@@ -199,6 +202,10 @@ public class HUD {
     }
 
 
+    public void resetInputProcessor() {
+        Gdx.input.setInputProcessor(im);
+    }
+
     /**
      * Layout hudille
      */
@@ -274,9 +281,8 @@ public class HUD {
         ArrayList<Solmu> lapset = solmu.getLapset();
 
 
-
         if (montaLasta) {
-            if(kysymys != null) {
+            if (kysymys != null) {
                 kysymys.setVisible(false);
                 kysymys.setDisabled(true);
             }
@@ -286,7 +292,7 @@ public class HUD {
             child2 = new Button(styleChild2);
             styleChild3.up = skin.getDrawable(lapset.get(2).getMinikuvanNimi());
             child3 = new Button(styleChild2);
-        } else{
+        } else {
 
             child1.setVisible(false);
             child2.setVisible(false);
@@ -306,7 +312,5 @@ public class HUD {
 
         palaute = new Button(stylePalaute);
     }
-
-
 
 }
