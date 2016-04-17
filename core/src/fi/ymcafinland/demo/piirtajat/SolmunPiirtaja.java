@@ -34,7 +34,6 @@ public class SolmunPiirtaja {
     private TextureAtlas atlas;
     private BitmapFont fontti;
     private BitmapFont toinenFontti;
-    private static GlyphLayout glyphLayout = new GlyphLayout();
     private Container<Label> sailio;
     private Skin skin;
     private Label.LabelStyle labelStyle;
@@ -102,7 +101,6 @@ public class SolmunPiirtaja {
 
             sailio.setPosition(x, y);
             sailio.setActor(otsikko);
-            sailio.fill();
             sailio.setTransform(true);
             sailio.setRotation(angleToPointCamera - 90);
             sailio.draw(batch, 1f);
