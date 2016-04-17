@@ -25,6 +25,7 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.piirtajat.VaittamanPiirtaja;
 import fi.ymcafinland.demo.screens.PlayScreen;
 
 
@@ -48,14 +49,8 @@ public class QuestionScreen implements Screen {
     private final Vaittamat vaittamat;
     private ArrayList<Vaittama> solmunVaittamat;
     private Random rnd;
-    //SLIDER TEST V
-    final Slider slider;
-    Skin skin;
-    private TextureAtlas atlas;
-    Slider.SliderStyle style;
-    Table table;
-    Stage stage;
-    //SLIDER TEST ^
+    private Stage stage;
+    private VaittamanPiirtaja vaittamanPiirtaja;
 
     public QuestionScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja, Vaittamat vaittamat) {
         Gdx.app.log("QS", "QS konstruktoria kutsuttiin");
@@ -69,34 +64,11 @@ public class QuestionScreen implements Screen {
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
         solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
+        this.vaittamanPiirtaja = new VaittamanPiirtaja(solmunVaittamat);
         rnd = new Random();
         this.stage = new Stage(viewport);
 
-        //SLIDER TEST V
-        atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
-        skin = new Skin();
-        skin.addRegions(atlas);
-        style = new Slider.SliderStyle(skin.getDrawable("sliderbackground"), skin.getDrawable("sliderknob"));
-        slider = new Slider(-5, 5, .2f, false, style);
-        slider.setAnimateDuration(0.3f);
-        table = new Table();
-        table.setFillParent(true);
-        table.bottom();
-        table.add(slider);
-        slider.setValue(0);
-
-        slider.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("UITest", "slider: " + slider.getValue());
-
-
-            }
-        });
-        stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
-
-        //SLIDER TEST ^
 
 
 
@@ -137,23 +109,10 @@ public class QuestionScreen implements Screen {
         fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
         y -= 2 * glyphLayout.height;
         x = sp.V_WIDTH / 10;
-
-        for (int i = 0; i < solmunVaittamat.size(); i++) {
-            glyphLayout.setText(toinenFontti, solmunVaittamat.get(i).getTeksti());
-            toinenFontti.draw(batch, glyphLayout, x, y);
-            y -= 1.5 * glyphLayout.height;
-        }
-
         batch.end();
-        //SLIDER TEST V
-        slider.act(delta);
-        stage.draw();
-        //SLIDER TEST ^
 
-//        if (Gdx.input.isTouched()) {
-//            sp.resetPlayScreen();
-//            dispose();
-//        }
+        vaittamanPiirtaja.piirra(batch, glyphLayout, x, y, delta);
+
 
     }
 

@@ -13,6 +13,7 @@ import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.screens.QuestionScreen;
 
 public class SelviytyjanPurjeet extends Game {
+    //TODO koko ohjelmalle yhteinen Skin
     public final static int V_WIDTH = 576;
     public final static int V_HEIGHT = 1024;
 
