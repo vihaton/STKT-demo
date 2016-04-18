@@ -161,10 +161,9 @@ public class PlayScreen implements Screen {
 
     /**
      * Hakee kulman pisteiden välillä;
-     *
-     * @param start
-     * @param target
-     * @return
+     * @param start aloituspiste
+     * @param target lopetuspiste
+     * @return palauttaa kulman
      */
     private float getAngleToPoint(Vector3 start, Vector3 target) {
         float angleToPoint = (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
@@ -196,6 +195,10 @@ public class PlayScreen implements Screen {
         camera.zoom += ratio;
     }
 
+    public float getZoom() {
+        return camera.zoom;
+    }
+
     //Purkkaviritelmä Selviytyjän purjeiden screeninvaihtometodia varten
     public SelviytyjanPurjeet getSp() {
         return this.sp;
@@ -204,8 +207,7 @@ public class PlayScreen implements Screen {
     /**
      * HUDista tulee kutsu riippuen mitä solmua painaa. Päivittää tiedot renderille.
      * Päivittää myös HUDin seuraavalle solmulle.
-     *
-     * @param solmu
+     * @param solmu käsiteltävä solmu
      */
     public void setSolmu(Solmu solmu) {
         if (!this.solmu.equals(solmu)) {
