@@ -1,23 +1,21 @@
 package fi.ymcafinland.demo.piirtajat;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
@@ -30,7 +28,7 @@ public class VaittamanPiirtaja {
     private TextureAtlas atlas;
     private Slider slider;
     private Table table;
-    private Slider.SliderStyle style;
+    private Slider.SliderStyle sliderStyle;
     private BitmapFont font;
     private Stage stage;
     private Table rootTable;
@@ -44,20 +42,22 @@ public class VaittamanPiirtaja {
         atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
         skin = new Skin();
         skin.addRegions(atlas);
-        style = new Slider.SliderStyle(skin.getDrawable("sliderbackground"), skin.getDrawable("sliderknob"));
-        slider = new Slider(-5, 5, .2f, false, style);
-        slider.setAnimateDuration(0.1f);
-        table = new Table();
-        table.setFillParent(true);
-        table.bottom();
-        table.add(slider);
 
-        slider.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("UITest", "slider: " + slider.getValue());
-            }
-        });
+        Label.LabelStyle vaittamatyyli = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        skin.add("vaittamatyyli", vaittamatyyli);
+
+        sliderStyle = new Slider.SliderStyle(skin.getDrawable("sliderbackground"), skin.getDrawable("sliderknob"));
+//        table = new Table();
+//        table.setFillParent(true);
+//        table.bottom();
+//        table.add(slider);
+//
+//        slider.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                Gdx.app.log("UITest", "slider: " + slider.getValue());
+//            }
+//        });
         //stage.addActor(table);
 
     }
@@ -86,6 +86,26 @@ public class VaittamanPiirtaja {
         this.solmunVaittamat = solmunVaittamat;
 
         //todo päivittää rootTableen oikeat väittämätaulukot (label + slider)
+        for (Vaittama v: solmunVaittamat) {
+            Table vaittamaTaulukko = new Table();
+            Label otsikko = new Label(v.getTeksti(), skin, "vaittamatyyli");
 
+            slider = new Slider(-5, 5, .2f, false, sliderStyle);
+            slider.setAnimateDuration(0.1f);
+            slider.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    Gdx.app.log("UITest", "slider: " + slider.getValue());
+//                    v.setArvo(slider.getValue());
+                }
+            });
+
+            vaittamaTaulukko.add(otsikko);
+            vaittamaTaulukko.row();
+            vaittamaTaulukko.add(slider);
+
+            rootTable.add(vaittamaTaulukko);
+            rootTable.row();
+        }
     }
 }
