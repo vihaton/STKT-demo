@@ -5,19 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 
@@ -34,7 +28,7 @@ public class SolmunPiirtaja {
     private TextureAtlas atlas;
     private BitmapFont fontti;
     private BitmapFont toinenFontti;
-    private Container<Label> sailio;
+    private Table tekstitaulukko;
     private Skin skin;
     private Label.LabelStyle labelStyle;
 
@@ -46,10 +40,12 @@ public class SolmunPiirtaja {
 
         fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
         toinenFontti = new BitmapFont();
-        sailio = new Container<>();
+        tekstitaulukko = new Table();
         skin = new Skin();
         labelStyle = new Label.LabelStyle(fontti, fontti.getColor());
-        skin.add("default", labelStyle);
+        Label.LabelStyle sisaltotyyli = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
+        skin.add("otsikko", labelStyle);
+        skin.add("sisalto", sisaltotyyli);
     }
 
     /**
@@ -97,13 +93,18 @@ public class SolmunPiirtaja {
 
             batch.draw(pallonKuva, x - leveys / 2, y - korkeus / 2, leveys / 2, korkeus / 2, leveys, korkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int) leveys, (int) korkeus, false, false);
 
-            Label otsikko = new Label(s.getOtsikko(), skin);
+            Label otsikko = new Label(s.getOtsikko(), skin, "otsikko");
+            Label sisalto = new Label(s.getSisalto(), skin, "sisalto");
 
-            sailio.setPosition(x, y);
-            sailio.setActor(otsikko);
-            sailio.setTransform(true);
-            sailio.setRotation(angleToPointCamera - 90);
-            sailio.draw(batch, 1f);
+            tekstitaulukko.reset();
+
+            tekstitaulukko.setPosition(x, y);
+            tekstitaulukko.add(otsikko);
+            tekstitaulukko.row();
+            tekstitaulukko.add(sisalto);
+            tekstitaulukko.setTransform(true);
+            tekstitaulukko.setRotation(angleToPointCamera - 90);
+            tekstitaulukko.draw(batch, 1f);
         }
         batch.end();
     }
