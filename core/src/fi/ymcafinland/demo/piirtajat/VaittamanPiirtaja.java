@@ -25,16 +25,11 @@ public class VaittamanPiirtaja {
     private final Skin skin;
     private TextureAtlas atlas;
     private ArrayList<Slider> sliderit;
-    private Table table;
     private Slider.SliderStyle sliderStyle;
-    private BitmapFont font;
     private Stage stage;
     private Table rootTable;
-    private ArrayList<Vaittama> solmunVaittamat;
-    private Vaittama vaittamaPointter;
 
     public VaittamanPiirtaja(Stage stage, Table rootTable) {
-        this.font = new BitmapFont();
         this.stage = stage;
         this.rootTable = rootTable;
         this.sliderit = new ArrayList<>();
@@ -54,8 +49,6 @@ public class VaittamanPiirtaja {
 
     public void renderoi(SpriteBatch batch, float delta) {
 
-        //todo päivittää näytön näkymän, EI LUO MITÄÄN UUSIA TAULUKOITA, LABELEITÄ YM
-
         batch.begin();
         for (Slider s:sliderit) {
             s.act(delta);
@@ -66,7 +59,6 @@ public class VaittamanPiirtaja {
     }
 
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
-        this.solmunVaittamat = solmunVaittamat;
         rootTable.reset();
 
         for (final Vaittama nykyinenVaittama: solmunVaittamat) {
