@@ -66,11 +66,6 @@ public class SelviytyjanPurjeet extends Game {
 
     public void setQuestionScreen(Solmu solmu) {
         questionScreen.setSolmu(solmu);
-
-        //todo miksi nappi ja stage luodaan joka kerta uudestaan? Onko mahdollista luoda vain kerran ja käyttää samaa instanssia aina kun screeni avataan uudestaan?
-        questionScreen.createExitButton(this);
-        questionScreen.stagenluonti();
-
         setScreen(questionScreen);
     }
     public void setPalauteScreen() {

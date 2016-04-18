@@ -96,79 +96,80 @@ public class PlayScreen implements Screen {
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.input.setInputProcessor(hud.stage);
-        if(delta > 0.1f){
+        if (delta > 0.1f) {
             delta = 0.03f;
         }
         Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
 
-        if(trans) {
-            if(stateTime < Math.max(moveDuration*1000, zoomDuration*1000) + 250) {
-                transition.act(delta);
-                Gdx.graphics.requestRendering();
-                stateTime += System.currentTimeMillis()-timer;
-                timer = System.currentTimeMillis();
+        renderZoomz(delta);
 
-            }else{
-                trans = false;
-                stateTime = 0;
-            }
-        }
-
-
-        camera.position.set(polttopiste);
-
-
-        if(!zoomedOut && zoomed) {
-
-            if(stateTime < zoomDuration*1000){
-                if(camera.zoom >= 1) {
-                    camera.zoom -= delta * 3 * (1/zoomDuration);
-                }
-
-            }
-            if(stateTime >= zoomDuration*1000){
-                zoomed = false;
-            }
-        }
-        if(zoomedOut && zoomed){
-
-            if(stateTime < zoomDuration*1000){
-                if(camera.zoom <= 4) {
-                    camera.zoom += delta * 3 * (1/zoomDuration);
-                }
-
-            }
-            if(stateTime >= zoomDuration*1000){
-                zoomed = false;
-            }
-        }
-        if(zoomedOut){
-            angleToPoint2 = getAngleToPoint(keskipiste, new Vector3(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(),0f));
-            camera.rotate(-angleToPoint2 + 90 -180);
-        }else {
-            angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
-            camera.rotate(-angleToPoint1 + 90);
-        }
-        if(zoomedOut && timeSinceTransitionZoom >= zoomDuration*1000) {
-            camera.position.set(keskipiste);
-        }
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
         solmunPiirtaja.piirra(batch, angleToPoint1);
 
-
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-
     }
+
+    private void renderZoomz(float delta) {
+        if (trans) {
+            if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + 250) {
+                transition.act(delta);
+                Gdx.graphics.requestRendering();
+                stateTime += System.currentTimeMillis() - timer;
+                timer = System.currentTimeMillis();
+
+            } else {
+                trans = false;
+                stateTime = 0;
+            }
+        }
+
+        camera.position.set(polttopiste);
+
+        if (!zoomedOut && zoomed) {
+
+            if (stateTime < zoomDuration * 1000) {
+                if (camera.zoom >= 1) {
+                    camera.zoom -= delta * 3 * (1 / zoomDuration);
+                }
+
+            }
+            if (stateTime >= zoomDuration * 1000) {
+                zoomed = false;
+            }
+        }
+        if (zoomedOut && zoomed) {
+
+            if (stateTime < zoomDuration * 1000) {
+                if (camera.zoom <= 4) {
+                    camera.zoom += delta * 3 * (1 / zoomDuration);
+                }
+
+            }
+            if (stateTime >= zoomDuration * 1000) {
+                zoomed = false;
+            }
+        }
+        if (zoomedOut) {
+            angleToPoint2 = getAngleToPoint(keskipiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f));
+            camera.rotate(-angleToPoint2 + 90 - 180);
+        } else {
+            angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
+            camera.rotate(-angleToPoint1 + 90);
+        }
+        if (zoomedOut && timeSinceTransitionZoom >= zoomDuration * 1000) {
+            camera.position.set(keskipiste);
+        }
+    }
+
 
     /**
      * Hakee kulman pisteiden välillä;
-     *
-     * @param start
-     * @param target
-     * @return
+     * @param start aloituspiste
+     * @param target lopetuspiste
+     * @return palauttaa kulman
      */
     private float getAngleToPoint(Vector3 start, Vector3 target) {
         float angleToPoint = (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
@@ -200,6 +201,10 @@ public class PlayScreen implements Screen {
         }
     }
 
+    public float getZoom() {
+        return camera.zoom;
+    }
+
     //Purkkaviritelmä Selviytyjän purjeiden screeninvaihtometodia varten
     public SelviytyjanPurjeet getSp() {
         return this.sp;
@@ -208,8 +213,7 @@ public class PlayScreen implements Screen {
     /**
      * HUDista tulee kutsu riippuen mitä solmua painaa. Päivittää tiedot renderille.
      * Päivittää myös HUDin seuraavalle solmulle.
-     *
-     * @param solmu
+     * @param solmu käsiteltävä solmu
      */
     public void setSolmu(Solmu solmu) {
         if (!this.solmu.equals(solmu)) {

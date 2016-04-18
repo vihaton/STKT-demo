@@ -7,23 +7,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -35,7 +26,6 @@ import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.piirtajat.VaittamanPiirtaja;
-import fi.ymcafinland.demo.screens.PlayScreen;
 
 
 /**
@@ -76,28 +66,26 @@ public class QuestionScreen implements Screen {
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
         solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
-        this.vaittamanPiirtaja = new VaittamanPiirtaja(solmunVaittamat);
         rnd = new Random();
 
-        Gdx.input.setInputProcessor(stage);
-
-
+        stagenluonti(createExitButton(sp));
+        this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, table);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
     }
 
-    public void stagenluonti() {
+    public void stagenluonti(Table exitTable) {
         this.stage = new Stage(viewport);
         table = new Table();
         table.setFillParent(true);
-        table.top().right();
-        table.add(exitButton);
+        table.center();
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+        stage.addActor(exitTable);
+
     }
 
-    public void createExitButton(final SelviytyjanPurjeet sp) {
+    public Table createExitButton(final SelviytyjanPurjeet sp) {
         Button.ButtonStyle styleExit = new Button.ButtonStyle();
         texture = new Texture("ruksi.png");
 
@@ -106,10 +94,13 @@ public class QuestionScreen implements Screen {
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 sp.resetPlayScreen();
-                stage.dispose();
-                dispose();
             }
         });
+
+        Table exitTable = new Table();
+        exitTable.setFillParent(true);
+        exitTable.top().right().add(exitButton);
+        return exitTable;
     }
 
 /**
@@ -124,6 +115,7 @@ public void sendData() {
     public void show() {
         Gdx.app.log("QS", "QuestionScreenin show() -metodia kutsuttiin");
         lisaaSatunnaistaSelviytymista();
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -146,13 +138,10 @@ public void sendData() {
         y -= 2 * glyphLayout.height;
         x = sp.V_WIDTH / 10;
         batch.end();
+
+        vaittamanPiirtaja.renderoi(batch, delta);
+
         stage.draw();
-
-        if (Gdx.input.isTouched()) {
-            sp.resetPlayScreen();
-            dispose();
-        }
-
 
     }
 
@@ -175,6 +164,7 @@ public void sendData() {
     public void setSolmu(Solmu solmu) {
         this.solmu = solmu;
         solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmu.getID());
+        vaittamanPiirtaja.paivitaVaittamat(solmunVaittamat);
     }
 
     @Override
