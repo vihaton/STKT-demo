@@ -18,6 +18,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.Vaittama;
+import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
@@ -34,6 +35,7 @@ public class VaittamanPiirtaja {
     private Stage stage;
     private Table rootTable;
     private ArrayList<Vaittama> solmunVaittamat;
+    private Vaittama solmuPointer;
 
     public VaittamanPiirtaja(Stage stage, Table rootTable) {
         this.font = new BitmapFont();
@@ -71,19 +73,20 @@ public class VaittamanPiirtaja {
         this.solmunVaittamat = solmunVaittamat;
         rootTable.reset();
 
-        for (Vaittama v: solmunVaittamat) {
+        for (Vaittama nykyinenVaittama: solmunVaittamat) {
+            solmuPointer = nykyinenVaittama;
             Table vaittamaTaulukko = new Table();
-            Label otsikko = new Label(v.getTeksti(), skin, "vaittamatyyli");
+            Label otsikko = new Label(solmuPointer.getTeksti(), skin, "vaittamatyyli");
 
-            Slider slider = new Slider(-5, 5, .2f, false, sliderStyle);
+            final Slider slider = new Slider(-5, 5, .2f, false, sliderStyle);
             slider.setAnimateDuration(0.1f);
-            slider.setValue(v.getArvo());
+            slider.setValue(solmuPointer.getArvo());
             slider.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     //todo päivittää väittämien arvot changelistenerissä
-//                    Gdx.app.log("UITest", "slider: " + slider.getValue());
-//                    v.setArvo(slider.getValue());
+                    Gdx.app.log("UITest", "slider: " + slider.getValue());
+                    solmuPointer.setArvo(slider.getValue());
                 }
             });
             sliderit.add(slider);

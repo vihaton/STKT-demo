@@ -103,13 +103,13 @@ public class QuestionScreen implements Screen {
         return exitTable;
     }
 
-/**
- * sendData lähettää saadun datan eteenpäin. sendData konfirmoi kysymykseen laitetun tiedon, ja
- * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
- */
-public void sendData() {
+    /**
+    * sendData lähettää saadun datan eteenpäin. sendData konfirmoi kysymykseen laitetun tiedon, ja
+    * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
+    */
+    public void sendData() {
 
-}
+    }
 
     @Override
     public void show() {
