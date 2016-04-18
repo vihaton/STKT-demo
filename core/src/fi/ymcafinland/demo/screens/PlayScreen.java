@@ -76,6 +76,12 @@ public class PlayScreen implements Screen {
 
     }
 
+    public void alkaaTapahtua() {
+        trans = true;
+        stateTime = 0;
+        timer = System.currentTimeMillis();
+    }
+
     @Override
     public void render(float delta) {
         float rgbJakaja = 255f;
@@ -171,10 +177,8 @@ public class PlayScreen implements Screen {
     }
 
     public void zoom(boolean in) {
-        trans = true;
+        alkaaTapahtua();
         timeSinceTransitionZoom = 0;
-        stateTime = 0;
-        timer = System.currentTimeMillis();
         zoomed = true;
         if (in) {
             transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), zoomDuration);
@@ -191,7 +195,9 @@ public class PlayScreen implements Screen {
     }
 
     public void setZoom(float ratio) {
-        camera.zoom += ratio;
+        if (camera.zoom + ratio < 5 || camera.zoom + ratio > 0) {
+            camera.zoom += ratio;
+        }
     }
 
     //Purkkaviritelmä Selviytyjän purjeiden screeninvaihtometodia varten
@@ -209,12 +215,18 @@ public class PlayScreen implements Screen {
         if (!this.solmu.equals(solmu)) {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
-            trans = true;
-            stateTime = 0;
-            timer = System.currentTimeMillis();
+            alkaaTapahtua();
             transition = new CameraTransition(polttopiste, goal, moveDuration);
             hud.update(solmu);
         }
+    }
+
+    public boolean getTrans() {
+        return this.trans;
+    }
+
+    public void setTrans(boolean t) {
+        this.trans = t;
     }
 
     @Override

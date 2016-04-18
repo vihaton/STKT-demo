@@ -78,6 +78,7 @@ public class SelviytyjanPurjeet extends Game {
     }
 
     public void resetPlayScreen() {
+
 		playscreen.resetInputProcessor();
         setScreen(playscreen);
     }

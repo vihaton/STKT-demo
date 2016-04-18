@@ -30,6 +30,7 @@ import fi.ymcafinland.demo.logiikka.Solmu;
  */
 public class HUD {
     public Stage stage;
+    public InputMultiplexer im;
 
     protected Solmu solmu;
 
@@ -49,7 +50,6 @@ public class HUD {
 
     protected boolean montaLasta;
 
-    protected InputMultiplexer im;
 
     TextureAtlas atlas;
     Texture textureHahmo;
@@ -65,8 +65,10 @@ public class HUD {
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
         this.stage = new Stage(viewport, sb);
         GestureDetector gd = new GestureDetector(new HUDListener (this, viewport, sb));
-        InputMultiplexer im = new InputMultiplexer(gd, stage);
-        Gdx.input.setInputProcessor(im);
+        InputMultiplexer im = new InputMultiplexer();
+        im.addProcessor(gd);
+        im.addProcessor(stage);
+        //Gdx.input.setInputProcessor(im);
         atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
         skin = new Skin();
         skin.addRegions(atlas);
