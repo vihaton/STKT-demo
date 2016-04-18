@@ -94,8 +94,6 @@ public class QuestionScreen implements Screen {
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 sp.resetPlayScreen();
-                stage.dispose();
-                dispose();
             }
         });
 

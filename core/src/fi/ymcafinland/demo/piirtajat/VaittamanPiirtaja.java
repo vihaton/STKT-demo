@@ -69,8 +69,8 @@ public class VaittamanPiirtaja {
 
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         this.solmunVaittamat = solmunVaittamat;
+        rootTable.reset();
 
-        //todo päivittää rootTableen oikeat väittämätaulukot (label + slider)
         for (Vaittama v: solmunVaittamat) {
             Table vaittamaTaulukko = new Table();
             Label otsikko = new Label(v.getTeksti(), skin, "vaittamatyyli");
@@ -81,6 +81,7 @@ public class VaittamanPiirtaja {
             slider.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    //todo päivittää väittämien arvot changelistenerissä
 //                    Gdx.app.log("UITest", "slider: " + slider.getValue());
 //                    v.setArvo(slider.getValue());
                 }
