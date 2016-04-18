@@ -50,8 +50,6 @@ public class VaittamanPiirtaja {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("UITest", "slider: " + slider.getValue());
-
-
             }
         });
         //stage.addActor(table);

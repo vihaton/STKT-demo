@@ -146,13 +146,10 @@ public void sendData() {
         y -= 2 * glyphLayout.height;
         x = sp.V_WIDTH / 10;
         batch.end();
+
+        vaittamanPiirtaja.piirra(batch, glyphLayout, x, y, delta);
+
         stage.draw();
-
-        if (Gdx.input.isTouched()) {
-            sp.resetPlayScreen();
-            dispose();
-        }
-
 
     }
 
