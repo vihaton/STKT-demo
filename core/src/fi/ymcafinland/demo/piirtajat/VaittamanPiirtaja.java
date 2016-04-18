@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.Vaittama;
@@ -26,7 +27,7 @@ public class VaittamanPiirtaja {
 
     private final Skin skin;
     private TextureAtlas atlas;
-    private Slider slider;
+    private ArrayList<Slider> sliderit;
     private Table table;
     private Slider.SliderStyle sliderStyle;
     private BitmapFont font;
@@ -38,6 +39,7 @@ public class VaittamanPiirtaja {
         this.font = new BitmapFont();
         this.stage = stage;
         this.rootTable = rootTable;
+        this.sliderit = new ArrayList<>();
 
         atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
         skin = new Skin();
@@ -57,7 +59,9 @@ public class VaittamanPiirtaja {
         //todo päivittää näytön näkymän, EI LUO MITÄÄN UUSIA TAULUKOITA, LABELEITÄ YM
 
         batch.begin();
-        slider.act(delta);
+        for (Slider s:sliderit) {
+            s.act(delta);
+        }
         stage.draw();
         batch.end();
 
@@ -71,15 +75,17 @@ public class VaittamanPiirtaja {
             Table vaittamaTaulukko = new Table();
             Label otsikko = new Label(v.getTeksti(), skin, "vaittamatyyli");
 
-            slider = new Slider(-5, 5, .2f, false, sliderStyle);
+            Slider slider = new Slider(-5, 5, .2f, false, sliderStyle);
             slider.setAnimateDuration(0.1f);
+            slider.setValue(v.getArvo());
             slider.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    Gdx.app.log("UITest", "slider: " + slider.getValue());
+//                    Gdx.app.log("UITest", "slider: " + slider.getValue());
 //                    v.setArvo(slider.getValue());
                 }
             });
+            sliderit.add(slider);
 
             vaittamaTaulukko.add(otsikko);
             vaittamaTaulukko.row();
