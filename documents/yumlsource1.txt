@@ -9,6 +9,7 @@
 [SP]
 [HUD]
 [Verkko]
+[VP] //VaittamanPiirtaja
 
 //suhteet
 [SP] - [QS]
@@ -18,6 +19,8 @@
 [SP] -> [Vaittamat]
 
 [QS]hakee väittämät -> [Vaittamat]
+[QS] - [VP]
+
 [PlayS] - [HUD]
 [PlayS] -> [Solmu]
 [HUD] -> [Solmu]
