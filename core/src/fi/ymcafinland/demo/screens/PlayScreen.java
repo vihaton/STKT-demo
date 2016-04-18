@@ -107,18 +107,7 @@ public class PlayScreen implements Screen {
 
         Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
 
-        if (trans) {
-            if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
-                transition.act(delta);
-                Gdx.graphics.requestRendering();
-                stateTime += System.currentTimeMillis() - timer;
-                timer = System.currentTimeMillis();
-
-            } else {
-                trans = false;
-                stateTime = 0;
-            }
-        }
+        actTransition(delta);
 
         camera.position.set(polttopiste);
 
@@ -131,6 +120,21 @@ public class PlayScreen implements Screen {
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+    }
+
+    public void actTransition(float delta) {
+        if (trans) {
+            if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
+                transition.act(delta);
+                Gdx.graphics.requestRendering();
+                stateTime += System.currentTimeMillis() - timer;
+                timer = System.currentTimeMillis();
+
+            } else {
+                trans = false;
+                stateTime = 0;
+            }
+        }
     }
 
     private void renderZoomz(float delta) {
@@ -230,6 +234,9 @@ public class PlayScreen implements Screen {
             transition = new CameraTransition(polttopiste, goal, moveDuration);
             hud.update(solmu);
         }
+    }
+    public void resetStateTime(){
+        stateTime = 0;
     }
 
     public boolean getTrans() {
