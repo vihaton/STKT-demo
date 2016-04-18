@@ -56,7 +56,7 @@ public class Pelaaja {
         lisaaSelviytymisarvoIndeksissa(5, maara);
     }
 
-    public double getFyysinen() {
+    public float getFyysinen() {
         return selviytyisArvot[0];
     }
 
@@ -111,12 +111,12 @@ public class Pelaaja {
 
     @Override
     public String toString() {
-        return "Fyysinen: " + selviytyisArvot[0] + "\n" +
-                "Älyllinen: " + selviytyisArvot[1] + "\n" +
-                "Eettinen: " + selviytyisArvot[2] + "\n" +
-                "Tunteellinen: " + selviytyisArvot[3] + "\n" +
-                "Sosiaalinen: " + selviytyisArvot[4] + "\n" +
-                "Luova: " + selviytyisArvot[5] + "\n";
+        return "Fyysinen: " + String.format("%.1f", selviytyisArvot[0]) + "\n" +
+                "Älyllinen: " + String.format("%.1f", selviytyisArvot[1]) + "\n" +
+                "Eettinen: " + String.format("%.1f", selviytyisArvot[2]) + "\n" +
+                "Tunteellinen: " + String.format("%.1f", selviytyisArvot[3]) + "\n" +
+                "Sosiaalinen: " + String.format("%.1f", selviytyisArvot[4]) + "\n" +
+                "Luova: " + String.format("%.1f", selviytyisArvot[5]) + "\n";
     }
 
     public String getNimi() {

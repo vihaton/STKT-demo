@@ -17,7 +17,7 @@ public class Vaittama {
     public Vaittama(String txt, String solmunID) {
         this.teksti = txt;
         this.solmunID = solmunID;
-        arvo = 0;
+        arvo = 1f;
     }
 
     public String getTeksti() {

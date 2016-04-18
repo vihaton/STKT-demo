@@ -4,16 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.ArrayList;
-import java.util.Timer;
+import java.util.ArrayDeque;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.piirtajat.SolmunPiirtaja;
@@ -46,6 +42,10 @@ public class PlayScreen implements Screen {
     long timer;
     final float moveDuration = 1.0f;
     final float zoomDuration = 0.5f;
+    private final int idleTime = 10000;
+
+    private float deltaAVG;
+    private ArrayDeque<Float> viimeisetDeltat;
 
     public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu) {
         this.sp = sp;
@@ -61,7 +61,7 @@ public class PlayScreen implements Screen {
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         batch = new SpriteBatch();
 
-        keskipiste = new Vector3(sp.T_LEVEYS / 2, sp.T_KORKEUS / 2, 0f);
+        keskipiste = new Vector3(sp.TAUSTAN_LEVEYS / 2, sp.TAUSTAN_KORKEUS / 2, 0f);
         timer = System.currentTimeMillis();
         angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
         hud = new HUD(this, batch, aloitussolmu);
@@ -69,6 +69,8 @@ public class PlayScreen implements Screen {
         Gdx.graphics.setContinuousRendering(false);
         Gdx.graphics.requestRendering();
 
+        viimeisetDeltat = new ArrayDeque<>();
+        deltaAVG = 0.02f;
     }
 
     @Override
@@ -80,6 +82,7 @@ public class PlayScreen implements Screen {
         trans = true;
         stateTime = 0;
         timer = System.currentTimeMillis();
+        Gdx.app.log("playscreen", "UUSI SIIRTO" + stateTime + " " + trans);
     }
 
     @Override
@@ -96,10 +99,28 @@ public class PlayScreen implements Screen {
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.input.setInputProcessor(hud.stage);
-        if (delta > 0.1f) {
-            delta = 0.03f;
+        if (delta > 0.1f || delta < 0.005f) {
+            delta = deltaAVG;
         }
+
+        deltaAVG = (deltaAVG * 19 + delta) / 20;
+
         Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
+
+        if (trans) {
+            if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
+                transition.act(delta);
+                Gdx.graphics.requestRendering();
+                stateTime += System.currentTimeMillis() - timer;
+                timer = System.currentTimeMillis();
+
+            } else {
+                trans = false;
+                stateTime = 0;
+            }
+        }
+
+        camera.position.set(polttopiste);
 
         renderZoomz(delta);
 
@@ -113,20 +134,6 @@ public class PlayScreen implements Screen {
     }
 
     private void renderZoomz(float delta) {
-        if (trans) {
-            if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + 250) {
-                transition.act(delta);
-                Gdx.graphics.requestRendering();
-                stateTime += System.currentTimeMillis() - timer;
-                timer = System.currentTimeMillis();
-
-            } else {
-                trans = false;
-                stateTime = 0;
-            }
-        }
-
-        camera.position.set(polttopiste);
 
         if (!zoomedOut && zoomed) {
 

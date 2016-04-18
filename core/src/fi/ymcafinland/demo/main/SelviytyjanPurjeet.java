@@ -19,8 +19,8 @@ public class SelviytyjanPurjeet extends Game {
     public final static int V_WIDTH = 576;
     public final static int V_HEIGHT = 1024;
 
-    public static final int T_LEVEYS = 8192;
-    public static final int T_KORKEUS = 8192;
+    public static final int TAUSTAN_LEVEYS = 8192;
+    public static final int TAUSTAN_KORKEUS = 8192;
 
     protected SpriteBatch batch;
     private Verkko verkko;
@@ -36,7 +36,7 @@ public class SelviytyjanPurjeet extends Game {
 
 
         Gdx.app.log("SP", "Verkon luominen aloitetaan");
-        verkko = new Verkko(T_LEVEYS, T_KORKEUS);
+        verkko = new Verkko(TAUSTAN_LEVEYS, TAUSTAN_KORKEUS);
         Gdx.app.log("SP", "Verkko luominen on valmis");
 
         Gdx.app.log("SP", "Vaittamien luominen aloitetaan");

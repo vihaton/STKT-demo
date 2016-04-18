@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.Vaittama;
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
  * Created by jwinter on 17.4.2016.
@@ -42,15 +43,12 @@ public class VaittamanPiirtaja {
         skin.add("vaittamatyyli", vaittamatyyli);
 
         sliderStyle = new Slider.SliderStyle(skin.getDrawable("sliderbackground"), skin.getDrawable("sliderknob"));
-
-        //stage.addActor(table);
-
     }
 
     public void renderoi(SpriteBatch batch, float delta) {
 
         batch.begin();
-        for (Slider s:sliderit) {
+        for (Slider s : sliderit) {
             s.act(delta);
         }
         stage.draw();
@@ -61,24 +59,26 @@ public class VaittamanPiirtaja {
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         rootTable.reset();
 
-        for (final Vaittama nykyinenVaittama: solmunVaittamat) {
+        for (final Vaittama nykyinenVaittama : solmunVaittamat) {
             Table vaittamaTaulukko = new Table();
             Label otsikko = new Label(nykyinenVaittama.getTeksti(), skin, "vaittamatyyli");
+            otsikko.setFontScale(2);
+            otsikko.setWrap(true);
+            otsikko.setWidth(SelviytyjanPurjeet.V_WIDTH);
 
-            final Slider slider = new Slider(-5, 5, .2f, false, sliderStyle);
+            final Slider slider = new Slider(0.5f, 1.5f, .1f, false, sliderStyle);
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getArvo());
             slider.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    //todo päivittää väittämien arvot changelistenerissä
                     Gdx.app.log("UITest", "slider: " + slider.getValue());
                     nykyinenVaittama.setArvo(slider.getValue());
                 }
             });
             sliderit.add(slider);
 
-            vaittamaTaulukko.add(otsikko);
+            vaittamaTaulukko.add(otsikko).width(slider.getWidth() * 3);
             vaittamaTaulukko.row();
             vaittamaTaulukko.add(slider);
 

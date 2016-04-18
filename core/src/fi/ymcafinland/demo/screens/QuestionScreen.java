@@ -38,7 +38,6 @@ public class QuestionScreen implements Screen {
     protected SpriteBatch batch;
 
     private final SelviytyjanPurjeet sp;
-    private Solmu solmu;
     private FitViewport viewport;
     private OrthographicCamera camera;
     private static GlyphLayout glyphLayout = new GlyphLayout();
@@ -47,6 +46,7 @@ public class QuestionScreen implements Screen {
     private final Pelaaja pelaaja;
     private final Vaittamat vaittamat;
     private ArrayList<Vaittama> solmunVaittamat;
+    private String solmunID;
     private Random rnd;
     private Stage stage;
     private VaittamanPiirtaja vaittamanPiirtaja;
@@ -62,10 +62,10 @@ public class QuestionScreen implements Screen {
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.toinenFontti = new BitmapFont();
-        solmu = null;
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
-        solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
+        solmunID = "7";
+        solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get(solmunID);
         rnd = new Random();
 
         stagenluonti(createExitButton(sp));
@@ -93,6 +93,7 @@ public class QuestionScreen implements Screen {
         exitButton = new Button(styleExit);
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
+                sendData();
                 sp.resetPlayScreen();
             }
         });
@@ -108,13 +109,30 @@ public class QuestionScreen implements Screen {
     * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
     */
     public void sendData() {
+        float kerroin = 1f;
+        for (Vaittama v : solmunVaittamat) {
+            kerroin *= v.getArvo();
+        }
+        int solmunID = Integer.parseInt(this.solmunID);
 
+        if (solmunID < 10) {
+            pelaaja.setFyysinen(pelaaja.getFyysinen() * kerroin);
+        } else if (solmunID < 13) {
+            pelaaja.setAlyllinen(pelaaja.getAlyllinen() * kerroin);
+        } else if (solmunID < 16) {
+            pelaaja.setEettinen(pelaaja.getEettinen() * kerroin);
+        } else if (solmunID < 19) {
+            pelaaja.setTunteellinen(pelaaja.getTunteellinen() * kerroin);
+        } else if (solmunID < 22) {
+            pelaaja.setSosiaalinen(pelaaja.getSosiaalinen() * kerroin);
+        } else {
+            pelaaja.setLuova(pelaaja.getLuova() * kerroin);
+        }
     }
 
     @Override
     public void show() {
         Gdx.app.log("QS", "QuestionScreenin show() -metodia kutsuttiin");
-        lisaaSatunnaistaSelviytymista();
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -162,8 +180,8 @@ public class QuestionScreen implements Screen {
     }
 
     public void setSolmu(Solmu solmu) {
-        this.solmu = solmu;
-        solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmu.getID());
+        solmunID = solmu.getID();
+        solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmunID);
         vaittamanPiirtaja.paivitaVaittamat(solmunVaittamat);
     }
 
