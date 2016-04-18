@@ -14,10 +14,10 @@ import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.screens.QuestionScreen;
 
 public class SelviytyjanPurjeet extends Game {
+    //Todo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
     public final static int V_WIDTH = 576;
     public final static int V_HEIGHT = 1024;
 
-    //Todo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
     public static final int T_LEVEYS = 8192;
     public static final int T_KORKEUS = 8192;
 
@@ -65,8 +65,11 @@ public class SelviytyjanPurjeet extends Game {
 
     public void setQuestionScreen(Solmu solmu) {
         questionScreen.setSolmu(solmu);
+
+        //todo miksi nappi ja stage luodaan joka kerta uudestaan? Onko mahdollista luoda vain kerran ja käyttää samaa instanssia aina kun screeni avataan uudestaan?
         questionScreen.createExitButton(this);
         questionScreen.stagenluonti();
+
         setScreen(questionScreen);
     }
     public void setPalauteScreen() {

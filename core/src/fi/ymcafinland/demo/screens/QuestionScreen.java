@@ -71,8 +71,6 @@ public class QuestionScreen implements Screen {
         createExitButton(sp);
         stagenluonti();
 
-
-
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
     }
@@ -84,6 +82,7 @@ public class QuestionScreen implements Screen {
         table.top().right();
         table.add(exitButton);
         stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
     }
 
     public void createExitButton(final SelviytyjanPurjeet sp) {
@@ -120,11 +119,8 @@ public void sendData() {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Gdx.input.setInputProcessor(stage);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-
-
 
         glyphLayout.setText(fontti, "Kolmannen tason");
         float x = (sp.V_WIDTH - glyphLayout.width) / 2;
