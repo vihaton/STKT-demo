@@ -78,7 +78,6 @@ public class SolmunPiirtaja {
         batch.end();
     }
 
-    //Todo tekstit irti balloista
     private void piirraPalloJaTekstiErikseen(SpriteBatch batch, float angleToPointCamera) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // This cryptic line clears the screen.
 

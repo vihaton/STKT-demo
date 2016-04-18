@@ -7,23 +7,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -35,7 +26,6 @@ import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.piirtajat.VaittamanPiirtaja;
-import fi.ymcafinland.demo.screens.PlayScreen;
 
 
 /**
@@ -76,12 +66,11 @@ public class QuestionScreen implements Screen {
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
         solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
-        this.vaittamanPiirtaja = new VaittamanPiirtaja(solmunVaittamat);
         rnd = new Random();
 
-        Gdx.input.setInputProcessor(stage);
-
-
+        createExitButton(sp);
+        stagenluonti();
+        this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, table);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
@@ -94,7 +83,6 @@ public class QuestionScreen implements Screen {
         table.top().right();
         table.add(exitButton);
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
     }
 
     public void createExitButton(final SelviytyjanPurjeet sp) {
@@ -124,6 +112,7 @@ public void sendData() {
     public void show() {
         Gdx.app.log("QS", "QuestionScreenin show() -metodia kutsuttiin");
         lisaaSatunnaistaSelviytymista();
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -147,7 +136,7 @@ public void sendData() {
         x = sp.V_WIDTH / 10;
         batch.end();
 
-        vaittamanPiirtaja.piirra(batch, glyphLayout, x, y, delta);
+        vaittamanPiirtaja.renderoi(batch, glyphLayout, delta);
 
         stage.draw();
 
@@ -172,6 +161,7 @@ public void sendData() {
     public void setSolmu(Solmu solmu) {
         this.solmu = solmu;
         solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmu.getID());
+        vaittamanPiirtaja.paivitaVaittamat(solmunVaittamat);
     }
 
     @Override
