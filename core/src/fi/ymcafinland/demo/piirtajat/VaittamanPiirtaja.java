@@ -3,7 +3,6 @@ package fi.ymcafinland.demo.piirtajat;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,12 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.Vaittama;
-import fi.ymcafinland.demo.logiikka.Vaittamat;
-import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
  * Created by jwinter on 17.4.2016.
@@ -35,7 +31,7 @@ public class VaittamanPiirtaja {
     private Stage stage;
     private Table rootTable;
     private ArrayList<Vaittama> solmunVaittamat;
-    private Vaittama solmuPointer;
+    private Vaittama vaittamaPointter;
 
     public VaittamanPiirtaja(Stage stage, Table rootTable) {
         this.font = new BitmapFont();
@@ -73,20 +69,19 @@ public class VaittamanPiirtaja {
         this.solmunVaittamat = solmunVaittamat;
         rootTable.reset();
 
-        for (Vaittama nykyinenVaittama: solmunVaittamat) {
-            solmuPointer = nykyinenVaittama;
+        for (final Vaittama nykyinenVaittama: solmunVaittamat) {
             Table vaittamaTaulukko = new Table();
-            Label otsikko = new Label(solmuPointer.getTeksti(), skin, "vaittamatyyli");
+            Label otsikko = new Label(nykyinenVaittama.getTeksti(), skin, "vaittamatyyli");
 
             final Slider slider = new Slider(-5, 5, .2f, false, sliderStyle);
             slider.setAnimateDuration(0.1f);
-            slider.setValue(solmuPointer.getArvo());
+            slider.setValue(nykyinenVaittama.getArvo());
             slider.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     //todo päivittää väittämien arvot changelistenerissä
                     Gdx.app.log("UITest", "slider: " + slider.getValue());
-                    solmuPointer.setArvo(slider.getValue());
+                    nykyinenVaittama.setArvo(slider.getValue());
                 }
             });
             sliderit.add(slider);
