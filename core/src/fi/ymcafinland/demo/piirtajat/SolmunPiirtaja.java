@@ -70,6 +70,7 @@ public class SolmunPiirtaja {
 
             batch.draw(pallonKuva, x - pallonLeveys / 2, y - pallonKorkeus / 2, pallonLeveys / 2, pallonKorkeus / 2, pallonLeveys, pallonKorkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int) pallonLeveys, (int) pallonKorkeus, false, false);
 
+            //todo tekstit pallojen sisälle (mahdollisimman isolla)
             otsikko.setText(s.getOtsikko());
             sisalto.setText(s.getSisalto());
 

@@ -307,7 +307,6 @@ public class HUD {
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
         styleKysymys.up = skin.getDrawable("mini_kysymys");
         kysymys = new Button(styleKysymys);
-        //ToDo Palautenäkymänappulalle oma kuva!
         textureHahmo = new Texture("hahmo.png");
 
         stylePalaute.up = new TextureRegionDrawable(new TextureRegion(textureHahmo));

@@ -59,6 +59,7 @@ public class InfoScreen implements Screen {
         this.sp = sp;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
+        //todo viewport asettuu myös tietokoneella ajettaessa oikein (stage?)
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
 
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
@@ -73,6 +74,8 @@ public class InfoScreen implements Screen {
         labelStyle.fontColor = Color.valueOf("A07E10FF");
 
         textField = new TextField("Selviytyjän purjeet", skin);
+
+        //todo pitkä teksti scrollautuu alas asti
         Label label = new Label(reallyLongString, labelStyle);
         label.setWidth(sp.V_WIDTH / 3);
         label.setWrap(true);
