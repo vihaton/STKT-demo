@@ -17,6 +17,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -27,6 +35,7 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.piirtajat.VaittamanPiirtaja;
 import fi.ymcafinland.demo.screens.PlayScreen;
 
 
@@ -50,6 +59,8 @@ public class QuestionScreen implements Screen {
     private final Vaittamat vaittamat;
     private ArrayList<Vaittama> solmunVaittamat;
     private Random rnd;
+    private Stage stage;
+    private VaittamanPiirtaja vaittamanPiirtaja;
 
     private Button exitButton;
     private Texture texture;
@@ -67,9 +78,12 @@ public class QuestionScreen implements Screen {
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
         solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
+        this.vaittamanPiirtaja = new VaittamanPiirtaja(solmunVaittamat);
         rnd = new Random();
-        createExitButton(sp);
-        stagenluonti();
+
+        Gdx.input.setInputProcessor(stage);
+
+
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
@@ -133,15 +147,13 @@ public void sendData() {
         fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
         y -= 2 * glyphLayout.height;
         x = sp.V_WIDTH / 10;
-
-        for (int i = 0; i < solmunVaittamat.size(); i++) {
-            glyphLayout.setText(toinenFontti, solmunVaittamat.get(i).getTeksti());
-            toinenFontti.draw(batch, glyphLayout, x, y);
-            y -= 1.5 * glyphLayout.height;
-        }
-
         batch.end();
         stage.draw();
+
+        if (Gdx.input.isTouched()) {
+            sp.resetPlayScreen();
+            dispose();
+        }
 
 
     }
