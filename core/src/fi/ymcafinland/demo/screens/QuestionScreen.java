@@ -68,24 +68,24 @@ public class QuestionScreen implements Screen {
         solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get("7");
         rnd = new Random();
 
-        createExitButton(sp);
-        stagenluonti();
+        stagenluonti(createExitButton(sp));
         this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, table);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
     }
 
-    public void stagenluonti() {
+    public void stagenluonti(Table exitTable) {
         this.stage = new Stage(viewport);
         table = new Table();
         table.setFillParent(true);
-        table.top().right();
-        table.add(exitButton);
+        table.center();
         stage.addActor(table);
+        stage.addActor(exitTable);
+
     }
 
-    public void createExitButton(final SelviytyjanPurjeet sp) {
+    public Table createExitButton(final SelviytyjanPurjeet sp) {
         Button.ButtonStyle styleExit = new Button.ButtonStyle();
         texture = new Texture("ruksi.png");
 
@@ -98,6 +98,11 @@ public class QuestionScreen implements Screen {
                 dispose();
             }
         });
+
+        Table exitTable = new Table();
+        exitTable.setFillParent(true);
+        exitTable.top().right().add(exitButton);
+        return exitTable;
     }
 
 /**
@@ -136,7 +141,7 @@ public void sendData() {
         x = sp.V_WIDTH / 10;
         batch.end();
 
-        vaittamanPiirtaja.renderoi(batch, glyphLayout, delta);
+        vaittamanPiirtaja.renderoi(batch, delta);
 
         stage.draw();
 

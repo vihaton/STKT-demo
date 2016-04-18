@@ -47,39 +47,20 @@ public class VaittamanPiirtaja {
         skin.add("vaittamatyyli", vaittamatyyli);
 
         sliderStyle = new Slider.SliderStyle(skin.getDrawable("sliderbackground"), skin.getDrawable("sliderknob"));
-//        table = new Table();
-//        table.setFillParent(true);
-//        table.bottom();
-//        table.add(slider);
-//
-//        slider.addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ChangeEvent event, Actor actor) {
-//                Gdx.app.log("UITest", "slider: " + slider.getValue());
-//            }
-//        });
+
         //stage.addActor(table);
 
     }
 
-    public void renderoi(SpriteBatch batch, GlyphLayout layout, float delta) {
-        float y = SelviytyjanPurjeet.V_HEIGHT - 1.5f * layout.height;
+    public void renderoi(SpriteBatch batch, float delta) {
 
         //todo päivittää näytön näkymän, EI LUO MITÄÄN UUSIA TAULUKOITA, LABELEITÄ YM
 
         batch.begin();
-        for (int i = 0; i < solmunVaittamat.size(); i++) {
-            Vaittama v = solmunVaittamat.get(i);
-            layout.setText(font, v.getTeksti());
-
-            font.draw(batch, layout, 10, y);
-            y -= 1.5 * layout.height;
-
-            slider.setValue(v.getArvo());
-            slider.act(delta);
-            slider.draw(batch, 1);
-        }
+        slider.act(delta);
+        stage.draw();
         batch.end();
+
     }
 
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
