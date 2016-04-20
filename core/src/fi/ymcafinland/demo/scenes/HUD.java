@@ -293,7 +293,7 @@ public class HUD {
             styleChild2.up = skin.getDrawable(lapset.get(1).getMinikuvanNimi());
             child2 = new Button(styleChild2);
             styleChild3.up = skin.getDrawable(lapset.get(2).getMinikuvanNimi());
-            child3 = new Button(styleChild2);
+            child3 = new Button(styleChild3);
         } else {
 
             child1.setVisible(false);
