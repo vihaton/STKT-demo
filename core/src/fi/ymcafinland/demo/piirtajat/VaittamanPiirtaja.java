@@ -62,14 +62,12 @@ public class VaittamanPiirtaja {
 
         for (final Vaittama nykyinenVaittama : solmunVaittamat) {
             Table vaittamaTaulukko = new Table();
-            //todo väittämätekstien keskittäminen
             Label otsikko = new Label(nykyinenVaittama.getTeksti(), skin, "vaittamatyyli");
             otsikko.setFontScale(2);
             otsikko.setWrap(true);
             otsikko.setAlignment(Align.center);
             otsikko.setWidth(SelviytyjanPurjeet.V_WIDTH);
 
-            //todo slider kuvista isommat, ilman että käytettävyys kärsii
             final Slider slider = new Slider(0.5f, 1.5f, .1f, false, sliderStyle);
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getArvo());
