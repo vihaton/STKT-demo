@@ -24,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -75,11 +76,11 @@ public class InfoScreen implements Screen {
 
         textField = new TextField("Selviytyjän purjeet", skin);
 
-        //todo pitkä teksti scrollautuu alas asti
         Label label = new Label(reallyLongString, labelStyle);
         label.setWidth(sp.V_WIDTH / 3);
         label.setWrap(true);
         label.setFontScale(2);
+        label.setAlignment(Align.bottom);
         label.pack();
         label.setFillParent(true);
         pane = new ScrollPane(label);
