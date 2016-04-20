@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 
@@ -72,7 +73,9 @@ public class SolmunPiirtaja {
 
             //todo tekstit pallojen sisälle (mahdollisimman isolla)
             otsikko.setText(s.getOtsikko());
+
             sisalto.setText(s.getSisalto());
+            sisalto.setFontScale(2);
 
             tekstitaulukko.reset();
 

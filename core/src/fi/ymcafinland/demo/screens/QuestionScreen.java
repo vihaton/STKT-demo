@@ -50,7 +50,7 @@ public class QuestionScreen implements Screen {
     private Random rnd;
     private Stage stage;
     private VaittamanPiirtaja vaittamanPiirtaja;
-
+    Solmu solmu;
     private Button exitButton;
     private Texture texture;
     Table table;
@@ -144,8 +144,7 @@ public class QuestionScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        //todo QS lukee toisen tai ensimmäisen tason solmun teksti, jotta käyttäjä tietää minkä kategorian väitteisiin vastaa
-        glyphLayout.setText(fontti, "Kolmannen tason");
+        glyphLayout.setText(fontti, solmu.getMutsi().getOtsikko());
         float x = (sp.V_WIDTH - glyphLayout.width) / 2;
         float y = (sp.V_HEIGHT - 2 * glyphLayout.height);
 
@@ -154,8 +153,7 @@ public class QuestionScreen implements Screen {
         y -= glyphLayout.height;
         glyphLayout.setText(fontti, "väittämät");
         fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
-        y -= 2 * glyphLayout.height;
-        x = sp.V_WIDTH / 10;
+
         batch.end();
 
         vaittamanPiirtaja.renderoi(batch, delta);
@@ -181,6 +179,7 @@ public class QuestionScreen implements Screen {
     }
 
     public void setSolmu(Solmu solmu) {
+        this.solmu = solmu;
         solmunID = solmu.getID();
         solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmunID);
         vaittamanPiirtaja.paivitaVaittamat(solmunVaittamat);
