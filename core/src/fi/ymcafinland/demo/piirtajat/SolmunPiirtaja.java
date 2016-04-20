@@ -74,7 +74,6 @@ public class SolmunPiirtaja {
             //todo tekstit pallojen sisälle (mahdollisimman isolla)
             otsikko.setText(s.getOtsikko());
 
-
             sisalto.setText(s.getSisalto());
             sisalto.setFontScale(2);
 
