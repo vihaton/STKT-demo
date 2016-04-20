@@ -14,12 +14,13 @@ import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.screens.QuestionScreen;
 
 public class SelviytyjanPurjeet extends Game {
+    //TODO koko ohjelmalle yhteinen Skin
+    //Todo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
     public final static int V_WIDTH = 576;
     public final static int V_HEIGHT = 1024;
 
-    //Todo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
-    public static final int T_LEVEYS = 8192;
-    public static final int T_KORKEUS = 8192;
+    public static final int TAUSTAN_LEVEYS = 8192;
+    public static final int TAUSTAN_KORKEUS = 8192;
 
     protected SpriteBatch batch;
     private Verkko verkko;
@@ -35,7 +36,7 @@ public class SelviytyjanPurjeet extends Game {
 
 
         Gdx.app.log("SP", "Verkon luominen aloitetaan");
-        verkko = new Verkko(T_LEVEYS, T_KORKEUS);
+        verkko = new Verkko(TAUSTAN_LEVEYS, TAUSTAN_KORKEUS);
         Gdx.app.log("SP", "Verkko luominen on valmis");
 
         Gdx.app.log("SP", "Vaittamien luominen aloitetaan");
@@ -65,8 +66,6 @@ public class SelviytyjanPurjeet extends Game {
 
     public void setQuestionScreen(Solmu solmu) {
         questionScreen.setSolmu(solmu);
-        questionScreen.createExitButton(this);
-        questionScreen.stagenluonti();
         setScreen(questionScreen);
     }
     public void setPalauteScreen() {
@@ -74,7 +73,9 @@ public class SelviytyjanPurjeet extends Game {
     }
 
     public void resetPlayScreen() {
+
 		playscreen.resetInputProcessor();
+        playscreen.resetStateTime();
         setScreen(playscreen);
     }
 

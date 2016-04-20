@@ -2,11 +2,16 @@ package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
@@ -25,8 +30,11 @@ public class PalauteScreen implements Screen {
     private OrthographicCamera camera;
     private static GlyphLayout glyphLayout = new GlyphLayout();
     private final BitmapFont fontti;
-    private final BitmapFont toinenFontti;
     private Pelaaja pelaaja;
+    private Label arvio;
+    private Skin skin;
+    private Table table;
+    private Stage stage;
 
     public PalauteScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja) {
         this.sp = sp;
@@ -34,9 +42,21 @@ public class PalauteScreen implements Screen {
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
-        this.toinenFontti = new BitmapFont();
         this.pelaaja = pelaaja;
+        table = new Table();
+        stage = new Stage(viewport);
+        table.center();
+        table.setFillParent(true);
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
+
+        Label.LabelStyle arvioStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        skin = new Skin();
+        skin.add("arvio", arvioStyle);
+        this.arvio = new Label(pelaaja.toString(), skin, "arvio");
+
+        arvio.setFontScale(2);
+        stage.addActor(table);
+        table.add(arvio);
     }
 
 
@@ -59,12 +79,11 @@ public class PalauteScreen implements Screen {
 
         batch.begin();
         fontti.draw(batch, glyphLayout, x, y);
-        y -= 2 * glyphLayout.height;
-
-        glyphLayout.setText(toinenFontti, "\n" + pelaaja.toString());
-
-        toinenFontti.draw(batch, glyphLayout, (sp.V_WIDTH / 2f - glyphLayout.width), y);
         batch.end();
+
+        arvio.setText(pelaaja.toString());
+
+        stage.draw();
 
         if (Gdx.input.isTouched()) {
             sp.resetPlayScreen();
