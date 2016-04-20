@@ -144,6 +144,7 @@ public class QuestionScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
+        //todo QS lukee toisen tai ensimmäisen tason solmun teksti, jotta käyttäjä tietää minkä kategorian väitteisiin vastaa
         glyphLayout.setText(fontti, "Kolmannen tason");
         float x = (sp.V_WIDTH - glyphLayout.width) / 2;
         float y = (sp.V_HEIGHT - 2 * glyphLayout.height);
