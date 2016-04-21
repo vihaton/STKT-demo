@@ -82,6 +82,7 @@ public class InfoScreen implements Screen {
         label.setFontScale(2);
         label.pack();
         label.setFillParent(true);
+
         pane = new ScrollPane(label);
         pane.setBounds(sp.V_WIDTH / 3.5f, sp.V_HEIGHT / 5, sp.V_WIDTH / 2, sp.V_HEIGHT / 2);
         pane.layout();

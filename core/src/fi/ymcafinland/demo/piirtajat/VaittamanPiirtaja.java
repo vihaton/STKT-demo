@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -81,6 +83,12 @@ public class VaittamanPiirtaja {
                 public void changed(ChangeEvent event, Actor actor) {
                     Gdx.app.log("UITest", "slider: " + slider.getValue());
                     nykyinenVaittama.setArvo(slider.getValue());
+                }
+            });
+            slider.addListener(new InputListener() {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    event.stop();
+                    return false;
                 }
             });
             sliderit.add(slider);
