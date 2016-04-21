@@ -271,14 +271,18 @@ public class HUD {
         styleKartta.up = skin.getDrawable("mini_karttakuva");
 
         karttaNappi = new Button(styleKartta);
+        karttaNappi.setScale(1.2f);
         if (hasParent) {
             styleParent.up = skin.getDrawable(solmu.getMutsi().getMinikuvanNimi());
             parent = new Button(styleParent);
+            parent.setScale(1.2f);
         }
         styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMinikuvanNimi());
         leftSister = new Button(styleLeft);
+        leftSister.setScale(1.2f);
         styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMinikuvanNimi());
         rightSister = new Button(styleRight);
+        rightSister.setScale(1.2f);
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 
@@ -290,10 +294,14 @@ public class HUD {
             }
             styleChild1.up = skin.getDrawable(lapset.get(0).getMinikuvanNimi());
             child1 = new Button(styleChild1);
+            child1.setScale(1.2f);
             styleChild2.up = skin.getDrawable(lapset.get(1).getMinikuvanNimi());
             child2 = new Button(styleChild2);
+            child2.setScale(1.2f);
             styleChild3.up = skin.getDrawable(lapset.get(2).getMinikuvanNimi());
             child3 = new Button(styleChild3);
+            child3.setScale(1.2f);
+
         } else {
 
             child1.setVisible(false);
@@ -307,11 +315,13 @@ public class HUD {
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
         styleKysymys.up = skin.getDrawable("mini_kysymys");
         kysymys = new Button(styleKysymys);
+        kysymys.setScale(1.2f);
         textureHahmo = new Texture("hahmo.png");
 
         stylePalaute.up = new TextureRegionDrawable(new TextureRegion(textureHahmo));
 
         palaute = new Button(stylePalaute);
+        palaute.setScale(1.2f);
     }
 
 }
