@@ -75,7 +75,7 @@ public class VaittamanPiirtaja {
             otsikko.setWidth(SelviytyjanPurjeet.V_WIDTH);
 
             //todo slider kuvista isommat, ilman että käytettävyys kärsii
-            final Slider slider = new Slider(0.5f, 1.5f, .1f, false, sliderStyle);
+            final Slider slider = new Slider(0.5f, 1.5f, .05f, false, sliderStyle);
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getArvo());
             slider.addListener(new ChangeListener() {
