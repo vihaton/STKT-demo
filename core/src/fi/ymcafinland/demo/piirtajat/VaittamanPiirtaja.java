@@ -6,8 +6,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -30,6 +34,7 @@ public class VaittamanPiirtaja {
     private Slider.SliderStyle sliderStyle;
     private Stage stage;
     private Table rootTable;
+    private ScrollPane pane;
 
     public VaittamanPiirtaja(Stage stage, Table rootTable) {
         this.stage = stage;
@@ -50,8 +55,10 @@ public class VaittamanPiirtaja {
 
         batch.begin();
         for (Slider s : sliderit) {
-            s.act(delta);
+                s.act(delta);
         }
+
+        pane.act(delta);
         stage.draw();
         batch.end();
 
@@ -80,16 +87,32 @@ public class VaittamanPiirtaja {
 
                 }
             });
+            slider.addListener(new InputListener() {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    event.stop();
+                    return false;
+                }
+            });
             sliderit.add(slider);
 
             //todo jos paljon väittämiä, väittämät eivät peitä otsikkoa! (esim C3, ID = 15) (väittämät scroll panen sisään?)
-
             vaittamaTaulukko.add(otsikko).width(slider.getWidth() * 3);
             vaittamaTaulukko.row();
             vaittamaTaulukko.add(slider);
 
             rootTable.add(vaittamaTaulukko);
             rootTable.row();
+            //ToDo Oletettavasti jokaisella solmulla on tarpeeksi kysymyksiä ettei näkymä näytä vammaselta scrollpanen sisällä, mutta ei välttämättä vielä demossa. Tehdään jokin purkkaviritelmä? vrt. esim C3 ja C3
+
+
+            pane = new ScrollPane(rootTable.bottom());
+
+            pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.5f);
+
+            pane.layout();
+            pane.setTouchable(Touchable.enabled);
+
+            stage.addActor(pane);
         }
     }
 }

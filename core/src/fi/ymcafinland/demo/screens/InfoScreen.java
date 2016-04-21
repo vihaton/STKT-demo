@@ -83,8 +83,9 @@ public class InfoScreen implements Screen {
         label.setAlignment(Align.bottom);
         label.pack();
         label.setFillParent(true);
+
         pane = new ScrollPane(label);
-        pane.setBounds(sp.V_WIDTH / 3.5f, sp.V_HEIGHT / 5, sp.V_WIDTH / 2, sp.V_HEIGHT / 2); //This should be the bounds of the scroller and the scrollable content need to be inside this
+        pane.setBounds(sp.V_WIDTH / 3.5f, sp.V_HEIGHT / 5, sp.V_WIDTH / 2, sp.V_HEIGHT / 2);
         pane.layout();
         pane.setTouchable(Touchable.enabled);
         this.stage = new Stage(viewport);
