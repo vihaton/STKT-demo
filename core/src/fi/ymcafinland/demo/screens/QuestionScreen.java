@@ -111,7 +111,10 @@ public class QuestionScreen implements Screen {
     public void sendData() {
         float kerroin = 1f;
         for (Vaittama v : solmunVaittamat) {
-            kerroin *= v.getArvo();
+
+                kerroin *= v.getArvo();
+
+
         }
         int solmunID = Integer.parseInt(this.solmunID);
 
