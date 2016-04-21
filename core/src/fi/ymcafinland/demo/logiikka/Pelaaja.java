@@ -9,6 +9,12 @@ import java.util.HashMap;
 public class Pelaaja {
     private String nimi;
     float[] selviytyisArvot;
+    public final int FYYSINEN = 0;
+    public final int ALYLLINEN = 1;
+    public final int EETTINEN = 2;
+    public final int TUNTEELLINEN = 3;
+    public final int SOSIAALINEN = 4;
+    public final int LUOVA = 5;
 
     /**
      * Pelaajalla on selviytymisarvosanat joihin vaikutetaan vastaamalla väittämiin.
@@ -33,75 +39,75 @@ public class Pelaaja {
     }
 
     public void lisaaFyysista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(0, maara);
+        lisaaSelviytymisarvoIndeksissa(FYYSINEN, maara);
     }
 
     public void lisaaAlyllista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(1, maara);
+        lisaaSelviytymisarvoIndeksissa(ALYLLINEN, maara);
     }
 
     public void lisaaEettista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(2, maara);
+        lisaaSelviytymisarvoIndeksissa(EETTINEN, maara);
     }
 
     public void lisaaTunteellista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(3, maara);
+        lisaaSelviytymisarvoIndeksissa(TUNTEELLINEN, maara);
     }
 
     public void lisaaSosiaalista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(4, maara);
+        lisaaSelviytymisarvoIndeksissa(SOSIAALINEN, maara);
     }
 
     public void lisaaLuovuutta(float maara) {
-        lisaaSelviytymisarvoIndeksissa(5, maara);
+        lisaaSelviytymisarvoIndeksissa(LUOVA, maara);
     }
 
     public float getFyysinen() {
-        return selviytyisArvot[0];
+        return selviytyisArvot[FYYSINEN];
     }
 
     public float getAlyllinen() {
-        return selviytyisArvot[1];
+        return selviytyisArvot[ALYLLINEN];
     }
 
     public float getEettinen() {
-        return selviytyisArvot[2];
+        return selviytyisArvot[EETTINEN];
     }
 
     public float getTunteellinen() {
-        return selviytyisArvot[3];
+        return selviytyisArvot[TUNTEELLINEN];
     }
 
     public float getSosiaalinen() {
-        return selviytyisArvot[4];
+        return selviytyisArvot[SOSIAALINEN];
     }
 
     public float getLuova() {
-        return selviytyisArvot[5];
+        return selviytyisArvot[LUOVA];
     }
 
     public void setFyysinen(float fyysinen) {
-        selviytyisArvot[0] = fyysinen;
+        selviytyisArvot[FYYSINEN] = fyysinen;
     }
 
     public void setAlyllinen(float alyllinen) {
-        selviytyisArvot[1] = alyllinen;
+        selviytyisArvot[ALYLLINEN] = alyllinen;
     }
 
     public void setEettinen(float eettinen) {
-        selviytyisArvot[2] = eettinen;
+        selviytyisArvot[EETTINEN] = eettinen;
     }
 
     public void setTunteellinen(float tunteellinen) {
-        selviytyisArvot[3] = tunteellinen;
+        selviytyisArvot[TUNTEELLINEN] = tunteellinen;
     }
 
     public void setSosiaalinen(float sosiaalinen) {
-        selviytyisArvot[4] = sosiaalinen;
+        selviytyisArvot[SOSIAALINEN] = sosiaalinen;
     }
 
     public void setLuova(float luova) {
-        selviytyisArvot[5] = luova;
+        selviytyisArvot[LUOVA] = luova;
     }
 
     //ToDo maxselviytyminen
@@ -111,12 +117,12 @@ public class Pelaaja {
 
     @Override
     public String toString() {
-        return "Fyysinen: " + String.format("%.1f", selviytyisArvot[0]) + "\n" +
-                "Älyllinen: " + String.format("%.1f", selviytyisArvot[1]) + "\n" +
-                "Eettinen: " + String.format("%.1f", selviytyisArvot[2]) + "\n" +
-                "Tunteellinen: " + String.format("%.1f", selviytyisArvot[3]) + "\n" +
-                "Sosiaalinen: " + String.format("%.1f", selviytyisArvot[4]) + "\n" +
-                "Luova: " + String.format("%.1f", selviytyisArvot[5]) + "\n";
+        return "Fyysinen: " + String.format("%.1f", selviytyisArvot[FYYSINEN]) + "\n" +
+                "Älyllinen: " + String.format("%.1f", selviytyisArvot[ALYLLINEN]) + "\n" +
+                "Eettinen: " + String.format("%.1f", selviytyisArvot[EETTINEN]) + "\n" +
+                "Tunteellinen: " + String.format("%.1f", selviytyisArvot[TUNTEELLINEN]) + "\n" +
+                "Sosiaalinen: " + String.format("%.1f", selviytyisArvot[SOSIAALINEN]) + "\n" +
+                "Luova: " + String.format("%.1f", selviytyisArvot[LUOVA]) + "\n";
     }
 
     public String getNimi() {

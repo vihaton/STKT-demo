@@ -13,11 +13,13 @@ public class Vaittama {
     private String teksti;
     private String solmunID;
     private float arvo;
+    private boolean checked;
 
     public Vaittama(String txt, String solmunID) {
         this.teksti = txt;
         this.solmunID = solmunID;
         arvo = 1f;
+        checked = false;
     }
 
     public String getTeksti() {
@@ -34,5 +36,11 @@ public class Vaittama {
 
     public void setArvo(float arvo) {
         this.arvo = arvo;
+    }
+    public void setChecked(boolean checked){
+        this.checked = checked;
+    }
+    public boolean getChecked(){
+        return checked;
     }
 }
