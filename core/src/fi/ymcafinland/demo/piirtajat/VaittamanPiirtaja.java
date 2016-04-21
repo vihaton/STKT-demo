@@ -67,6 +67,7 @@ public class VaittamanPiirtaja {
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         rootTable.reset();
         //ToDo jos sliderin arvoa ei muuteta, pelaajan selviytymis attribuutti ei pitäisi muuttua.
+        //todo minor: (vaihtoehtona tehdä joka kohtaan tarpeeksi väittämiä :) väittämät ilmestyvät panen "yläreunaan", heti väittämänäkymän otsikon alle, ei näkymän alareunaan (korostuu kun vain vähän väittämiä)
         for (final Vaittama nykyinenVaittama : solmunVaittamat) {
             Table vaittamaTaulukko = new Table();
             Label otsikko = new Label(nykyinenVaittama.getTeksti(), skin, "vaittamatyyli");
