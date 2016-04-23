@@ -75,12 +75,9 @@ public class InfoScreen implements Screen {
         labelStyle.font = new BitmapFont();
         labelStyle.fontColor = Color.WHITE;
 
-        //todo bugi fix alkuteksti ei asetu oikein scrollpaneen
         textField = new TextField("Selviytyjän purjeet", skin);
-        int paneWidth = sp.V_WIDTH / 3;
 
         Label label = new Label(reallyLongString, labelStyle);
-        label.setWidth(paneWidth);
         label.setWrap(true);
         label.setFontScale(2);
         label.setAlignment(Align.bottom);
@@ -88,7 +85,7 @@ public class InfoScreen implements Screen {
         label.setFillParent(true);
 
         pane = new ScrollPane(label);
-        pane.setBounds(sp.V_WIDTH / 3.5f, sp.V_HEIGHT / 5, sp.V_WIDTH / 2, sp.V_HEIGHT / 2);
+        pane.setBounds(sp.V_WIDTH / 10f, sp.V_HEIGHT / 5, sp.V_WIDTH * 0.8f, sp.V_HEIGHT / 2);
         pane.layout();
         pane.setTouchable(Touchable.enabled);
         this.stage = new Stage(viewport);
