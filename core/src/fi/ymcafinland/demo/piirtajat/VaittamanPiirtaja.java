@@ -66,6 +66,7 @@ public class VaittamanPiirtaja {
 
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         rootTable.reset();
+
         //ToDo jos sliderin arvoa ei muuteta, pelaajan selviytymis attribuutti ei pitäisi muuttua.
         //todo minor: (vaihtoehtona tehdä joka kohtaan tarpeeksi väittämiä :) väittämät ilmestyvät panen "yläreunaan", heti väittämänäkymän otsikon alle, ei näkymän alareunaan (korostuu kun vain vähän väittämiä)
         for (final Vaittama nykyinenVaittama : solmunVaittamat) {
@@ -105,15 +106,14 @@ public class VaittamanPiirtaja {
             rootTable.row();
             //ToDo Oletettavasti jokaisella solmulla on tarpeeksi kysymyksiä ettei näkymä näytä vammaselta scrollpanen sisällä, mutta ei välttämättä vielä demossa. Tehdään jokin purkkaviritelmä? vrt. esim C3 ja C3
 
-
-            pane = new ScrollPane(rootTable.bottom());
-
-            pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.5f);
-
-            pane.layout();
+            pane = new ScrollPane(rootTable.center());
+            pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.35f);
             pane.setTouchable(Touchable.enabled);
+            pane.layout();
 
             stage.addActor(pane);
         }
+
+        rootTable.padBottom(Gdx.graphics.getHeight() / 6);
     }
 }
