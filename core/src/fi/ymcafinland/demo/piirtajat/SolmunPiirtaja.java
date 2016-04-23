@@ -53,7 +53,7 @@ public class SolmunPiirtaja {
     /**
      * Piirtää kaikki solmut.
      *
-     * @param batch vastaa piirtämisestä.
+     * @param batch              vastaa piirtämisestä.
      * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
      */
     public void piirra(SpriteBatch batch, float angleToPointCamera) {
@@ -79,8 +79,10 @@ public class SolmunPiirtaja {
             tekstitaulukko.reset();
 
             tekstitaulukko.setPosition(x, y);
-            tekstitaulukko.add(otsikko);
-            tekstitaulukko.row();
+            if (otsikko.getText().length != 0) { //jos otsikko ei ole tyhjä
+                tekstitaulukko.add(otsikko);
+                tekstitaulukko.row();
+            }
             tekstitaulukko.add(sisalto);
             tekstitaulukko.setTransform(true);
             tekstitaulukko.setRotation(angleToPointCamera - 90);

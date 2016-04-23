@@ -49,11 +49,13 @@ public class InfoScreen implements Screen {
 
 
     private static final String reallyLongString =
-            "This is a really long string that has lots of lines and repeats itself over and over again This is a really long string that has" +
-                    " lots of lines and repeats itself over and over again This is a really long string that has lots of lines and repeats itself over and over"+
-                    " again This is a really long string that has lots of lines and repeats itself over and over again"+
-                    " This is a really long string that has lots of lines and repeats itself over and over again This is a really long string that has lots"+
-                    " of lines and repeats itself over and over again";
+            "Tähän näkymään tulevat Selviytyjän purjeiden ohjeet: miten ja miksi sitä tehdään.\n\n" +
+                    "Tämä demo (v0.2) on kehitysvaiheessa, eikä välttämättä mikään ole vielä lopullista. " +
+                    "Erityisesti grafiikat tulevat muuttumaan vielä (moneen) kertaan. Tärkeimpänä kehityksessä " +
+                    "pidetään 1) toiminnallisuuksien implementointia, 2) minimikäytettävyyden saavuttamista ja " +
+                    "3) grafiikan ja intuitiivisen käytettävyyden saavuttamista.\n\n" +
+                    "Tätä sovellusta ovat devanneet Vili Hätönen, Sasu Mäkinen ja Jouni Winter. Materiaalia ovat " +
+                    "ensisijaisesti olleet kehittämässä Vili Hätönen, Olli Laukkanen, Tiina Saari ja Sasu Mäkinen.";
 
 
     public InfoScreen(SelviytyjanPurjeet sp) {
@@ -68,16 +70,14 @@ public class InfoScreen implements Screen {
         this.stage = new Stage(viewport);
         createExitButton(sp);
 
-
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = new BitmapFont();
-        labelStyle.fontColor = Color.valueOf("A07E10FF");
+        labelStyle.fontColor = Color.WHITE;
 
         textField = new TextField("Selviytyjän purjeet", skin);
 
         Label label = new Label(reallyLongString, labelStyle);
-        label.setWidth(sp.V_WIDTH / 3);
         label.setWrap(true);
         label.setFontScale(2);
         label.setAlignment(Align.bottom);
@@ -85,7 +85,7 @@ public class InfoScreen implements Screen {
         label.setFillParent(true);
 
         pane = new ScrollPane(label);
-        pane.setBounds(sp.V_WIDTH / 3.5f, sp.V_HEIGHT / 5, sp.V_WIDTH / 2, sp.V_HEIGHT / 2);
+        pane.setBounds(sp.V_WIDTH / 10f, sp.V_HEIGHT / 5, sp.V_WIDTH * 0.8f, sp.V_HEIGHT / 2);
         pane.layout();
         pane.setTouchable(Touchable.enabled);
         this.stage = new Stage(viewport);

@@ -82,7 +82,9 @@ public class PlayScreen implements Screen {
         trans = true;
         stateTime = 0;
         timer = System.currentTimeMillis();
-        Gdx.app.log("playscreen", "UUSI SIIRTO" + stateTime + " " + trans);
+
+        //debug
+//        Gdx.app.log("playscreen", "UUSI SIIRTO" + stateTime + " " + trans);
     }
 
     @Override
@@ -105,7 +107,8 @@ public class PlayScreen implements Screen {
 
         deltaAVG = (deltaAVG * 19 + delta) / 20;
 
-        Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
+        //debug
+//        Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
 
         actTransition(delta);
 

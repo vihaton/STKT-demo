@@ -56,6 +56,7 @@ public class Vaittamat {
         }
     }
 
+    //todo jos lause on suljettu hipsuihin " ", poistetaan ne
     private String[] pilkoRivi(String kokoRivi) {
         String[] rivi0 = kokoRivi.split(",");
         String[] pilkottuRivi = new String[18];
