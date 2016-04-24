@@ -35,6 +35,8 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 public class InfoScreen implements Screen {
 
     protected SpriteBatch batch;
+    protected Table table;
+    protected TextField textField;
 
     private final SelviytyjanPurjeet sp;
     private FitViewport viewport;
@@ -43,12 +45,9 @@ public class InfoScreen implements Screen {
     private Sprite tausta;
     private ScrollPane pane;
     private Stage stage;
-    Table table;
-    TextField textField;
     private Button exitButton;
 
-
-    private static final String reallyLongString =
+    private static final String infoText =
             "Tähän näkymään tulevat Selviytyjän purjeiden ohjeet: miten ja miksi sitä tehdään.\n\n" +
                     "Tämä demo (v0.2) on kehitysvaiheessa, eikä välttämättä mikään ole vielä lopullista. " +
                     "Erityisesti grafiikat tulevat muuttumaan vielä (moneen) kertaan. Tärkeimpänä kehityksessä " +
@@ -64,7 +63,6 @@ public class InfoScreen implements Screen {
         this.camera = new OrthographicCamera();
         //todo viewport asettuu myös tietokoneella ajettaessa oikein (stage?)
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
-
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.tausta = new Sprite(new Texture("sails02.png"));
         this.stage = new Stage(viewport);
@@ -77,7 +75,7 @@ public class InfoScreen implements Screen {
 
         textField = new TextField("Selviytyjän purjeet", skin);
 
-        Label label = new Label(reallyLongString, labelStyle);
+        Label label = new Label(infoText, labelStyle);
         label.setWrap(true);
         label.setFontScale(2);
         label.setAlignment(Align.bottom);
@@ -88,16 +86,12 @@ public class InfoScreen implements Screen {
         pane.setBounds(sp.V_WIDTH / 10f, sp.V_HEIGHT / 5, sp.V_WIDTH * 0.8f, sp.V_HEIGHT / 2);
         pane.layout();
         pane.setTouchable(Touchable.enabled);
-        this.stage = new Stage(viewport);
 
         table = new Table();
         table.setFillParent(true);
 
         table.bottom().padBottom(48).add(exitButton);
         stage.addActor(table);
-
-
-
         stage.addActor(pane);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
@@ -138,11 +132,6 @@ public class InfoScreen implements Screen {
         batch.end();
         pane.act(delta);
         stage.draw();
-
-//        if (Gdx.input.isTouched()) {
-//            sp.resetPlayScreen();
-//            dispose();
-//        }
     }
 
     @Override

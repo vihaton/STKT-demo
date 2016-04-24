@@ -33,7 +33,6 @@ public class HUD {
     public InputMultiplexer im;
 
     protected Solmu solmu;
-
     protected OrthographicCamera camera;
     protected Skin skin;
     protected Sprite map;
@@ -47,15 +46,11 @@ public class HUD {
     protected Button child3;
     protected Button kysymys;
     protected Button palaute;
-
     protected boolean montaLasta;
-
-
-    TextureAtlas atlas;
-    Texture textureHahmo;
-
-    PlayScreen playScreen;
-    SpriteBatch sb;
+    protected TextureAtlas atlas;
+    protected Texture textureHahmo;
+    protected PlayScreen playScreen;
+    protected SpriteBatch sb;
 
     private Viewport viewport;
 
@@ -63,12 +58,12 @@ public class HUD {
     public HUD(final PlayScreen playScreen, SpriteBatch sb, final Solmu solmu) {
 
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
+
+        //HUD EI implementoi inputProcessorin rajapintaa, vaan asettaa inputprocessoriksi tuntemansa inputmultiplexerin.
         this.stage = new Stage(viewport, sb);
-        GestureDetector gd = new GestureDetector(new HUDListener (this, viewport, sb));
-        InputMultiplexer im = new InputMultiplexer();
-        im.addProcessor(gd);
-        im.addProcessor(stage);
-        //Gdx.input.setInputProcessor(im);
+        this.im = new InputMultiplexer(stage, new GestureDetector(new HUDListener(this, viewport, sb)));
+        Gdx.input.setInputProcessor(im);
+
         atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
         skin = new Skin();
         skin.addRegions(atlas);
@@ -110,7 +105,7 @@ public class HUD {
                 playScreen.setSolmu(solmu.getVasenSisarus());
             }
         });
-        if(montaLasta) {
+        if (montaLasta) {
             child1.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     ArrayList<Solmu> laps = solmu.getLapset();
@@ -122,7 +117,7 @@ public class HUD {
                 public void changed(ChangeEvent event, Actor actor) {
                     ArrayList<Solmu> laps = solmu.getLapset();
 
-                        playScreen.setSolmu(laps.get(1));
+                    playScreen.setSolmu(laps.get(1));
 
                 }
             });
@@ -166,8 +161,8 @@ public class HUD {
      */
     public void update(Solmu solmu) {
         boolean zoomedOut = false;
-        if(karttaNappi.isChecked()){
-             zoomedOut = true;
+        if (karttaNappi.isChecked()) {
+            zoomedOut = true;
         }
 
         stage.clear();
@@ -185,7 +180,7 @@ public class HUD {
 
 
     private void setZoomedHUDState(boolean zoomedOut) {
-        if(hasParent) {
+        if (hasParent) {
             parent.setVisible(!zoomedOut);
             parent.setDisabled(zoomedOut);
         }
@@ -220,7 +215,7 @@ public class HUD {
         Table tableTop3 = new Table();
         tableTop3.setFillParent(true);
         tableTop3.top();
-        if(hasParent) {
+        if (hasParent) {
             tableTop2.top().add(parent);
         }
         tableTop.right().add(karttaNappi);
@@ -242,12 +237,11 @@ public class HUD {
         Table tableBot = new Table();
         tableBot.bottom();
         tableBot.setFillParent(true);
-        if(montaLasta) {
+        if (montaLasta) {
             tableBot.add(child1).expand().bottom().left().padBottom(2);
             tableBot.add(child2).expand().bottom().padBottom(2);
             tableBot.add(child3).expand().bottom().right().padBottom(2);
-        }
-        else {
+        } else {
             tableBot.add(kysymys).expand().bottom().padBottom(2);
         }
         stage.addActor(tableBot);
@@ -323,5 +317,4 @@ public class HUD {
         palaute = new Button(stylePalaute);
         palaute.setScale(1.2f);
     }
-
 }

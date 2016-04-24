@@ -23,6 +23,7 @@ public class SelviytyjanPurjeet extends Game {
     public static final int TAUSTAN_KORKEUS = 8192;
 
     protected SpriteBatch batch;
+
     private Verkko verkko;
     private PlayScreen playscreen;
     private PalauteScreen palauteScreen;
@@ -44,9 +45,9 @@ public class SelviytyjanPurjeet extends Game {
         Gdx.app.log("SP", "Vaittamien luominen on valmis");
 
         Pelaaja pelaaja = new Pelaaja();
-        questionScreen = new QuestionScreen(this, pelaaja, vaittamat);
-        palauteScreen = new PalauteScreen(this, pelaaja);
-        playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
+        this.questionScreen = new QuestionScreen(this, pelaaja, vaittamat);
+        this.palauteScreen = new PalauteScreen(this, pelaaja);
+        this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
 
         setScreen(new InfoScreen(this));
         Gdx.app.log("SP", "ruuduksi asetettiin infoscreen, create() metodi päättyy");
@@ -68,12 +69,12 @@ public class SelviytyjanPurjeet extends Game {
         questionScreen.setSolmu(solmu);
         setScreen(questionScreen);
     }
+
     public void setPalauteScreen() {
         setScreen(palauteScreen);
     }
 
     public void resetPlayScreen() {
-
 		playscreen.resetInputProcessor();
         playscreen.resetStateTime();
         setScreen(playscreen);

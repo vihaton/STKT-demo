@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Sasu on 11.4.2016.
+ * Pelaaja -luokalla on selviytymisarvosanat joihin vaikutetaan vastaamalla väittämiin.
  */
 public class Pelaaja {
-    private String nimi;
-    float[] selviytyisArvot;
+
     public final int FYYSINEN = 0;
     public final int ALYLLINEN = 1;
     public final int EETTINEN = 2;
@@ -16,10 +15,13 @@ public class Pelaaja {
     public final int SOSIAALINEN = 4;
     public final int LUOVA = 5;
 
-    /**
-     * Pelaajalla on selviytymisarvosanat joihin vaikutetaan vastaamalla väittämiin.
-     */
+    protected float[] selviytyisArvot;
 
+    private String nimi;
+
+    /**
+     * Konstruktori
+     */
     public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
         selviytyisArvot = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
