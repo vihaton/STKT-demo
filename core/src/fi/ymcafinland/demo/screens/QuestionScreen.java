@@ -109,6 +109,7 @@ public class QuestionScreen implements Screen {
     * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
     */
     public void sendData() {
+        //todo väittämän vastaus vaikuttaa palautteeseen vain kerran (sulku-avaus-bugi)
         float kerroin = 1f;
         for (Vaittama v : solmunVaittamat) {
 
