@@ -110,9 +110,11 @@ public class QuestionScreen implements Screen {
     */
     public void sendData() {
         //todo väittämän vastaus vaikuttaa palautteeseen vain kerran (sulku-avaus-bugi)
+        //todo pelaaja.lisaaVastaus() vain kerran
         float kerroin = 1f;
         for (Vaittama v : solmunVaittamat) {
 
+                pelaaja.lisaaVastaus();
                 kerroin *= v.getArvo();
 
 

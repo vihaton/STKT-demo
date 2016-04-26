@@ -47,7 +47,7 @@ public class SelviytyjanPurjeet extends Game {
         Pelaaja pelaaja = new Pelaaja();
         this.questionScreen = new QuestionScreen(this, pelaaja, vaittamat);
         this.palauteScreen = new PalauteScreen(this, pelaaja);
-        this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0));
+        this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0), pelaaja);
 
         setScreen(new InfoScreen(this));
         Gdx.app.log("SP", "ruuduksi asetettiin infoscreen, create() metodi päättyy");
