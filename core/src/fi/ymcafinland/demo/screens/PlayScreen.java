@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
@@ -59,6 +60,7 @@ public class PlayScreen implements Screen {
     Pelaaja pelaaja;
     Texture progressBackground;
     Texture progressKnob;
+    Container container;
 
     private final int idleTime = 10000;
 
@@ -115,8 +117,18 @@ public class PlayScreen implements Screen {
         progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progressKnob));
 
         progressBar = new ProgressBar(0, 100, 1,false, progressBarStyle);
-        progressBar.setPosition(keskipiste.x - progressBar.getWidth() / 2, keskipiste.y + progressBar.getHeight() / 2);
+        progressBar.setWidth(progressBackground.getWidth());
+        progressBar.setHeight(progressKnob.getHeight());
+
         progressBar.setValue(0);
+        container = new Container(progressBar);
+        container.setOrigin(keskipiste.x - (progressBar.getWidth() * 0.7f) / 2, keskipiste.y + progressBar.getHeight() / 2);
+        container.setPosition(container.getOriginX(), container.getOriginY());
+
+        container.setWidth(progressBackground.getWidth() * 0.7f);
+        container.setHeight(progressKnob.getHeight());
+
+        container.fill();
     }
 
     @Override
@@ -161,6 +173,7 @@ public class PlayScreen implements Screen {
         camera.position.set(polttopiste);
 
         renderZoomz(delta);
+        rotateCamera();
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -175,11 +188,11 @@ public class PlayScreen implements Screen {
 
     private void actProgressBar(float delta) {
         progressBar.setValue(pelaaja.getVastausmaara());
+        container.setRotation(angleToPoint1 - 90);
         progressBar.act(delta);
 
         batch.begin();
-        progressBar.setRotation(angleToPoint1 - 90);
-        progressBar.draw(batch, 1f);
+        container.draw(batch, 1f);
         batch.end();
     }
 
@@ -224,6 +237,10 @@ public class PlayScreen implements Screen {
                 zoomed = false;
             }
         }
+
+    }
+
+    private void rotateCamera() {
         if (zoomedOut) {
             angleToPoint2 = getAngleToPoint(keskipiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f));
             camera.rotate(-angleToPoint2 + 90 - 180);
