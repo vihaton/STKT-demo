@@ -43,10 +43,12 @@ public class PalauteScreen implements Screen {
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.pelaaja = pelaaja;
-        table = new Table();
-        stage = new Stage(viewport);
+        this.stage = new Stage(viewport);
+
+        this.table = new Table();
         table.center();
         table.setFillParent(true);
+
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
 
         Label.LabelStyle arvioStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);

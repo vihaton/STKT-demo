@@ -27,50 +27,61 @@ public class PlayScreen implements Screen {
     protected CameraTransition transition;
     protected float timeSinceTransitionZoom = 0;
     protected boolean trans = false;
-    boolean zoomedOut = false;
-    boolean zoomed = false;
-
+    protected boolean zoomedOut = false;
+    protected boolean zoomed = false;
     protected Vector3 polttopiste;
     protected Vector3 keskipiste;
-    float angleToPoint1;
-    float angleToPoint2;
+    protected float angleToPoint1;
+    protected float angleToPoint2;
+    protected long stateTime;
+    protected long timer;
+    protected float moveDuration = 1.0f;
+    protected float zoomDuration = 0.5f;
+
     private SelviytyjanPurjeet sp;
     private Viewport viewPort;
     private HUD hud;
     private SolmunPiirtaja solmunPiirtaja;
-    long stateTime;
-    long timer;
-    final float moveDuration = 1.0f;
-    final float zoomDuration = 0.5f;
-    private final int idleTime = 10000;
-
     private float deltaAVG;
     private ArrayDeque<Float> viimeisetDeltat;
 
+    private final int idleTime = 10000;
+
+    /**
+     * Playscreen luokan konstruktori
+     * @param sp SelviytyjänPurjeet -instanssi
+     * @param aloitussolmu ensimmäisenä ruutuun ilmestyvä solmu
+     */
     public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu) {
         this.sp = sp;
-        solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko());
+        this.solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko());
         this.solmu = aloitussolmu;
-
-        polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
-        camera = new OrthographicCamera();
+        this.polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
+        this.camera = new OrthographicCamera();
 
 //        viewPort = new FillViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
-        viewPort = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
+        this.viewPort = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
-        batch = new SpriteBatch();
+        this.batch = new SpriteBatch();
 
-        keskipiste = new Vector3(sp.TAUSTAN_LEVEYS / 2, sp.TAUSTAN_KORKEUS / 2, 0f);
-        timer = System.currentTimeMillis();
-        angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
-        hud = new HUD(this, batch, aloitussolmu);
-        stateTime = 0;
+        // Playscreen ei tunne sovelluksen inputprocessoria, vaan tietää HUDin joka huolehtii I/O:sta.
+        this.hud = new HUD(this, batch, aloitussolmu);
+
+        this.keskipiste = new Vector3(sp.TAUSTAN_LEVEYS / 2, sp.TAUSTAN_KORKEUS / 2, 0f);
+        this.timer = System.currentTimeMillis();
+        this.angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
+        this.stateTime = 0;
+
+        //Ilman tätä riviä zoomin kutsuminen ennen liikkumista aiheuttaa NullPointerExeptionin
+        this.transition = new CameraTransition(polttopiste, polttopiste, 0);
+
+        //Asetetaan jatkuva renderin pois päältä, renderöidään kerran.
         Gdx.graphics.setContinuousRendering(false);
         Gdx.graphics.requestRendering();
 
-        viimeisetDeltat = new ArrayDeque<>();
-        deltaAVG = 0.02f;
+        this.viimeisetDeltat = new ArrayDeque<>();
+        this.deltaAVG = 0.02f;
     }
 
     @Override
@@ -100,7 +111,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
-        Gdx.input.setInputProcessor(hud.stage);
+
         if (delta > 0.1f || delta < 0.005f) {
             delta = deltaAVG;
         }
@@ -206,11 +217,14 @@ public class PlayScreen implements Screen {
     }
 
     public void resetInputProcessor() {
-        this.hud.resetInputProcessor();
+        hud.resetInputProcessor();
     }
 
     public void setZoom(float ratio) {
-        if (camera.zoom + ratio < 5 || camera.zoom + ratio > 0) {
+        float z = getZoom();
+        if (z + ratio < 3 && z + ratio > 0.75) {
+            //debug
+            //Gdx.app.log("PS", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
             camera.zoom += ratio;
         }
     }
