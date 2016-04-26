@@ -46,6 +46,8 @@ public class InfoScreen implements Screen {
     private ScrollPane pane;
     private Stage stage;
     private Button exitButton;
+    private Button alkuButton;
+
 
     private static final String infoText =
             "Tähän näkymään tulevat Selviytyjän purjeiden ohjeet: miten ja miksi sitä tehdään.\n\n" +
@@ -67,6 +69,7 @@ public class InfoScreen implements Screen {
         this.tausta = new Sprite(new Texture("sails02.png"));
         this.stage = new Stage(viewport);
         createExitButton(sp);
+        createAlkuTestiButton(sp);
 
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -90,18 +93,33 @@ public class InfoScreen implements Screen {
         table = new Table();
         table.setFillParent(true);
 
-        table.bottom().padBottom(48).add(exitButton);
+        table.bottom().padBottom(52).add(alkuButton).expandX();
+        table.bottom().padBottom(52).add(exitButton).expandX();
         stage.addActor(table);
         stage.addActor(pane);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
 
+    private void createAlkuTestiButton(final SelviytyjanPurjeet sp ){
+
+        Button.ButtonStyle styleAlku = new Button.ButtonStyle();
+        Texture textureAlku = new Texture("alku.png");
+
+        styleAlku.up = new TextureRegionDrawable(new TextureRegion(textureAlku));
+        alkuButton = new Button(styleAlku);
+        alkuButton.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                //todo invoke alkutestinäkymä question screeniin
+            }
+        });
+    }
+
     public void createExitButton(final SelviytyjanPurjeet sp) {
         Button.ButtonStyle styleExit = new Button.ButtonStyle();
-        Texture texture = new Texture("ruksi.png");
+        Texture textureExit = new Texture("ruksi.png");
 
-        styleExit.up = new TextureRegionDrawable(new TextureRegion(texture));
+        styleExit.up = new TextureRegionDrawable(new TextureRegion(textureExit));
         exitButton = new Button(styleExit);
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
