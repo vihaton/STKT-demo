@@ -9,16 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import java.util.ArrayDeque;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -60,13 +57,15 @@ public class PlayScreen implements Screen {
     Pelaaja pelaaja;
     Texture progressBackground;
     Texture progressKnob;
-    Container container;
+    Container progressBarContainer;
+    Table progressBarTable;
 
     private final int idleTime = 10000;
 
     /**
      * Playscreen luokan konstruktori
-     * @param sp SelviytyjänPurjeet -instanssi
+     *
+     * @param sp           SelviytyjänPurjeet -instanssi
      * @param aloitussolmu ensimmäisenä ruutuun ilmestyvä solmu
      */
     public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu, Pelaaja pelaaja) {
@@ -103,7 +102,6 @@ public class PlayScreen implements Screen {
         createProgressBar();
 
 
-
     }
 
     private void createProgressBar() {
@@ -116,19 +114,25 @@ public class PlayScreen implements Screen {
         progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progressBackground));
         progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progressKnob));
 
-        progressBar = new ProgressBar(0, 100, 1,false, progressBarStyle);
+        progressBar = new ProgressBar(0, 100, 1, false, progressBarStyle);
         progressBar.setWidth(progressBackground.getWidth());
         progressBar.setHeight(progressKnob.getHeight());
 
         progressBar.setValue(0);
-        container = new Container(progressBar);
-        container.setOrigin(keskipiste.x - (progressBar.getWidth() * 0.7f) / 2, keskipiste.y + progressBar.getHeight() / 2);
-        container.setPosition(container.getOriginX(), container.getOriginY());
 
-        container.setWidth(progressBackground.getWidth() * 0.7f);
-        container.setHeight(progressKnob.getHeight());
+        progressBarTable = new Table();
 
-        container.fill();
+        progressBarTable.add(progressBar);
+        progressBarTable.setPosition(keskipiste.x, keskipiste.y);
+
+//        progressBarContainer = new Container(progressBar);
+//        progressBarContainer.setOrigin(keskipiste.x - (progressBar.getWidth() * 0.7f) / 2, keskipiste.y + progressBar.getHeight() / 2);
+//        progressBarContainer.setPosition(progressBarContainer.getOriginX(), progressBarContainer.getOriginY());
+//
+//        progressBarContainer.setWidth(progressBackground.getWidth() * 0.7f);
+//        progressBarContainer.setHeight(progressKnob.getHeight());
+//
+//        progressBarContainer.fill();
     }
 
     @Override
@@ -188,12 +192,20 @@ public class PlayScreen implements Screen {
 
     private void actProgressBar(float delta) {
         progressBar.setValue(pelaaja.getVastausmaara());
-        container.setRotation(angleToPoint1 - 90);
         progressBar.act(delta);
 
+        progressBarTable.setTransform(true);
+        progressBarTable.setRotation(angleToPoint1 - 90);
+
+//        progressBarContainer.setTransform(true);
+//        progressBarContainer.setRotation(angleToPoint1 - 90);
+//        progressBarContainer.setTransform(false);
+
         batch.begin();
-        container.draw(batch, 1f);
+        progressBarTable.draw(batch, 1f);
+//        progressBarContainer.draw(batch, 1f);
         batch.end();
+
     }
 
     public void actTransition(float delta) {
@@ -243,7 +255,7 @@ public class PlayScreen implements Screen {
     private void rotateCamera() {
         if (zoomedOut) {
             angleToPoint2 = getAngleToPoint(keskipiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f));
-            camera.rotate(-angleToPoint2 + 90 - 180);
+            camera.rotate(-angleToPoint2 - 90);
         } else {
             angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
             camera.rotate(-angleToPoint1 + 90);
@@ -256,13 +268,13 @@ public class PlayScreen implements Screen {
 
     /**
      * Hakee kulman pisteiden välillä;
-     * @param start aloituspiste
+     *
+     * @param start  aloituspiste
      * @param target lopetuspiste
      * @return palauttaa kulman
      */
     private float getAngleToPoint(Vector3 start, Vector3 target) {
         float angleToPoint = (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
-
         return angleToPoint;
     }
 
@@ -305,6 +317,7 @@ public class PlayScreen implements Screen {
     /**
      * HUDista tulee kutsu riippuen mitä solmua painaa. Päivittää tiedot renderille.
      * Päivittää myös HUDin seuraavalle solmulle.
+     *
      * @param solmu käsiteltävä solmu
      */
     public void setSolmu(Solmu solmu) {
@@ -316,7 +329,8 @@ public class PlayScreen implements Screen {
             hud.update(solmu);
         }
     }
-    public void resetStateTime(){
+
+    public void resetStateTime() {
         stateTime = 0;
     }
 
