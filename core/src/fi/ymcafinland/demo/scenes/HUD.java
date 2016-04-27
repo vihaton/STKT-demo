@@ -317,4 +317,30 @@ public class HUD {
         palaute = new Button(stylePalaute);
         palaute.setScale(1.2f);
     }
+
+    public void right() {
+        Gdx.app.log("HList", "Swaipattu oikealle");
+        playScreen.setSolmu(solmu.getVasenSisarus());
+    }
+
+    public void left() {
+        Gdx.app.log("HList", "Swaipattu vasemmalle");
+        playScreen.setSolmu(solmu.getOikeaSisarus());
+    }
+
+    public void down() {
+        Gdx.app.log("Hlist", "Swaipattu alas");
+        if (hasParent) {
+            playScreen.setSolmu(solmu.getMutsi());
+        }
+    }
+
+    public void up() {
+        Gdx.app.log("HList", "Swaipattu ylös");
+        //TODO varaudu myös siihen että solmulla on vain yksi lapsi
+        if (montaLasta) {
+            playScreen.setSolmu(solmu.getLapset().get(1));
+
+        }
+    }
 }
