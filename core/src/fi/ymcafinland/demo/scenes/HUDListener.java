@@ -38,6 +38,19 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
+        if(Math.abs(velocityX)>Math.abs(velocityY)){
+            if(velocityX>0){
+                hud.right();
+            }else{
+                hud.left();
+            }
+        }else{
+            if(velocityY>0){
+                hud.down();
+            }else{
+                hud.up();
+            }
+        }
         return false;
     }
 
