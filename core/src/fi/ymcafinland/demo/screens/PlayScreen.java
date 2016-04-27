@@ -57,7 +57,6 @@ public class PlayScreen implements Screen {
     Pelaaja pelaaja;
     Texture progressBackground;
     Texture progressKnob;
-    Container progressBarContainer;
     Table progressBarTable;
 
     private final int idleTime = 10000;
@@ -98,11 +97,9 @@ public class PlayScreen implements Screen {
 
         this.deltaAVG = 0.02f;
 
-
         createProgressBar();
-
-
     }
+
 
     private void createProgressBar() {
         progressBarStyle = new ProgressBar.ProgressBarStyle();
@@ -114,30 +111,27 @@ public class PlayScreen implements Screen {
         progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progressBackground));
         progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progressKnob));
 
+        float progBarWidth = progressBackground.getWidth() * 0.35f;
+        float progBarHeight = progressKnob.getHeight();
+
         progressBar = new ProgressBar(0, 100, 1, false, progressBarStyle);
-        progressBar.setWidth(progressBackground.getWidth()*0.7f);
-        progressBar.setHeight(progressKnob.getHeight());
+        progressBar.setWidth(progBarWidth);
+        progressBar.setHeight(progBarHeight);
 
         progressBar.setValue(0);
 
         progressBarTable = new Table();
-
+        //ilmeisesti taulukko käsittelee ProgB. "pisteenä", jonka sijainti on PB:n vasemman alakulman sijainti, eikä esim PB:n keskikohta
         progressBarTable.add(progressBar);
 
-        progressBarTable.setWidth(progressBar.getWidth());
-        progressBarTable.setHeight(progressBar.getHeight());
-        progressBarTable.setOrigin(progressBarTable.getWidth() / 2, progressBarTable.getHeight() / 2);
-        progressBarTable.setPosition(keskipiste.x-progressBarTable.getWidth()/2, keskipiste.y-progressBarTable.getOriginY());
+        progressBarTable.setWidth(progBarWidth);
+        progressBarTable.setHeight(progBarHeight);
         progressBar.setFillParent(true);
 
-//        progressBarContainer = new Container(progressBar);
-//        progressBarContainer.setOrigin(keskipiste.x - (progressBar.getWidth() * 0.7f) / 2, keskipiste.y + progressBar.getHeight() / 2);
-//        progressBarContainer.setPosition(progressBarContainer.getOriginX(), progressBarContainer.getOriginY());
-//
-//        progressBarContainer.setWidth(progressBackground.getWidth() * 0.7f);
-//        progressBarContainer.setHeight(progressKnob.getHeight());
-//
-//        progressBarContainer.fill();
+        //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Esim kiertäminen tehdään suhteessa origoon.
+        progressBarTable.setOrigin(progBarWidth, progBarHeight);
+        //asettaa taulukon vasemman alakulman sijainnin
+        progressBarTable.setPosition(keskipiste.x - progBarWidth, keskipiste.y - progBarHeight); //asettaa
     }
 
     @Override
@@ -202,14 +196,8 @@ public class PlayScreen implements Screen {
         progressBarTable.setTransform(true);
         progressBarTable.setRotation(angleToPoint1 - 90);
 
-
-//        progressBarContainer.setTransform(true);
-//        progressBarContainer.setRotation(angleToPoint1 - 90);
-//        progressBarContainer.setTransform(false);
-
         batch.begin();
         progressBarTable.draw(batch, 1f);
-//        progressBarContainer.draw(batch, 1f);
         batch.end();
 
     }
