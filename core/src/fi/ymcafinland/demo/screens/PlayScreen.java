@@ -115,7 +115,7 @@ public class PlayScreen implements Screen {
         progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progressKnob));
 
         progressBar = new ProgressBar(0, 100, 1, false, progressBarStyle);
-        progressBar.setWidth(progressBackground.getWidth());
+        progressBar.setWidth(progressBackground.getWidth()*0.7f);
         progressBar.setHeight(progressKnob.getHeight());
 
         progressBar.setValue(0);
@@ -123,7 +123,12 @@ public class PlayScreen implements Screen {
         progressBarTable = new Table();
 
         progressBarTable.add(progressBar);
-        progressBarTable.setPosition(keskipiste.x, keskipiste.y);
+
+        progressBarTable.setWidth(progressBar.getWidth());
+        progressBarTable.setHeight(progressBar.getHeight());
+        progressBarTable.setOrigin(progressBarTable.getWidth() / 2, progressBarTable.getHeight() / 2);
+        progressBarTable.setPosition(keskipiste.x-progressBarTable.getWidth()/2, keskipiste.y-progressBarTable.getOriginY());
+        progressBar.setFillParent(true);
 
 //        progressBarContainer = new Container(progressBar);
 //        progressBarContainer.setOrigin(keskipiste.x - (progressBar.getWidth() * 0.7f) / 2, keskipiste.y + progressBar.getHeight() / 2);
@@ -196,6 +201,7 @@ public class PlayScreen implements Screen {
 
         progressBarTable.setTransform(true);
         progressBarTable.setRotation(angleToPoint1 - 90);
+
 
 //        progressBarContainer.setTransform(true);
 //        progressBarContainer.setRotation(angleToPoint1 - 90);
