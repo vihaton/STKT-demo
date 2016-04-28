@@ -1,10 +1,7 @@
 package fi.ymcafinland.demo.piirtajat;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -29,26 +26,16 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 public class VaittamanPiirtaja {
 
     private final Skin skin;
-    private TextureAtlas atlas;
     private ArrayList<Slider> sliderit;
-    private Slider.SliderStyle sliderStyle;
     private Stage stage;
     private Table rootTable;
     private ScrollPane pane;
 
-    public VaittamanPiirtaja(Stage stage, Table rootTable) {
+    public VaittamanPiirtaja(Stage stage, Table rootTable, Skin masterSkin) {
         this.stage = stage;
         this.rootTable = rootTable;
         this.sliderit = new ArrayList<>();
-
-        atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
-        skin = new Skin();
-        skin.addRegions(atlas);
-
-        Label.LabelStyle vaittamatyyli = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-        skin.add("vaittamatyyli", vaittamatyyli);
-
-        sliderStyle = new Slider.SliderStyle(skin.getDrawable("sliderbackground"), skin.getDrawable("sliderknob"));
+        skin = masterSkin;
     }
 
     public void renderoi(SpriteBatch batch, float delta) {
@@ -68,16 +55,15 @@ public class VaittamanPiirtaja {
         rootTable.reset();
 
         //ToDo jos sliderin arvoa ei muuteta, pelaajan selviytymis attribuutti ei pitäisi muuttua.
-        //todo minor: (vaihtoehtona tehdä joka kohtaan tarpeeksi väittämiä :) väittämät ilmestyvät panen "yläreunaan", heti väittämänäkymän otsikon alle, ei näkymän alareunaan (korostuu kun vain vähän väittämiä)
         for (final Vaittama nykyinenVaittama : solmunVaittamat) {
-            Table vaittamaTaulukko = new Table();
+            Table vaittamanTaulukko = new Table();
             Label otsikko = new Label(nykyinenVaittama.getTeksti(), skin, "vaittamatyyli");
             otsikko.setFontScale(2);
             otsikko.setWrap(true);
             otsikko.setAlignment(Align.center);
             otsikko.setWidth(SelviytyjanPurjeet.V_WIDTH);
 
-            final Slider slider = new Slider(0.5f, 1.5f, .1f, false, sliderStyle);
+            final Slider slider = new Slider(0.5f, 1.5f, .1f, false, skin.get("sliderStyle", Slider.SliderStyle.class));
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getArvo());
             slider.addListener(new ChangeListener() {
@@ -97,12 +83,11 @@ public class VaittamanPiirtaja {
             });
             sliderit.add(slider);
 
-            //todo jos paljon väittämiä, väittämät eivät peitä otsikkoa! (esim C3, ID = 15) (väittämät scroll panen sisään?)
-            vaittamaTaulukko.add(otsikko).width(slider.getWidth() * 3);
-            vaittamaTaulukko.row();
-            vaittamaTaulukko.add(slider);
+            vaittamanTaulukko.add(otsikko).width(slider.getWidth() * 3);
+            vaittamanTaulukko.row();
+            vaittamanTaulukko.add(slider);
 
-            rootTable.add(vaittamaTaulukko);
+            rootTable.add(vaittamanTaulukko);
             rootTable.row();
             //ToDo Oletettavasti jokaisella solmulla on tarpeeksi kysymyksiä ettei näkymä näytä vammaselta scrollpanen sisällä, mutta ei välttämättä vielä demossa. Tehdään jokin purkkaviritelmä? vrt. esim C3 ja C3
 

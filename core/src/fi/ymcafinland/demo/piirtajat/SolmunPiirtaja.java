@@ -31,19 +31,14 @@ public class SolmunPiirtaja {
     private float pallonKorkeus;
     private ArrayList<Table> solmuTaulukot;
 
-    public SolmunPiirtaja(Verkko verkko) {
+    public SolmunPiirtaja(Verkko verkko, Skin masterSkin) {
         solmut = verkko.getSolmut();
+        skin = masterSkin;
         pallonKuva = new Texture("emptynode.png");
         pallonLeveys = pallonKuva.getWidth();
         pallonKorkeus = pallonKuva.getHeight();
 
-        fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
         tekstitaulukko = new Table();
-        skin = new Skin();
-        labelStyle = new Label.LabelStyle(fontti, fontti.getColor());
-        Label.LabelStyle sisaltotyyli = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
-        skin.add("otsikko", labelStyle);
-        skin.add("sisalto", sisaltotyyli);
         otsikko = new Label("ymca", skin, "otsikko");
         sisalto = new Label("ymca", skin, "sisalto");
 

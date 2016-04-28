@@ -2,7 +2,13 @@ package fi.ymcafinland.demo.main;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 
 import fi.ymcafinland.demo.screens.InfoScreen;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
@@ -29,6 +35,7 @@ public class SelviytyjanPurjeet extends Game {
     private PalauteScreen palauteScreen;
     private QuestionScreen questionScreen;
     private Vaittamat vaittamat;
+    private Skin masterSkin;
 
 
     @Override
@@ -44,13 +51,52 @@ public class SelviytyjanPurjeet extends Game {
         vaittamat = new Vaittamat();
         Gdx.app.log("SP", "Vaittamien luominen on valmis");
 
+        luoSkin();
         Pelaaja pelaaja = new Pelaaja();
-        this.questionScreen = new QuestionScreen(this, pelaaja, vaittamat);
-        this.palauteScreen = new PalauteScreen(this, pelaaja);
-        this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0), pelaaja);
+
+        this.questionScreen = new QuestionScreen(this, pelaaja, vaittamat, masterSkin);
+        this.palauteScreen = new PalauteScreen(this, pelaaja, masterSkin);
+        this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0), pelaaja, masterSkin);
 
         setScreen(new InfoScreen(this));
         Gdx.app.log("SP", "ruuduksi asetettiin infoscreen, create() metodi päättyy");
+    }
+
+    private void luoSkin() {
+        masterSkin = new Skin();
+
+        generoiFontit();
+        generoiLabelStyles();
+        generoiSliderStyle();
+
+    }
+
+    private void generoiFontit() {
+        BitmapFont fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
+        masterSkin.add("fontti", fontti);
+    }
+
+    private void generoiLabelStyles() {
+        Label.LabelStyle otsikkoStyle = new Label.LabelStyle(masterSkin.getFont("fontti"), masterSkin.getFont("fontti").getColor());
+        masterSkin.add("otsikko", otsikkoStyle);
+
+        Label.LabelStyle sisaltotyyli = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
+        masterSkin.add("sisalto", sisaltotyyli);
+
+        Label.LabelStyle vaittamatyyli = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        masterSkin.add("vaittamatyyli", vaittamatyyli);
+
+        Label.LabelStyle arvioStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        masterSkin.add("arvio", arvioStyle);
+    }
+
+    private void generoiSliderStyle() {
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
+        masterSkin.addRegions(atlas);
+
+
+        Slider.SliderStyle sliderStyle = new Slider.SliderStyle(masterSkin.getDrawable("sliderbackground"), masterSkin.getDrawable("sliderknob"));
+        masterSkin.add("sliderStyle", sliderStyle);
     }
 
     @Override

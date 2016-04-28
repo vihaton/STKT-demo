@@ -12,13 +12,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
@@ -37,52 +38,60 @@ import fi.ymcafinland.demo.piirtajat.VaittamanPiirtaja;
 public class QuestionScreen implements Screen {
     protected SpriteBatch batch;
 
-    private final SelviytyjanPurjeet sp;
     private FitViewport viewport;
     private OrthographicCamera camera;
     private static GlyphLayout glyphLayout = new GlyphLayout();
     private BitmapFont fontti;
-    private BitmapFont toinenFontti;
     private final Pelaaja pelaaja;
     private final Vaittamat vaittamat;
     private ArrayList<Vaittama> solmunVaittamat;
     private String solmunID;
-    private Random rnd;
     private Stage stage;
     private VaittamanPiirtaja vaittamanPiirtaja;
     Solmu solmu;
     private Button exitButton;
     private Texture texture;
-    Table table;
+    private Table rootTable;
+    private Skin skin;
 
-    public QuestionScreen(final SelviytyjanPurjeet sp, Pelaaja pelaaja, Vaittamat vaittamat) {
-        this.sp = sp;
+    public QuestionScreen(final SelviytyjanPurjeet sp, Pelaaja pelaaja, Vaittamat vaittamat, Skin masterSkin) {
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
+        this.viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
-        this.toinenFontti = new BitmapFont();
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
+        this.skin = masterSkin;
         solmunID = "7";
         solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get(solmunID);
-        rnd = new Random();
 
-        stagenluonti(createExitButton(sp));
-        this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, table);
+        Table vaittamienTaulukko = stagenluonti(createExitButton(sp));
+        this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, vaittamienTaulukko, masterSkin);
 
-        camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
+        camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
     }
 
-    public void stagenluonti(Table exitTable) {
+    /**
+     * Palauttaa taulukon, joka annetaan väittämänpiirtäjälle, eli johon laitetaan kaikki väittämät slaidereineen
+     * @param exitTable
+     * @return Table vaittamienTaulukko
+     */
+    private Table stagenluonti(Table exitTable) {
         this.stage = new Stage(viewport);
-        table = new Table();
-        table.setFillParent(true);
-        table.center();
-        stage.addActor(table);
+        rootTable = new Table();
+        rootTable.setFillParent(true);
+        Label otsikko = new Label("Questionscreen", skin, "otsikko");
+        rootTable.top().add(otsikko);
+        rootTable.row();
+
+        Table vaittamienTaulukko = new Table();
+        rootTable.center().add(vaittamienTaulukko);
+
+        stage.addActor(rootTable);
         stage.addActor(exitTable);
 
+        return vaittamienTaulukko;
     }
 
     public Table createExitButton(final SelviytyjanPurjeet sp) {
@@ -150,15 +159,15 @@ public class QuestionScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        glyphLayout.setText(fontti, solmu.getMutsi().getOtsikko());
-        float x = (sp.V_WIDTH - glyphLayout.width) / 2;
-        float y = (sp.V_HEIGHT - 2 * glyphLayout.height);
+        glyphLayout.setText(skin.getFont("fontti"), solmu.getMutsi().getOtsikko());
+        float x = (SelviytyjanPurjeet.V_WIDTH - glyphLayout.width) / 2;
+        float y = (SelviytyjanPurjeet.V_HEIGHT - 2 * glyphLayout.height);
 
         batch.begin();
         fontti.draw(batch, glyphLayout, x, y);
         y -= glyphLayout.height;
-        glyphLayout.setText(fontti, "väittämät");
-        fontti.draw(batch, glyphLayout, (sp.V_WIDTH - glyphLayout.width) / 2, y);
+        glyphLayout.setText(skin.getFont("fontti"), "väittämät");
+        fontti.draw(batch, glyphLayout, (SelviytyjanPurjeet.V_WIDTH - glyphLayout.width) / 2, y);
 
         batch.end();
 
@@ -168,15 +177,8 @@ public class QuestionScreen implements Screen {
 
     }
 
-    private void lisaaSatunnaistaSelviytymista() {
-        Gdx.app.log("QS", "lisätään satunnaista selviytymistä");
-        int kasvatettava = rnd.nextInt(6);
-        pelaaja.lisaaSelviytymisarvoIndeksissa(kasvatettava, 1f);
-    }
-
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
