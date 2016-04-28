@@ -94,7 +94,6 @@ public class SelviytyjanPurjeet extends Game {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
         masterSkin.addRegions(atlas);
 
-
         Slider.SliderStyle sliderStyle = new Slider.SliderStyle(masterSkin.getDrawable("sliderbackground"), masterSkin.getDrawable("sliderknob"));
         masterSkin.add("sliderStyle", sliderStyle);
     }

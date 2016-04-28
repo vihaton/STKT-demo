@@ -46,19 +46,15 @@ public class VaittamanPiirtaja {
         pane.validate();
 
         stage.addActor(pane);
-
-        rootTable.padBottom(Gdx.graphics.getHeight() / 6);
     }
 
-    public void renderoi(SpriteBatch batch, float delta) {
-        batch.begin();
+    public void renderoi(float delta) {
         for (Slider s : sliderit) {
             s.act(delta);
         }
 
         pane.act(delta);
         stage.draw();
-        batch.end();
     }
 
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
@@ -86,6 +82,8 @@ public class VaittamanPiirtaja {
             rootTable.add(vaittamanTaulukko);
             rootTable.row();
         }
+
+        rootTable.padBottom(Gdx.graphics.getHeight() / 6);
     }
 
     private void luoKuuntelijat(final Vaittama nykyinenVaittama, final Slider slider) {

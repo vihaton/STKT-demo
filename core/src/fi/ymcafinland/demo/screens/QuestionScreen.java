@@ -2,6 +2,7 @@ package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,12 +12,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -81,15 +84,17 @@ public class QuestionScreen implements Screen {
         this.stage = new Stage(viewport);
         rootTable = new Table();
         rootTable.setFillParent(true);
+        rootTable.top().right().add(exitTable);
+
         Label otsikko = new Label("Questionscreen", skin, "otsikko");
-        rootTable.top().add(otsikko);
+        rootTable.add(otsikko);
         rootTable.row();
 
         Table vaittamienTaulukko = new Table();
         rootTable.center().add(vaittamienTaulukko);
 
         stage.addActor(rootTable);
-        stage.addActor(exitTable);
+//        stage.addActor(exitTable);
 
         return vaittamienTaulukko;
     }
@@ -102,6 +107,7 @@ public class QuestionScreen implements Screen {
         exitButton = new Button(styleExit);
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("QS", "exitbuttonia painettiin");
                 sendData();
                 sp.resetPlayScreen();
             }
@@ -109,7 +115,9 @@ public class QuestionScreen implements Screen {
 
         Table exitTable = new Table();
         exitTable.setFillParent(true);
-        exitTable.top().right().add(exitButton);
+        exitTable.setSize(texture.getWidth(), texture.getHeight());
+        exitTable.add(exitButton);
+        exitTable.setTouchable(Touchable.childrenOnly);
         return exitTable;
     }
 
@@ -156,22 +164,24 @@ public class QuestionScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        stage.setDebugAll(true);
+
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        glyphLayout.setText(skin.getFont("fontti"), solmu.getMutsi().getOtsikko());
-        float x = (SelviytyjanPurjeet.V_WIDTH - glyphLayout.width) / 2;
-        float y = (SelviytyjanPurjeet.V_HEIGHT - 2 * glyphLayout.height);
+//        glyphLayout.setText(skin.getFont("fontti"), solmu.getMutsi().getOtsikko());
+//        float x = (SelviytyjanPurjeet.V_WIDTH - glyphLayout.width) / 2;
+//        float y = (SelviytyjanPurjeet.V_HEIGHT - 2 * glyphLayout.height);
+//
+//        batch.begin();
+//        fontti.draw(batch, glyphLayout, x, y);
+//        y -= glyphLayout.height;
+//        glyphLayout.setText(skin.getFont("fontti"), "väittämät");
+//        fontti.draw(batch, glyphLayout, (SelviytyjanPurjeet.V_WIDTH - glyphLayout.width) / 2, y);
+//
+//        batch.end();
 
-        batch.begin();
-        fontti.draw(batch, glyphLayout, x, y);
-        y -= glyphLayout.height;
-        glyphLayout.setText(skin.getFont("fontti"), "väittämät");
-        fontti.draw(batch, glyphLayout, (SelviytyjanPurjeet.V_WIDTH - glyphLayout.width) / 2, y);
-
-        batch.end();
-
-        vaittamanPiirtaja.renderoi(batch, delta);
+        vaittamanPiirtaja.renderoi(delta);
 
         stage.draw();
 
