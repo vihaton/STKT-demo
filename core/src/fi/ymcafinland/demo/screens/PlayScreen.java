@@ -9,11 +9,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -53,13 +54,12 @@ public class PlayScreen implements Screen {
     ProgressBar progressBar;
     ProgressBar.ProgressBarStyle progressBarStyle;
     Skin skin;
-    TextureAtlas atlas;
     Pelaaja pelaaja;
     Texture progressBackground;
     Texture progressKnob;
-    Table progressBarTable;
+    Table progressTable;
 
-    private final int idleTime = 10000;
+    private final int idleTime = 5000;
 
     /**
      * Playscreen luokan konstruktori
@@ -67,15 +67,16 @@ public class PlayScreen implements Screen {
      * @param sp           SelviytyjänPurjeet -instanssi
      * @param aloitussolmu ensimmäisenä ruutuun ilmestyvä solmu
      */
-    public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu, Pelaaja pelaaja) {
+    public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu, Pelaaja pelaaja, Skin masterSkin) {
         this.sp = sp;
-        this.solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko());
+        this.skin = masterSkin;
+        this.solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko(), masterSkin);
         this.solmu = aloitussolmu;
         this.polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
         this.camera = new OrthographicCamera();
         this.pelaaja = pelaaja;
 //        viewPort = new FillViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
-        this.viewPort = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
+        this.viewPort = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
@@ -83,7 +84,7 @@ public class PlayScreen implements Screen {
         // Playscreen ei tunne sovelluksen inputprocessoria, vaan tietää HUDin joka huolehtii I/O:sta.
         this.hud = new HUD(this, batch, aloitussolmu);
 
-        this.keskipiste = new Vector3(sp.TAUSTAN_LEVEYS / 2, sp.TAUSTAN_KORKEUS / 2, 0f);
+        this.keskipiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.timer = System.currentTimeMillis();
         this.angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
         this.stateTime = 0;
@@ -120,18 +121,24 @@ public class PlayScreen implements Screen {
 
         progressBar.setValue(0);
 
-        progressBarTable = new Table();
-        //ilmeisesti taulukko käsittelee ProgB. "pisteenä", jonka sijainti on PB:n vasemman alakulman sijainti, eikä esim PB:n keskikohta
-        progressBarTable.add(progressBar);
+        Label otsikko = new Label("Edistymismittari:", skin, "otsikko");
+        otsikko.setScale(0.7f);
+        otsikko.setAlignment(Align.center);
 
-        progressBarTable.setWidth(progBarWidth);
-        progressBarTable.setHeight(progBarHeight);
+        progressTable = new Table();
+        progressTable.top().center().add(otsikko);
+        progressTable.row();
+        //ilmeisesti taulukko käsittelee ProgB. "pisteenä", jonka sijainti on PB:n vasemman alakulman sijainti, eikä esim PB:n keskikohta
+        progressTable.add(progressBar);
+
+        progressTable.setWidth(progBarWidth);
+        progressTable.setHeight(progBarHeight);
         progressBar.setFillParent(true);
 
         //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Esim kiertäminen tehdään suhteessa origoon.
-        progressBarTable.setOrigin(progBarWidth, progBarHeight);
+        progressTable.setOrigin(progBarWidth, progBarHeight);
         //asettaa taulukon vasemman alakulman sijainnin
-        progressBarTable.setPosition(keskipiste.x - progBarWidth, keskipiste.y - progBarHeight); //asettaa
+        progressTable.setPosition(keskipiste.x - progBarWidth, keskipiste.y - progBarHeight);
     }
 
     @Override
@@ -193,11 +200,11 @@ public class PlayScreen implements Screen {
         progressBar.setValue(pelaaja.getVastausmaara());
         progressBar.act(delta);
 
-        progressBarTable.setTransform(true);
-        progressBarTable.setRotation(angleToPoint1 - 90);
+        progressTable.setTransform(true);
+        progressTable.setRotation(angleToPoint1 - 90);
 
         batch.begin();
-        progressBarTable.draw(batch, 1f);
+        progressTable.draw(batch, 1f);
         batch.end();
 
     }
