@@ -329,6 +329,7 @@ public class PlayScreen implements Screen {
      * @param solmu käsiteltävä solmu
      */
     public void setSolmu(Solmu solmu) {
+        //todo aina kun kutsutaan setSolmua, zoomataan siihen solmuun ja käännetään kamera ja solmu asiaankuuluvasti.
         if (!this.solmu.equals(solmu)) {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
@@ -380,10 +381,10 @@ public class PlayScreen implements Screen {
         Vector3 vect = new Vector3(x, y, 0);
         camera.unproject(vect); // camera is your game camera
 
-        float dX = vect.x;
-        float dY = vect.y;
+        float trueX = vect.x;
+        float trueY = vect.y;
 
-        Solmu tappaustaLahinSolmu = verkko.annaLahinSolmu(dX, dY);
+        Solmu tappaustaLahinSolmu = verkko.annaLahinSolmu(trueX, trueY, solmu);
         setSolmu(tappaustaLahinSolmu);
     }
 }
