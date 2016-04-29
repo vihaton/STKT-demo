@@ -33,7 +33,7 @@ public class InfoScreen implements Screen {
 
     private FitViewport viewport;
     private OrthographicCamera camera;
-    private Sprite tausta;
+    private Texture tausta;
     private ScrollPane pane;
     private Stage stage;
     private Skin skin;
@@ -57,38 +57,45 @@ public class InfoScreen implements Screen {
         //todo viewport asettuu myös tietokoneella ajettaessa oikein (stage?)
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
-        this.tausta = new Sprite(new Texture("sails02.png"));
-        this.stage = new Stage(viewport);
+        this.tausta = new Texture("sails02.png");
+        this.stage = new Stage();
         luoSisalto(sp);
     }
 
     public void luoSisalto(SelviytyjanPurjeet sp) {
         rootTable = new Table();
         rootTable.setFillParent(true);
-        rootTable.pad(64);
 
         otsikko = new Label("Selviytyjän purjeet", skin, "otsikko");
-        rootTable.top().add(otsikko).space(100).expandY();
+        rootTable.add(otsikko).expand().top();
         rootTable.row();
 
         luoScrollPane();
-//        rootTable.add(pane);
 
-//        createExitButton(sp);
-//        createAlkuTestiButton(sp);
+        rootTable.add(pane).pad(SelviytyjanPurjeet.V_WIDTH / 10).height(100).width(100);
+        rootTable.row();
 
-//        rootTable.bottom().padBottom(52).add(alkuButton).expandX();
-//        rootTable.bottom().padBottom(52).add(exitButton).expandX();
+        createExitButton(sp);
+        createAlkuTestiButton(sp);
+
+        Table nappiTaulukko = new Table();
+
+        nappiTaulukko.left().add(alkuButton).expandX();
+        nappiTaulukko.right().add(exitButton).expandX();
+
+        rootTable.add(nappiTaulukko).padBottom(64).fillX();
+
         rootTable.validate();
 
         stage.addActor(rootTable);
-//        stage.addActor(pane);
+        stage.addActor(pane);
     }
 
     private void luoScrollPane() {
         pane = new ScrollPane(luoInfoteksti());
-        pane.setBounds(SelviytyjanPurjeet.V_WIDTH / 10f, SelviytyjanPurjeet.V_HEIGHT / 5,
-                SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT / 2);
+        pane.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2);
+        pane.setWidth(SelviytyjanPurjeet.V_WIDTH / 2);
+        pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT / 2);
         pane.setTouchable(Touchable.enabled);
         pane.validate();
     }
@@ -103,7 +110,7 @@ public class InfoScreen implements Screen {
         return label;
     }
 
-    private void createAlkuTestiButton(final SelviytyjanPurjeet sp ){
+    private void createAlkuTestiButton(final SelviytyjanPurjeet sp) {
         alkuButton = new Button(skin.get("alkuButtonStyle", Button.ButtonStyle.class));
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
@@ -140,14 +147,11 @@ public class InfoScreen implements Screen {
 
         stage.setDebugAll(true);
 
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-//
-//        batch.begin();
-//        tausta.draw(batch);
-//        batch.end();
-//        pane.act(delta);
+        batch.begin();
+        batch.draw(tausta, 0, 0, tausta.getWidth(), tausta.getHeight());
+        batch.end();
 
+        pane.act(delta);
         stage.draw();
     }
 
