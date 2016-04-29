@@ -89,9 +89,9 @@ public class InfoScreen implements Screen {
         rootTable = new Table();
         rootTable.setFillParent(true);
 
-        table.bottom().padBottom(52).add(alkuButton).expandX();
-        table.bottom().padBottom(52).add(exitButton).expandX();
-        stage.addActor(table);
+        rootTable.bottom().padBottom(52).add(alkuButton).expandX();
+        rootTable.bottom().padBottom(52).add(exitButton).expandX();
+        stage.addActor(rootTable);
         stage.addActor(pane);
     }
 
