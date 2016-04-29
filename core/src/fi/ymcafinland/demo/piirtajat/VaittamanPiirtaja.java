@@ -57,6 +57,7 @@ public class VaittamanPiirtaja {
         stage.draw();
     }
 
+    //todo panen yläboundi asetetaan käytössä näkymän otsikon mukaan (jos pitkä otsikko, niin yläraja tulee alemmas)
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         rootTable.reset();
 
@@ -66,7 +67,6 @@ public class VaittamanPiirtaja {
             otsikko.setFontScale(2);
             otsikko.setWrap(true);
             otsikko.setAlignment(Align.center);
-            otsikko.setWidth(SelviytyjanPurjeet.V_WIDTH);
 
             final Slider slider = new Slider(0.5f, 1.5f, .1f, false, skin.get("sliderStyle", Slider.SliderStyle.class));
             slider.setAnimateDuration(0.1f);
@@ -84,6 +84,7 @@ public class VaittamanPiirtaja {
             rootTable.row();
         }
 
+        rootTable.padTop(10);
         rootTable.padBottom(Gdx.graphics.getHeight() / 6);
     }
 

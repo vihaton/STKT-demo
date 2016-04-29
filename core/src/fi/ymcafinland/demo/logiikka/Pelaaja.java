@@ -39,6 +39,7 @@ public class Pelaaja {
      * 5 - Luova
      */
     //ToDo vastausmaara prosentteina kaikista vastauksista. (jos 200 väittämää ja olet vastannut sataan niin palauttaa 50)
+    //todo bug väittämänäkymässä käyminen lisää vastauksia, vaikkei väittämiin vastaisikaan
     public int getVastausmaara(){
         return vastausmaara;
     }

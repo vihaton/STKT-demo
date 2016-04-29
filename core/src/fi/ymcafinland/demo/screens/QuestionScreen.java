@@ -50,8 +50,10 @@ public class QuestionScreen implements Screen {
     private Stage stage;
     private VaittamanPiirtaja vaittamanPiirtaja;
     Solmu solmu;
-    private Button exitButton;
-    private Texture texture;
+    private Table exitTable;
+    private Label otsikko;
+    private Table otsikkoTable;
+    private float sidePad;
     private Table rootTable;
     private Skin skin;
 
@@ -63,7 +65,8 @@ public class QuestionScreen implements Screen {
         this.vaittamat = vaittamat;
         this.skin = masterSkin;
 
-        createRootTable(createExitButton(sp));
+        this.exitTable = createExitButton(sp);
+        createRootTable();
 
         this.stage = new Stage(viewport);
         stage.addActor(rootTable);
@@ -76,10 +79,11 @@ public class QuestionScreen implements Screen {
 
     private Table createExitButton(final SelviytyjanPurjeet sp) {
         Button.ButtonStyle styleExit = new Button.ButtonStyle();
-        texture = new Texture("ruksi.png");
+        Texture texture = new Texture("ruksi.png");
+        this.sidePad = texture.getWidth();
 
         styleExit.up = new TextureRegionDrawable(new TextureRegion(texture));
-        exitButton = new Button(styleExit);
+        Button exitButton = new Button(styleExit);
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("QS", "exitbuttonia painettiin");
@@ -89,22 +93,39 @@ public class QuestionScreen implements Screen {
         });
 
         Table exitTable = new Table();
-        exitTable.setSize(texture.getWidth(), texture.getHeight());
-        exitTable.add(exitButton);
-        exitTable.setTouchable(Touchable.childrenOnly);
+        exitTable.add(exitButton).top().right();
+
+        exitTable.validate();
+
         return exitTable;
     }
 
-    private void createRootTable(Table exitTable) {
+    private void createRootTable() {
         rootTable = new Table();
         rootTable.setFillParent(true);
 
-        Label otsikko = new Label("Questionscreen", skin, "otsikko");
-        rootTable.top().add(otsikko);
-        rootTable.right().add(exitTable);
+        otsikkoTable = luoOtsikko();
+
+        rootTable.top().add(otsikkoTable).padTop(sidePad / 2).padLeft(sidePad);
+        rootTable.add(exitTable).right().top();
 
         //Ratkaisevan tärkeä rivi!
         rootTable.validate();
+    }
+
+    private Table luoOtsikko() {
+        Table ot = new Table();
+
+        otsikko = new Label("Questionscreen on tässä, tämä on siis question screen eli väittämänäkymä, eli QS eli question screen.", skin, "otsikko");
+        otsikko.setFillParent(true);
+        otsikko.setFontScale(0.7f);
+        otsikko.setWrap(true);
+        otsikko.setAlignment(Align.center);
+
+        ot.add(otsikko).width(SelviytyjanPurjeet.V_WIDTH - 2 * sidePad);
+        ot.validate();
+
+        return ot;
     }
 
     /**
@@ -150,7 +171,7 @@ public class QuestionScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.setDebugAll(true);
+//        stage.setDebugAll(true);
 
         vaittamanPiirtaja.renderoi(delta);
     }
@@ -166,6 +187,7 @@ public class QuestionScreen implements Screen {
 
     public void setSolmu(Solmu solmu) {
         this.solmu = solmu;
+        otsikko.setText(solmu.getMutsi().getOtsikko() + ":\n" + solmu.getSisalto());
         solmunID = solmu.getID();
         solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmunID);
         vaittamanPiirtaja.paivitaVaittamat(solmunVaittamat);
