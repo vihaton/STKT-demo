@@ -9,18 +9,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -35,7 +32,7 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 public class InfoScreen implements Screen {
 
     protected SpriteBatch batch;
-    protected Table table;
+    protected Table rootTable;
     protected TextField textField;
 
     private FitViewport viewport;
@@ -83,17 +80,15 @@ public class InfoScreen implements Screen {
         pane = new ScrollPane(label);
         pane.setBounds(SelviytyjanPurjeet.V_WIDTH / 10f, SelviytyjanPurjeet.V_HEIGHT / 5,
                 SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT / 2);
-        pane.layout();
         pane.setTouchable(Touchable.enabled);
+        pane.validate();
 
-        table = new Table();
-        table.setFillParent(true);
+        rootTable = new Table();
+        rootTable.setFillParent(true);
 
-        table.bottom().padBottom(48).add(exitButton);
-        stage.addActor(table);
+        rootTable.bottom().padBottom(48).add(exitButton);
+        stage.addActor(rootTable);
         stage.addActor(pane);
-
-        camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
     }
 
     public void createExitButton(final SelviytyjanPurjeet sp) {
