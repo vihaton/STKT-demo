@@ -64,6 +64,7 @@ public class QuestionScreen implements Screen {
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
         this.skin = masterSkin;
+        this.sidePad = 64;
 
         this.exitTable = createExitButton(sp);
         createRootTable();
@@ -73,17 +74,11 @@ public class QuestionScreen implements Screen {
 
         this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, masterSkin);
 
-        camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
     }
 
     private Table createExitButton(final SelviytyjanPurjeet sp) {
-        Button.ButtonStyle styleExit = new Button.ButtonStyle();
-        Texture texture = new Texture("ruksi.png");
-        this.sidePad = texture.getWidth();
-
-        styleExit.up = new TextureRegionDrawable(new TextureRegion(texture));
-        Button exitButton = new Button(styleExit);
+        Button exitButton = new Button(skin.get("exitButtonStyle", Button.ButtonStyle.class));
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("QS", "exitbuttonia painettiin");
