@@ -2,14 +2,12 @@ package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -18,9 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -33,14 +29,14 @@ public class InfoScreen implements Screen {
 
     protected SpriteBatch batch;
     protected Table rootTable;
-    protected TextField textField;
+    protected Label otsikko;
 
     private FitViewport viewport;
     private OrthographicCamera camera;
-    private BitmapFont fontti;
     private Sprite tausta;
     private ScrollPane pane;
     private Stage stage;
+    private Skin skin;
     private Button exitButton;
     private Button alkuButton;
 
@@ -55,68 +51,73 @@ public class InfoScreen implements Screen {
                     "ensisijaisesti olleet kehittämässä Vili Hätönen, Olli Laukkanen, Tiina Saari ja Sasu Mäkinen.";
 
 
-    public InfoScreen(SelviytyjanPurjeet sp) {
+    public InfoScreen(SelviytyjanPurjeet sp, Skin masterSkin) {
         this.batch = new SpriteBatch();
-        this.camera = new OrthographicCamera();
+        this.skin = masterSkin;
         //todo viewport asettuu myös tietokoneella ajettaessa oikein (stage?)
+        this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
-        this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.tausta = new Sprite(new Texture("sails02.png"));
         this.stage = new Stage(viewport);
-        createExitButton(sp);
-        createAlkuTestiButton(sp);
+        luoSisalto(sp);
+    }
 
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = new BitmapFont();
-        labelStyle.fontColor = Color.WHITE;
+    public void luoSisalto(SelviytyjanPurjeet sp) {
+        rootTable = new Table();
+        rootTable.setFillParent(true);
+        rootTable.pad(64);
 
-        textField = new TextField("Selviytyjän purjeet", skin);
+        otsikko = new Label("Selviytyjän purjeet", skin, "otsikko");
+        rootTable.top().add(otsikko).space(100).expandY();
+        rootTable.row();
 
-        Label label = new Label(infoText, labelStyle);
-        label.setWrap(true);
-        label.setFontScale(2);
-        label.setAlignment(Align.bottom);
-        label.pack();
-        label.setFillParent(true);
+        luoScrollPane();
+//        rootTable.add(pane);
 
-        pane = new ScrollPane(label);
+//        createExitButton(sp);
+//        createAlkuTestiButton(sp);
+
+//        rootTable.bottom().padBottom(52).add(alkuButton).expandX();
+//        rootTable.bottom().padBottom(52).add(exitButton).expandX();
+        rootTable.validate();
+
+        stage.addActor(rootTable);
+//        stage.addActor(pane);
+    }
+
+    private void luoScrollPane() {
+        pane = new ScrollPane(luoInfoteksti());
         pane.setBounds(SelviytyjanPurjeet.V_WIDTH / 10f, SelviytyjanPurjeet.V_HEIGHT / 5,
                 SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT / 2);
         pane.setTouchable(Touchable.enabled);
         pane.validate();
+    }
 
-        rootTable = new Table();
-        rootTable.setFillParent(true);
+    private Actor luoInfoteksti() {
+        Label label = new Label(infoText, skin, "infoteksti");
+        label.setWrap(true);
+        label.setFontScale(2);
+        label.setAlignment(Align.top);
+        label.setFillParent(true);
 
-        rootTable.bottom().padBottom(52).add(alkuButton).expandX();
-        rootTable.bottom().padBottom(52).add(exitButton).expandX();
-        stage.addActor(rootTable);
-        stage.addActor(pane);
+        return label;
     }
 
     private void createAlkuTestiButton(final SelviytyjanPurjeet sp ){
-
-        Button.ButtonStyle styleAlku = new Button.ButtonStyle();
-        Texture textureAlku = new Texture("alku.png");
-
-        styleAlku.up = new TextureRegionDrawable(new TextureRegion(textureAlku));
-        alkuButton = new Button(styleAlku);
+        alkuButton = new Button(skin.get("alkuButtonStyle", Button.ButtonStyle.class));
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("IS", "alkutestibuttonia painettiin");
                 //todo invoke alkutestinäkymä question screeniin
             }
         });
     }
 
     public void createExitButton(final SelviytyjanPurjeet sp) {
-        Button.ButtonStyle styleExit = new Button.ButtonStyle();
-        Texture textureExit = new Texture("ruksi.png");
-
-        styleExit.up = new TextureRegionDrawable(new TextureRegion(textureExit));
-        exitButton = new Button(styleExit);
+        exitButton = new Button(skin.get("exitButtonStyle", Button.ButtonStyle.class));
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("IS", "exitbuttonia painettiin");
                 sp.resetPlayScreen();
                 stage.dispose();
                 dispose();
@@ -126,23 +127,27 @@ public class InfoScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.app.log("IS", "show() -metodia kutsuttiin");
+        Gdx.input.setInputProcessor(stage);
 
+        float rgbJakaja = 255f;
+        Gdx.gl.glClearColor(0, 0, 139 / rgbJakaja, 1);
     }
 
     @Override
     public void render(float delta) {
-        float rgbJakaja = 255f;
-        Gdx.gl.glClearColor(0, 0, 139 / rgbJakaja, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.input.setInputProcessor(stage);
+
+        stage.setDebugAll(true);
+
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+//
+//        batch.begin();
+//        tausta.draw(batch);
+//        batch.end();
+//        pane.act(delta);
 
-        batch.begin();
-        tausta.draw(batch);
-        fontti.draw(batch, "Selviytyjän purjeet", 25 , 900);
-        batch.end();
-        pane.act(delta);
         stage.draw();
     }
 
