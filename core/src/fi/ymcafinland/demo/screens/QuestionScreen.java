@@ -34,7 +34,7 @@ import fi.ymcafinland.demo.piirtajat.VaittamanPiirtaja;
 
 /**
  * Created by jwinter on 29.3.2016.
- *
+ * <p/>
  * QuestionScreen luokalla käsitellään Selviytyjän purjeiden "kolmatta tasoa", ja sen kysymyksistä tulevaa
  * dataa.
  */
@@ -43,8 +43,6 @@ public class QuestionScreen implements Screen {
 
     private FitViewport viewport;
     private OrthographicCamera camera;
-    private static GlyphLayout glyphLayout = new GlyphLayout();
-    private BitmapFont fontti;
     private final Pelaaja pelaaja;
     private final Vaittamat vaittamat;
     private ArrayList<Vaittama> solmunVaittamat;
@@ -61,45 +59,22 @@ public class QuestionScreen implements Screen {
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
-        this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
         this.skin = masterSkin;
-        solmunID = "7";
-        solmunVaittamat = vaittamat.getKarttaSolmujenVaittamista().get(solmunID);
 
-        Table vaittamienTaulukko = stagenluonti(createExitButton(sp));
-        this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, vaittamienTaulukko, masterSkin);
+        createRootTable(createExitButton(sp));
+
+        this.stage = new Stage(viewport);
+        stage.addActor(rootTable);
+
+        this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, masterSkin);
 
         camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
         Gdx.app.log("QS", "QS konstruktori on valmis");
     }
 
-    /**
-     * Palauttaa taulukon, joka annetaan väittämänpiirtäjälle, eli johon laitetaan kaikki väittämät slaidereineen
-     * @param exitTable
-     * @return Table vaittamienTaulukko
-     */
-    private Table stagenluonti(Table exitTable) {
-        this.stage = new Stage(viewport);
-        rootTable = new Table();
-        rootTable.setFillParent(true);
-        rootTable.top().right().add(exitTable);
-
-        Label otsikko = new Label("Questionscreen", skin, "otsikko");
-        rootTable.add(otsikko);
-        rootTable.row();
-
-        Table vaittamienTaulukko = new Table();
-        rootTable.center().add(vaittamienTaulukko);
-
-        stage.addActor(rootTable);
-//        stage.addActor(exitTable);
-
-        return vaittamienTaulukko;
-    }
-
-    public Table createExitButton(final SelviytyjanPurjeet sp) {
+    private Table createExitButton(final SelviytyjanPurjeet sp) {
         Button.ButtonStyle styleExit = new Button.ButtonStyle();
         texture = new Texture("ruksi.png");
 
@@ -114,25 +89,36 @@ public class QuestionScreen implements Screen {
         });
 
         Table exitTable = new Table();
-        exitTable.setFillParent(true);
         exitTable.setSize(texture.getWidth(), texture.getHeight());
         exitTable.add(exitButton);
         exitTable.setTouchable(Touchable.childrenOnly);
         return exitTable;
     }
 
+    private void createRootTable(Table exitTable) {
+        rootTable = new Table();
+        rootTable.setFillParent(true);
+
+        Label otsikko = new Label("Questionscreen", skin, "otsikko");
+        rootTable.top().add(otsikko);
+        rootTable.right().add(exitTable);
+
+        //Ratkaisevan tärkeä rivi!
+        rootTable.validate();
+    }
+
     /**
-    * sendData lähettää saadun datan eteenpäin. sendData konfirmoi kysymykseen laitetun tiedon, ja
-    * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
-    */
+     * sendData lähettää saadun datan eteenpäin. sendData konfirmoi kysymykseen laitetun tiedon, ja
+     * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
+     */
     public void sendData() {
         //todo väittämän vastaus vaikuttaa palautteeseen vain kerran (sulku-avaus-bugi)
         //todo pelaaja.lisaaVastaus() vain kerran
         float kerroin = 1f;
         for (Vaittama v : solmunVaittamat) {
 
-                pelaaja.lisaaVastaus();
-                kerroin *= v.getArvo();
+            pelaaja.lisaaVastaus();
+            kerroin *= v.getArvo();
 
 
         }
@@ -166,25 +152,7 @@ public class QuestionScreen implements Screen {
 
         stage.setDebugAll(true);
 
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-
-//        glyphLayout.setText(skin.getFont("fontti"), solmu.getMutsi().getOtsikko());
-//        float x = (SelviytyjanPurjeet.V_WIDTH - glyphLayout.width) / 2;
-//        float y = (SelviytyjanPurjeet.V_HEIGHT - 2 * glyphLayout.height);
-//
-//        batch.begin();
-//        fontti.draw(batch, glyphLayout, x, y);
-//        y -= glyphLayout.height;
-//        glyphLayout.setText(skin.getFont("fontti"), "väittämät");
-//        fontti.draw(batch, glyphLayout, (SelviytyjanPurjeet.V_WIDTH - glyphLayout.width) / 2, y);
-//
-//        batch.end();
-
         vaittamanPiirtaja.renderoi(delta);
-
-        stage.draw();
-
     }
 
     @Override

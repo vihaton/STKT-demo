@@ -31,9 +31,9 @@ public class VaittamanPiirtaja {
     private Table rootTable;
     private ScrollPane pane;
 
-    public VaittamanPiirtaja(Stage stage, Table rootTable, Skin masterSkin) {
+    public VaittamanPiirtaja(Stage stage, Skin masterSkin) {
         this.stage = stage;
-        this.rootTable = rootTable;
+        this.rootTable = new Table();
         this.sliderit = new ArrayList<>();
         skin = masterSkin;
         luoScrollPane();
@@ -71,6 +71,7 @@ public class VaittamanPiirtaja {
             final Slider slider = new Slider(0.5f, 1.5f, .1f, false, skin.get("sliderStyle", Slider.SliderStyle.class));
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getArvo());
+
             luoKuuntelijat(nykyinenVaittama, slider);
 
             sliderit.add(slider);
