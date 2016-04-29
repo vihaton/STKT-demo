@@ -38,7 +38,6 @@ public class InfoScreen implements Screen {
     protected Table table;
     protected TextField textField;
 
-    private final SelviytyjanPurjeet sp;
     private FitViewport viewport;
     private OrthographicCamera camera;
     private BitmapFont fontti;
@@ -58,11 +57,10 @@ public class InfoScreen implements Screen {
 
 
     public InfoScreen(SelviytyjanPurjeet sp) {
-        this.sp = sp;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         //todo viewport asettuu myös tietokoneella ajettaessa oikein (stage?)
-        this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
+        this.viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.tausta = new Sprite(new Texture("sails02.png"));
         this.stage = new Stage(viewport);
@@ -83,7 +81,8 @@ public class InfoScreen implements Screen {
         label.setFillParent(true);
 
         pane = new ScrollPane(label);
-        pane.setBounds(sp.V_WIDTH / 10f, sp.V_HEIGHT / 5, sp.V_WIDTH * 0.8f, sp.V_HEIGHT / 2);
+        pane.setBounds(SelviytyjanPurjeet.V_WIDTH / 10f, SelviytyjanPurjeet.V_HEIGHT / 5,
+                SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT / 2);
         pane.layout();
         pane.setTouchable(Touchable.enabled);
 
@@ -94,7 +93,7 @@ public class InfoScreen implements Screen {
         stage.addActor(table);
         stage.addActor(pane);
 
-        camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
+        camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
     }
 
     public void createExitButton(final SelviytyjanPurjeet sp) {
