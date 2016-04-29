@@ -143,20 +143,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-
-    }
-
-    public void alkaaTapahtua() {
-        trans = true;
-        stateTime = 0;
-        timer = System.currentTimeMillis();
-
-        //debug
-//        Gdx.app.log("playscreen", "UUSI SIIRTO" + stateTime + " " + trans);
-    }
-
-    @Override
-    public void render(float delta) {
+        Gdx.app.log("PS", "Playscreenin show() -metodia kutsuttiin");
         float rgbJakaja = 255f;
 
 //        //sininen
@@ -165,18 +152,26 @@ public class PlayScreen implements Screen {
 
         //valkoinen
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+    }
+
+    public void alkaaTapahtua() {
+        trans = true;
+        stateTime = 0;
+        timer = System.currentTimeMillis();
+
+        //debug
+//        Gdx.app.log("PS", "UUSI SIIRTO" + stateTime + " " + trans);
+    }
+
+    @Override
+    public void render(float delta) {
+        delta = fixDelta(delta);
+        //debug
+//        Gdx.app.log("PS", "request render " + stateTime + " " + trans + " " + delta);
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
-
-        if (delta > 0.1f || delta < 0.005f) {
-            delta = deltaAVG;
-        }
-
-        deltaAVG = (deltaAVG * 19 + delta) / 20;
-
-        //debug
-//        Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
 
         actTransition(delta);
 
@@ -194,6 +189,16 @@ public class PlayScreen implements Screen {
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+    }
+
+    private float fixDelta(float delta) {
+        if (delta > 0.1f || delta < 0.005f) {
+            delta = deltaAVG;
+        }
+
+        deltaAVG = (deltaAVG * 19 + delta) / 20;
+
+        return delta;
     }
 
     private void actProgressBar(float delta) {
