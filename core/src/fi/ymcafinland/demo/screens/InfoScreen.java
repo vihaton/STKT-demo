@@ -9,18 +9,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -35,10 +32,9 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 public class InfoScreen implements Screen {
 
     protected SpriteBatch batch;
-    protected Table table;
+    protected Table rootTable;
     protected TextField textField;
 
-    private final SelviytyjanPurjeet sp;
     private FitViewport viewport;
     private OrthographicCamera camera;
     private BitmapFont fontti;
@@ -60,11 +56,10 @@ public class InfoScreen implements Screen {
 
 
     public InfoScreen(SelviytyjanPurjeet sp) {
-        this.sp = sp;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         //todo viewport asettuu myös tietokoneella ajettaessa oikein (stage?)
-        this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
+        this.viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.tausta = new Sprite(new Texture("sails02.png"));
         this.stage = new Stage(viewport);
@@ -86,19 +81,18 @@ public class InfoScreen implements Screen {
         label.setFillParent(true);
 
         pane = new ScrollPane(label);
-        pane.setBounds(sp.V_WIDTH / 10f, sp.V_HEIGHT / 5, sp.V_WIDTH * 0.8f, sp.V_HEIGHT / 2);
-        pane.layout();
+        pane.setBounds(SelviytyjanPurjeet.V_WIDTH / 10f, SelviytyjanPurjeet.V_HEIGHT / 5,
+                SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT / 2);
         pane.setTouchable(Touchable.enabled);
+        pane.validate();
 
-        table = new Table();
-        table.setFillParent(true);
+        rootTable = new Table();
+        rootTable.setFillParent(true);
 
         table.bottom().padBottom(52).add(alkuButton).expandX();
         table.bottom().padBottom(52).add(exitButton).expandX();
         stage.addActor(table);
         stage.addActor(pane);
-
-        camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
     }
 
     private void createAlkuTestiButton(final SelviytyjanPurjeet sp ){

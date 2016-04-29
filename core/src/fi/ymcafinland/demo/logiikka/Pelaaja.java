@@ -16,6 +16,7 @@ public class Pelaaja {
     public final int LUOVA = 5;
 
     protected float[] selviytyisArvot;
+    int vastausmaara;
 
     private String nimi;
 
@@ -25,6 +26,7 @@ public class Pelaaja {
     public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
         selviytyisArvot = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
+        vastausmaara = 0;
     }
 
     /**
@@ -36,6 +38,14 @@ public class Pelaaja {
      * 4 - Sosiaalinen
      * 5 - Luova
      */
+    //ToDo vastausmaara prosentteina kaikista vastauksista. (jos 200 väittämää ja olet vastannut sataan niin palauttaa 50)
+    //todo bug väittämänäkymässä käyminen lisää vastauksia, vaikkei väittämiin vastaisikaan
+    public int getVastausmaara(){
+        return vastausmaara;
+    }
+    public void lisaaVastaus(){
+        vastausmaara++;
+    }
     public void lisaaSelviytymisarvoIndeksissa(int i, float maara) {
         selviytyisArvot[i] += maara;
     }

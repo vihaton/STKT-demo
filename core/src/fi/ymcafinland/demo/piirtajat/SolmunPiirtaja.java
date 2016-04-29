@@ -6,12 +6,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 
@@ -32,22 +29,44 @@ public class SolmunPiirtaja {
     private Label sisalto;
     private float pallonLeveys;
     private float pallonKorkeus;
+    private ArrayList<Table> solmuTaulukot;
 
-    public SolmunPiirtaja(Verkko verkko) {
+    public SolmunPiirtaja(Verkko verkko, Skin masterSkin) {
         solmut = verkko.getSolmut();
+        skin = masterSkin;
         pallonKuva = new Texture("emptynode.png");
         pallonLeveys = pallonKuva.getWidth();
         pallonKorkeus = pallonKuva.getHeight();
 
-        fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
         tekstitaulukko = new Table();
-        skin = new Skin();
-        labelStyle = new Label.LabelStyle(fontti, fontti.getColor());
-        Label.LabelStyle sisaltotyyli = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
-        skin.add("otsikko", labelStyle);
-        skin.add("sisalto", sisaltotyyli);
         otsikko = new Label("ymca", skin, "otsikko");
         sisalto = new Label("ymca", skin, "sisalto");
+
+        solmuTaulukot = new ArrayList<>();
+        generoiSolmutaulukot(verkko);
+    }
+
+    private void generoiSolmutaulukot(Verkko verkko) {
+        for (Solmu s : verkko.getSolmut()) {
+            float x = s.getXKoordinaatti();
+            float y = s.getYKoordinaatti();
+
+            Label otsikko = new Label(s.getOtsikko(), skin, "otsikko");
+            otsikko.setFontScale(0.7f);
+            Label sisalto = new Label(s.getSisalto(), skin, "sisalto");
+            sisalto.setFontScale(2);
+
+            Table tekstit = new Table();
+            tekstit.setPosition(x, y);
+
+            if (otsikko.getText().length != 0) { //jos otsikko ei ole tyhjä
+                tekstit.add(otsikko);
+                tekstit.row();
+            }
+            tekstit.add(sisalto);
+
+            solmuTaulukot.add(tekstit);
+        }
     }
 
     /**
@@ -64,29 +83,11 @@ public class SolmunPiirtaja {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // This cryptic line clears the screen.
 
         batch.begin();
-        for (int i = 0; i < solmut.size(); i++) {
-            Solmu s = solmut.get(i);
-            float x = s.getXKoordinaatti();
-            float y = s.getYKoordinaatti();
-
-            batch.draw(pallonKuva, x - pallonLeveys / 2, y - pallonKorkeus / 2, pallonLeveys / 2, pallonKorkeus / 2, pallonLeveys, pallonKorkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int) pallonLeveys, (int) pallonKorkeus, false, false);
-
-            otsikko.setText(s.getOtsikko());
-            otsikko.setFontScale(0.7f);
-            sisalto.setText(s.getSisalto());
-            sisalto.setFontScale(2);
-
-            tekstitaulukko.reset();
-
-            tekstitaulukko.setPosition(x, y);
-            if (otsikko.getText().length != 0) { //jos otsikko ei ole tyhjä
-                tekstitaulukko.add(otsikko);
-                tekstitaulukko.row();
-            }
-            tekstitaulukko.add(sisalto);
-            tekstitaulukko.setTransform(true);
-            tekstitaulukko.setRotation(angleToPointCamera - 90);
-            tekstitaulukko.draw(batch, 1f);
+        for (Table t:solmuTaulukot) {
+            batch.draw(pallonKuva, t.getX() - pallonLeveys / 2, t.getY() - pallonKorkeus / 2, pallonLeveys / 2, pallonKorkeus / 2, pallonLeveys, pallonKorkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int) pallonLeveys, (int) pallonKorkeus, false, false);
+            t.setTransform(true);
+            t.setRotation(angleToPointCamera - 90);
+            t.draw(batch, 1f);
         }
         batch.end();
     }

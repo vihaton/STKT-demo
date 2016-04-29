@@ -1,10 +1,7 @@
 package fi.ymcafinland.demo.piirtajat;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -29,91 +26,83 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 public class VaittamanPiirtaja {
 
     private final Skin skin;
-    private TextureAtlas atlas;
     private ArrayList<Slider> sliderit;
-    private Slider.SliderStyle sliderStyle;
     private Stage stage;
     private Table rootTable;
     private ScrollPane pane;
 
-    public VaittamanPiirtaja(Stage stage, Table rootTable) {
+    public VaittamanPiirtaja(Stage stage, Skin masterSkin) {
         this.stage = stage;
-        this.rootTable = rootTable;
+        this.rootTable = new Table();
         this.sliderit = new ArrayList<>();
-
-        atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
-        skin = new Skin();
-        skin.addRegions(atlas);
-
-        Label.LabelStyle vaittamatyyli = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-        skin.add("vaittamatyyli", vaittamatyyli);
-
-        sliderStyle = new Slider.SliderStyle(skin.getDrawable("sliderbackground"), skin.getDrawable("sliderknob"));
+        skin = masterSkin;
+        luoScrollPane();
     }
 
-    public void renderoi(SpriteBatch batch, float delta) {
+    private void luoScrollPane() {
+        pane = new ScrollPane(rootTable.top());
+        pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.35f);
+        pane.setTouchable(Touchable.enabled);
+        pane.validate();
 
-        batch.begin();
+        stage.addActor(pane);
+    }
+
+    public void renderoi(float delta) {
         for (Slider s : sliderit) {
-                s.act(delta);
+            s.act(delta);
         }
 
         pane.act(delta);
         stage.draw();
-        batch.end();
-
     }
 
+    //todo panen yläboundi asetetaan käytössä näkymän otsikon mukaan (jos pitkä otsikko, niin yläraja tulee alemmas)
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         rootTable.reset();
+        pane.setScrollY(0); //asettaa scrollin yläasentoon
 
-        //ToDo jos sliderin arvoa ei muuteta, pelaajan selviytymis attribuutti ei pitäisi muuttua.
-        //todo minor: (vaihtoehtona tehdä joka kohtaan tarpeeksi väittämiä :) väittämät ilmestyvät panen "yläreunaan", heti väittämänäkymän otsikon alle, ei näkymän alareunaan (korostuu kun vain vähän väittämiä)
         for (final Vaittama nykyinenVaittama : solmunVaittamat) {
-            Table vaittamaTaulukko = new Table();
+            Table vaittamanTaulukko = new Table();
             Label otsikko = new Label(nykyinenVaittama.getTeksti(), skin, "vaittamatyyli");
             otsikko.setFontScale(2);
             otsikko.setWrap(true);
             otsikko.setAlignment(Align.center);
-            otsikko.setWidth(SelviytyjanPurjeet.V_WIDTH);
 
-            final Slider slider = new Slider(0.5f, 1.5f, .1f, false, sliderStyle);
+            final Slider slider = new Slider(0.5f, 1.5f, .1f, false, skin.get("sliderStyle", Slider.SliderStyle.class));
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getArvo());
-            slider.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    Gdx.app.log("UITest", "slider: " + slider.getValue());
 
-                    nykyinenVaittama.setArvo(slider.getValue());
+            luoKuuntelijat(nykyinenVaittama, slider);
 
-                }
-            });
-            slider.addListener(new InputListener() {
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    event.stop();
-                    return false;
-                }
-            });
             sliderit.add(slider);
 
-            //todo jos paljon väittämiä, väittämät eivät peitä otsikkoa! (esim C3, ID = 15) (väittämät scroll panen sisään?)
-            vaittamaTaulukko.add(otsikko).width(slider.getWidth() * 3);
-            vaittamaTaulukko.row();
-            vaittamaTaulukko.add(slider);
+            vaittamanTaulukko.add(otsikko).width(slider.getWidth() * 3);
+            vaittamanTaulukko.row();
+            vaittamanTaulukko.add(slider);
 
-            rootTable.add(vaittamaTaulukko);
+            rootTable.add(vaittamanTaulukko);
             rootTable.row();
-            //ToDo Oletettavasti jokaisella solmulla on tarpeeksi kysymyksiä ettei näkymä näytä vammaselta scrollpanen sisällä, mutta ei välttämättä vielä demossa. Tehdään jokin purkkaviritelmä? vrt. esim C3 ja C3
-
-            pane = new ScrollPane(rootTable.bottom());
-            pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.35f);
-            pane.setTouchable(Touchable.enabled);
-            pane.layout();
-
-            stage.addActor(pane);
         }
 
+        rootTable.padTop(10);
         rootTable.padBottom(Gdx.graphics.getHeight() / 6);
+    }
+
+    private void luoKuuntelijat(final Vaittama nykyinenVaittama, final Slider slider) {
+        slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("UITest", "slider: " + slider.getValue());
+
+                nykyinenVaittama.setArvo(slider.getValue());
+            }
+        });
+        slider.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                event.stop();
+                return false;
+            }
+        });
     }
 }
