@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
+import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.piirtajat.SolmunPiirtaja;
 import fi.ymcafinland.demo.scenes.HUD;
@@ -47,6 +48,7 @@ public class PlayScreen implements Screen {
     protected float zoomDuration = 0.5f;
 
     private SelviytyjanPurjeet sp;
+    private Verkko verkko;
     private Viewport viewPort;
     private HUD hud;
     private SolmunPiirtaja solmunPiirtaja;
@@ -69,6 +71,7 @@ public class PlayScreen implements Screen {
      */
     public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu, Pelaaja pelaaja, Skin masterSkin) {
         this.sp = sp;
+        this.verkko = sp.getVerkko();
         this.skin = masterSkin;
         this.solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko(), masterSkin);
         this.solmu = aloitussolmu;
@@ -371,5 +374,10 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public void siirryLahinpaanSolmuun(float x, float y) {
+        Solmu tappaustaLahinSolmu = verkko.annaLahinSolmu(x,y);
+        setSolmu(tappaustaLahinSolmu);
     }
 }

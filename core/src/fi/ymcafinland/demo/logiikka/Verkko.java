@@ -190,4 +190,8 @@ public class Verkko {
     public ArrayList<Solmu> getSolmut() {
         return solmut;
     }
+
+    public Solmu annaLahinSolmu(float x, float y) {
+        return solmut.get(7);
+    }
 }
