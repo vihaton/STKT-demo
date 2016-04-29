@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -377,7 +376,14 @@ public class PlayScreen implements Screen {
     }
 
     public void siirryLahinpaanSolmuun(float x, float y) {
-        Solmu tappaustaLahinSolmu = verkko.annaLahinSolmu(x,y);
+
+        Vector3 vect = new Vector3(x, y, 0);
+        camera.unproject(vect); // camera is your game camera
+
+        float dX = vect.x;
+        float dY = vect.y;
+
+        Solmu tappaustaLahinSolmu = verkko.annaLahinSolmu(dX, dY);
         setSolmu(tappaustaLahinSolmu);
     }
 }
