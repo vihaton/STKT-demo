@@ -60,6 +60,7 @@ public class VaittamanPiirtaja {
     //todo panen yläboundi asetetaan käytössä näkymän otsikon mukaan (jos pitkä otsikko, niin yläraja tulee alemmas)
     public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         rootTable.reset();
+        pane.setScrollY(0); //asettaa scrollin yläasentoon
 
         for (final Vaittama nykyinenVaittama : solmunVaittamat) {
             Table vaittamanTaulukko = new Table();
