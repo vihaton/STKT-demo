@@ -127,21 +127,20 @@ public class Pelaaja {
         return "";
     }
 
-    @Override
-    public String toString() {
-        return "Fyysinen: " + String.format("%.1f", selviytyisArvot[FYYSINEN]) + "\n" +
-                "Älyllinen: " + String.format("%.1f", selviytyisArvot[ALYLLINEN]) + "\n" +
-                "Eettinen: " + String.format("%.1f", selviytyisArvot[EETTINEN]) + "\n" +
-                "Tunteellinen: " + String.format("%.1f", selviytyisArvot[TUNTEELLINEN]) + "\n" +
-                "Sosiaalinen: " + String.format("%.1f", selviytyisArvot[SOSIAALINEN]) + "\n" +
-                "Luova: " + String.format("%.1f", selviytyisArvot[LUOVA]) + "\n";
-    }
-
     public String getNimi() {
         return nimi;
     }
 
     public void setNimi(String nimi) {
         this.nimi = nimi;
+    }
+
+    public String valuesToString() {
+        return "Fyysinen: " + String.format("%.1f", selviytyisArvot[FYYSINEN]) + "\n" +
+                "Älyllinen: " + String.format("%.1f", selviytyisArvot[ALYLLINEN]) + "\n" +
+                "Eettinen: " + String.format("%.1f", selviytyisArvot[EETTINEN]) + "\n" +
+                "Tunteellinen: " + String.format("%.1f", selviytyisArvot[TUNTEELLINEN]) + "\n" +
+                "Sosiaalinen: " + String.format("%.1f", selviytyisArvot[SOSIAALINEN]) + "\n" +
+                "Luova: " + String.format("%.1f", selviytyisArvot[LUOVA]) + "\n";
     }
 }

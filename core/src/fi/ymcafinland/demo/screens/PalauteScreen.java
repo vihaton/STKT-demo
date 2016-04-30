@@ -65,6 +65,7 @@ public class PalauteScreen implements Screen {
     @Override
     public void show() {
         Gdx.app.log("PalS", "PalauteScreenin show() -metodia kutsuttiin");
+        arvio.setText(pelaaja.valuesToString());
     }
 
     @Override
