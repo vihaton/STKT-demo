@@ -20,27 +20,19 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 /**
  * Created by Sasu on 11.4.2016.
  */
-public class PalauteScreen implements Screen {
+public class PalauteScreen extends PerusScreen {
     protected SpriteBatch batch;
 
     private final SelviytyjanPurjeet sp;
-    private Solmu solmu;
-    private FitViewport viewport;
-    private OrthographicCamera camera;
     private Pelaaja pelaaja;
     private Label arvio;
-    private Skin skin;
     private Table rootTable;
-    private Stage stage;
 
     public PalauteScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja, Skin masterSkin) {
+        super(masterSkin, "PalS");
         this.sp = sp;
         this.batch = new SpriteBatch();
-        this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.pelaaja = pelaaja;
-        this.skin = masterSkin;
-        this.stage = new Stage(viewport);
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
 
         luoSisalto();
@@ -64,14 +56,14 @@ public class PalauteScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.log("PalS", "PalauteScreenin show() -metodia kutsuttiin");
+        super.show();
         arvio.setText(pelaaja.valuesToString());
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        super.render(delta);
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -84,30 +76,4 @@ public class PalauteScreen implements Screen {
         }
 
     }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-
-    @Override
-    public void dispose() {
-
-    }
-
 }

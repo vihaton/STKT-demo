@@ -65,8 +65,7 @@ public class SelviytyjanPurjeet extends Game {
         this.infoScreen = new InfoScreen(this, masterSkin);
 
         setScreen(infoScreen);
-
-        Gdx.app.log("SP", "ruuduksi asetettiin infoscreen, create() metodi päättyy");
+//        setScreen(playscreen);
     }
 
     /**

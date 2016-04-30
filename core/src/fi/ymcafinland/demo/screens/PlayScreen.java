@@ -75,10 +75,11 @@ public class PlayScreen implements Screen {
         this.solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko(), masterSkin);
         this.solmu = aloitussolmu;
         this.polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
-        this.camera = new OrthographicCamera();
         this.pelaaja = pelaaja;
-//        viewPort = new FillViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
+
+        this.camera = new OrthographicCamera();
         this.viewPort = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
+//        viewPort = new FillViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
@@ -146,8 +147,8 @@ public class PlayScreen implements Screen {
     @Override
     public void show() {
         Gdx.app.log("PS", "Playscreenin show() -metodia kutsuttiin");
-        float rgbJakaja = 255f;
 
+//        float rgbJakaja = 255f;
 //        //sininen
 //        Gdx.gl.glClearColor(0, 0, 139 / rgbJakaja, 1);
 //        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -353,7 +354,9 @@ public class PlayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        Gdx.app.log("PS", "resize: width " + width + " height " + height);
         viewPort.update(width, height);
+        hud.resize(width, height);
     }
 
     @Override
