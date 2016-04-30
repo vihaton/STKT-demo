@@ -2,7 +2,6 @@ package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -28,12 +27,10 @@ public class PalauteScreen implements Screen {
     private Solmu solmu;
     private FitViewport viewport;
     private OrthographicCamera camera;
-    private static GlyphLayout glyphLayout = new GlyphLayout();
-    private final BitmapFont fontti;
     private Pelaaja pelaaja;
     private Label arvio;
     private Skin skin;
-    private Table table;
+    private Table rootTable;
     private Stage stage;
 
     public PalauteScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja, Skin masterSkin) {
@@ -41,22 +38,27 @@ public class PalauteScreen implements Screen {
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
-        this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.pelaaja = pelaaja;
         this.skin = masterSkin;
         this.stage = new Stage(viewport);
-
-        this.table = new Table();
-        table.center();
-        table.setFillParent(true);
-
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
 
-        this.arvio = new Label(pelaaja.toString(), skin, "arvio");
+        luoSisalto();
+    }
 
+    private void luoSisalto() {
+        this.rootTable = new Table();
+        rootTable.setFillParent(true);
+
+        Label otsikko = new Label(pelaaja.getNimi(), skin, "otsikko");
+        rootTable.add(otsikko).top().expandX().padTop(otsikko.getHeight());
+        rootTable.row();
+
+        this.arvio = new Label(pelaaja.toString(), skin, "arvio");
         arvio.setFontScale(2);
-        stage.addActor(table);
-        table.add(arvio);
+        rootTable.add(arvio).expand();
+
+        stage.addActor(rootTable);
     }
 
 
@@ -72,16 +74,6 @@ public class PalauteScreen implements Screen {
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-
-        glyphLayout.setText(fontti, pelaaja.getNimi());
-        float x = (sp.V_WIDTH - glyphLayout.width) / 3f;
-        float y = (sp.V_HEIGHT / 1.2f + glyphLayout.height);
-
-        batch.begin();
-        fontti.draw(batch, glyphLayout, x, y);
-        batch.end();
-
-        arvio.setText(pelaaja.toString());
 
         stage.draw();
 
