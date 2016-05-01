@@ -41,7 +41,7 @@ public class PlayScreen extends PohjaScreen {
     protected float angleToPoint2;
     protected long stateTime;
     protected long timer;
-    protected float moveDuration = 1.0f;
+    private final float moveDuration = 1.0f;
     protected float zoomDuration = 0.5f;
 
     private SelviytyjanPurjeet sp;
@@ -125,7 +125,9 @@ public class PlayScreen extends PohjaScreen {
 
         delta = fixDelta(delta);
 
-        actTransition(delta);
+        if (trans) {
+            actTransition(delta);
+        }
 
         camera.position.set(polttopiste);
 
@@ -155,17 +157,13 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void actTransition(float delta) {
-        if (trans) {
-            if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
-                transition.act(delta);
-                Gdx.graphics.requestRendering();
-                stateTime += System.currentTimeMillis() - timer;
-                timer = System.currentTimeMillis();
-
-            } else {
-                trans = false;
-                stateTime = 0;
-            }
+        if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
+            transition.act(delta);
+            Gdx.graphics.requestRendering();
+            stateTime = System.currentTimeMillis() - timer;
+        } else {
+            trans = false;
+            stateTime = 0;
         }
     }
 
