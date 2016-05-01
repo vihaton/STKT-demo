@@ -45,7 +45,6 @@ public class Vaittamat {
             Gdx.app.setLogLevel(loglevel);
         }
 
-
         return lukija;
     }
 
@@ -56,7 +55,6 @@ public class Vaittamat {
         }
     }
 
-    //todo jos lause on suljettu hipsuihin " ", poistetaan ne
     private String[] pilkoRivi(String kokoRivi) {
         String[] rivi0 = kokoRivi.split(",");
         String[] pilkottuRivi = new String[18];
@@ -116,11 +114,11 @@ public class Vaittamat {
                     break;
                 }
 
-                Vaittama v = new Vaittama(vaittamatxt, id); //luodaan uusi väittämä...
-                solmunVaittamat.add(v);                     //...lisätään se väittämälistaan, ja...
+                Vaittama v = new Vaittama(vaittamatxt, id); //luodaan uusi väittämä, ...
+                solmunVaittamat.add(v);                     //...lisätään se väittämälistaan ja...
             }
 
-            karttaSolmujenVaittamista.put(id, solmunVaittamat); //talletetaan väittämälista karttaan kyseisen solmun id.llä
+            karttaSolmujenVaittamista.put(id, solmunVaittamat); //...talletetaan väittämälista karttaan kyseisen solmun id.llä
         }
     }
 

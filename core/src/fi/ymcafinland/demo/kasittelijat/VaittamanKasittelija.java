@@ -56,18 +56,21 @@ public class VaittamanKasittelija {
     }
 
     //todo panen yläboundi asetetaan käytössä näkymän otsikon mukaan (jos pitkä otsikko, niin yläraja tulee alemmas)
-    public void paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
+    public ArrayList<Float> paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
+        ArrayList<Float> vaittamienAlkuperaisetArvot = new ArrayList<>();
         rootTable.reset();
         pane.setScrollY(0); //asettaa scrollin yläasentoon
 
         for (final Vaittama nykyinenVaittama : solmunVaittamat) {
+            vaittamienAlkuperaisetArvot.add(nykyinenVaittama.getArvo());
+
             Table vaittamanTaulukko = new Table();
             Label otsikko = new Label(nykyinenVaittama.getTeksti(), skin, "vaittamatyyli");
             otsikko.setFontScale(2);
             otsikko.setWrap(true);
             otsikko.setAlignment(Align.center);
 
-            final Slider slider = new Slider(0.5f, 1.5f, .1f, false, skin.get("sliderStyle", Slider.SliderStyle.class));
+            final Slider slider = new Slider(-0.5f, 0.5f, .1f, false, skin.get("sliderStyle", Slider.SliderStyle.class));
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getArvo());
 
@@ -86,6 +89,8 @@ public class VaittamanKasittelija {
 
         rootTable.padTop(10);
         rootTable.padBottom(Gdx.graphics.getHeight() / 6);
+
+        return vaittamienAlkuperaisetArvot;
     }
 
     private void luoKuuntelijat(final Vaittama nykyinenVaittama, final Slider slider) {
@@ -93,7 +98,6 @@ public class VaittamanKasittelija {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("UITest", "slider: " + slider.getValue());
-
                 nykyinenVaittama.setArvo(slider.getValue());
             }
         });
