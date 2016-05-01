@@ -1,26 +1,14 @@
 package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
 
@@ -29,77 +17,44 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
-import fi.ymcafinland.demo.piirtajat.VaittamanPiirtaja;
+import fi.ymcafinland.demo.kasittelijat.VaittamanKasittelija;
 
-
+//Todo kaikki screenit playscreeniä lukuunottamatta voisivat periä jonkun sisältöScreen luokan,
+// jossa stagen ja roottablen alustus tekeminen olisi toteutettu valmiiksi.
 /**
  * Created by jwinter on 29.3.2016.
  * <p/>
  * QuestionScreen luokalla käsitellään Selviytyjän purjeiden "kolmatta tasoa", ja sen kysymyksistä tulevaa
  * dataa.
  */
-public class QuestionScreen implements Screen {
+public class QuestionScreen extends PohjaScreen {
     protected SpriteBatch batch;
 
-    private FitViewport viewport;
-    private OrthographicCamera camera;
     private final Pelaaja pelaaja;
     private final Vaittamat vaittamat;
     private ArrayList<Vaittama> solmunVaittamat;
     private String solmunID;
-    private Stage stage;
-    private VaittamanPiirtaja vaittamanPiirtaja;
+    private VaittamanKasittelija vaittamanKasittelija;
     Solmu solmu;
     private Table exitTable;
     private Label otsikko;
-    private Table otsikkoTable;
     private float sidePad;
-    private Table rootTable;
-    private Skin skin;
 
     public QuestionScreen(final SelviytyjanPurjeet sp, Pelaaja pelaaja, Vaittamat vaittamat, Skin masterSkin) {
+        super(masterSkin, "QS");
         this.batch = new SpriteBatch();
-        this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
         this.pelaaja = pelaaja;
         this.vaittamat = vaittamat;
-        this.skin = masterSkin;
         this.sidePad = 64;
 
         this.exitTable = createExitButton(sp);
-        createRootTable();
+        taytaRootTable();
 
-        this.stage = new Stage(viewport);
-        stage.addActor(rootTable);
-
-        this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, masterSkin);
-
-        Gdx.app.log("QS", "QS konstruktori on valmis");
+        this.vaittamanKasittelija = new VaittamanKasittelija(stage, masterSkin);
     }
 
-    private Table createExitButton(final SelviytyjanPurjeet sp) {
-        Button exitButton = new Button(skin.get("exitButtonStyle", Button.ButtonStyle.class));
-        exitButton.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("QS", "exitbuttonia painettiin");
-                sendData();
-                sp.resetPlayScreen();
-            }
-        });
-
-        Table exitTable = new Table();
-        exitTable.add(exitButton).top().right();
-
-        exitTable.validate();
-
-        return exitTable;
-    }
-
-    private void createRootTable() {
-        rootTable = new Table();
-        rootTable.setFillParent(true);
-
-        otsikkoTable = luoOtsikko();
+    private void taytaRootTable() {
+        Table otsikkoTable = luoOtsikko();
 
         rootTable.top().add(otsikkoTable).padTop(sidePad / 2).padLeft(sidePad);
         rootTable.add(exitTable).right().top();
@@ -121,6 +76,24 @@ public class QuestionScreen implements Screen {
         ot.validate();
 
         return ot;
+    }
+
+    private Table createExitButton(final SelviytyjanPurjeet sp) {
+        Button exitButton = new Button(skin.get("exitButtonStyle", Button.ButtonStyle.class));
+        exitButton.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("QS", "exitbuttonia painettiin");
+                sendData();
+                sp.resetPlayScreen();
+            }
+        });
+
+        Table exitTable = new Table();
+        exitTable.add(exitButton).top().right();
+
+        exitTable.validate();
+
+        return exitTable;
     }
 
     /**
@@ -155,56 +128,26 @@ public class QuestionScreen implements Screen {
         }
     }
 
-    @Override
-    public void show() {
-        Gdx.app.log("QS", "QuestionScreenin show() -metodia kutsuttiin");
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-//        stage.setDebugAll(true);
-
-        vaittamanPiirtaja.renderoi(delta);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
     public void setSolmu(Solmu solmu) {
         this.solmu = solmu;
         otsikko.setText(solmu.getMutsi().getOtsikko() + ":\n" + solmu.getSisalto());
         solmunID = solmu.getID();
         solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmunID);
-        vaittamanPiirtaja.paivitaVaittamat(solmunVaittamat);
+        vaittamanKasittelija.paivitaVaittamat(solmunVaittamat);
     }
 
     @Override
-    public void resume() {
-
+    public void show() {
+        super.show();
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
     }
 
     @Override
-    public void hide() {
+    public void render(float delta) {
+        super.render(delta);
 
+        vaittamanKasittelija.paivita(delta);
+
+        stage.draw();
     }
-
-    /**
-     * Dispose metodi sulkee kysymyksen asettamalla selviytyjän purjeisiin kysymykseksi null. Oletettavasti
-     * dispose lähettää ensin keräämänsä datan eteenpäin.
-     */
-    @Override
-    public void dispose() {
-
-    }
-
 }

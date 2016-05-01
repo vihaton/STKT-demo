@@ -1,16 +1,9 @@
 package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -18,25 +11,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
  * Created by jwinter on 11.4.2016.
  */
-public class InfoScreen implements Screen {
+public class InfoScreen extends PohjaScreen {
 
     protected SpriteBatch batch;
-    protected Table rootTable;
     protected Label otsikko;
-
-    private FitViewport viewport;
-    private OrthographicCamera camera;
     private Texture tausta;
     private ScrollPane pane;
-    private Stage stage;
-    private Skin skin;
     private Button exitButton;
     private Button alkuButton;
 
@@ -52,27 +38,21 @@ public class InfoScreen implements Screen {
 
 
     public InfoScreen(SelviytyjanPurjeet sp, Skin masterSkin) {
+        super(masterSkin, "IS");
         this.batch = new SpriteBatch();
-        this.skin = masterSkin;
-        //todo viewport asettuu myös tietokoneella ajettaessa oikein (stage?)
-        this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
-        this.tausta = new Texture("sails02.png");
-        this.stage = new Stage();
-        luoSisalto(sp);
+
+        this.tausta = skin.get("infonTausta", Texture.class);
+        taytaRootTable(sp);
     }
 
-    public void luoSisalto(SelviytyjanPurjeet sp) {
-        rootTable = new Table();
-        rootTable.setFillParent(true);
-
+    public void taytaRootTable(SelviytyjanPurjeet sp) {
         otsikko = new Label("Selviytyjän purjeet", skin, "otsikko");
         rootTable.add(otsikko).expand().top();
         rootTable.row();
 
         luoScrollPane();
 
-        rootTable.add(pane).pad(SelviytyjanPurjeet.V_WIDTH / 10).height(100).width(100);
+        rootTable.add(pane).pad(SelviytyjanPurjeet.V_WIDTH / 10).center();
         rootTable.row();
 
         createExitButton(sp);
@@ -86,28 +66,26 @@ public class InfoScreen implements Screen {
         rootTable.add(nappiTaulukko).padBottom(64).fillX();
 
         rootTable.validate();
-
-        stage.addActor(rootTable);
-        stage.addActor(pane);
     }
 
     private void luoScrollPane() {
-        pane = new ScrollPane(luoInfoteksti());
+        pane = new ScrollPane(luoInfoteksti().top());
         pane.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2);
         pane.setWidth(SelviytyjanPurjeet.V_WIDTH / 2);
         pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT / 2);
-        pane.setTouchable(Touchable.enabled);
         pane.validate();
     }
 
-    private Actor luoInfoteksti() {
+    private Table luoInfoteksti() {
         Label label = new Label(infoText, skin, "infoteksti");
         label.setWrap(true);
         label.setFontScale(2);
-        label.setAlignment(Align.top);
+        label.setAlignment(Align.center);
         label.setFillParent(true);
 
-        return label;
+        Table infoTable = new Table();
+        infoTable.add(label);
+        return infoTable;
     }
 
     private void createAlkuTestiButton(final SelviytyjanPurjeet sp) {
@@ -134,18 +112,17 @@ public class InfoScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.log("IS", "show() -metodia kutsuttiin");
-        Gdx.input.setInputProcessor(stage);
-
+        super.show();
         float rgbJakaja = 255f;
         Gdx.gl.glClearColor(0, 0, 139 / rgbJakaja, 1);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        super.render(delta);
 
-        stage.setDebugAll(true);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
         batch.draw(tausta, 0, 0, tausta.getWidth(), tausta.getHeight());
@@ -153,30 +130,5 @@ public class InfoScreen implements Screen {
 
         pane.act(delta);
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
     }
 }

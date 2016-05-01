@@ -1,4 +1,4 @@
-package fi.ymcafinland.demo.screens;
+package fi.ymcafinland.demo.screens.Apuluokat;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 /**
  * Created by Sasu on 27.3.2016.
  */
-class CameraTransition {
+public class CameraTransition {
 
     private final Vector3 startPos;
     private final Vector3 goalPos;
