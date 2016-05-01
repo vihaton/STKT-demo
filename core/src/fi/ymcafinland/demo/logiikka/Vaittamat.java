@@ -74,19 +74,21 @@ public class Vaittamat {
                 pilkottuSolu = true;
             }
 
-            if (pala.endsWith("\"") || pilkottuSolu == false) {
+            if (pala.endsWith("\"")) { //solu on valmis
+
+                pilkottuRivi[ind] = pala.substring(1, pala.length()-1); //poistetaan " alusta ja lopusta
+                ind++;
+                pala = "";
+
+            } else if (!pilkottuSolu) {
                 pilkottuRivi[ind] = pala;
                 ind++;
-
-                if (pilkottuSolu) {
-                    pala = "";
-                }
             }
 
             edellinenPala = pala;
         }
 
-        //lisätään loppuun tyhjät väittämäsarakkeet
+        //lisätään loppuun tyhjät väittämäsarakkeet, jos tarvetta
         for (int i = ind; i < 18; i++) {
             pilkottuRivi[i] = "";
             ind = i + 1;
