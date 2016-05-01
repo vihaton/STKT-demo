@@ -28,6 +28,7 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
+        hud.siirryLahinpaanPalloon(x,y);
         return false;
     }
 

@@ -7,7 +7,6 @@ package fi.ymcafinland.demo.logiikka;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.io.File;
@@ -189,5 +188,21 @@ public class Verkko {
 
     public ArrayList<Solmu> getSolmut() {
         return solmut;
+    }
+
+    public Solmu annaLahinSolmu(float x, float y, Solmu nykyinenSolmu) {
+        double lahimmanSolmunEtaisyys = Double.MAX_VALUE;
+
+        for (Solmu s:solmut) {
+            double etaisyys = Math.sqrt(Math.pow(s.getXKoordinaatti() - x, 2f) + Math.pow(s.getYKoordinaatti() - y, 2f));
+
+            //todo jos klikataan vitun-liaan-kauas-kaikesta ei tehdä mitään
+            if (etaisyys < lahimmanSolmunEtaisyys) {
+                nykyinenSolmu = s;
+                lahimmanSolmunEtaisyys = etaisyys;
+            }
+        }
+
+        return nykyinenSolmu;
     }
 }

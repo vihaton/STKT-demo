@@ -3,12 +3,17 @@ package fi.ymcafinland.demo.main;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import fi.ymcafinland.demo.screens.InfoScreen;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
@@ -34,6 +39,7 @@ public class SelviytyjanPurjeet extends Game {
     private PlayScreen playscreen;
     private PalauteScreen palauteScreen;
     private QuestionScreen questionScreen;
+    private InfoScreen infoScreen;
     private Vaittamat vaittamat;
     private Skin masterSkin;
 
@@ -57,18 +63,25 @@ public class SelviytyjanPurjeet extends Game {
         this.questionScreen = new QuestionScreen(this, pelaaja, vaittamat, masterSkin);
         this.palauteScreen = new PalauteScreen(this, pelaaja, masterSkin);
         this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0), pelaaja, masterSkin);
+        this.infoScreen = new InfoScreen(this, masterSkin);
 
-        setScreen(new InfoScreen(this));
-        Gdx.app.log("SP", "ruuduksi asetettiin infoscreen, create() metodi päättyy");
+        setScreen(infoScreen);
+//        setScreen(playscreen);
     }
 
+    /**
+     * Tarkoitus olisi, että kaikki pelissä käytetyt UI elementit (fontit, tyylit, textuurit...)
+     * luodaan Selviytyjän purjeissa. Näin ollen kaikki olisi helposti päivitettävissä yhdessä paikassa.
+     */
     private void luoSkin() {
         masterSkin = new Skin();
 
         generoiFontit();
-        generoiLabelStyles();
+        generoiLabelStylet();
         generoiSliderStyle();
-
+        generoiProgressBarStylet();
+        generoiTexturet();
+        generoiButtonStylet();
     }
 
     private void generoiFontit() {
@@ -76,7 +89,8 @@ public class SelviytyjanPurjeet extends Game {
         masterSkin.add("fontti", fontti);
     }
 
-    private void generoiLabelStyles() {
+
+    private void generoiLabelStylet() {
         Label.LabelStyle otsikkoStyle = new Label.LabelStyle(masterSkin.getFont("fontti"), masterSkin.getFont("fontti").getColor());
         masterSkin.add("otsikko", otsikkoStyle);
 
@@ -88,6 +102,9 @@ public class SelviytyjanPurjeet extends Game {
 
         Label.LabelStyle arvioStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         masterSkin.add("arvio", arvioStyle);
+
+        Label.LabelStyle infotekstiStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        masterSkin.add("infoteksti", infotekstiStyle);
     }
 
     private void generoiSliderStyle() {
@@ -98,11 +115,43 @@ public class SelviytyjanPurjeet extends Game {
         masterSkin.add("sliderStyle", sliderStyle);
     }
 
+    private void generoiProgressBarStylet() {
+        ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();
+
+        Texture progressBackground = new Texture("progressbar2/progressbackground.png");
+        Texture progressKnob = new Texture("progressbar2/progressknob.png");
+
+        progressBarStyle.knobBefore = new TextureRegionDrawable(new TextureRegion(progressKnob));
+        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progressBackground));
+        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progressKnob));
+
+        masterSkin.add("progressBarStyle", progressBarStyle);
+    }
+
+    private void generoiTexturet() {
+        masterSkin.add("infonTausta", new Texture("sails02.png"));
+
+        masterSkin.add("alku", new Texture("alku.png"));
+
+        masterSkin.add("ruksi", new Texture("ruksi.png"));
+
+        masterSkin.add("emptynode", new Texture("emptynode.png"));
+    }
+
+    private void generoiButtonStylet() {
+        Button.ButtonStyle styleAlku = new Button.ButtonStyle();
+        styleAlku.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("alku", Texture.class)));
+        masterSkin.add("alkuButtonStyle", styleAlku);
+
+        Button.ButtonStyle styleExit = new Button.ButtonStyle();
+        styleExit.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("ruksi", Texture.class)));
+        masterSkin.add("exitButtonStyle", styleExit);
+    }
+
     @Override
     public void render() {
         super.render();
     }
-
 
     @Override
     public void dispose() {
@@ -120,7 +169,6 @@ public class SelviytyjanPurjeet extends Game {
     }
 
     public void resetPlayScreen() {
-		playscreen.resetInputProcessor();
         playscreen.resetStateTime();
         setScreen(playscreen);
     }
