@@ -1,14 +1,16 @@
 package fi.ymcafinland.demo.piirtajat;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 
@@ -19,54 +21,67 @@ import fi.ymcafinland.demo.logiikka.*;
  */
 public class SolmunPiirtaja {
 
+    private Stage stage;
     private ArrayList<Solmu> solmut;
     private Texture pallonKuva;
-    private BitmapFont fontti;
-    private Table tekstitaulukko;
     private Skin skin;
-    private Label.LabelStyle labelStyle;
-    private Label otsikko;
-    private Label sisalto;
     private float pallonLeveys;
     private float pallonKorkeus;
     private ArrayList<Table> solmuTaulukot;
 
-    public SolmunPiirtaja(Verkko verkko, Skin masterSkin) {
+    public SolmunPiirtaja(Stage stage, Verkko verkko, Skin masterSkin) {
+        this.stage = stage;
         solmut = verkko.getSolmut();
         skin = masterSkin;
-        pallonKuva = new Texture("emptynode.png");
+        pallonKuva = skin.get("emptynode", Texture.class);
         pallonLeveys = pallonKuva.getWidth();
         pallonKorkeus = pallonKuva.getHeight();
 
-        tekstitaulukko = new Table();
-        otsikko = new Label("ymca", skin, "otsikko");
-        sisalto = new Label("ymca", skin, "sisalto");
-
         solmuTaulukot = new ArrayList<>();
-        generoiSolmutaulukot(verkko);
+        lisaaSolmutStageen();
     }
 
-    private void generoiSolmutaulukot(Verkko verkko) {
-        for (Solmu s : verkko.getSolmut()) {
+    private void lisaaSolmutStageen() {
+        for (Solmu s : solmut) {
             float x = s.getXKoordinaatti();
             float y = s.getYKoordinaatti();
 
-            Label otsikko = new Label(s.getOtsikko(), skin, "otsikko");
-            otsikko.setFontScale(0.7f);
-            Label sisalto = new Label(s.getSisalto(), skin, "sisalto");
-            sisalto.setFontScale(2);
+            Image taustapallo = luoTaustapallo();
+            Table tekstit = luoTekstitaulukko(s);
 
-            Table tekstit = new Table();
+            taustapallo.setPosition(x - pallonLeveys / 2, y - pallonKorkeus / 2);
             tekstit.setPosition(x, y);
 
-            if (otsikko.getText().length != 0) { //jos otsikko ei ole tyhjä
-                tekstit.add(otsikko);
-                tekstit.row();
-            }
-            tekstit.add(sisalto);
-
+            taustapallo.setOrigin(Align.center);
+            taustapallo.setRotation(s.getKulma());
             solmuTaulukot.add(tekstit);
+
+            stage.addActor(taustapallo);
+            stage.addActor(tekstit);
         }
+    }
+
+    private Table luoTekstitaulukko(Solmu s) {
+        Label otsikko = new Label(s.getOtsikko(), skin, "otsikko");
+        otsikko.setFontScale(0.7f);
+        Label sisalto = new Label(s.getSisalto(), skin, "sisalto");
+        sisalto.setFontScale(2);
+
+        Table tekstit = new Table();
+
+        if (otsikko.getText().length != 0) { //jos otsikko ei ole tyhjä
+            tekstit.add(otsikko);
+            tekstit.row();
+        }
+        tekstit.add(sisalto);
+        return tekstit;
+    }
+
+    private Image luoTaustapallo() {
+        Texture emptynode = skin.get("emptynode", Texture.class);
+        TextureRegion region = new TextureRegion(emptynode, 0, 0, emptynode.getWidth(), emptynode.getHeight());
+
+        return new Image(region);
     }
 
     /**
@@ -75,22 +90,15 @@ public class SolmunPiirtaja {
      * @param batch              vastaa piirtämisestä.
      * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
      */
-    public void piirra(SpriteBatch batch, float angleToPointCamera) {
-        piirraPalloJaTekstiErikseen(batch, angleToPointCamera);
+    public void paivitaSolmut(SpriteBatch batch, float angleToPointCamera) {
+        rotateTables(angleToPointCamera);
     }
 
-    private void piirraPalloJaTekstiErikseen(SpriteBatch batch, float angleToPointCamera) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // This cryptic line clears the screen.
-
-        batch.begin();
-        for (Table t:solmuTaulukot) {
-            batch.draw(pallonKuva, t.getX() - pallonLeveys / 2, t.getY() - pallonKorkeus / 2, pallonLeveys / 2, pallonKorkeus / 2, pallonLeveys, pallonKorkeus, 1f, 1f, angleToPointCamera - 90, 0, 0, (int) pallonLeveys, (int) pallonKorkeus, false, false);
+    public void rotateTables(float angleToPointCamera) {
+        for (Table t : solmuTaulukot) {
             t.setTransform(true);
             t.setRotation(angleToPointCamera - 90);
-            t.draw(batch, 1f);
         }
-        batch.end();
     }
-
 
 }

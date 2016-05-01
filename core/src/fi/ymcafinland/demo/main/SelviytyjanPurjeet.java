@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -78,15 +79,16 @@ public class SelviytyjanPurjeet extends Game {
         generoiFontit();
         generoiLabelStylet();
         generoiSliderStyle();
+        generoiProgressBarStylet();
         generoiTexturet();
         generoiButtonStylet();
     }
-
 
     private void generoiFontit() {
         BitmapFont fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
         masterSkin.add("fontti", fontti);
     }
+
 
     private void generoiLabelStylet() {
         Label.LabelStyle otsikkoStyle = new Label.LabelStyle(masterSkin.getFont("fontti"), masterSkin.getFont("fontti").getColor());
@@ -113,12 +115,27 @@ public class SelviytyjanPurjeet extends Game {
         masterSkin.add("sliderStyle", sliderStyle);
     }
 
+    private void generoiProgressBarStylet() {
+        ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();
+
+        Texture progressBackground = new Texture("progressbar2/progressbackground.png");
+        Texture progressKnob = new Texture("progressbar2/progressknob.png");
+
+        progressBarStyle.knobBefore = new TextureRegionDrawable(new TextureRegion(progressKnob));
+        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progressBackground));
+        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progressKnob));
+
+        masterSkin.add("progressBarStyle", progressBarStyle);
+    }
+
     private void generoiTexturet() {
         masterSkin.add("infonTausta", new Texture("sails02.png"));
 
         masterSkin.add("alku", new Texture("alku.png"));
 
         masterSkin.add("ruksi", new Texture("ruksi.png"));
+
+        masterSkin.add("emptynode", new Texture("emptynode.png"));
     }
 
     private void generoiButtonStylet() {
