@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -25,10 +26,9 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 /**
  * Created by Sasu on 27.3.2016.
  */
-public class PlayScreen implements Screen {
+public class PlayScreen extends PohjaScreen {
 
     protected SpriteBatch batch;
-    protected OrthographicCamera camera;
     protected Solmu solmu;
     protected fi.ymcafinland.demo.screens.Apuluokat.CameraTransition transition;
     protected float timeSinceTransitionZoom = 0;
@@ -45,20 +45,12 @@ public class PlayScreen implements Screen {
     protected float zoomDuration = 0.5f;
 
     private SelviytyjanPurjeet sp;
-    private Stage stage;
     private Verkko verkko;
-    private Viewport viewPort;
     private HUD hud;
     private SolmunKasittelija solmunKasittelija;
     private EdistymismittarinKasittelija edistymismittarinKasittelija;
     private float deltaAVG;
-    ProgressBar progressBar;
-    ProgressBar.ProgressBarStyle progressBarStyle;
-    Skin skin;
     Pelaaja pelaaja;
-    Texture progressBackground;
-    Texture progressKnob;
-    Table progressTable;
 
     private final int idleTime = 5000;
 
@@ -69,18 +61,13 @@ public class PlayScreen implements Screen {
      * @param aloitussolmu ensimmäisenä ruutuun ilmestyvä solmu
      */
     public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu, Pelaaja pelaaja, Skin masterSkin) {
+        super(masterSkin, "PS");
         this.sp = sp;
         this.verkko = sp.getVerkko();
-        this.skin = masterSkin;
         this.solmu = aloitussolmu;
         this.polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
         this.pelaaja = pelaaja;
 
-        this.camera = new OrthographicCamera();
-        this.viewPort = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
-//        viewPort = new FillViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
-
-        this.stage = new Stage(viewPort);
         this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin);
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
 
@@ -107,8 +94,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.log("PS", "Playscreenin show() -metodia kutsuttiin");
-
+        super.show();
 //        float rgbJakaja = 255f;
 //        //sininen
 //        Gdx.gl.glClearColor(0, 0, 139 / rgbJakaja, 1);
@@ -116,6 +102,8 @@ public class PlayScreen implements Screen {
 
         //valkoinen
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+
+        hud.resetInputProcessor();
     }
 
     public void alkaaTapahtua() {
@@ -131,10 +119,7 @@ public class PlayScreen implements Screen {
     public void render(float delta) {
         //debug
 //        Gdx.app.log("PS", "request render " + stateTime + " " + trans + " " + delta);
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.setDebugAll(true);
+        super.render(delta);
 
         camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
 
@@ -150,7 +135,7 @@ public class PlayScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        solmunKasittelija.paivitaSolmut(batch, angleToPoint1);
+        solmunKasittelija.paivitaSolmut(angleToPoint1);
         edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint1);
 
         stage.draw();
@@ -252,10 +237,6 @@ public class PlayScreen implements Screen {
         hud.update(solmu);
     }
 
-    public void resetInputProcessor() {
-        hud.resetInputProcessor();
-    }
-
     public void setZoom(float ratio) {
         float z = getZoom();
         if (z + ratio < 3 && z + ratio > 0.75) {
@@ -305,29 +286,8 @@ public class PlayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.log("PS", "resize: width " + width + " height " + height);
-        viewPort.update(width, height);
+        super.resize(width, height);
         hud.resize(width, height);
-    }
-
-    @Override
-    public void pause() {
-        Gdx.app.log("PS", "Playscreenin pause() -metodia kutsuttiin");
-    }
-
-    @Override
-    public void resume() {
-        Gdx.app.log("PS", "Playscreenin resume() -metodia kutsuttiin");
-    }
-
-    @Override
-    public void hide() {
-        Gdx.app.log("PS", "Playscreenin hide() -metodia kutsuttiin");
-    }
-
-    @Override
-    public void dispose() {
-        Gdx.app.log("PS", "Playscreenin dispose() -metodia kutsuttiin");
     }
 
     public void siirryLahinpaanSolmuun(float x, float y) {

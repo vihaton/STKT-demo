@@ -33,7 +33,6 @@ public class HUD {
     public InputMultiplexer im;
 
     protected Solmu solmu;
-    protected OrthographicCamera camera;
     protected Skin skin;
     protected Sprite map;
     protected Button karttaNappi;
@@ -62,7 +61,6 @@ public class HUD {
         //HUD EI implementoi inputProcessorin rajapintaa, vaan asettaa inputprocessoriksi tuntemansa inputmultiplexerin.
         this.stage = new Stage(viewport, sb);
         this.im = new InputMultiplexer(stage, new GestureDetector(new HUDListener(this, viewport, sb)));
-        Gdx.input.setInputProcessor(im);
 
         atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
         skin = new Skin();
