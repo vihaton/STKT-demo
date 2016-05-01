@@ -76,19 +76,32 @@ public class SelviytyjanPurjeet extends Game {
     private void luoSkin() {
         masterSkin = new Skin();
 
+        generoiTexturet();
         generoiFontit();
         generoiLabelStylet();
         generoiSliderStyle();
         generoiProgressBarStylet();
-        generoiTexturet();
         generoiButtonStylet();
+        generoiTextureAtlakset();
+    }
+
+    private void generoiTexturet() {
+        masterSkin.add("infonTausta", new Texture("sails02.png"));
+
+        masterSkin.add("alku", new Texture("alku.png"));
+
+        masterSkin.add("ruksi", new Texture("ruksi.png"));
+
+        masterSkin.add("emptynode", new Texture("emptynode.png"));
+
+        masterSkin.add("mini_palaute", new Texture("hahmo.png"));
+
     }
 
     private void generoiFontit() {
         BitmapFont fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
         masterSkin.add("fontti", fontti);
     }
-
 
     private void generoiLabelStylet() {
         Label.LabelStyle otsikkoStyle = new Label.LabelStyle(masterSkin.getFont("fontti"), masterSkin.getFont("fontti").getColor());
@@ -128,16 +141,6 @@ public class SelviytyjanPurjeet extends Game {
         masterSkin.add("progressBarStyle", progressBarStyle);
     }
 
-    private void generoiTexturet() {
-        masterSkin.add("infonTausta", new Texture("sails02.png"));
-
-        masterSkin.add("alku", new Texture("alku.png"));
-
-        masterSkin.add("ruksi", new Texture("ruksi.png"));
-
-        masterSkin.add("emptynode", new Texture("emptynode.png"));
-    }
-
     private void generoiButtonStylet() {
         Button.ButtonStyle styleAlku = new Button.ButtonStyle();
         styleAlku.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("alku", Texture.class)));
@@ -146,6 +149,42 @@ public class SelviytyjanPurjeet extends Game {
         Button.ButtonStyle styleExit = new Button.ButtonStyle();
         styleExit.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("ruksi", Texture.class)));
         masterSkin.add("exitButtonStyle", styleExit);
+    }
+
+    private void generoiTextureAtlakset() {
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
+        masterSkin.addRegions(atlas);
+
+        generoiHUDinButtonStylet();
+    }
+
+    /**
+     * kutsuttava vasta, kun masterSkiniin on lisätty textureatlas minisolmuista.
+     */
+    private void generoiHUDinButtonStylet() {
+        Button.ButtonStyle styleParent = new Button.ButtonStyle();
+        Button.ButtonStyle styleLeft = new Button.ButtonStyle();
+        Button.ButtonStyle styleRight = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild1 = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild2 = new Button.ButtonStyle();
+        Button.ButtonStyle styleChild3 = new Button.ButtonStyle();
+        Button.ButtonStyle styleKartta = new Button.ButtonStyle();
+        Button.ButtonStyle stylePalaute = new Button.ButtonStyle();
+        Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
+
+        styleKartta.up = masterSkin.getDrawable("mini_karttakuva");
+        styleKysymys.up = masterSkin.getDrawable("mini_kysymys");
+        stylePalaute.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("mini_palaute", Texture.class)));
+
+        masterSkin.add("styleParent" , styleParent);
+        masterSkin.add("styleLeft", styleLeft);
+        masterSkin.add("styleRight", styleRight);
+        masterSkin.add("styleChild1", styleChild1);
+        masterSkin.add("styleChild2", styleChild2);
+        masterSkin.add("styleChild3", styleChild3);
+        masterSkin.add("styleKartta", styleKartta);
+        masterSkin.add("stylePalaute", stylePalaute);
+        masterSkin.add("styleKysymys", styleKysymys);
     }
 
     @Override

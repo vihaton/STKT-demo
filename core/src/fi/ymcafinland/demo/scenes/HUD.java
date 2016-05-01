@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -45,15 +41,19 @@ public class HUD {
     protected Button kysymys;
     protected Button palaute;
     protected boolean montaLasta;
-    protected TextureAtlas atlas;
     protected Texture textureHahmo;
     protected PlayScreen playScreen;
-    protected SpriteBatch sb;
+    private Button.ButtonStyle styleParent;
+    private Button.ButtonStyle styleLeft;
+    private Button.ButtonStyle styleRight;
+    private Button.ButtonStyle styleChild1;
+    private Button.ButtonStyle styleChild2;
+    private Button.ButtonStyle styleChild3;
 
     private Viewport viewport;
 
-//todo myös hudi masterSkinin piiriin muiden luokkien tapaan
-    public HUD(final PlayScreen playScreen, SpriteBatch sb, Solmu solmu) {
+    //todo myös hudi masterSkinin piiriin muiden luokkien tapaan
+    public HUD(final PlayScreen playScreen, SpriteBatch sb, Skin masterSkin, Solmu solmu) {
 
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
 
@@ -61,17 +61,15 @@ public class HUD {
         this.stage = new Stage(viewport, sb);
         this.im = new InputMultiplexer(this.stage, new GestureDetector(new HUDListener(this, viewport, sb)));
 
-        atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
-        skin = new Skin();
-        skin.addRegions(atlas);
-
+        skin = masterSkin;
         this.solmu = solmu;
         this.playScreen = playScreen;
-        this.sb = sb;
+
         hasParent = solmu.getMutsi() != null;
         montaLasta = solmu.getLapset().size() > 1;
 
-        buttonCreation(solmu);
+        buttonCreation();
+        updateButtons(solmu);
         createTable();
         createListeners(playScreen, solmu);
     }
@@ -165,15 +163,13 @@ public class HUD {
         this.solmu = solmu;
         hasParent = solmu.getMutsi() != null;
         montaLasta = solmu.getLapset().size() > 0;
-        buttonCreation(solmu);
+        buttonCreation();
+        updateButtons(solmu);
         createTable();
         karttaNappi.setChecked(zoomedOut);
         createListeners(playScreen, solmu);
         setZoomedHUDState(zoomedOut);
-
-
     }
-
 
     private void setZoomedHUDState(boolean zoomedOut) {
         if (hasParent) {
@@ -245,37 +241,55 @@ public class HUD {
 
     /**
      * Luo nappulat HUDiin
-     *
-     * @param solmu
      */
-    private void buttonCreation(Solmu solmu) {
-        Button.ButtonStyle styleParent = new Button.ButtonStyle();
-        Button.ButtonStyle styleLeft = new Button.ButtonStyle();
-        Button.ButtonStyle styleRight = new Button.ButtonStyle();
-        Button.ButtonStyle styleChild1 = new Button.ButtonStyle();
-        Button.ButtonStyle styleChild2 = new Button.ButtonStyle();
-        Button.ButtonStyle styleChild3 = new Button.ButtonStyle();
-        Button.ButtonStyle styleKartta = new Button.ButtonStyle();
-        Button.ButtonStyle stylePalaute = new Button.ButtonStyle();
+    private void buttonCreation() {
+        styleParent = skin.get("styleParent", Button.ButtonStyle.class);
+        styleLeft = skin.get("styleLeft", Button.ButtonStyle.class);
+        styleRight = skin.get("styleRight", Button.ButtonStyle.class);
+        styleChild1 = skin.get("styleChild1", Button.ButtonStyle.class);
+        styleChild2 = skin.get("styleChild2", Button.ButtonStyle.class);
+        styleChild3 = skin.get("styleChild3", Button.ButtonStyle.class);
 
-        styleKartta.up = skin.getDrawable("mini_karttakuva");
+        float scale = 1.2f;
 
-        karttaNappi = new Button(styleKartta);
-        karttaNappi.setScale(1.2f);
+        karttaNappi = new Button(skin.get("styleKartta", Button.ButtonStyle.class));
+        karttaNappi.setScale(scale);
+
+        kysymys = new Button(skin.get("styleKysymys", Button.ButtonStyle.class));
+        kysymys.setScale(scale);
+
+        palaute = new Button(skin.get("stylePalaute", Button.ButtonStyle.class));
+        palaute.setScale(scale);
+
+        parent = new Button(styleParent);
+        parent.setScale(scale);
+
+        leftSister = new Button(styleLeft);
+        leftSister.setScale(scale);
+
+        rightSister = new Button(styleRight);
+        rightSister.setScale(scale);
+
+        child1 = new Button(styleChild1);
+        child1.setScale(scale);
+
+        child2 = new Button(styleChild2);
+        child2.setScale(scale);
+
+        child3 = new Button(styleChild3);
+        child3.setScale(scale);
+    }
+
+
+    private void updateButtons(Solmu solmu) {
         if (hasParent) {
             styleParent.up = skin.getDrawable(solmu.getMutsi().getMinikuvanNimi());
-            parent = new Button(styleParent);
-            parent.setScale(1.2f);
         }
+
         styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMinikuvanNimi());
-        leftSister = new Button(styleLeft);
-        leftSister.setScale(1.2f);
         styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMinikuvanNimi());
-        rightSister = new Button(styleRight);
-        rightSister.setScale(1.2f);
 
         ArrayList<Solmu> lapset = solmu.getLapset();
-
 
         if (montaLasta) {
             if (kysymys != null) {
@@ -283,14 +297,8 @@ public class HUD {
                 kysymys.setDisabled(true);
             }
             styleChild1.up = skin.getDrawable(lapset.get(0).getMinikuvanNimi());
-            child1 = new Button(styleChild1);
-            child1.setScale(1.2f);
             styleChild2.up = skin.getDrawable(lapset.get(1).getMinikuvanNimi());
-            child2 = new Button(styleChild2);
-            child2.setScale(1.2f);
             styleChild3.up = skin.getDrawable(lapset.get(2).getMinikuvanNimi());
-            child3 = new Button(styleChild3);
-            child3.setScale(1.2f);
 
         } else {
 
@@ -302,17 +310,8 @@ public class HUD {
             child3.setDisabled(true);
 
         }
-        Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
-        styleKysymys.up = skin.getDrawable("mini_kysymys");
-        kysymys = new Button(styleKysymys);
-        kysymys.setScale(1.2f);
-        textureHahmo = new Texture("hahmo.png");
-
-        stylePalaute.up = new TextureRegionDrawable(new TextureRegion(textureHahmo));
-
-        palaute = new Button(stylePalaute);
-        palaute.setScale(1.2f);
     }
+
 
     public void right() {
         Gdx.app.log("HList", "Swaipattu oikealle");
@@ -336,7 +335,6 @@ public class HUD {
         //TODO varaudu myös siihen että solmulla on vain yksi lapsi
         if (montaLasta) {
             playScreen.setSolmu(solmu.getLapset().get(1));
-
         }
     }
 

@@ -75,7 +75,7 @@ public class PlayScreen extends PohjaScreen {
         this.batch = new SpriteBatch();
 
         // Playscreen ei tunne sovelluksen inputprocessoria, vaan tietää HUDin joka huolehtii I/O:sta.
-        this.hud = new HUD(this, batch, solmu);
+        this.hud = new HUD(this, batch, masterSkin, solmu);
 
         this.keskipiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.timer = System.currentTimeMillis();
