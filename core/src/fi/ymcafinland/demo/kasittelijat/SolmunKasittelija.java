@@ -85,12 +85,11 @@ public class SolmunKasittelija {
     }
 
     /**
-     * Piirtää kaikki solmut.
+     * Päivittää solmujen asennot ym.
      *
-     * @param batch              vastaa piirtämisestä.
-     * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
+     * * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
      */
-    public void paivitaSolmut(SpriteBatch batch, float angleToPointCamera) {
+    public void paivitaSolmut(float angleToPointCamera) {
         rotateTables(angleToPointCamera);
     }
 
