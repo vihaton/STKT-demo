@@ -76,6 +76,7 @@ public class VaittamanKasittelija {
 
             sliderit.add(slider);
 
+            //todo väittämien ja sliderien koko paremmaksi
             vaittamanTaulukko.add(otsikko).width(slider.getWidth() * 3);
             vaittamanTaulukko.row();
             vaittamanTaulukko.add(slider);

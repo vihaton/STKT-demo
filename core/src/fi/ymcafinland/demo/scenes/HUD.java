@@ -34,7 +34,6 @@ public class HUD {
 
     protected Solmu solmu;
     protected Skin skin;
-    protected Sprite map;
     protected Button karttaNappi;
     protected Button parent;
     protected boolean hasParent;
@@ -53,20 +52,19 @@ public class HUD {
 
     private Viewport viewport;
 
-
-    public HUD(final PlayScreen playScreen, SpriteBatch sb, final Solmu solmu) {
+//todo myös hudi masterSkinin piiriin muiden luokkien tapaan
+    public HUD(final PlayScreen playScreen, SpriteBatch sb, Solmu solmu) {
 
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
 
         //HUD EI implementoi inputProcessorin rajapintaa, vaan asettaa inputprocessoriksi tuntemansa inputmultiplexerin.
         this.stage = new Stage(viewport, sb);
-        this.im = new InputMultiplexer(stage, new GestureDetector(new HUDListener(this, viewport, sb)));
+        this.im = new InputMultiplexer(this.stage, new GestureDetector(new HUDListener(this, viewport, sb)));
 
         atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
         skin = new Skin();
         skin.addRegions(atlas);
 
-        this.map = map;
         this.solmu = solmu;
         this.playScreen = playScreen;
         this.sb = sb;
