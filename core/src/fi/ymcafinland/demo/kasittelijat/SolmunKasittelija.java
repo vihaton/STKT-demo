@@ -1,4 +1,4 @@
-package fi.ymcafinland.demo.piirtajat;
+package fi.ymcafinland.demo.kasittelijat;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -19,7 +19,7 @@ import fi.ymcafinland.demo.logiikka.*;
 /**
  * Created by xvixvi on 1.4.2016.
  */
-public class SolmunPiirtaja {
+public class SolmunKasittelija {
 
     private Stage stage;
     private ArrayList<Solmu> solmut;
@@ -29,7 +29,7 @@ public class SolmunPiirtaja {
     private float pallonKorkeus;
     private ArrayList<Table> solmuTaulukot;
 
-    public SolmunPiirtaja(Stage stage, Verkko verkko, Skin masterSkin) {
+    public SolmunKasittelija(Stage stage, Verkko verkko, Skin masterSkin) {
         this.stage = stage;
         solmut = verkko.getSolmut();
         skin = masterSkin;

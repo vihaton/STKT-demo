@@ -21,7 +21,7 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
  * Kaikki rootTableen perustuvaa layoutia käyttävät screenit voivat periä PerusScreenin, joka paketoi loggauksen ja perustoiminnallisuudet,
  * jotka ovat kaikille screeneille samat.
  */
-public class PerusScreen implements Screen {
+public class PohjaScreen implements Screen {
     protected FitViewport viewport;
     protected OrthographicCamera camera;
     protected Stage stage;
@@ -37,7 +37,7 @@ public class PerusScreen implements Screen {
      * @param masterSkin
      * @param logTag
      */
-    public PerusScreen(Skin masterSkin, String logTag) {
+    public PohjaScreen(Skin masterSkin, String logTag) {
         this.skin = masterSkin;
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);

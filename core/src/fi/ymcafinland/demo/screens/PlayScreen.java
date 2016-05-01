@@ -17,8 +17,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
-import fi.ymcafinland.demo.piirtajat.EdistymismittarinPiirtaja;
-import fi.ymcafinland.demo.piirtajat.SolmunPiirtaja;
+import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
+import fi.ymcafinland.demo.kasittelijat.SolmunKasittelija;
 import fi.ymcafinland.demo.scenes.HUD;
 import fi.ymcafinland.demo.logiikka.Solmu;
 
@@ -49,8 +49,8 @@ public class PlayScreen implements Screen {
     private Verkko verkko;
     private Viewport viewPort;
     private HUD hud;
-    private SolmunPiirtaja solmunPiirtaja;
-    private EdistymismittarinPiirtaja edistymismittarinPiirtaja;
+    private SolmunKasittelija solmunKasittelija;
+    private EdistymismittarinKasittelija edistymismittarinKasittelija;
     private float deltaAVG;
     ProgressBar progressBar;
     ProgressBar.ProgressBarStyle progressBarStyle;
@@ -81,8 +81,8 @@ public class PlayScreen implements Screen {
 //        viewPort = new FillViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
 
         this.stage = new Stage(viewPort);
-        this.solmunPiirtaja = new SolmunPiirtaja(stage, sp.getVerkko(), masterSkin);
-        this.edistymismittarinPiirtaja = new EdistymismittarinPiirtaja(stage, masterSkin, pelaaja);
+        this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin);
+        this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
@@ -150,8 +150,8 @@ public class PlayScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        solmunPiirtaja.paivitaSolmut(batch, angleToPoint1);
-        edistymismittarinPiirtaja.paivitaMittari(delta, angleToPoint1);
+        solmunKasittelija.paivitaSolmut(batch, angleToPoint1);
+        edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint1);
 
         stage.draw();
 

@@ -1,7 +1,6 @@
 package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,7 +18,7 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 /**
  * Created by jwinter on 11.4.2016.
  */
-public class InfoScreen extends PerusScreen {
+public class InfoScreen extends PohjaScreen {
 
     protected SpriteBatch batch;
     protected Label otsikko;

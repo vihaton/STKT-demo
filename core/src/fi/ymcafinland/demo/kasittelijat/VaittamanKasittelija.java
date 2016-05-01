@@ -1,4 +1,4 @@
-package fi.ymcafinland.demo.piirtajat;
+package fi.ymcafinland.demo.kasittelijat;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,7 +23,7 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 /**
  * Created by jwinter on 17.4.2016.
  */
-public class VaittamanPiirtaja {
+public class VaittamanKasittelija {
 
     private final Skin skin;
     private ArrayList<Slider> sliderit;
@@ -31,7 +31,7 @@ public class VaittamanPiirtaja {
     private Table rootTable;
     private ScrollPane pane;
 
-    public VaittamanPiirtaja(Stage stage, Skin masterSkin) {
+    public VaittamanKasittelija(Stage stage, Skin masterSkin) {
         this.stage = stage;
         this.rootTable = new Table();
         this.sliderit = new ArrayList<>();
@@ -48,13 +48,12 @@ public class VaittamanPiirtaja {
         stage.addActor(pane);
     }
 
-    public void renderoi(float delta) {
+    public void paivita(float delta) {
         for (Slider s : sliderit) {
             s.act(delta);
         }
 
         pane.act(delta);
-        stage.draw();
     }
 
     //todo panen yläboundi asetetaan käytössä näkymän otsikon mukaan (jos pitkä otsikko, niin yläraja tulee alemmas)

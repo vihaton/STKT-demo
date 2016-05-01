@@ -1,4 +1,4 @@
-package fi.ymcafinland.demo.piirtajat;
+package fi.ymcafinland.demo.kasittelijat;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,7 +16,7 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 /**
  * Created by xvixvi on 1.5.2016.
  */
-public class EdistymismittarinPiirtaja {
+public class EdistymismittarinKasittelija {
 
     private ProgressBar progressBar;
     private Table progressTable;
@@ -24,7 +24,7 @@ public class EdistymismittarinPiirtaja {
     private Stage stage;
     private Pelaaja pelaaja;
 
-    public EdistymismittarinPiirtaja(Stage stage, Skin masterSkin, Pelaaja pelaaja) {
+    public EdistymismittarinKasittelija(Stage stage, Skin masterSkin, Pelaaja pelaaja) {
         this.skin = masterSkin;
         this.stage = stage;
         this.pelaaja = pelaaja;

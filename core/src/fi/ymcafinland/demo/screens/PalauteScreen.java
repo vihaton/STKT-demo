@@ -1,26 +1,18 @@
 package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
-import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
  * Created by Sasu on 11.4.2016.
  */
-public class PalauteScreen extends PerusScreen {
+public class PalauteScreen extends PohjaScreen {
     protected SpriteBatch batch;
 
     private final SelviytyjanPurjeet sp;

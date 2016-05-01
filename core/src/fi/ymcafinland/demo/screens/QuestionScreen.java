@@ -1,7 +1,6 @@
 package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -18,7 +17,7 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
-import fi.ymcafinland.demo.piirtajat.VaittamanPiirtaja;
+import fi.ymcafinland.demo.kasittelijat.VaittamanKasittelija;
 
 //Todo kaikki screenit playscreeniä lukuunottamatta voisivat periä jonkun sisältöScreen luokan,
 // jossa stagen ja roottablen alustus tekeminen olisi toteutettu valmiiksi.
@@ -28,14 +27,14 @@ import fi.ymcafinland.demo.piirtajat.VaittamanPiirtaja;
  * QuestionScreen luokalla käsitellään Selviytyjän purjeiden "kolmatta tasoa", ja sen kysymyksistä tulevaa
  * dataa.
  */
-public class QuestionScreen extends PerusScreen {
+public class QuestionScreen extends PohjaScreen {
     protected SpriteBatch batch;
 
     private final Pelaaja pelaaja;
     private final Vaittamat vaittamat;
     private ArrayList<Vaittama> solmunVaittamat;
     private String solmunID;
-    private VaittamanPiirtaja vaittamanPiirtaja;
+    private VaittamanKasittelija vaittamanKasittelija;
     Solmu solmu;
     private Table exitTable;
     private Label otsikko;
@@ -51,7 +50,7 @@ public class QuestionScreen extends PerusScreen {
         this.exitTable = createExitButton(sp);
         taytaRootTable();
 
-        this.vaittamanPiirtaja = new VaittamanPiirtaja(stage, masterSkin);
+        this.vaittamanKasittelija = new VaittamanKasittelija(stage, masterSkin);
     }
 
     private void taytaRootTable() {
@@ -134,7 +133,7 @@ public class QuestionScreen extends PerusScreen {
         otsikko.setText(solmu.getMutsi().getOtsikko() + ":\n" + solmu.getSisalto());
         solmunID = solmu.getID();
         solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmunID);
-        vaittamanPiirtaja.paivitaVaittamat(solmunVaittamat);
+        vaittamanKasittelija.paivitaVaittamat(solmunVaittamat);
     }
 
     @Override
@@ -147,7 +146,7 @@ public class QuestionScreen extends PerusScreen {
     public void render(float delta) {
         super.render(delta);
 
-        vaittamanPiirtaja.renderoi(delta);
+        vaittamanKasittelija.paivita(delta);
 
         stage.draw();
     }
