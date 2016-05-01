@@ -280,7 +280,11 @@ public class HUD {
         child3.setScale(scale);
     }
 
-
+    /**
+     * Päivittää nappuloiden kuvat vastaamaan tämänhetkistä tilannetta
+     *
+     * @param solmu
+     */
     private void updateButtons(Solmu solmu) {
         if (hasParent) {
             styleParent.up = skin.getDrawable(solmu.getMutsi().getMinikuvanNimi());
@@ -301,14 +305,12 @@ public class HUD {
             styleChild3.up = skin.getDrawable(lapset.get(2).getMinikuvanNimi());
 
         } else {
-
             child1.setVisible(false);
             child2.setVisible(false);
             child3.setVisible(false);
             child1.setDisabled(true);
             child2.setDisabled(true);
             child3.setDisabled(true);
-
         }
     }
 
@@ -332,9 +334,10 @@ public class HUD {
 
     public void up() {
         Gdx.app.log("HList", "Swaipattu ylös");
-        //TODO varaudu myös siihen että solmulla on vain yksi lapsi
         if (montaLasta) {
             playScreen.setSolmu(solmu.getLapset().get(1));
+        } else if (kysymys.isVisible()) {
+            playScreen.getSp().setQuestionScreen(solmu);
         }
     }
 
