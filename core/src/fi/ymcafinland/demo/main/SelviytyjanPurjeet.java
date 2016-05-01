@@ -65,8 +65,8 @@ public class SelviytyjanPurjeet extends Game {
         this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0), pelaaja, masterSkin);
         this.infoScreen = new InfoScreen(this, masterSkin);
 
-        setScreen(infoScreen);
-//        setScreen(playscreen);
+//        setScreen(infoScreen);
+        setScreen(playscreen);
     }
 
     /**

@@ -143,6 +143,7 @@ public class PlayScreen extends PohjaScreen {
         stage.draw();
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.setDebugAll(true);
         hud.stage.draw();
     }
 
