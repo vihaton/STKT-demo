@@ -36,13 +36,14 @@ public class PalauteScreen implements Screen {
     private Table table;
     private Stage stage;
 
-    public PalauteScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja) {
+    public PalauteScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja, Skin masterSkin) {
         this.sp = sp;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
         this.fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false);
         this.pelaaja = pelaaja;
+        this.skin = masterSkin;
         this.stage = new Stage(viewport);
 
         this.table = new Table();
@@ -51,9 +52,6 @@ public class PalauteScreen implements Screen {
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
 
-        Label.LabelStyle arvioStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-        skin = new Skin();
-        skin.add("arvio", arvioStyle);
         this.arvio = new Label(pelaaja.toString(), skin, "arvio");
 
         arvio.setFontScale(2);

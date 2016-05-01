@@ -343,4 +343,8 @@ public class HUD {
 
         }
     }
+
+    public void siirryLahinpaanPalloon(float x, float y) {
+        playScreen.siirryLahinpaanSolmuun(x, y);
+    }
 }

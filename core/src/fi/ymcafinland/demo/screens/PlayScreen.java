@@ -4,13 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.ArrayDeque;
-
+import fi.ymcafinland.demo.logiikka.Pelaaja;
+import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.piirtajat.SolmunPiirtaja;
 import fi.ymcafinland.demo.scenes.HUD;
@@ -39,28 +47,38 @@ public class PlayScreen implements Screen {
     protected float zoomDuration = 0.5f;
 
     private SelviytyjanPurjeet sp;
+    private Verkko verkko;
     private Viewport viewPort;
     private HUD hud;
     private SolmunPiirtaja solmunPiirtaja;
     private float deltaAVG;
-    private ArrayDeque<Float> viimeisetDeltat;
+    ProgressBar progressBar;
+    ProgressBar.ProgressBarStyle progressBarStyle;
+    Skin skin;
+    Pelaaja pelaaja;
+    Texture progressBackground;
+    Texture progressKnob;
+    Table progressTable;
 
-    private final int idleTime = 10000;
+    private final int idleTime = 5000;
 
     /**
      * Playscreen luokan konstruktori
-     * @param sp SelviytyjänPurjeet -instanssi
+     *
+     * @param sp           SelviytyjänPurjeet -instanssi
      * @param aloitussolmu ensimmäisenä ruutuun ilmestyvä solmu
      */
-    public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu) {
+    public PlayScreen(SelviytyjanPurjeet sp, Solmu aloitussolmu, Pelaaja pelaaja, Skin masterSkin) {
         this.sp = sp;
-        this.solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko());
+        this.verkko = sp.getVerkko();
+        this.skin = masterSkin;
+        this.solmunPiirtaja = new SolmunPiirtaja(sp.getVerkko(), masterSkin);
         this.solmu = aloitussolmu;
         this.polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
         this.camera = new OrthographicCamera();
-
+        this.pelaaja = pelaaja;
 //        viewPort = new FillViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
-        this.viewPort = new FitViewport(sp.V_WIDTH, sp.V_HEIGHT, camera);
+        this.viewPort = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, camera);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
@@ -68,7 +86,7 @@ public class PlayScreen implements Screen {
         // Playscreen ei tunne sovelluksen inputprocessoria, vaan tietää HUDin joka huolehtii I/O:sta.
         this.hud = new HUD(this, batch, aloitussolmu);
 
-        this.keskipiste = new Vector3(sp.TAUSTAN_LEVEYS / 2, sp.TAUSTAN_KORKEUS / 2, 0f);
+        this.keskipiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.timer = System.currentTimeMillis();
         this.angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
         this.stateTime = 0;
@@ -80,26 +98,54 @@ public class PlayScreen implements Screen {
         Gdx.graphics.setContinuousRendering(false);
         Gdx.graphics.requestRendering();
 
-        this.viimeisetDeltat = new ArrayDeque<>();
         this.deltaAVG = 0.02f;
+
+        createProgressBar();
+    }
+
+
+    private void createProgressBar() {
+        progressBarStyle = new ProgressBar.ProgressBarStyle();
+
+        progressBackground = new Texture("progressbar2/progressbackground.png");
+        progressKnob = new Texture("progressbar2/progressknob.png");
+
+        progressBarStyle.knobBefore = new TextureRegionDrawable(new TextureRegion(progressKnob));
+        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progressBackground));
+        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progressKnob));
+
+        float progBarWidth = progressBackground.getWidth() * 0.35f;
+        float progBarHeight = progressKnob.getHeight();
+
+        progressBar = new ProgressBar(0, 100, 1, false, progressBarStyle);
+        progressBar.setWidth(progBarWidth);
+        progressBar.setHeight(progBarHeight);
+
+        progressBar.setValue(0);
+
+        Label otsikko = new Label("Edistymismittari:", skin, "otsikko");
+        otsikko.setScale(0.7f);
+        otsikko.setAlignment(Align.center);
+
+        progressTable = new Table();
+        progressTable.top().center().add(otsikko);
+        progressTable.row();
+        //ilmeisesti taulukko käsittelee ProgB. "pisteenä", jonka sijainti on PB:n vasemman alakulman sijainti, eikä esim PB:n keskikohta
+        progressTable.add(progressBar);
+
+        progressTable.setWidth(progBarWidth);
+        progressTable.setHeight(progBarHeight);
+        progressBar.setFillParent(true);
+
+        //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Esim kiertäminen tehdään suhteessa origoon.
+        progressTable.setOrigin(progBarWidth, progBarHeight);
+        //asettaa taulukon vasemman alakulman sijainnin
+        progressTable.setPosition(keskipiste.x - progBarWidth, keskipiste.y - progBarHeight);
     }
 
     @Override
     public void show() {
-
-    }
-
-    public void alkaaTapahtua() {
-        trans = true;
-        stateTime = 0;
-        timer = System.currentTimeMillis();
-
-        //debug
-//        Gdx.app.log("playscreen", "UUSI SIIRTO" + stateTime + " " + trans);
-    }
-
-    @Override
-    public void render(float delta) {
+        Gdx.app.log("PS", "Playscreenin show() -metodia kutsuttiin");
         float rgbJakaja = 255f;
 
 //        //sininen
@@ -108,32 +154,66 @@ public class PlayScreen implements Screen {
 
         //valkoinen
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+    }
+
+    public void alkaaTapahtua() {
+        trans = true;
+        stateTime = 0;
+        timer = System.currentTimeMillis();
+
+        //debug
+//        Gdx.app.log("PS", "UUSI SIIRTO" + stateTime + " " + trans);
+    }
+
+    @Override
+    public void render(float delta) {
+        delta = fixDelta(delta);
+        //debug
+//        Gdx.app.log("PS", "request render " + stateTime + " " + trans + " " + delta);
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
-
-        if (delta > 0.1f || delta < 0.005f) {
-            delta = deltaAVG;
-        }
-
-        deltaAVG = (deltaAVG * 19 + delta) / 20;
-
-        //debug
-//        Gdx.app.log("playscreen", "request render " + stateTime + " " + trans + " " + delta);
 
         actTransition(delta);
 
         camera.position.set(polttopiste);
 
         renderZoomz(delta);
+        rotateCamera();
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
         solmunPiirtaja.piirra(batch, angleToPoint1);
 
+        actProgressBar(delta);
+
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+    }
+
+    private float fixDelta(float delta) {
+        if (delta > 0.1f || delta < 0.005f) {
+            delta = deltaAVG;
+        }
+
+        deltaAVG = (deltaAVG * 19 + delta) / 20;
+
+        return delta;
+    }
+
+    private void actProgressBar(float delta) {
+        progressBar.setValue(pelaaja.getVastausmaara());
+        progressBar.act(delta);
+
+        progressTable.setTransform(true);
+        progressTable.setRotation(angleToPoint1 - 90);
+
+        batch.begin();
+        progressTable.draw(batch, 1f);
+        batch.end();
+
     }
 
     public void actTransition(float delta) {
@@ -177,9 +257,13 @@ public class PlayScreen implements Screen {
                 zoomed = false;
             }
         }
+
+    }
+
+    private void rotateCamera() {
         if (zoomedOut) {
             angleToPoint2 = getAngleToPoint(keskipiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f));
-            camera.rotate(-angleToPoint2 + 90 - 180);
+            camera.rotate(-angleToPoint2 - 90);
         } else {
             angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
             camera.rotate(-angleToPoint1 + 90);
@@ -192,13 +276,13 @@ public class PlayScreen implements Screen {
 
     /**
      * Hakee kulman pisteiden välillä;
-     * @param start aloituspiste
+     *
+     * @param start  aloituspiste
      * @param target lopetuspiste
      * @return palauttaa kulman
      */
     private float getAngleToPoint(Vector3 start, Vector3 target) {
         float angleToPoint = (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
-
         return angleToPoint;
     }
 
@@ -241,9 +325,11 @@ public class PlayScreen implements Screen {
     /**
      * HUDista tulee kutsu riippuen mitä solmua painaa. Päivittää tiedot renderille.
      * Päivittää myös HUDin seuraavalle solmulle.
+     *
      * @param solmu käsiteltävä solmu
      */
     public void setSolmu(Solmu solmu) {
+        //todo aina kun kutsutaan setSolmua, zoomataan siihen solmuun ja käännetään kamera ja solmu asiaankuuluvasti.
         if (!this.solmu.equals(solmu)) {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
@@ -252,7 +338,8 @@ public class PlayScreen implements Screen {
             hud.update(solmu);
         }
     }
-    public void resetStateTime(){
+
+    public void resetStateTime() {
         stateTime = 0;
     }
 
@@ -287,5 +374,17 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public void siirryLahinpaanSolmuun(float x, float y) {
+
+        Vector3 vect = new Vector3(x, y, 0);
+        camera.unproject(vect); // camera is your game camera
+
+        float trueX = vect.x;
+        float trueY = vect.y;
+
+        Solmu tappaustaLahinSolmu = verkko.annaLahinSolmu(trueX, trueY, solmu);
+        setSolmu(tappaustaLahinSolmu);
     }
 }
