@@ -195,7 +195,6 @@ public class PlayScreen extends PohjaScreen {
                 zoomed = false;
             }
         }
-
     }
 
     private void rotateCamera() {
@@ -210,7 +209,6 @@ public class PlayScreen extends PohjaScreen {
             camera.position.set(keskipiste);
         }
     }
-
 
     /**
      * Hakee kulman pisteiden välillä;

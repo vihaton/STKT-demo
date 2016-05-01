@@ -30,8 +30,6 @@ public class PohjaScreen implements Screen {
 
     private String logTag;
 
-
-
     /**
      * Luo cameran, viewporti, rootTablen, stagen ja lisää rootTablen stagen aktoriksi.
      * @param masterSkin

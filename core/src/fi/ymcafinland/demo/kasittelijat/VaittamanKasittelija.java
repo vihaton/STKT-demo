@@ -42,7 +42,6 @@ public class VaittamanKasittelija {
     private void luoScrollPane() {
         pane = new ScrollPane(rootTable.top());
         pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.35f);
-        pane.setTouchable(Touchable.enabled);
         pane.validate();
 
         stage.addActor(pane);
@@ -79,7 +78,7 @@ public class VaittamanKasittelija {
             //todo väittämien ja sliderien koko paremmaksi
             vaittamanTaulukko.add(otsikko).width(slider.getWidth() * 3);
             vaittamanTaulukko.row();
-            vaittamanTaulukko.add(slider);
+            vaittamanTaulukko.add(slider).padBottom(15);
 
             rootTable.add(vaittamanTaulukko);
             rootTable.row();

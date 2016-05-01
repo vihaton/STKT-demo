@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -44,7 +43,6 @@ public class InfoScreen extends PohjaScreen {
 
         this.tausta = skin.get("infonTausta", Texture.class);
         taytaRootTable(sp);
-        stage.addActor(pane);
     }
 
     public void taytaRootTable(SelviytyjanPurjeet sp) {
@@ -54,7 +52,7 @@ public class InfoScreen extends PohjaScreen {
 
         luoScrollPane();
 
-        rootTable.add(pane).pad(SelviytyjanPurjeet.V_WIDTH / 10).height(100).width(100);
+        rootTable.add(pane).pad(SelviytyjanPurjeet.V_WIDTH / 10).center();
         rootTable.row();
 
         createExitButton(sp);
@@ -71,22 +69,23 @@ public class InfoScreen extends PohjaScreen {
     }
 
     private void luoScrollPane() {
-        pane = new ScrollPane(luoInfoteksti());
+        pane = new ScrollPane(luoInfoteksti().top());
         pane.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2);
         pane.setWidth(SelviytyjanPurjeet.V_WIDTH / 2);
         pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT / 2);
-        pane.setTouchable(Touchable.enabled);
         pane.validate();
     }
 
-    private Actor luoInfoteksti() {
+    private Table luoInfoteksti() {
         Label label = new Label(infoText, skin, "infoteksti");
         label.setWrap(true);
         label.setFontScale(2);
-        label.setAlignment(Align.top);
+        label.setAlignment(Align.center);
         label.setFillParent(true);
 
-        return label;
+        Table infoTable = new Table();
+        infoTable.add(label);
+        return infoTable;
     }
 
     private void createAlkuTestiButton(final SelviytyjanPurjeet sp) {
