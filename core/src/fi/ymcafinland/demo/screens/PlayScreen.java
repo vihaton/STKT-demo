@@ -30,7 +30,7 @@ public class PlayScreen implements Screen {
     protected SpriteBatch batch;
     protected OrthographicCamera camera;
     protected Solmu solmu;
-    protected CameraTransition transition;
+    protected fi.ymcafinland.demo.screens.Apuluokat.CameraTransition transition;
     protected float timeSinceTransitionZoom = 0;
     protected boolean trans = false;
     protected boolean zoomedOut = false;
@@ -96,7 +96,7 @@ public class PlayScreen implements Screen {
         this.stateTime = 0;
 
         //Ilman tätä riviä zoomin kutsuminen ennen liikkumista aiheuttaa NullPointerExeptionin
-        this.transition = new CameraTransition(polttopiste, polttopiste, 0);
+        this.transition = new fi.ymcafinland.demo.screens.Apuluokat.CameraTransition(polttopiste, polttopiste, 0);
 
         //Asetetaan jatkuva renderin pois päältä, renderöidään kerran.
         Gdx.graphics.setContinuousRendering(false);
@@ -243,10 +243,10 @@ public class PlayScreen implements Screen {
         timeSinceTransitionZoom = 0;
         zoomed = true;
         if (in) {
-            transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), zoomDuration);
+            transition = new fi.ymcafinland.demo.screens.Apuluokat.CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), zoomDuration);
             zoomedOut = false;
         } else {
-            transition = new CameraTransition(polttopiste, keskipiste, zoomDuration);
+            transition = new fi.ymcafinland.demo.screens.Apuluokat.CameraTransition(polttopiste, keskipiste, zoomDuration);
             zoomedOut = true;
         }
         hud.update(solmu);
@@ -286,7 +286,7 @@ public class PlayScreen implements Screen {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
             alkaaTapahtua();
-            transition = new CameraTransition(polttopiste, goal, moveDuration);
+            transition = new fi.ymcafinland.demo.screens.Apuluokat.CameraTransition(polttopiste, goal, moveDuration);
             hud.update(solmu);
         }
     }
