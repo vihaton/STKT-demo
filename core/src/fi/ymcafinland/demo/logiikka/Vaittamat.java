@@ -29,7 +29,8 @@ public class Vaittamat {
             lueRivit(lukija);
         }
 
-        generoiVaittamat();
+        generoiAlkutestinVaittamat();
+        generoiKolmannenTasonVaittamat();
     }
 
     private Scanner luoLukija(String tiedostonNimi) {
@@ -74,7 +75,7 @@ public class Vaittamat {
 
             if (pala.endsWith("\"")) { //solu on valmis
 
-                pilkottuRivi[ind] = pala.substring(1, pala.length()-1); //poistetaan " alusta ja lopusta
+                pilkottuRivi[ind] = pala.substring(1, pala.length() - 1); //poistetaan " alusta ja lopusta
                 ind++;
                 pala = "";
 
@@ -101,14 +102,14 @@ public class Vaittamat {
         return pilkottuRivi;
     }
 
-    private void generoiVaittamat() {
+    private void generoiKolmannenTasonVaittamat() {
         Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
 
         for (int i = 0; i < 18; i++) { //jokaisen solmun...
             String id = "" + (i + 7);
             ArrayList<Vaittama> solmunVaittamat = new ArrayList<>();
 
-            for (int j = 2; j < rivit.size(); j++) { //...jokaiselle väittämäriville...
+            for (int j = 2; j < rivit.size(); j++) { //...jokaiselle väittämäriville (rivit kolmannesta rivistä eteenpäin)...
                 String vaittamatxt = rivit.get(j)[i];
                 if (vaittamatxt.equalsIgnoreCase("")) { //...kunnes väittämiä ei enää ole:
                     break;
@@ -120,6 +121,18 @@ public class Vaittamat {
 
             karttaSolmujenVaittamista.put(id, solmunVaittamat); //...talletetaan väittämälista karttaan kyseisen solmun id.llä
         }
+    }
+
+    private void generoiAlkutestinVaittamat() {
+        ArrayList<Vaittama> alkutestinVaittamat = new ArrayList<>();
+
+        String[] ensimmainenVaittamarivi = rivit.get(2);
+
+        for (int i = 0; i < ensimmainenVaittamarivi.length; i++) {
+            alkutestinVaittamat.add(new Vaittama(ensimmainenVaittamarivi[i], "" + (i + 7)));
+        }
+
+        karttaSolmujenVaittamista.put("alkutesti", alkutestinVaittamat);
     }
 
     /**

@@ -1,19 +1,10 @@
 package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Verkko;
@@ -22,6 +13,7 @@ import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
 import fi.ymcafinland.demo.kasittelijat.SolmunKasittelija;
 import fi.ymcafinland.demo.scenes.HUD;
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.screens.Apuluokat.CameraTransition;
 
 /**
  * Created by Sasu on 27.3.2016.
@@ -33,16 +25,17 @@ public class PlayScreen extends PohjaScreen {
     protected fi.ymcafinland.demo.screens.Apuluokat.CameraTransition transition;
     protected float timeSinceTransitionZoom = 0;
     protected boolean trans = false;
-    protected boolean zoomedOut = false;
+    public boolean zoomedOut = false;
     protected boolean zoomed = false;
     protected Vector3 polttopiste;
     protected Vector3 keskipiste;
-    protected float angleToPoint1;
-    protected float angleToPoint2;
+    protected float angleToPoint;
     protected long stateTime;
     protected long timer;
-    private final float moveDuration = 1.0f;
-    protected float zoomDuration = 0.5f;
+    private final float moveDuration = 1.0f;    //s
+    private final float zoomDuration = 0.5f;    //s
+    private final float renderinLoggausAlaraja = 0.5f;  //s
+    private final int idleTime = 3000; //ms
 
     private SelviytyjanPurjeet sp;
     private Verkko verkko;
@@ -50,9 +43,7 @@ public class PlayScreen extends PohjaScreen {
     private SolmunKasittelija solmunKasittelija;
     private EdistymismittarinKasittelija edistymismittarinKasittelija;
     private float deltaAVG;
-    Pelaaja pelaaja;
-
-    private final int idleTime = 5000;
+    public boolean ensimmainenSiirtyma = true;
 
     /**
      * Playscreen luokan konstruktori
@@ -65,8 +56,6 @@ public class PlayScreen extends PohjaScreen {
         this.sp = sp;
         this.verkko = sp.getVerkko();
         this.solmu = aloitussolmu;
-        this.polttopiste = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
-        this.pelaaja = pelaaja;
 
         this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin);
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
@@ -74,12 +63,17 @@ public class PlayScreen extends PohjaScreen {
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
 
+        //näkymä on aluksi kaukana
+        zoomedOut = true;
+        camera.zoom = 4f;
+
         // Playscreen ei tunne sovelluksen inputprocessoria, vaan tietää HUDin joka huolehtii I/O:sta.
         this.hud = new HUD(this, batch, masterSkin, solmu);
 
-        this.keskipiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.timer = System.currentTimeMillis();
-        this.angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
+        this.keskipiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
+        this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
+        this.angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         this.stateTime = 0;
 
         //Ilman tätä riviä zoomin kutsuminen ennen liikkumista aiheuttaa NullPointerExeptionin
@@ -95,12 +89,7 @@ public class PlayScreen extends PohjaScreen {
     @Override
     public void show() {
         super.show();
-//        float rgbJakaja = 255f;
-//        //sininen
-//        Gdx.gl.glClearColor(0, 0, 139 / rgbJakaja, 1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //valkoinen
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 
         hud.resetInputProcessor();
@@ -115,39 +104,50 @@ public class PlayScreen extends PohjaScreen {
 //        Gdx.app.log("PS", "UUSI SIIRTO" + stateTime + " " + trans);
     }
 
+//todo välillä tulee jäätävä lagaus, joka johtuu render metodin ulkopuolisista asioista t.logit. Mistä vitusta se johtuu?
     @Override
     public void render(float delta) {
         //debug
-//        Gdx.app.log("PS", "request render " + stateTime + " " + trans + " " + delta);
+        boolean log = false;
+        if (delta > renderinLoggausAlaraja) {
+            Gdx.app.log("PS", "request render alarajalla:" + renderinLoggausAlaraja + "s stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
+            log = true;
+        }
+
         super.render(delta);
+        if (log) Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis()-timer) + "ms @fter super.render");
 
         camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
 
-        delta = fixDelta(delta);
+        delta = deltaManipulation(delta);
 
         if (trans) {
             actTransition(delta);
         }
+        if (log) Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis()-timer) + "ms @fter actTransition");
 
         camera.position.set(polttopiste);
 
         renderZoomz(delta);
         rotateCamera();
+        if (log) Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis()-timer) + "ms @fter rotateCamera");
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        solmunKasittelija.paivitaSolmut(angleToPoint1);
-        edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint1);
+        solmunKasittelija.paivitaSolmut(angleToPoint);
+        edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint);
+        if (log) Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis()-timer) + "ms @fter edistysmittarinKasittelija");
 
         stage.draw();
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.setDebugAll(true);
+//        hud.stage.setDebugAll(true);
         hud.stage.draw();
+        if (log) Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis()-timer) + "ms @fter hud.stage.draw");
     }
 
-    private float fixDelta(float delta) {
+    private float deltaManipulation(float delta) {
         if (delta > 0.1f || delta < 0.005f) {
             delta = deltaAVG;
         }
@@ -159,7 +159,7 @@ public class PlayScreen extends PohjaScreen {
 
     public void actTransition(float delta) {
         if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
-            transition.act(delta);
+            polttopiste = transition.act(delta);
             Gdx.graphics.requestRendering();
             stateTime = System.currentTimeMillis() - timer;
         } else {
@@ -197,14 +197,12 @@ public class PlayScreen extends PohjaScreen {
     }
 
     private void rotateCamera() {
-        if (zoomedOut) {
-            angleToPoint2 = getAngleToPoint(keskipiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f));
-            camera.rotate(-angleToPoint2 - 90);
-        } else {
-            angleToPoint1 = getAngleToPoint(polttopiste, keskipiste);
-            camera.rotate(-angleToPoint1 + 90);
-        }
+        //todo kun polttopiste == keskipiste, niin ruutu pyörähtää vammaisesti ympäri, asetettava siten ettei polttopiste pääse keskipisteeseen asti kun sitä siirretään sitä kohti
+        angleToPoint = getAngleToPoint(polttopiste, keskipiste);
+        camera.rotate(-angleToPoint + 90);
+
         if (zoomedOut && timeSinceTransitionZoom >= zoomDuration * 1000) {
+            Vector3 solmunSijainti = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0);
             camera.position.set(keskipiste);
         }
     }
@@ -225,10 +223,10 @@ public class PlayScreen extends PohjaScreen {
         timeSinceTransitionZoom = 0;
         zoomed = true;
         if (in) {
-            transition = new fi.ymcafinland.demo.screens.Apuluokat.CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), zoomDuration);
+            transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), zoomDuration);
             zoomedOut = false;
         } else {
-            transition = new fi.ymcafinland.demo.screens.Apuluokat.CameraTransition(polttopiste, keskipiste, zoomDuration);
+            transition = new CameraTransition(polttopiste, keskipiste, zoomDuration);
             zoomedOut = true;
         }
         hud.update(solmu);
@@ -260,13 +258,24 @@ public class PlayScreen extends PohjaScreen {
      */
     public void setSolmu(Solmu solmu) {
         //todo aina kun kutsutaan setSolmua, zoomataan siihen solmuun ja käännetään kamera ja solmu asiaankuuluvasti.
-        if (!this.solmu.equals(solmu)) {
+        if (!this.solmu.equals(solmu) || ensimmainenSiirtyma) {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
             alkaaTapahtua();
             transition = new fi.ymcafinland.demo.screens.Apuluokat.CameraTransition(polttopiste, goal, moveDuration);
             hud.update(solmu);
+            Gdx.graphics.requestRendering();
         }
+    }
+
+    public void odota(float kuinkaKauanMillisekunneissa) {
+        stateTime = 0;
+        timer = System.currentTimeMillis();
+        while (stateTime < kuinkaKauanMillisekunneissa) {
+            stateTime = System.currentTimeMillis() - timer;
+        }
+        Gdx.app.log("PS", "odotettiin " + stateTime + " millisekunttia");
+        ensimmainenSiirtyma = false;
     }
 
     public void resetStateTime() {

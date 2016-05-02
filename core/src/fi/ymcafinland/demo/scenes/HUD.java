@@ -28,7 +28,7 @@ import fi.ymcafinland.demo.logiikka.Solmu;
  */
 public class HUD {
     public Stage stage;
-    public InputMultiplexer im;
+    public InputMultiplexer im; //todo voisiko tehottomuus johtua multiplexeristä? Swaipit tuntuvat toimivan jouhevasti, mutta kun nappeja painetaan niin hommat menee välillä vituiks.
 
     protected Solmu solmu;
     protected Skin skin;
@@ -185,6 +185,8 @@ public class HUD {
         }
         parent.setVisible(hasParent);
         parent.setDisabled(!hasParent);
+
+        karttaNappi.setChecked(playScreen.zoomedOut);   //jos ollaan zoomattu ulos, karttanappi on painettuna
 
         styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMinikuvanNimi());
         styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMinikuvanNimi());

@@ -83,9 +83,15 @@ public class Pelaaja {
         return selviytyisArvot[LUOVA];
     }
 
-    //ToDo maxselviytyminen
-    public String getMaxSelviytyminen() {
-        return "";
+    public int getMaxSelviytymisenIndeksi() {
+        int maxID = 0;
+        float maxArvo = selviytyisArvot[maxID];
+        for (int i = 1; i < selviytyisArvot.length; i++) {
+            if (maxArvo < selviytyisArvot[i]) {
+                maxID = i;
+            }
+        }
+        return maxID;
     }
 
     public String getNimi() {

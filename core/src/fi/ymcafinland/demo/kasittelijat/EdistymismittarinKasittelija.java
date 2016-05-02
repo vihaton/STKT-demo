@@ -42,7 +42,7 @@ public class EdistymismittarinKasittelija {
         this.progressTable = new Table();
         progressTable.add(otsikko);
         progressTable.row();
-        progressTable.add(progressBar).minWidth(SelviytyjanPurjeet.V_WIDTH);
+        progressTable.add(progressBar).minWidth(SelviytyjanPurjeet.V_WIDTH * 0.9f);
 
         //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Esim kiertäminen tehdään suhteessa origoon.
         progressTable.setOrigin(Align.center);

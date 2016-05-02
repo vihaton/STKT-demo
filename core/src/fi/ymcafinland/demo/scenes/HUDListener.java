@@ -37,6 +37,7 @@ public class HUDListener implements GestureDetector.GestureListener {
         return false;
     }
 
+    //todo swaippi on liian herkkä, rajoja suuremmiksi kuin nolla
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         if(Math.abs(velocityX)>Math.abs(velocityY)){

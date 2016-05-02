@@ -41,6 +41,7 @@ public class SelviytyjanPurjeet extends Game {
     private InfoScreen infoScreen;
     private Vaittamat vaittamat;
     private Skin masterSkin;
+    private Pelaaja pelaaja;
 
 
     @Override
@@ -57,7 +58,7 @@ public class SelviytyjanPurjeet extends Game {
         Gdx.app.log("SP", "Vaittamien luominen on valmis");
 
         luoSkin();
-        Pelaaja pelaaja = new Pelaaja();
+        pelaaja = new Pelaaja();
 
         this.questionScreen = new QuestionScreen(this, pelaaja, vaittamat, masterSkin);
         this.palauteScreen = new PalauteScreen(this, pelaaja, masterSkin);
@@ -194,7 +195,6 @@ public class SelviytyjanPurjeet extends Game {
     @Override
     public void dispose() {
         super.dispose();
-        batch.dispose();
     }
 
     public void setQuestionScreen(Solmu solmu) {
@@ -206,13 +206,24 @@ public class SelviytyjanPurjeet extends Game {
         setScreen(palauteScreen);
     }
 
-    public void resetPlayScreen() {
+    public void setPlayScreen() {
         playscreen.resetStateTime();
         setScreen(playscreen);
     }
 
     public Verkko getVerkko() {
         return verkko;
+    }
+
+    /**
+     * kutsuu setSolmua sille solmulle, jonka arvo on pelaajan selviytymisprofiilissa suurin, ennen kuin
+     * asettaa playscreenin ruuduksi.
+     */
+    public void setPlayScreenMaxSelviytyjaan() {
+        Solmu vahvinSelviytymiskeino = verkko.getSolmut().get(pelaaja.getMaxSelviytymisenIndeksi());
+        Gdx.app.log("SP" , "setPlayScreenMaxSelviytyjaan: vahvimman selviytymiskeinon perusteella set solmuksi laitetaan " + vahvinSelviytymiskeino.getOtsikko());
+        playscreen.setSolmu(vahvinSelviytymiskeino);
+        setScreen(playscreen);
     }
 }
 

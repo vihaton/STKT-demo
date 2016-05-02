@@ -61,7 +61,7 @@ public class PohjaScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.setDebugAll(true);
+//        stage.setDebugAll(true);
     }
 
     @Override

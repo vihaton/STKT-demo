@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
+import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
@@ -87,7 +88,9 @@ public class InfoScreen extends PohjaScreen {
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "alkutestibuttonia painettiin");
-                //todo invoke alkutestinäkymä question screeniin
+                sp.setQuestionScreen(new Solmu("alkutesti", null));
+                stage.dispose();
+                dispose();
             }
         });
     }
@@ -97,7 +100,7 @@ public class InfoScreen extends PohjaScreen {
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "exitbuttonia painettiin");
-                sp.resetPlayScreen();
+                sp.setPlayScreenMaxSelviytyjaan();
                 stage.dispose();
                 dispose();
             }

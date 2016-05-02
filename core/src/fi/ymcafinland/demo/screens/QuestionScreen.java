@@ -81,12 +81,16 @@ public class QuestionScreen extends PohjaScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("QS", "exitbuttonia painettiin");
                 sendData();
-                sp.resetPlayScreen();
+                if (solmu.getMutsi() == null) {
+                    sp.setPlayScreenMaxSelviytyjaan();
+                } else {
+                    sp.setPlayScreen();
+                }
             }
         });
 
         Table exitTable = new Table();
-        exitTable.add(exitButton).top().right();
+        exitTable.add(exitButton);
 
         exitTable.validate();
 
@@ -101,19 +105,35 @@ public class QuestionScreen extends PohjaScreen {
     public void sendData() {
         for (int i = 0; i < solmunVaittamat.size(); i++) {
             Vaittama v = solmunVaittamat.get(i);
-            if (!pelaaja.onkoVastannut(v)) {
+            float uusiArvo = v.getArvo();
+            float vanhaArvo = alkuarvot.get(i);
+
+            if (uusiArvo == vanhaArvo) {        //jos arvoa ei ole muutettu, ei vastausta tarvitse lisätä mihinkään
+                continue;
+            }
+
+            if (!pelaaja.onkoVastannut(v)) {    //jos kysymykseen ei ole aikaisemmin vastattu, voidaan lisätä vastausten määrää
                 pelaaja.lisaaVastaus(v);
             }
+            //muutetaan selviytymisarvoa vain oikean muutoksen verran
             pelaaja.lisaaSelviytymisarvoIndeksissa(v.getMihinSelviytymiskeinoonVaikuttaa(), v.getArvo() - alkuarvot.get(i));
         }
     }
 
     public void setSolmu(Solmu solmu) {
         this.solmu = solmu;
-        otsikko.setText(solmu.getMutsi().getOtsikko() + ":\n" + solmu.getSisalto());
+        asetaOtsikonTeksti(solmu);
         String solmunID = solmu.getID();
         solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmunID);
         alkuarvot = vaittamanKasittelija.paivitaVaittamat(solmunVaittamat);
+    }
+
+    public void asetaOtsikonTeksti(Solmu solmu) {
+        if (solmu.getMutsi() == null) {
+            otsikko.setText("Testaa, millainen selviytyjä olet:");
+        } else {
+            otsikko.setText(solmu.getMutsi().getOtsikko() + ":\n" + solmu.getSisalto());
+        }
     }
 
     @Override

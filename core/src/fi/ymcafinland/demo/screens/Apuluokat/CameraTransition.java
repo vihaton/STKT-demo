@@ -22,7 +22,6 @@ public class CameraTransition {
     }
 
     public Vector3 act(float delta) {
-
         stateTime += delta;
 
         alpha = MathUtils.clamp(stateTime / duration, 0.0f, 1.0f);
