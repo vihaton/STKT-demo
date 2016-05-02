@@ -87,6 +87,8 @@ public class PlayScreen extends PohjaScreen {
 //        Gdx.graphics.requestRendering();
 
         this.deltaAVG = 0.02f;
+
+        Gdx.graphics.requestRendering();
     }
 
     @Override
@@ -102,12 +104,11 @@ public class PlayScreen extends PohjaScreen {
         trans = true;
         stateTime = 0;
         timer = System.currentTimeMillis();
-        hud.update(solmu);
+        hud.update(solmu, zoomedOut);
         //debug
 //        Gdx.app.log("PS", "UUSI SIIRTO" + stateTime + " " + trans);
     }
 
-    //todo välillä tulee jäätävä lagaus, joka johtuu render metodin ulkopuolisista asioista t.logit. Mistä vitusta se johtuu?
     @Override
     public void render(float delta) {
         //debug
@@ -179,7 +180,6 @@ public class PlayScreen extends PohjaScreen {
     }
 
     private void rotateCamera() {
-        //todo kun polttopiste == keskipiste, niin ruutu pyörähtää vammaisesti ympäri, asetettava siten ettei polttopiste pääse keskipisteeseen asti kun sitä siirretään sitä kohti
         angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         camera.rotate(-angleToPoint + 90);
     }
@@ -195,8 +195,11 @@ public class PlayScreen extends PohjaScreen {
         return (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
     }
 
-    public void zoom(boolean in) {
-        alkaaTapahtua();
+    /**
+     * Hudin käyttöön  metodi
+     * @param in
+     */
+    public void nappulaZoom(boolean in) {
         timeSinceTransitionZoom = 0;
         zoomed = true;
         if (in) {
@@ -208,6 +211,7 @@ public class PlayScreen extends PohjaScreen {
             zoomTransition = new ZoomTransition(camera.zoom, 5f, zoomDuration, false);
             zoomedOut = true;
         }
+        alkaaTapahtua();
     }
 
     public void setZoom(float ratio) {
@@ -290,8 +294,8 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void asetaAlkuZoom() {
+        zoomedOut = false;
         alkaaTapahtua();
         zoomTransition = new ZoomTransition(camera.zoom, 1f, zoomDuration * 2, true);
-        zoomedOut = false;
     }
 }

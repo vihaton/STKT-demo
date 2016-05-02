@@ -27,13 +27,14 @@ import fi.ymcafinland.demo.logiikka.Solmu;
  */
 public class HUD {
     public Stage stage;
-    public InputMultiplexer im; //todo voisiko tehottomuus johtua multiplexeristä? Swaipit tuntuvat toimivan jouhevasti, mutta kun nappeja painetaan niin hommat menee välillä vituiks.
+    public InputMultiplexer im;
 
-    protected Solmu solmu;
     protected Skin skin;
+    protected boolean hasParent;
+    protected boolean lapsia;
+    protected PlayScreen playScreen;
     protected Button karttaNappi;
     protected Button parent;
-    protected boolean hasParent;
     protected Button leftSister;
     protected Button rightSister;
     protected Button child1;
@@ -41,8 +42,6 @@ public class HUD {
     protected Button child3;
     protected Button kysymys;
     protected Button palaute;
-    protected boolean lapsia;
-    protected PlayScreen playScreen;
     private Button.ButtonStyle styleParent;
     private Button.ButtonStyle styleLeft;
     private Button.ButtonStyle styleRight;
@@ -57,6 +56,13 @@ public class HUD {
     private float sidePad;
     private ArrayList<Button> midJaBotTablejenNapit;
     private ArrayList<Button> ylarivinNapit;
+    protected Solmu solmu;
+    private Solmu mutsi;
+    private Solmu vasenSisko;
+    private Solmu oikeaSisko;
+    private Solmu lapsi1;
+    private Solmu lapsi2;
+    private Solmu lapsi3;
 
     public HUD(final PlayScreen playScreen, SpriteBatch sb, Skin masterSkin, Solmu solmu) {
 
@@ -78,69 +84,68 @@ public class HUD {
         updateButtons(solmu);
         createTables();
         updateTables();
-        createListeners(playScreen, solmu);
+        createListeners();
     }
 
     /**
      * Tapahtumankuuntelijat nappuloille
-     *
-     * @param playScreen
-     * @param solmu
      */
-    private void createListeners(final PlayScreen playScreen, final Solmu solmu) {
+    private void createListeners() {
+        mutsi = new Solmu("0", null);
+        vasenSisko = new Solmu("0", null);
+        oikeaSisko = new Solmu("0", null);
+        lapsi1 = new Solmu("0", null);
+        lapsi2 = new Solmu("0", null);
+        lapsi3 = new Solmu("0", null);
 
-        //todo listenereitä ei voi lisätä koko ajan lisää homo, laitetaan kuuntelijoihin viitteet, ja päivitetään viitteitä.
-        if (hasParent) {
-            parent.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    playScreen.setSolmu(solmu.getMutsi());
-                }
-            });
-        }
+        parent.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                playScreen.setSolmu(mutsi);
+            }
+        });
+
         rightSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(solmu.getOikeaSisarus());
+                playScreen.setSolmu(oikeaSisko);
             }
         });
         leftSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(solmu.getVasenSisarus());
+                playScreen.setSolmu(vasenSisko);
             }
         });
-        if (lapsia) {
-            final ArrayList<Solmu> laps = solmu.getLapset();
-            child1.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    playScreen.setSolmu(laps.get(0));
-                }
-            });
+        final ArrayList<Solmu> laps = solmu.getLapset();
+        child1.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                playScreen.setSolmu(lapsi1);
+            }
+        });
 
-            child2.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    playScreen.setSolmu(laps.get(1));
+        child2.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                playScreen.setSolmu(lapsi2);
 
-                }
-            });
+            }
+        });
 
-            child3.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    playScreen.setSolmu(laps.get(2));
-                }
-            });
-        } else {
-            kysymys.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    playScreen.getSp().setQuestionScreen(solmu);
-                }
-            });
-        }
+        child3.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                playScreen.setSolmu(lapsi3);
+            }
+        });
+        kysymys.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                playScreen.getSp().setQuestionScreen(solmu);
+            }
+        });
+
 
         karttaNappi.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 if (!karttaNappi.isChecked()) {
-                    playScreen.zoom(true);
+                    playScreen.nappulaZoom(true);
                 } else {
-                    playScreen.zoom(false);
+                    playScreen.nappulaZoom(false);
                 }
             }
         });
@@ -159,21 +164,31 @@ public class HUD {
      *
      * @param solmu
      */
-    public void update(Solmu solmu) {
-        boolean zoomedOut = false;
-        if (karttaNappi.isChecked()) {
-            zoomedOut = true;
-        }
-
-        this.solmu = solmu;
+    public void update(Solmu solmu, boolean zoomedOut) {
         hasParent = solmu.getMutsi() != null;
         lapsia = solmu.getLapset().size() > 0;
 
         updateButtons(solmu);
         updateTables();
+        updateListeners(solmu);
 
         karttaNappi.setChecked(zoomedOut);
         setZoomedHUDState(zoomedOut);
+    }
+
+    private void updateListeners(Solmu solmu) {
+        this.solmu = solmu;
+        mutsi = solmu.getMutsi();
+        vasenSisko = solmu.getVasenSisarus();
+        oikeaSisko = solmu.getOikeaSisarus();
+        ArrayList<Solmu> lapset = solmu.getLapset();
+
+        if (lapsia) {
+            lapsi1 = lapset.get(0);
+            lapsi2 = lapset.get(1);
+            lapsi3 = lapset.get(2);
+        }
+
     }
 
     /**
@@ -187,8 +202,6 @@ public class HUD {
         }
         parent.setVisible(hasParent);
         parent.setDisabled(!hasParent);
-
-        karttaNappi.setChecked(playScreen.zoomedOut);   //jos ollaan zoomattu ulos, karttanappi on painettuna
 
         styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMinikuvanNimi());
         styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMinikuvanNimi());
