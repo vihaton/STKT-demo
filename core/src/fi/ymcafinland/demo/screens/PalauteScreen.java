@@ -63,7 +63,7 @@ public class PalauteScreen extends PohjaScreen {
         stage.draw();
 
         if (Gdx.input.isTouched()) {
-            sp.resetPlayScreen();
+            sp.setPlayScreen();
             dispose();
         }
 

@@ -1,5 +1,6 @@
-package fi.ymcafinland.demo.screens.Apuluokat;
+package fi.ymcafinland.demo.transitions;
 
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
@@ -13,7 +14,7 @@ public class CameraTransition {
     private final float duration;
 
     private float stateTime = 0.0f;
-    private float alpha;
+    private float percent;
 
     public CameraTransition(final Vector3 startPos, final Vector3 goalPos, float duration) {
         this.startPos = startPos;
@@ -22,12 +23,11 @@ public class CameraTransition {
     }
 
     public Vector3 act(float delta) {
-
         stateTime += delta;
 
-        alpha = MathUtils.clamp(stateTime / duration, 0.0f, 1.0f);
+        percent = MathUtils.clamp(stateTime / duration, 0.0f, 1.0f);
 
-        return startPos.lerp(goalPos, -2 * alpha*alpha*alpha + 3 * alpha*alpha);
+        return startPos.lerp(goalPos, percent);
     }
 
 }

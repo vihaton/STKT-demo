@@ -24,7 +24,7 @@ private Pelaaja pelaaja;
     @Test
     public void lisaysPositiivisellaTest(){
         float alkuarvo = pelaaja.getAlyllinen();
-        pelaaja.lisaaAlyllista(1);
+        pelaaja.lisaaSelviytymisarvoIndeksissa(1, 1);
         Assert.assertEquals(pelaaja.getAlyllinen(), alkuarvo + 1f);
     }
 

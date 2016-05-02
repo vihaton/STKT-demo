@@ -29,25 +29,23 @@ public class EdistymismittarinKasittelija {
         this.stage = stage;
         this.pelaaja = pelaaja;
 
+        luoProgressTable();
+    }
 
+    public void luoProgressTable() {
         progressBar = new ProgressBar(0, 100, 1, false, skin.get("progressBarStyle", ProgressBar.ProgressBarStyle.class));
-
         progressBar.setValue(0);
 
         Label otsikko = new Label("Edistymismittari:", skin, "otsikko");
-        otsikko.setScale(0.7f);
         otsikko.setAlignment(Align.center);
 
         this.progressTable = new Table();
-        progressTable.top().center().add(otsikko);
+        progressTable.add(otsikko);
         progressTable.row();
-        //ilmeisesti taulukko käsittelee ProgB. "pisteenä", jonka sijainti on PB:n vasemman alakulman sijainti, eikä esim PB:n keskikohta
-        progressTable.add(progressBar);
-
-        progressBar.setFillParent(true);
+        progressTable.add(progressBar).minWidth(SelviytyjanPurjeet.V_WIDTH * 0.9f);
 
         //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Esim kiertäminen tehdään suhteessa origoon.
-//        progressTable.setOrigin(progBarWidth, progBarHeight);
+        progressTable.setOrigin(Align.center);
         //asettaa taulukon vasemman alakulman sijainnin
         progressTable.setPosition(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2);
 

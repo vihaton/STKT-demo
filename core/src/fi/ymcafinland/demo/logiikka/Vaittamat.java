@@ -45,7 +45,6 @@ public class Vaittamat {
             Gdx.app.setLogLevel(loglevel);
         }
 
-
         return lukija;
     }
 
@@ -56,7 +55,6 @@ public class Vaittamat {
         }
     }
 
-    //todo jos lause on suljettu hipsuihin " ", poistetaan ne
     private String[] pilkoRivi(String kokoRivi) {
         String[] rivi0 = kokoRivi.split(",");
         String[] pilkottuRivi = new String[18];
@@ -74,19 +72,21 @@ public class Vaittamat {
                 pilkottuSolu = true;
             }
 
-            if (pala.endsWith("\"") || pilkottuSolu == false) {
+            if (pala.endsWith("\"")) { //solu on valmis
+
+                pilkottuRivi[ind] = pala.substring(1, pala.length() - 1); //poistetaan " alusta ja lopusta
+                ind++;
+                pala = "";
+
+            } else if (!pilkottuSolu) {
                 pilkottuRivi[ind] = pala;
                 ind++;
-
-                if (pilkottuSolu) {
-                    pala = "";
-                }
             }
 
             edellinenPala = pala;
         }
 
-        //lisätään loppuun tyhjät väittämäsarakkeet
+        //lisätään loppuun tyhjät väittämäsarakkeet, jos tarvetta
         for (int i = ind; i < 18; i++) {
             pilkottuRivi[i] = "";
             ind = i + 1;
@@ -103,24 +103,32 @@ public class Vaittamat {
 
     private void generoiVaittamat() {
         Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
+        ArrayList<Vaittama> alkutestinVaittamat = new ArrayList<>();
 
         for (int i = 0; i < 18; i++) { //jokaisen solmun...
             String id = "" + (i + 7);
             ArrayList<Vaittama> solmunVaittamat = new ArrayList<>();
 
-            for (int j = 2; j < rivit.size(); j++) { //...jokaiselle väittämäriville...
+            for (int j = 2; j < rivit.size(); j++) { //...jokaiselle väittämäriville (rivit kolmannesta rivistä eteenpäin)...
                 String vaittamatxt = rivit.get(j)[i];
                 if (vaittamatxt.equalsIgnoreCase("")) { //...kunnes väittämiä ei enää ole:
                     break;
                 }
 
-                Vaittama v = new Vaittama(vaittamatxt, id); //luodaan uusi väittämä...
-                solmunVaittamat.add(v);                     //...lisätään se väittämälistaan, ja...
+                Vaittama v = new Vaittama(vaittamatxt, id); //luodaan uusi väittämä, ...
+
+                if (j == 2) { //...ylimmän rivin väittämistä tehdään alkutesti, ...
+                    alkutestinVaittamat.add(v);
+                }
+                solmunVaittamat.add(v);                     //...lisätään se väittämälistaan ja...
             }
 
-            karttaSolmujenVaittamista.put(id, solmunVaittamat); //talletetaan väittämälista karttaan kyseisen solmun id.llä
+            karttaSolmujenVaittamista.put(id, solmunVaittamat); //...talletetaan väittämälista karttaan kyseisen solmun id.llä
         }
+
+        karttaSolmujenVaittamista.put("alkutesti", alkutestinVaittamat);
     }
+
 
     /**
      * palauttaa kartan, johon väittämät on talletettu avaimena toisen tason solmun id (7-24) ja

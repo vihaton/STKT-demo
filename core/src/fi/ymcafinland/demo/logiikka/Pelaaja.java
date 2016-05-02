@@ -2,6 +2,7 @@ package fi.ymcafinland.demo.logiikka;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Pelaaja -luokalla on selviytymisarvosanat joihin vaikutetaan vastaamalla väittämiin.
@@ -16,7 +17,8 @@ public class Pelaaja {
     public final int LUOVA = 5;
 
     protected float[] selviytyisArvot;
-    int vastausmaara;
+    private int vastausmaara;
+    private HashSet<Integer> vastatutVaittamat;
 
     private String nimi;
 
@@ -25,8 +27,9 @@ public class Pelaaja {
      */
     public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
-        selviytyisArvot = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
+        selviytyisArvot = new float[]{7f, 7f, 7f, 7f, 7f, 7f};
         vastausmaara = 0;
+        vastatutVaittamat = new HashSet<>();
     }
 
     /**
@@ -39,39 +42,21 @@ public class Pelaaja {
      * 5 - Luova
      */
     //ToDo vastausmaara prosentteina kaikista vastauksista. (jos 200 väittämää ja olet vastannut sataan niin palauttaa 50)
-    //todo bug väittämänäkymässä käyminen lisää vastauksia, vaikkei väittämiin vastaisikaan
-    public int getVastausmaara(){
+    public int getVastausmaara() {
         return vastausmaara;
     }
-    public void lisaaVastaus(){
+
+    public void lisaaVastaus(Vaittama v) {
         vastausmaara++;
+        vastatutVaittamat.add(v.hashCode());
     }
+
     public void lisaaSelviytymisarvoIndeksissa(int i, float maara) {
         selviytyisArvot[i] += maara;
     }
 
-    public void lisaaFyysista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(FYYSINEN, maara);
-    }
-
-    public void lisaaAlyllista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(ALYLLINEN, maara);
-    }
-
-    public void lisaaEettista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(EETTINEN, maara);
-    }
-
-    public void lisaaTunteellista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(TUNTEELLINEN, maara);
-    }
-
-    public void lisaaSosiaalista(float maara) {
-        lisaaSelviytymisarvoIndeksissa(SOSIAALINEN, maara);
-    }
-
-    public void lisaaLuovuutta(float maara) {
-        lisaaSelviytymisarvoIndeksissa(LUOVA, maara);
+    public void setSelviytymisarvoaIndeksissa(int i, float arvo) {
+        selviytyisArvot[i] = arvo;
     }
 
     public float getFyysinen() {
@@ -98,33 +83,15 @@ public class Pelaaja {
         return selviytyisArvot[LUOVA];
     }
 
-    public void setFyysinen(float fyysinen) {
-        selviytyisArvot[FYYSINEN] = fyysinen;
-    }
-
-    public void setAlyllinen(float alyllinen) {
-        selviytyisArvot[ALYLLINEN] = alyllinen;
-    }
-
-    public void setEettinen(float eettinen) {
-        selviytyisArvot[EETTINEN] = eettinen;
-    }
-
-    public void setTunteellinen(float tunteellinen) {
-        selviytyisArvot[TUNTEELLINEN] = tunteellinen;
-    }
-
-    public void setSosiaalinen(float sosiaalinen) {
-        selviytyisArvot[SOSIAALINEN] = sosiaalinen;
-    }
-
-    public void setLuova(float luova) {
-        selviytyisArvot[LUOVA] = luova;
-    }
-
-    //ToDo maxselviytyminen
-    public String getMaxSelviytyminen() {
-        return "";
+    public int getMaxSelviytymisenIndeksi() {
+        int maxID = 0;
+        float maxArvo = selviytyisArvot[maxID];
+        for (int i = 1; i < selviytyisArvot.length; i++) {
+            if (maxArvo < selviytyisArvot[i]) {
+                maxID = i;
+            }
+        }
+        return maxID;
     }
 
     public String getNimi() {
@@ -142,5 +109,9 @@ public class Pelaaja {
                 "Tunteellinen: " + String.format("%.1f", selviytyisArvot[TUNTEELLINEN]) + "\n" +
                 "Sosiaalinen: " + String.format("%.1f", selviytyisArvot[SOSIAALINEN]) + "\n" +
                 "Luova: " + String.format("%.1f", selviytyisArvot[LUOVA]) + "\n";
+    }
+
+    public boolean onkoVastannut(Vaittama v) {
+        return vastatutVaittamat.contains(v.hashCode());
     }
 }

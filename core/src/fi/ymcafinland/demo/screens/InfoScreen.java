@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
+import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
@@ -52,7 +53,7 @@ public class InfoScreen extends PohjaScreen {
 
         luoScrollPane();
 
-        rootTable.add(pane).pad(SelviytyjanPurjeet.V_WIDTH / 10).center();
+        rootTable.add(pane).pad(SelviytyjanPurjeet.V_WIDTH / 10).minSize(SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT * 0.5f);
         rootTable.row();
 
         createExitButton(sp);
@@ -69,23 +70,17 @@ public class InfoScreen extends PohjaScreen {
     }
 
     private void luoScrollPane() {
-        pane = new ScrollPane(luoInfoteksti().top());
-        pane.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2);
-        pane.setWidth(SelviytyjanPurjeet.V_WIDTH / 2);
-        pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT / 2);
+        pane = new ScrollPane(luoInfoteksti());
         pane.validate();
     }
 
-    private Table luoInfoteksti() {
+    private Label luoInfoteksti() {
         Label label = new Label(infoText, skin, "infoteksti");
         label.setWrap(true);
         label.setFontScale(2);
         label.setAlignment(Align.center);
-        label.setFillParent(true);
 
-        Table infoTable = new Table();
-        infoTable.add(label);
-        return infoTable;
+        return label;
     }
 
     private void createAlkuTestiButton(final SelviytyjanPurjeet sp) {
@@ -93,7 +88,9 @@ public class InfoScreen extends PohjaScreen {
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "alkutestibuttonia painettiin");
-                //todo invoke alkutestinäkymä question screeniin
+                sp.setQuestionScreen(new Solmu("alkutesti", null));
+                stage.dispose();
+                dispose();
             }
         });
     }
@@ -103,7 +100,7 @@ public class InfoScreen extends PohjaScreen {
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "exitbuttonia painettiin");
-                sp.resetPlayScreen();
+                sp.setPlayScreenMaxSelviytyjaan();
                 stage.dispose();
                 dispose();
             }

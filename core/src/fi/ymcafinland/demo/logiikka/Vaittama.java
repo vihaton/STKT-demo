@@ -12,14 +12,24 @@ public class Vaittama {
 
     private String teksti;
     private String solmunID;
+    private int mihinSelviytymiskeinoonVaikuttaa;
     private float arvo;
     private boolean checked;
 
     public Vaittama(String txt, String solmunID) {
         this.teksti = txt;
         this.solmunID = solmunID;
-        arvo = 1f;
+        asetaVaikutusSelviytyjaan(Integer.parseInt(solmunID));
+        arvo = 0f;
         checked = false;
+    }
+
+    private void asetaVaikutusSelviytyjaan(int id) {
+        this.mihinSelviytymiskeinoonVaikuttaa = (id - 7) / 3;
+    }
+
+    public int getMihinSelviytymiskeinoonVaikuttaa() {
+        return mihinSelviytymiskeinoonVaikuttaa;
     }
 
     public String getTeksti() {

@@ -19,8 +19,6 @@ import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.kasittelijat.VaittamanKasittelija;
 
-//Todo kaikki screenit playscreeniä lukuunottamatta voisivat periä jonkun sisältöScreen luokan,
-// jossa stagen ja roottablen alustus tekeminen olisi toteutettu valmiiksi.
 /**
  * Created by jwinter on 29.3.2016.
  * <p/>
@@ -33,12 +31,12 @@ public class QuestionScreen extends PohjaScreen {
     private final Pelaaja pelaaja;
     private final Vaittamat vaittamat;
     private ArrayList<Vaittama> solmunVaittamat;
-    private String solmunID;
     private VaittamanKasittelija vaittamanKasittelija;
     Solmu solmu;
     private Table exitTable;
     private Label otsikko;
     private float sidePad;
+    private ArrayList<Float> alkuarvot;
 
     public QuestionScreen(final SelviytyjanPurjeet sp, Pelaaja pelaaja, Vaittamat vaittamat, Skin masterSkin) {
         super(masterSkin, "QS");
@@ -59,7 +57,6 @@ public class QuestionScreen extends PohjaScreen {
         rootTable.top().add(otsikkoTable).padTop(sidePad / 2).padLeft(sidePad);
         rootTable.add(exitTable).right().top();
 
-        //Ratkaisevan tärkeä rivi!
         rootTable.validate();
     }
 
@@ -84,12 +81,16 @@ public class QuestionScreen extends PohjaScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("QS", "exitbuttonia painettiin");
                 sendData();
-                sp.resetPlayScreen();
+                if (solmu.getMutsi() == null) {
+                    sp.setPlayScreenMaxSelviytyjaan();
+                } else {
+                    sp.setPlayScreen();
+                }
             }
         });
 
         Table exitTable = new Table();
-        exitTable.add(exitButton).top().right();
+        exitTable.add(exitButton);
 
         exitTable.validate();
 
@@ -97,43 +98,42 @@ public class QuestionScreen extends PohjaScreen {
     }
 
     /**
-     * sendData lähettää saadun datan eteenpäin. sendData konfirmoi kysymykseen laitetun tiedon, ja
+     * sendData lähettää saadun datan eteenpäin lisäämällä pelaajan selviytymisarvoon, mihin väittämä vaikuttaa, väittämän sliderin arvon.
+     * SendData konfirmoi kysymykseen laitetun tiedon, ja
      * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
      */
     public void sendData() {
-        //todo väittämän vastaus vaikuttaa palautteeseen vain kerran (sulku-avaus-bugi)
-        //todo pelaaja.lisaaVastaus() vain kerran
-        float kerroin = 1f;
-        for (Vaittama v : solmunVaittamat) {
+        for (int i = 0; i < solmunVaittamat.size(); i++) {
+            Vaittama v = solmunVaittamat.get(i);
+            float uusiArvo = v.getArvo();
+            float vanhaArvo = alkuarvot.get(i);
 
-            pelaaja.lisaaVastaus();
-            kerroin *= v.getArvo();
+            if (uusiArvo == vanhaArvo) {        //jos arvoa ei ole muutettu, ei vastausta tarvitse lisätä mihinkään
+                continue;
+            }
 
-
-        }
-        int solmunID = Integer.parseInt(this.solmunID);
-
-        if (solmunID < 10) {
-            pelaaja.setFyysinen(pelaaja.getFyysinen() * kerroin);
-        } else if (solmunID < 13) {
-            pelaaja.setAlyllinen(pelaaja.getAlyllinen() * kerroin);
-        } else if (solmunID < 16) {
-            pelaaja.setEettinen(pelaaja.getEettinen() * kerroin);
-        } else if (solmunID < 19) {
-            pelaaja.setTunteellinen(pelaaja.getTunteellinen() * kerroin);
-        } else if (solmunID < 22) {
-            pelaaja.setSosiaalinen(pelaaja.getSosiaalinen() * kerroin);
-        } else {
-            pelaaja.setLuova(pelaaja.getLuova() * kerroin);
+            if (!pelaaja.onkoVastannut(v)) {    //jos kysymykseen ei ole aikaisemmin vastattu, voidaan lisätä vastausten määrää
+                pelaaja.lisaaVastaus(v);
+            }
+            //muutetaan selviytymisarvoa vain oikean muutoksen verran
+            pelaaja.lisaaSelviytymisarvoIndeksissa(v.getMihinSelviytymiskeinoonVaikuttaa(), v.getArvo() - alkuarvot.get(i));
         }
     }
 
     public void setSolmu(Solmu solmu) {
         this.solmu = solmu;
-        otsikko.setText(solmu.getMutsi().getOtsikko() + ":\n" + solmu.getSisalto());
-        solmunID = solmu.getID();
+        asetaOtsikonTeksti(solmu);
+        String solmunID = solmu.getID();
         solmunVaittamat = vaittamat.getYhdenSolmunVaittamat(solmunID);
-        vaittamanKasittelija.paivitaVaittamat(solmunVaittamat);
+        alkuarvot = vaittamanKasittelija.paivitaVaittamat(solmunVaittamat);
+    }
+
+    public void asetaOtsikonTeksti(Solmu solmu) {
+        if (solmu.getMutsi() == null) {
+            otsikko.setText("Testaa, millainen selviytyjä olet:");
+        } else {
+            otsikko.setText(solmu.getMutsi().getOtsikko() + ":\n" + solmu.getSisalto());
+        }
     }
 
     @Override
