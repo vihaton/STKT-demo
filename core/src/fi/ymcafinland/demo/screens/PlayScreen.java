@@ -147,7 +147,7 @@ public class PlayScreen extends PohjaScreen {
 
         solmunKasittelija.paivitaSolmut(angleToPoint);
         edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint);
-        infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint);
+        infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
 
         if (log)
             Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter edistysmittarinKasittelija");

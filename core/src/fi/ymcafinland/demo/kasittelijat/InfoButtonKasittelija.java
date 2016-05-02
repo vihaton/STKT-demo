@@ -26,8 +26,7 @@ public class InfoButtonKasittelija {
     private Stage stage;
     private ArrayList<Solmu> solmut;
     private ArrayList<Table> buttonTaulukot;
-
-
+    private boolean zoomedOut;
 
 
     public InfoButtonKasittelija(Stage stage, Skin masterSkin, Verkko verkko) {
@@ -41,13 +40,12 @@ public class InfoButtonKasittelija {
 
     private void luoListaEnsimmaisenTasonSolmuista(Verkko verkko) {
         this.solmut = new ArrayList<>();
-        for(Solmu s : verkko.getSolmut()){
-            if(Integer.parseInt(s.getID()) < 7){
+        for (Solmu s : verkko.getSolmut()) {
+            if (Integer.parseInt(s.getID()) < 7) {
                 solmut.add(s);
             }
         }
     }
-
 
 
     private void luoInfoNapit() {
@@ -70,58 +68,70 @@ public class InfoButtonKasittelija {
         }
     }
 
-    private void luoKuuntelija(Button button, Solmu s){
-        if(Integer.parseInt(s.getID()) == 1) {
+    private void luoKuuntelija(Button button, Solmu s) {
+        if (Integer.parseInt(s.getID()) == 1) {
             button.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     Gdx.app.log("IBK", "Info nappulaa painettu");
 
-                    Gdx.net.openURI("http://www.ymca.fi");
+                    if (!zoomedOut) {
+                        Gdx.net.openURI("http://www.ymca.fi");
+                    }
                 }
             });
         }
-        if(Integer.parseInt(s.getID()) == 2) {
+        if (Integer.parseInt(s.getID()) == 2) {
             button.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     Gdx.app.log("IBK", "Info nappulaa painettu");
 
-                    Gdx.net.openURI("http://www.mielenterveysseura.fi/fi");
+                    if (!zoomedOut) {
+                        Gdx.net.openURI("http://www.mielenterveysseura.fi/fi");
+                    }
                 }
             });
         }
-        if(Integer.parseInt(s.getID()) == 3) {
+        if (Integer.parseInt(s.getID()) == 3) {
             button.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     Gdx.app.log("IBK", "Info nappulaa painettu");
 
-                    Gdx.net.openURI("https://www.ray.fi");
+                    if (!zoomedOut) {
+                        Gdx.net.openURI("https://www.ray.fi");
+                    }
                 }
             });
         }
-        if(Integer.parseInt(s.getID()) == 4) {
+        if (Integer.parseInt(s.getID()) == 4) {
             button.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     Gdx.app.log("IBK", "Info nappulaa painettu");
 
-                    Gdx.net.openURI("http://niceme.me/");
+                    if (!zoomedOut) {
+                        Gdx.net.openURI("http://www.cameraobscura.fi/");
+                    }
                 }
             });
         }
-        if(Integer.parseInt(s.getID()) == 5) {
+        if (Integer.parseInt(s.getID()) == 5) {
             button.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     Gdx.app.log("IBK", "Info nappulaa painettu");
 
-                    Gdx.net.openURI("https://www.youtube.com/watch?v=9R8aSKwTEMg");
+                    if (!zoomedOut) {
+                        Gdx.net.openURI("https://www.youtube.com/watch?v=9R8aSKwTEMg");
+                    }
                 }
             });
         }
-        if(Integer.parseInt(s.getID()) == 6) {
+        if (Integer.parseInt(s.getID()) == 6) {
             button.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     Gdx.app.log("IBK", "Info nappulaa painettu");
 
-                    Gdx.net.openURI("https://www.riemurasia.net/kuva/Typera-jaatelo/164917");
+                    if (!zoomedOut) {
+                        Gdx.net.openURI("https://www.riemurasia.net/kuva/Typera-jaatelo/164917");
+                    }
                 }
             });
         }
@@ -129,10 +139,11 @@ public class InfoButtonKasittelija {
     }
 
 
-    public void paivitaInfoButtonit(float delta, float angleToPoint){
-        for(Table table : buttonTaulukot) {
+    public void paivitaInfoButtonit(float delta, float angleToPoint, boolean zoomedOut) {
+        this.zoomedOut = zoomedOut;
+        for (Table table : buttonTaulukot) {
             table.setTransform(true);
-            table.setRotation(angleToPoint-90);
+            table.setRotation(angleToPoint - 90);
         }
     }
 

@@ -29,7 +29,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean tap(float x, float y, int count, int button) {
         hud.siirryLahinpaanPalloon(x,y);
-        return true; //kertoo, että eventti on jo käsitelty
+        return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
     }
 
     @Override
