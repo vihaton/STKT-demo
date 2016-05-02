@@ -3,6 +3,7 @@ package fi.ymcafinland.demo.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
@@ -150,6 +151,7 @@ public class PlayScreen extends PohjaScreen {
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.setDebugAll(true);
+        hud.stage.act(delta);
         hud.stage.draw();
         if (log)
             Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter hud.stage.draw");

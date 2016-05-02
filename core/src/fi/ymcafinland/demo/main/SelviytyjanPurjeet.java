@@ -227,5 +227,23 @@ public class SelviytyjanPurjeet extends Game {
         playscreen.asetaAlkuZoom();
         setScreen(playscreen);
     }
+
+    public PalauteScreen getPalauteScreen() {
+        return palauteScreen;
+    }
+
+    public InfoScreen getInfoScreen() {
+        return infoScreen;
+    }
+
+    public PlayScreen getPlayscreen() {
+
+        return playscreen;
+    }
+
+    public QuestionScreen getQuestionScreen() {
+        return questionScreen;
+
+    }
 }
 
