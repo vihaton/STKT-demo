@@ -165,8 +165,14 @@ public class HUD {
         QuestionScreen qs = playScreen.getSp().getQuestionScreen();
         qs.setSolmu(solmu);
         ScreenTransition st = new ScreenTransition(playScreen, qs, 0.5f);
-        Gdx.app.log("HUD", "kutsutaan ST.moveUpTransitionia playScreenistä quostionScreeniin");
-        st.fadeTransition();
+
+        if (solmu.getID().equals("13")) {
+            Gdx.app.log("HUD", "kutsutaan ST.wildFadeTransitionia playScreenistä quostionScreeniin");
+            st.wildFadeTransition();
+        } else {
+            Gdx.app.log("HUD", "kutsutaan ST.fadeTransitionia playScreenistä quostionScreeniin");
+            st.fadeTransition();
+        }
     }
 
 

@@ -2,13 +2,10 @@ package fi.ymcafinland.demo.transitions;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
-import fi.ymcafinland.demo.screens.InfoScreen;
 import fi.ymcafinland.demo.screens.PohjaScreen;
 
 /**
@@ -45,6 +42,18 @@ public class ScreenTransition {
             stage.addAction(Actions.fadeOut(duration));
         }
 
+        lisaaScreeninVaihtoStartStagenToimintoihin();
+    }
+
+    public void wildFadeTransition() {
+        for (Stage stage:startScreen.getScreeniinLiittyvatStaget()) {
+            stage.addAction(Actions.fadeIn(duration, Interpolation.elastic));
+        }
+
+        lisaaScreeninVaihtoStartStagenToimintoihin();
+    }
+
+    public void lisaaScreeninVaihtoStartStagenToimintoihin() {
         startStage.addAction(Actions.run(new Runnable() {
             @Override
             public void run() {

@@ -150,8 +150,6 @@ public class PlayScreen extends PohjaScreen {
         stage.draw();
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.setDebugAll(true);
-        hud.stage.act(delta);
         hud.stage.draw();
         if (log)
             Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter hud.stage.draw");
