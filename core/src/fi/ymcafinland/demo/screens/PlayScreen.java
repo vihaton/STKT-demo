@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import fi.ymcafinland.demo.kasittelijat.InfoButtonKasittelija;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -44,6 +45,7 @@ public class PlayScreen extends PohjaScreen {
     private HUD hud;
     private SolmunKasittelija solmunKasittelija;
     private EdistymismittarinKasittelija edistymismittarinKasittelija;
+    private InfoButtonKasittelija infoButtonKasittelija;
     private float deltaAVG;
     public boolean ensimmainenSiirtyma = true;
     private ZoomTransition zoomTransition;
@@ -62,6 +64,7 @@ public class PlayScreen extends PohjaScreen {
 
         this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin);
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
+        this.infoButtonKasittelija = new InfoButtonKasittelija(stage ,masterSkin, verkko);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
@@ -144,6 +147,8 @@ public class PlayScreen extends PohjaScreen {
 
         solmunKasittelija.paivitaSolmut(angleToPoint);
         edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint);
+        infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint);
+
         if (log)
             Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter edistysmittarinKasittelija");
 

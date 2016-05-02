@@ -28,7 +28,7 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 public class PohjaScreen implements Screen {
     protected FitViewport viewport;
     protected OrthographicCamera camera;
-    protected Stage stage;
+    public Stage stage;
     protected Table rootTable;
     protected Skin skin;
     protected ArrayList<Stage> screeniinLiittyvatStaget;
