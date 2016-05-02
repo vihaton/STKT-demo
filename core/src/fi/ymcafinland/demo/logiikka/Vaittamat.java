@@ -29,8 +29,7 @@ public class Vaittamat {
             lueRivit(lukija);
         }
 
-        generoiAlkutestinVaittamat();
-        generoiKolmannenTasonVaittamat();
+        generoiVaittamat();
     }
 
     private Scanner luoLukija(String tiedostonNimi) {
@@ -102,8 +101,9 @@ public class Vaittamat {
         return pilkottuRivi;
     }
 
-    private void generoiKolmannenTasonVaittamat() {
+    private void generoiVaittamat() {
         Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
+        ArrayList<Vaittama> alkutestinVaittamat = new ArrayList<>();
 
         for (int i = 0; i < 18; i++) { //jokaisen solmun...
             String id = "" + (i + 7);
@@ -116,24 +116,19 @@ public class Vaittamat {
                 }
 
                 Vaittama v = new Vaittama(vaittamatxt, id); //luodaan uusi väittämä, ...
+
+                if (j == 2) { //...ylimmän rivin väittämistä tehdään alkutesti, ...
+                    alkutestinVaittamat.add(v);
+                }
                 solmunVaittamat.add(v);                     //...lisätään se väittämälistaan ja...
             }
 
             karttaSolmujenVaittamista.put(id, solmunVaittamat); //...talletetaan väittämälista karttaan kyseisen solmun id.llä
         }
-    }
-
-    private void generoiAlkutestinVaittamat() {
-        ArrayList<Vaittama> alkutestinVaittamat = new ArrayList<>();
-
-        String[] ensimmainenVaittamarivi = rivit.get(2);
-
-        for (int i = 0; i < ensimmainenVaittamarivi.length; i++) {
-            alkutestinVaittamat.add(new Vaittama(ensimmainenVaittamarivi[i], "" + (i + 7)));
-        }
 
         karttaSolmujenVaittamista.put("alkutesti", alkutestinVaittamat);
     }
+
 
     /**
      * palauttaa kartan, johon väittämät on talletettu avaimena toisen tason solmun id (7-24) ja
