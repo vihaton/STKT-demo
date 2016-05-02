@@ -14,7 +14,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     private GestureDetector detector;
     private HUD hud;
 
-
+//todo zoomit, swaipit ja tapit yhteisymmärrykseen
     public HUDListener(HUD hud, Viewport viewport, SpriteBatch sb) {
         this.hud = hud;
         this.viewport = viewport;
@@ -69,7 +69,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean zoom(float initialDistance, float distance) {
         hud.playScreen.alkaaTapahtua();
-        if (initialDistance < distance && hud.playScreen.getZoom() > -2f) {
+        if (initialDistance < distance && hud.playScreen.getZoom() > 0.2f) {
             hud.playScreen.setZoom(-0.03f);
         } else if (hud.playScreen.getZoom() < 5f) {
             hud.playScreen.setZoom(0.03f);

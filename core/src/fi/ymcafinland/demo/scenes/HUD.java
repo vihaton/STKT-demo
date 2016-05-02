@@ -3,7 +3,6 @@ package fi.ymcafinland.demo.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -57,6 +56,7 @@ public class HUD {
     private Table botTable;
     private float sidePad;
     private ArrayList<Button> midJaBotTablejenNapit;
+    private ArrayList<Button> ylarivinNapit;
 
     public HUD(final PlayScreen playScreen, SpriteBatch sb, Skin masterSkin, Solmu solmu) {
 
@@ -74,7 +74,7 @@ public class HUD {
         lapsia = solmu.getLapset().size() > 1;
         sidePad = 10;
 
-        buttonCreation();
+        createButtons();
         updateButtons(solmu);
         createTables();
         updateTables();
@@ -89,6 +89,7 @@ public class HUD {
      */
     private void createListeners(final PlayScreen playScreen, final Solmu solmu) {
 
+        //todo listenereitä ei voi lisätä koko ajan lisää homo, laitetaan kuuntelijoihin viitteet, ja päivitetään viitteitä.
         if (hasParent) {
             parent.addListener(new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
@@ -152,6 +153,7 @@ public class HUD {
 
     }
 
+
     /**
      * Päivittää HUDin tiedot
      *
@@ -166,11 +168,11 @@ public class HUD {
         this.solmu = solmu;
         hasParent = solmu.getMutsi() != null;
         lapsia = solmu.getLapset().size() > 0;
+
         updateButtons(solmu);
         updateTables();
 
         karttaNappi.setChecked(zoomedOut);
-        createListeners(playScreen, solmu);
         setZoomedHUDState(zoomedOut);
     }
 
@@ -257,6 +259,7 @@ public class HUD {
         botTable.setFillParent(true);
         botTable.pad(sidePad);
 
+        stage.clear();
         stage.addActor(topTable);
         stage.addActor(midTable);
         stage.addActor(botTable);
@@ -265,7 +268,7 @@ public class HUD {
     /**
      * Luo nappulat HUDiin
      */
-    private void buttonCreation() {
+    private void createButtons() {
         styleParent = skin.get("styleParent", Button.ButtonStyle.class);
         styleLeft = skin.get("styleLeft", Button.ButtonStyle.class);
         styleRight = skin.get("styleRight", Button.ButtonStyle.class);
@@ -305,6 +308,9 @@ public class HUD {
 
         midJaBotTablejenNapit = new ArrayList<>();
         Collections.addAll(midJaBotTablejenNapit, new Button[]{leftSister, rightSister, child1, child2, child3, kysymys});
+
+        ylarivinNapit = new ArrayList<>();
+        Collections.addAll(ylarivinNapit, new Button[]{karttaNappi, parent, palaute});
     }
 
 

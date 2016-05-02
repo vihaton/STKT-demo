@@ -23,6 +23,7 @@ import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.screens.QuestionScreen;
+import fi.ymcafinland.demo.transitions.ZoomTransition;
 
 public class SelviytyjanPurjeet extends Game {
     //Todo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
@@ -223,6 +224,7 @@ public class SelviytyjanPurjeet extends Game {
         Solmu vahvinSelviytymiskeino = verkko.getSolmut().get(pelaaja.getMaxSelviytymisenIndeksi());
         Gdx.app.log("SP" , "setPlayScreenMaxSelviytyjaan: vahvimman selviytymiskeinon perusteella set solmuksi laitetaan " + vahvinSelviytymiskeino.getOtsikko());
         playscreen.setSolmu(vahvinSelviytymiskeino);
+        playscreen.asetaAlkuZoom();
         setScreen(playscreen);
     }
 }
