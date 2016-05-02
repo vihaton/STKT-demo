@@ -161,7 +161,7 @@ public class SelviytyjanPurjeet extends Game {
 
         Button.ButtonStyle styleTrans = new Button.ButtonStyle();
         styleTrans.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("transparent", Texture.class)));
-        masterSkin.add("transButtonStyle", styleInfo);
+        masterSkin.add("transButtonStyle", styleTrans);
     }
 
     private void generoiTextureAtlakset() {

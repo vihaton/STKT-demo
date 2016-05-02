@@ -51,24 +51,19 @@ public class InfoButtonKasittelija {
 
 
     private void luoInfoNapit() {
-        Button tyhjaButton = new Button(skin.get("transButtonStyle", Button.ButtonStyle.class));
-
         for (Solmu s : solmut) {
             Button infoButton = new Button(skin.get("infoButtonStyle", Button.ButtonStyle.class));
             luoKuuntelija(infoButton, s);
 
             Table buttonTable = new Table();
 
-            buttonTable.add(infoButton).minSize(64);
+            buttonTable.add(infoButton).maxSize(64);
             buttonTable.row();
-            buttonTable.add(tyhjaButton).minSize(64);
-            buttonTable.row();
-            buttonTable.add(tyhjaButton).minSize(64);
+            buttonTable.add(new Actor()).minSize(64, 150);
 
             buttonTable.setPosition(s.getXKoordinaatti(), s.getYKoordinaatti());
             buttonTable.setOrigin(Align.center);
             buttonTable.setRotation(s.getKulma());
-
 
             buttonTaulukot.add(buttonTable);
             stage.addActor(buttonTable);
