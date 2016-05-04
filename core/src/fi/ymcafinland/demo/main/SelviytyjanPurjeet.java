@@ -20,6 +20,7 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.screens.InfoScreen;
+import fi.ymcafinland.demo.screens.LauncherScreen;
 import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.screens.QuestionScreen;
@@ -39,6 +40,7 @@ public class SelviytyjanPurjeet extends Game {
     private PalauteScreen palauteScreen;
     private QuestionScreen questionScreen;
     private InfoScreen infoScreen;
+    private LauncherScreen launcherScreen;
     private Vaittamat vaittamat;
     private Skin masterSkin;
     private Pelaaja pelaaja;
@@ -64,9 +66,17 @@ public class SelviytyjanPurjeet extends Game {
         this.palauteScreen = new PalauteScreen(this, pelaaja, masterSkin);
         this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0), pelaaja, masterSkin);
         this.infoScreen = new InfoScreen(this, masterSkin);
+        this.launcherScreen = new LauncherScreen(this, masterSkin, "LS");
 
-        setScreen(infoScreen);
+        setScreen(launcherScreen);
 //        setScreen(playscreen);
+    }
+
+    /**
+     * Kutsutaan launcherissa kun SP:n käyttö aloitetaan
+     */
+    public void init() {
+        setScreen(infoScreen);
     }
 
     /**
@@ -99,6 +109,8 @@ public class SelviytyjanPurjeet extends Game {
         masterSkin.add("i", new Texture("i.png"));
 
         masterSkin.add("transparent", new Texture("transparent.png"));
+
+        masterSkin.add("launcherTausta", new Texture("stkt_launcher.png"));
 
     }
 
