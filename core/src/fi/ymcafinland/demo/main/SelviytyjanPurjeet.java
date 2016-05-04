@@ -100,6 +100,8 @@ public class SelviytyjanPurjeet extends Game {
 
         masterSkin.add("transparent", new Texture("transparent.png"));
 
+        masterSkin.add("minimap", new Texture("minimap.png"));
+
     }
 
     private void generoiFontit() {
@@ -184,7 +186,8 @@ public class SelviytyjanPurjeet extends Game {
         Button.ButtonStyle stylePalaute = new Button.ButtonStyle();
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
 
-        styleKartta.up = masterSkin.getDrawable("mini_karttakuva");
+
+        styleKartta.up = masterSkin.getDrawable("minimap");
         styleKysymys.up = masterSkin.getDrawable("mini_kysymys");
         stylePalaute.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("mini_palaute", Texture.class)));
 
