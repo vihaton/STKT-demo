@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -28,6 +29,7 @@ public class SolmunKasittelija {
     private float pallonLeveys;
     private float pallonKorkeus;
     private ArrayList<Table> solmuTaulukot;
+
 
     public SolmunKasittelija(Stage stage, Verkko verkko, Skin masterSkin) {
         this.stage = stage;

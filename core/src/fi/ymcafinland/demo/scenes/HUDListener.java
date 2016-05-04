@@ -29,7 +29,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean tap(float x, float y, int count, int button) {
         hud.siirryLahinpaanPalloon(x,y);
-        return false;
+        return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
     }
 
     @Override
@@ -53,7 +53,7 @@ public class HUDListener implements GestureDetector.GestureListener {
                 hud.up();
             }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class HUDListener implements GestureDetector.GestureListener {
         } else if (hud.playScreen.getZoom() < 5f) {
             hud.playScreen.setZoom(0.03f);
         }
-        return false;
+        return true;
     }
 
     @Override

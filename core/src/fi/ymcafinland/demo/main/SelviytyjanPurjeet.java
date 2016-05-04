@@ -97,6 +97,10 @@ public class SelviytyjanPurjeet extends Game {
 
         masterSkin.add("mini_palaute", new Texture("hahmo.png"));
 
+        masterSkin.add("i", new Texture("i.png"));
+
+        masterSkin.add("transparent", new Texture("transparent.png"));
+
     }
 
     private void generoiFontit() {
@@ -150,6 +154,14 @@ public class SelviytyjanPurjeet extends Game {
         Button.ButtonStyle styleExit = new Button.ButtonStyle();
         styleExit.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("ruksi", Texture.class)));
         masterSkin.add("exitButtonStyle", styleExit);
+
+        Button.ButtonStyle styleInfo = new Button.ButtonStyle();
+        styleInfo.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("i", Texture.class)));
+        masterSkin.add("infoButtonStyle", styleInfo);
+
+        Button.ButtonStyle styleTrans = new Button.ButtonStyle();
+        styleTrans.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("transparent", Texture.class)));
+        masterSkin.add("transButtonStyle", styleTrans);
     }
 
     private void generoiTextureAtlakset() {
@@ -226,6 +238,24 @@ public class SelviytyjanPurjeet extends Game {
         playscreen.setSolmu(vahvinSelviytymiskeino);
         playscreen.asetaAlkuZoom();
         setScreen(playscreen);
+    }
+
+    public PalauteScreen getPalauteScreen() {
+        return palauteScreen;
+    }
+
+    public InfoScreen getInfoScreen() {
+        return infoScreen;
+    }
+
+    public PlayScreen getPlayscreen() {
+
+        return playscreen;
+    }
+
+    public QuestionScreen getQuestionScreen() {
+        return questionScreen;
+
     }
 }
 
