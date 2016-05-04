@@ -1,8 +1,7 @@
 package fi.ymcafinland.tests.logiikkaTest;
 
-import org.junit.*;
-
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Created by xvixvi on 16.4.2016.

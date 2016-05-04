@@ -7,22 +7,23 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
-import fi.ymcafinland.tests.GdxTestaus;
+import fi.ymcafinland.tests.testauksenApuluokat.GdxHeadlessTestaus;
 
 /**
  * Created by Sasu on 11.4.2016.
  */
-@RunWith(GdxTestaus.class)
+@RunWith(GdxHeadlessTestaus.class)
 
 public class PelaajaTest {
-private Pelaaja pelaaja;
+    private Pelaaja pelaaja;
 
     @Before
     public void luoPelaaja() throws Exception {
         pelaaja = new Pelaaja();
     }
+
     @Test
-    public void lisaysPositiivisellaTest(){
+    public void lisaysPositiivisellaTest() {
         float alkuarvo = pelaaja.getAlyllinen();
         pelaaja.lisaaSelviytymisarvoIndeksissa(1, 1);
         Assert.assertEquals(pelaaja.getAlyllinen(), alkuarvo + 1f);

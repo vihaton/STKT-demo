@@ -1,26 +1,26 @@
-package fi.ymcafinland.tests;
+package fi.ymcafinland.tests.testauksenApuluokat;
 
 /**
  * Created by xvixvi on 23.3.2016.
  */
 
-import java.util.HashMap;
-import java.util.Map;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.backends.headless.HeadlessApplication;
-import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
+import java.util.HashMap;
+import java.util.Map;
 
-public class GdxTestaus extends BlockJUnit4ClassRunner implements ApplicationListener {
+public class GdxHeadlessTestaus extends BlockJUnit4ClassRunner implements ApplicationListener {
 
     private Map<FrameworkMethod, RunNotifier> invokeInRender = new HashMap<>();
 
-    public GdxTestaus(Class<?> klass) throws InitializationError {
+    public GdxHeadlessTestaus(Class<?> klass) throws InitializationError {
         super(klass);
         HeadlessApplicationConfiguration conf = new HeadlessApplicationConfiguration();
 
