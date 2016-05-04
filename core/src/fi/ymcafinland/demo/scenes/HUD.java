@@ -240,7 +240,7 @@ public class HUD {
         topTable.clearChildren();
         topTable.top().left().add(palaute);
         topTable.add(parent).expandX();
-        minimapTable.right().top().add(karttaNappi);
+        minimapTable.right().top().add(karttaNappi).size(230);
 
         botTable.clearChildren();
         if (lapsia) {
