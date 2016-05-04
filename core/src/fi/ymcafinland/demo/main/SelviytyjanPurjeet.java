@@ -110,7 +110,7 @@ public class SelviytyjanPurjeet extends Game {
 
         masterSkin.add("transparent", new Texture("transparent.png"));
 
-        masterSkin.add("launcherTausta", new Texture("stkt_launcher.png"));
+        masterSkin.add("launcher", new Texture("launcherBackground.png"));
 
     }
 
