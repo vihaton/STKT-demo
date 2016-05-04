@@ -1,10 +1,5 @@
 package fi.ymcafinland.demo.logiikka;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-
 /**
  * Created by xvixvi on 16.4.2016.
  */
@@ -47,10 +42,12 @@ public class Vaittama {
     public void setArvo(float arvo) {
         this.arvo = arvo;
     }
-    public void setChecked(boolean checked){
+
+    public void setChecked(boolean checked) {
         this.checked = checked;
     }
-    public boolean getChecked(){
+
+    public boolean getChecked() {
         return checked;
     }
 }

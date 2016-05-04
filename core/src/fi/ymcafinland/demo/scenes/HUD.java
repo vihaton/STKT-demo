@@ -18,9 +18,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import fi.ymcafinland.demo.screens.PlayScreen;
-import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.screens.QuestionScreen;
 import fi.ymcafinland.demo.transitions.ScreenTransition;
 
@@ -337,10 +337,10 @@ public class HUD {
         child3.setScale(scale);
 
         midJaBotTablejenNapit = new ArrayList<>();
-        Collections.addAll(midJaBotTablejenNapit, new Button[]{leftSister, rightSister, child1, child2, child3, kysymys});
+        Collections.addAll(midJaBotTablejenNapit, leftSister, rightSister, child1, child2, child3, kysymys);
 
         ylarivinNapit = new ArrayList<>();
-        Collections.addAll(ylarivinNapit, new Button[]{karttaNappi, parent, palaute});
+        Collections.addAll(ylarivinNapit, karttaNappi, parent, palaute);
     }
 
 

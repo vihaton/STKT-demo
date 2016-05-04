@@ -1,12 +1,8 @@
 package fi.ymcafinland.demo.kasittelijat;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,7 +11,8 @@ import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 
-import fi.ymcafinland.demo.logiikka.*;
+import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.logiikka.Verkko;
 
 /**
  * Created by xvixvi on 1.4.2016.
@@ -88,7 +85,7 @@ public class SolmunKasittelija {
 
     /**
      * Päivittää solmujen asennot ym.
-     *
+     * <p/>
      * * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
      */
     public void paivitaSolmut(float angleToPointCamera) {

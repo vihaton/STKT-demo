@@ -14,7 +14,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     private GestureDetector detector;
     private HUD hud;
 
-//todo zoomit, swaipit ja tapit yhteisymmärrykseen
+    //todo zoomit, swaipit ja tapit yhteisymmärrykseen
     public HUDListener(HUD hud, Viewport viewport, SpriteBatch sb) {
         this.hud = hud;
         this.viewport = viewport;
@@ -28,7 +28,7 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        hud.siirryLahinpaanPalloon(x,y);
+        hud.siirryLahinpaanPalloon(x, y);
         return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
     }
 
@@ -40,16 +40,16 @@ public class HUDListener implements GestureDetector.GestureListener {
     //todo swaippi on liian herkkä, rajoja suuremmiksi kuin nolla
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        if(Math.abs(velocityX)>Math.abs(velocityY)){
-            if(velocityX>0){
+        if (Math.abs(velocityX) > Math.abs(velocityY)) {
+            if (velocityX > 0) {
                 hud.right();
-            }else{
+            } else {
                 hud.left();
             }
-        }else{
-            if(velocityY>0){
+        } else {
+            if (velocityY > 0) {
                 hud.down();
-            }else{
+            } else {
                 hud.up();
             }
         }

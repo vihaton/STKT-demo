@@ -193,7 +193,7 @@ public class Verkko {
     public Solmu annaLahinSolmu(float x, float y, Solmu nykyinenSolmu) {
         double lahimmanSolmunEtaisyys = Double.MAX_VALUE;
 
-        for (Solmu s:solmut) {
+        for (Solmu s : solmut) {
             double etaisyys = Math.sqrt(Math.pow(s.getXKoordinaatti() - x, 2f) + Math.pow(s.getYKoordinaatti() - y, 2f));
 
             //todo jos klikataan vitun-liaan-kauas-kaikesta ei tehdä mitään

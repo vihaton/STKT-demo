@@ -25,7 +25,7 @@ public class PalauteScreen extends PohjaScreen {
         this.sp = sp;
         this.batch = new SpriteBatch();
         this.pelaaja = pelaaja;
-        camera.setToOrtho(false, sp.V_WIDTH, sp.V_HEIGHT);
+        camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
 
         luoSisalto();
     }

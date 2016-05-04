@@ -15,15 +15,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import fi.ymcafinland.demo.screens.InfoScreen;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
+import fi.ymcafinland.demo.logiikka.Verkko;
+import fi.ymcafinland.demo.screens.InfoScreen;
 import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
-import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.screens.QuestionScreen;
-import fi.ymcafinland.demo.transitions.ZoomTransition;
 
 public class SelviytyjanPurjeet extends Game {
     //Todo kovakoodaus pois, SP tarkistaa juuri tässä buildissa käytettävän kuvakoon ja antaa sen verkolle.
@@ -189,7 +188,7 @@ public class SelviytyjanPurjeet extends Game {
         styleKysymys.up = masterSkin.getDrawable("mini_kysymys");
         stylePalaute.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("mini_palaute", Texture.class)));
 
-        masterSkin.add("styleParent" , styleParent);
+        masterSkin.add("styleParent", styleParent);
         masterSkin.add("styleLeft", styleLeft);
         masterSkin.add("styleRight", styleRight);
         masterSkin.add("styleChild1", styleChild1);
@@ -234,7 +233,7 @@ public class SelviytyjanPurjeet extends Game {
      */
     public void setPlayScreenMaxSelviytyjaan() {
         Solmu vahvinSelviytymiskeino = verkko.getSolmut().get(pelaaja.getMaxSelviytymisenIndeksi());
-        Gdx.app.log("SP" , "setPlayScreenMaxSelviytyjaan: vahvimman selviytymiskeinon perusteella set solmuksi laitetaan " + vahvinSelviytymiskeino.getOtsikko());
+        Gdx.app.log("SP", "setPlayScreenMaxSelviytyjaan: vahvimman selviytymiskeinon perusteella set solmuksi laitetaan " + vahvinSelviytymiskeino.getOtsikko());
         playscreen.setSolmu(vahvinSelviytymiskeino);
         playscreen.asetaAlkuZoom();
         setScreen(playscreen);

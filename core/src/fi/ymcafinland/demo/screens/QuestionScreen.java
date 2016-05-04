@@ -12,12 +12,12 @@ import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 
+import fi.ymcafinland.demo.kasittelijat.VaittamanKasittelija;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
-import fi.ymcafinland.demo.kasittelijat.VaittamanKasittelija;
 
 /**
  * Created by jwinter on 29.3.2016.

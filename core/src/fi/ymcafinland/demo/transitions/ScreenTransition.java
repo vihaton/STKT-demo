@@ -10,7 +10,7 @@ import fi.ymcafinland.demo.screens.PohjaScreen;
 
 /**
  * Created by xvixvi on 2.5.2016.
- *
+ * <p/>
  * Vaihtaa Screenin toiseksi, erilaisia mahdollisuuksia.
  */
 public class ScreenTransition {
@@ -31,14 +31,14 @@ public class ScreenTransition {
     }
 
     public void actTransition() {
-        
+
     }
 
     /**
      * Vaihtaa screenin toiseen animoimalla startScreenin poistumaan ylös ja vaihtaa endScreeniksi.
      */
     public void fadeTransition() {
-        for (Stage stage:startScreen.getScreeniinLiittyvatStaget()) {
+        for (Stage stage : startScreen.getScreeniinLiittyvatStaget()) {
             stage.addAction(Actions.fadeOut(duration));
         }
 
@@ -46,7 +46,7 @@ public class ScreenTransition {
     }
 
     public void wildFadeTransition() {
-        for (Stage stage:startScreen.getScreeniinLiittyvatStaget()) {
+        for (Stage stage : startScreen.getScreeniinLiittyvatStaget()) {
             stage.addAction(Actions.fadeIn(duration, Interpolation.elastic));
         }
 

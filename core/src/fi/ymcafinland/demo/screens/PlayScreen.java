@@ -3,17 +3,16 @@ package fi.ymcafinland.demo.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
 import fi.ymcafinland.demo.kasittelijat.InfoButtonKasittelija;
+import fi.ymcafinland.demo.kasittelijat.SolmunKasittelija;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
+import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
-import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
-import fi.ymcafinland.demo.kasittelijat.SolmunKasittelija;
 import fi.ymcafinland.demo.scenes.HUD;
-import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.transitions.CameraTransition;
 import fi.ymcafinland.demo.transitions.ZoomTransition;
 
@@ -64,7 +63,7 @@ public class PlayScreen extends PohjaScreen {
 
         this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin);
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
-        this.infoButtonKasittelija = new InfoButtonKasittelija(stage ,masterSkin, verkko);
+        this.infoButtonKasittelija = new InfoButtonKasittelija(stage, masterSkin, verkko);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
@@ -202,6 +201,7 @@ public class PlayScreen extends PohjaScreen {
 
     /**
      * Hudin käyttöön  metodi
+     *
      * @param in
      */
     public void nappulaZoom(boolean in) {

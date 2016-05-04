@@ -55,7 +55,7 @@ public class Solmu {
         vasenSisarus = solmu;
     }
 
-    public String getMinikuvanNimi(){
+    public String getMinikuvanNimi() {
         return "mini_" + id;
     }
 
@@ -75,7 +75,9 @@ public class Solmu {
         return oikeaSisarus;
     }
 
-    public Solmu getMutsi(){ return mutsi; }
+    public Solmu getMutsi() {
+        return mutsi;
+    }
 
     public void setSijainti(int x, int y) {
         this.x = x;
