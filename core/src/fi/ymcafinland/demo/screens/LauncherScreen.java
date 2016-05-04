@@ -30,7 +30,6 @@ public class LauncherScreen extends PohjaScreen {
     public LauncherScreen(SelviytyjanPurjeet sp, Skin masterSkin, String logTag) {
         super(masterSkin, logTag);
         this.sp = sp;
-        this.tausta = skin.get("launcherTausta", Texture.class);
         this.batch = new SpriteBatch();
         taytaRootTable();
     }
@@ -44,6 +43,12 @@ public class LauncherScreen extends PohjaScreen {
     }
 
     @Override
+    public void show() {
+        super.show();
+        Gdx.gl.glClearColor(0.75f, 0.75f, 0.75f, 1);
+    }
+
+    @Override
     public void render(float delta) {
         super.render(delta);
 
@@ -51,7 +56,6 @@ public class LauncherScreen extends PohjaScreen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        batch.draw(tausta, 0, 0, tausta.getWidth(), tausta.getHeight());
         batch.end();
 
         if (Gdx.input.isTouched()) {
