@@ -3,7 +3,9 @@ package fi.ymcafinland.demo.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
@@ -15,6 +17,7 @@ public class LauncherScreen extends PohjaScreen {
     private SelviytyjanPurjeet sp;
     private Texture tausta;
     private SpriteBatch batch;
+    private Label otsikko;
 
     /**
      * Luo cameran, viewporti, rootTablen, stagen ja lisää rootTablen stagen aktoriksi.
@@ -29,6 +32,15 @@ public class LauncherScreen extends PohjaScreen {
         this.sp = sp;
         this.tausta = skin.get("launcherTausta", Texture.class);
         this.batch = new SpriteBatch();
+        taytaRootTable();
+    }
+
+    private void taytaRootTable() {
+        otsikko = new Label("STKT", skin, "launcherOtsikko");
+        rootTable.add(otsikko).expand().top();
+        rootTable.row();
+
+        rootTable.validate();
     }
 
     @Override

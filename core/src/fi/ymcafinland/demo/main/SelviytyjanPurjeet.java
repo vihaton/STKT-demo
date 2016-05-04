@@ -117,9 +117,16 @@ public class SelviytyjanPurjeet extends Game {
     private void generoiFontit() {
         BitmapFont fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
         masterSkin.add("fontti", fontti);
+
+        BitmapFont libgdxFont = new BitmapFont(Gdx.files.internal("default.fnt"), Gdx.files.internal("default.png"), false);
+        masterSkin.add("libgdxFont", libgdxFont);
     }
 
     private void generoiLabelStylet() {
+        //TODO tehdään eri fontti kuin libgdx:n defaultfontti
+        Label.LabelStyle launcherStyle = new Label.LabelStyle(masterSkin.getFont("libgdxFont"), masterSkin.getFont("libgdxFont").getColor());
+        masterSkin.add("launcherOtsikko", launcherStyle);
+
         Label.LabelStyle otsikkoStyle = new Label.LabelStyle(masterSkin.getFont("fontti"), masterSkin.getFont("fontti").getColor());
         masterSkin.add("otsikko", otsikkoStyle);
 
