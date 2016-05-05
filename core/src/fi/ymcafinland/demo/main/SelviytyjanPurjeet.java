@@ -20,6 +20,7 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.screens.InfoScreen;
+import fi.ymcafinland.demo.screens.LauncherScreen;
 import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.screens.QuestionScreen;
@@ -39,6 +40,7 @@ public class SelviytyjanPurjeet extends Game {
     private PalauteScreen palauteScreen;
     private QuestionScreen questionScreen;
     private InfoScreen infoScreen;
+    private LauncherScreen launcherScreen;
     private Vaittamat vaittamat;
     private Skin masterSkin;
     private Pelaaja pelaaja;
@@ -64,9 +66,17 @@ public class SelviytyjanPurjeet extends Game {
         this.palauteScreen = new PalauteScreen(this, pelaaja, masterSkin);
         this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0), pelaaja, masterSkin);
         this.infoScreen = new InfoScreen(this, masterSkin);
+        this.launcherScreen = new LauncherScreen(this, masterSkin, "LS");
 
-        setScreen(infoScreen);
+        setScreen(launcherScreen);
 //        setScreen(playscreen);
+    }
+
+    /**
+     * Kutsutaan launcherissa kun SP:n käyttö aloitetaan
+     */
+    public void init() {
+        setScreen(infoScreen);
     }
 
     /**
@@ -100,14 +110,29 @@ public class SelviytyjanPurjeet extends Game {
 
         masterSkin.add("transparent", new Texture("transparent.png"));
 
+        masterSkin.add("minimap", new Texture("minimap.png"));
+
+        masterSkin.add("launcher", new Texture("launcherBackground.png"));
+
+        masterSkin.add("SP_logo", new Texture("ic_launcher-web.png"));
+
+        masterSkin.add("unavailable", new Texture("unavailable.png"));
+
     }
 
     private void generoiFontit() {
         BitmapFont fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
         masterSkin.add("fontti", fontti);
+
+        BitmapFont libgdxFont = new BitmapFont(Gdx.files.internal("default.fnt"), Gdx.files.internal("default.png"), false);
+        masterSkin.add("libgdxFont", libgdxFont);
     }
 
     private void generoiLabelStylet() {
+        //TODO tehdään eri fontti kuin libgdx:n defaultfontti
+        Label.LabelStyle launcherStyle = new Label.LabelStyle(masterSkin.getFont("libgdxFont"), masterSkin.getFont("libgdxFont").getColor());
+        masterSkin.add("launcher", launcherStyle);
+
         Label.LabelStyle otsikkoStyle = new Label.LabelStyle(masterSkin.getFont("fontti"), masterSkin.getFont("fontti").getColor());
         masterSkin.add("otsikko", otsikkoStyle);
 
@@ -161,6 +186,14 @@ public class SelviytyjanPurjeet extends Game {
         Button.ButtonStyle styleTrans = new Button.ButtonStyle();
         styleTrans.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("transparent", Texture.class)));
         masterSkin.add("transButtonStyle", styleTrans);
+
+        Button.ButtonStyle styleSp = new Button.ButtonStyle();
+        styleSp.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("SP_logo", Texture.class)));
+        masterSkin.add("spButtonStyle", styleSp);
+
+        Button.ButtonStyle styleUnavailable = new Button.ButtonStyle();
+        styleUnavailable.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("unavailable", Texture.class)));
+        masterSkin.add("unavailableButtonStyle", styleUnavailable);
     }
 
     private void generoiTextureAtlakset() {
@@ -184,7 +217,8 @@ public class SelviytyjanPurjeet extends Game {
         Button.ButtonStyle stylePalaute = new Button.ButtonStyle();
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
 
-        styleKartta.up = masterSkin.getDrawable("mini_karttakuva");
+
+        styleKartta.up = masterSkin.getDrawable("minimap");
         styleKysymys.up = masterSkin.getDrawable("mini_kysymys");
         stylePalaute.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("mini_palaute", Texture.class)));
 

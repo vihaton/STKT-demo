@@ -213,7 +213,7 @@ public class PlayScreen extends PohjaScreen {
             zoomedOut = false;
         } else {
             transition = new CameraTransition(polttopiste, keskipiste.cpy().lerp(polttopiste, 0.05f), moveDuration);
-            zoomTransition = new ZoomTransition(camera.zoom, 5f, zoomDuration, false);
+            zoomTransition = new ZoomTransition(camera.zoom, 6f, zoomDuration, false);
             zoomedOut = true;
         }
         alkaaTapahtua();

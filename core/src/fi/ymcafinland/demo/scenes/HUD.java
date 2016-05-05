@@ -55,6 +55,7 @@ public class HUD {
     private Table topTable;
     private Table midTable;
     private Table botTable;
+    private Table minimapTable;
     private float sidePad;
     private ArrayList<Button> midJaBotTablejenNapit;
     private ArrayList<Button> ylarivinNapit;
@@ -239,7 +240,7 @@ public class HUD {
         topTable.clearChildren();
         topTable.top().left().add(palaute);
         topTable.add(parent).expandX();
-        topTable.right().add(karttaNappi);
+        minimapTable.right().top().add(karttaNappi).size(230);
 
         botTable.clearChildren();
         if (lapsia) {
@@ -278,6 +279,10 @@ public class HUD {
         topTable.setFillParent(true);
         topTable.pad(sidePad);
 
+        minimapTable = new Table();
+        minimapTable.setFillParent(true);
+
+
         midTable = new Table();
         midTable.setFillParent(true);
         midTable.pad(sidePad);
@@ -291,6 +296,7 @@ public class HUD {
 
         stage.clear();
         stage.addActor(topTable);
+        stage.addActor(minimapTable);
         stage.addActor(midTable);
         stage.addActor(botTable);
     }
