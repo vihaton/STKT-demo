@@ -112,6 +112,10 @@ public class SelviytyjanPurjeet extends Game {
 
         masterSkin.add("launcher", new Texture("launcherBackground.png"));
 
+        masterSkin.add("SP_logo", new Texture("ic_launcher-web.png"));
+
+        masterSkin.add("unavailable", new Texture("unavailable.png"));
+
     }
 
     private void generoiFontit() {
@@ -125,7 +129,7 @@ public class SelviytyjanPurjeet extends Game {
     private void generoiLabelStylet() {
         //TODO tehdään eri fontti kuin libgdx:n defaultfontti
         Label.LabelStyle launcherStyle = new Label.LabelStyle(masterSkin.getFont("libgdxFont"), masterSkin.getFont("libgdxFont").getColor());
-        masterSkin.add("launcherOtsikko", launcherStyle);
+        masterSkin.add("launcher", launcherStyle);
 
         Label.LabelStyle otsikkoStyle = new Label.LabelStyle(masterSkin.getFont("fontti"), masterSkin.getFont("fontti").getColor());
         masterSkin.add("otsikko", otsikkoStyle);
@@ -180,6 +184,14 @@ public class SelviytyjanPurjeet extends Game {
         Button.ButtonStyle styleTrans = new Button.ButtonStyle();
         styleTrans.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("transparent", Texture.class)));
         masterSkin.add("transButtonStyle", styleTrans);
+
+        Button.ButtonStyle styleSp = new Button.ButtonStyle();
+        styleSp.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("SP_logo", Texture.class)));
+        masterSkin.add("spButtonStyle", styleSp);
+
+        Button.ButtonStyle styleUnavailable = new Button.ButtonStyle();
+        styleUnavailable.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("unavailable", Texture.class)));
+        masterSkin.add("unavailableButtonStyle", styleUnavailable);
     }
 
     private void generoiTextureAtlakset() {
