@@ -45,7 +45,7 @@ public class LauncherScreen extends PohjaScreen {
     }
 
     private void taytaRootTable() {
-        otsikko = new Label("S T K T", skin, "otsikko");
+        otsikko = new Label("S T K T -demo", skin, "otsikko");
         rootTable.add(otsikko).expand().top();
         rootTable.row().height(20);
 
