@@ -50,7 +50,6 @@ public class SelviytyjanPurjeet extends Game {
     public void create() {
         Gdx.app.log("SP", "SelviytyjänPurjeet -luokan create() -metodia kutsuttiin");
 
-
         Gdx.app.log("SP", "Verkon luominen aloitetaan");
         verkko = new Verkko(TAUSTAN_LEVEYS, TAUSTAN_KORKEUS);
         Gdx.app.log("SP", "Verkko luominen on valmis");
