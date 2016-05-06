@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
@@ -79,9 +81,27 @@ public class LauncherScreen extends PohjaScreen {
             }
         });
 
+        ChangeListener alert = new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                Skin skinDialog = new Skin(Gdx.files.internal("uiskin.json"));
+                //TODO (optional) popupeille oma skini jos niitä käytetään muualla ohjelmassa
+                Dialog d = new Dialog("En tee, hekkekkee", skinDialog);
+                d.button("OK");
+
+                //keskitetään dialogi ja skaalataan suuremmaksi
+                d.align(Align.center);
+                d.setOrigin(Align.center);
+                d.setScale(2f);
+
+                d.show(stage);
+            }
+        };
+
         mockButton1 = new Button(skin.get("unavailableButtonStyle", Button.ButtonStyle.class));
         mockButton2 = new Button(skin.get("unavailableButtonStyle", Button.ButtonStyle.class));
 
+        mockButton1.addListener(alert);
+        mockButton2.addListener(alert);
     }
 
     @Override
