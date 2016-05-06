@@ -25,6 +25,7 @@ public class PlayScreen extends PohjaScreen {
     protected Solmu solmu;
     protected CameraTransition transition;
     protected float timeSinceTransitionZoom = 0;
+    protected boolean trans = false;
     public boolean zoomedOut = false;
     protected boolean zoomed = false;
     protected Vector3 polttopiste;
@@ -103,6 +104,7 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void alkaaTapahtua() {
+        trans = true;
         stateTime = 0;
         timer = System.currentTimeMillis();
         hud.update(solmu, zoomedOut);
@@ -115,7 +117,7 @@ public class PlayScreen extends PohjaScreen {
         //debug
         boolean log = false;
         if (delta > renderinLoggausAlaraja) {
-            Gdx.app.log("PS", "request render alarajalla:" + renderinLoggausAlaraja + "s stateTime:" + stateTime + "ms + delta:" + delta);
+            Gdx.app.log("PS", "request render alarajalla:" + renderinLoggausAlaraja + "s stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
             log = true;
         }
 
@@ -123,7 +125,12 @@ public class PlayScreen extends PohjaScreen {
 
         camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
 
-        actTransition(delta);
+        if (trans) {
+            actTransition(delta);
+        }
+
+        if (log)
+            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter actTransition");
 
         camera.position.set(polttopiste);
 
@@ -138,14 +145,14 @@ public class PlayScreen extends PohjaScreen {
         infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
 
         if (log)
-            Gdx.app.log("PS", "render timeInRender:" + (System.currentTimeMillis() - stateTime) + "ms @fter käsittelijöiden päivittämiset");
+            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter edistysmittarinKasittelija");
 
         stage.draw();
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
         if (log)
-            Gdx.app.log("PS", "render timeInRender:" + (System.currentTimeMillis() - stateTime) + "ms @fter stagejen piirtämiset");
+            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter hud.stage.draw");
     }
 
     private float deltaManipulation(float delta) {
@@ -159,8 +166,13 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void actTransition(float delta) {
-        polttopiste = transition.act(delta);
-        stateTime = System.currentTimeMillis() - timer;
+        if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
+            polttopiste = transition.act(delta);
+            stateTime = System.currentTimeMillis() - timer;
+        } else {
+            trans = false;
+            stateTime = 0;
+        }
     }
 
     private void actZoom(float delta) {
