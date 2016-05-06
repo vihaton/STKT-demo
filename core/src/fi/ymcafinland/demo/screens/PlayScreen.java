@@ -25,7 +25,6 @@ public class PlayScreen extends PohjaScreen {
     protected Solmu solmu;
     protected CameraTransition transition;
     protected float timeSinceTransitionZoom = 0;
-    protected boolean trans = false;
     public boolean zoomedOut = false;
     protected boolean zoomed = false;
     protected Vector3 polttopiste;
@@ -35,7 +34,7 @@ public class PlayScreen extends PohjaScreen {
     protected long timer;
     private final float moveDuration = 1.0f;    //s
     private final float zoomDuration = 1.0f;    //s
-    private final float renderinLoggausAlaraja = 0.5f;  //s
+    private final float renderinLoggausAlaraja = (float) Math.pow(50, -1.0);  //s, eli siis 1/50 eli logataan kun frame rate on alle 50 ruutua sekunnissa.
     private final int idleTime = 3000; //ms
     private float laskuriOdotukseen = 0; //ms
 
@@ -104,7 +103,6 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void alkaaTapahtua() {
-        trans = true;
         stateTime = 0;
         timer = System.currentTimeMillis();
         hud.update(solmu, zoomedOut);
@@ -117,29 +115,20 @@ public class PlayScreen extends PohjaScreen {
         //debug
         boolean log = false;
         if (delta > renderinLoggausAlaraja) {
-            Gdx.app.log("PS", "request render alarajalla:" + renderinLoggausAlaraja + "s stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
+            Gdx.app.log("PS", "request render alarajalla:" + renderinLoggausAlaraja + "s stateTime:" + stateTime + "ms + delta:" + delta);
             log = true;
         }
 
         super.render(delta);
-        if (log)
-            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter super.render");
 
         camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
 
-        if (trans) {
-            actTransition(delta);
-        }
-
-        if (log)
-            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter actTransition");
+        actTransition(delta);
 
         camera.position.set(polttopiste);
 
         actZoom(delta);
         rotateCamera();
-        if (log)
-            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter rotateCamera");
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -149,14 +138,14 @@ public class PlayScreen extends PohjaScreen {
         infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
 
         if (log)
-            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter edistysmittarinKasittelija");
+            Gdx.app.log("PS", "render timeInRender:" + (System.currentTimeMillis() - stateTime) + "ms @fter käsittelijöiden päivittämiset");
 
         stage.draw();
 
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
         if (log)
-            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter hud.stage.draw");
+            Gdx.app.log("PS", "render timeInRender:" + (System.currentTimeMillis() - stateTime) + "ms @fter stagejen piirtämiset");
     }
 
     private float deltaManipulation(float delta) {
@@ -170,13 +159,8 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void actTransition(float delta) {
-        if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
-            polttopiste = transition.act(delta);
-            stateTime = System.currentTimeMillis() - timer;
-        } else {
-            trans = false;
-            stateTime = 0;
-        }
+        polttopiste = transition.act(delta);
+        stateTime = System.currentTimeMillis() - timer;
     }
 
     private void actZoom(float delta) {
@@ -269,14 +253,6 @@ public class PlayScreen extends PohjaScreen {
 
     public void resetStateTime() {
         stateTime = 0;
-    }
-
-    public boolean getTrans() {
-        return this.trans;
-    }
-
-    public void setTrans(boolean t) {
-        this.trans = t;
     }
 
     @Override
