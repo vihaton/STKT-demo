@@ -128,9 +128,8 @@ public class PlayScreen extends PohjaScreen {
         if (trans) {
             actTransition(delta);
         }
-
         if (log)
-            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter actTransition");
+            Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter actTransition");
 
         camera.position.set(polttopiste);
 
@@ -140,19 +139,33 @@ public class PlayScreen extends PohjaScreen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        solmunKasittelija.paivitaSolmut(angleToPoint);
-        edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint);
-        infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
-
+        paivitaKasittelijat(delta);
         if (log)
-            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter edistysmittarinKasittelija");
+            Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter käsittelijöiden päivitys");
 
         stage.draw();
-
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
         if (log)
-            Gdx.app.log("PS", "render stateTime:" + (System.currentTimeMillis() - timer) + "ms @fter hud.stage.draw");
+            Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter stagejen piirtämiset");
+
+//        odota(10);
+//        if (log)
+//            Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter loppuodotus");
+    }
+
+    public void odota(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Gdx.app.log("PS" , "odota -metodi keskeytettiin, time in render:" + (System.currentTimeMillis() - timer - stateTime));
+        }
+    }
+
+    public void paivitaKasittelijat(float delta) {
+        solmunKasittelija.paivitaSolmut(angleToPoint);
+        edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint);
+        infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
     }
 
     private float deltaManipulation(float delta) {
@@ -171,7 +184,6 @@ public class PlayScreen extends PohjaScreen {
             stateTime = System.currentTimeMillis() - timer;
         } else {
             trans = false;
-            stateTime = 0;
         }
     }
 
@@ -246,21 +258,6 @@ public class PlayScreen extends PohjaScreen {
             alkaaTapahtua();
             transition = new CameraTransition(polttopiste, goal, moveDuration);
         }
-    }
-
-    /**
-     * Viritelmä, jota ehkä voisi käyttää odottamiseen x-millisekunttia. Ongelma: mistä kutsutaan?
-     *
-     * @param kuinkaKauanMillisekunneissa
-     */
-    public void odota(float kuinkaKauanMillisekunneissa) {
-        stateTime = 0;
-        timer = System.currentTimeMillis();
-        while (stateTime < kuinkaKauanMillisekunneissa) {
-            stateTime = System.currentTimeMillis() - timer;
-        }
-        Gdx.app.log("PS", "odotettiin " + stateTime + " millisekunttia");
-        ensimmainenSiirtyma = false;
     }
 
     public void resetStateTime() {
