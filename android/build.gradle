@@ -20,7 +20,7 @@ android {
         targetSdkVersion 23
     }
     lintOptions {
-        //lintin errorit jätetään huomiotta jotta travis toimii
+        //Ilman tätä riviä traviksen testit kaatuu, älä poista
         abortOnError false
     }
 }
