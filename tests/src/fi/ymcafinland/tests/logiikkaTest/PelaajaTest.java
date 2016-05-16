@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.tests.testauksenApuluokat.GdxHeadlessTestaus;
 
@@ -45,6 +47,15 @@ public class PelaajaTest {
         Assert.assertEquals(93, pelaaja.getVastausprosentti()); //ylöspäin pyöristys
     }
 
+    @Test
+    public void getSelviytymiskeinotJarjestyksessaToimii() {
+        String[] selviytymiskeinot = pelaaja.getSelviytymiskeinot();
+        for (int i = 0; i < 6; i++) {
+            pelaaja.lisaaSelviytymisarvoIndeksissa(i, i);
+            ArrayList<String> jarjestetytKeinot = pelaaja.getSelviytymiskeinotJarjestyksessa();
+            Assert.assertTrue(selviytymiskeinot[i].equalsIgnoreCase(jarjestetytKeinot.get(0)));
+        }
+    }
     //Todo testejä pelaajalle
 
 }

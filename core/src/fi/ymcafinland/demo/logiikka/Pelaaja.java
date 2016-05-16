@@ -1,10 +1,14 @@
 package fi.ymcafinland.demo.logiikka;
 
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
  * Pelaaja -luokalla on selviytymisarvosanat joihin vaikutetaan vastaamalla väittämiin.
- *
+ * <p/>
  * indeksit:
  * 0 - Fyysinen
  * 1 - Älyllinen
@@ -23,9 +27,11 @@ public class Pelaaja {
     public static final int LUOVA = 5;
 
     private int vaittamienMaara = 1;
-    protected float[] selviytyisArvot;
     private int vastausmaara;
     private HashSet<Integer> vastatutVaittamat;
+    private String[] selviytymiskeinot;
+    private float[] selviytyisArvot;
+    private int[] keinojenIndeksitJarjestyksessa;
 
     private String nimi;
 
@@ -37,13 +43,27 @@ public class Pelaaja {
         selviytyisArvot = new float[]{7f, 7f, 7f, 7f, 7f, 7f};
         vastausmaara = 0;
         vastatutVaittamat = new HashSet<>();
+        lueSelviytymiskeinot();
+    }
+
+    private void lueSelviytymiskeinot() {
+        selviytymiskeinot = new String[6];
+        keinojenIndeksitJarjestyksessa = new int[6];
+        FileHandle fh = new FileHandle("solmujentekstit/solmut");
+        I18NBundle myBundle = I18NBundle.createBundle(fh);
+
+        for (int i = 1; i < 7; i++) {
+            String selviytyja = myBundle.format("solmun_otsikko_" + i);
+            selviytymiskeinot[i - 1] = selviytyja;
+            keinojenIndeksitJarjestyksessa[i - 1] = i - 1;
+        }
     }
 
     /**
      * @return prosenttiluvun (0-100)
      */
     public int getVastausprosentti() {
-        return (vastausmaara * 100 + 50 )/ vaittamienMaara;
+        return (vastausmaara * 100 + 50) / vaittamienMaara;
     }
 
     public void lisaaVastaus(Vaittama v) {
@@ -74,6 +94,40 @@ public class Pelaaja {
         return maxID;
     }
 
+    /**
+     * Järjestää pelaajan selviytymiskeinot paremmuusjärjestykseen.
+     */
+    private void jarjestaSelviytymisarvot() {
+        for (int i = 0; i < 6; i++) {       //jokaista selviytymiskeinoa...
+            int isompia = 0;
+            float selviytymisarvo = selviytyisArvot[i];
+            for (int j = 0; j < 6; j++) {   //...verrataan kaikkiin muihin...
+                if (i == j) continue;       //...paitsi itseensä...
+                if (selviytymisarvo < selviytyisArvot[j])
+                    isompia++;              // ...ja käydään läpi kuinka monta isompaa arvoa on
+            }
+            keinojenIndeksitJarjestyksessa[isompia] = i; //lopuksi lisätään tarkasteltu selviytymiskeino omalle paikalleen
+        }
+    }
+
+    /**
+     * @return järjestetty lista selviytymiskeinoista
+     */
+    public ArrayList<String> getSelviytymiskeinotJarjestyksessa() {
+        jarjestaSelviytymisarvot();
+
+        ArrayList<String> jarjestettyLista = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            jarjestettyLista.add(selviytymiskeinot[keinojenIndeksitJarjestyksessa[i]]);
+        }
+
+        return jarjestettyLista;
+    }
+
+    public String[] getSelviytymiskeinot() {
+        return selviytymiskeinot;
+    }
+
     public String getNimi() {
         return nimi;
     }
@@ -102,6 +156,5 @@ public class Pelaaja {
     public void setVaittamienMaara(int vaittamienMaara) {
         this.vaittamienMaara = vaittamienMaara;
     }
-
 
 }
