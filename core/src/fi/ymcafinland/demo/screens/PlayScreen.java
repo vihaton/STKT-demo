@@ -35,7 +35,8 @@ public class PlayScreen extends PohjaScreen {
     protected long timer;
     private final float moveDuration = 1.0f;    //s
     private final float zoomDuration = 1.0f;    //s
-    private final float renderinLoggausAlaraja = (float) Math.pow(50, -1.0);  //s, eli siis 1/50 eli logataan kun frame rate on alle 50 ruutua sekunnissa.
+    private final float minFPS = 55;         //fps
+    private final float renderinLoggausAlaraja = (float) Math.pow(minFPS, -1.0);  //s, eli deltan maximiarvo (jos delta on isompi kuin tämä, niin fps on liian pieni
     private final int idleTime = 3000; //ms
     private float laskuriOdotukseen = 0; //ms
 
@@ -117,7 +118,9 @@ public class PlayScreen extends PohjaScreen {
         //debug
         boolean log = false;
         if (delta > renderinLoggausAlaraja) {
-            Gdx.app.log("PS", "request render alarajalla:" + renderinLoggausAlaraja + "s stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
+            Gdx.app.log("PS", "renderloggaus käynnistetty\n" +
+                    "minimi fps:" + minFPS + " fps, tämän ruudun fps:" + Math.pow(renderinLoggausAlaraja, -1) + " fps\n" +
+                    "stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
             log = true;
         }
 
