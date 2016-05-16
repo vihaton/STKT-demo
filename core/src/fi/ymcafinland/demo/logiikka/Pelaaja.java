@@ -43,7 +43,7 @@ public class Pelaaja {
      * @return prosenttiluvun (0-100)
      */
     public int getVastausprosentti() {
-        return 50;
+        return (vastausmaara * 100 + 50 )/ vaittamienMaara;
     }
 
     public void lisaaVastaus(Vaittama v) {
