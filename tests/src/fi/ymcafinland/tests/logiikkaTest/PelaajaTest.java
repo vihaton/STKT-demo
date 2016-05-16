@@ -24,9 +24,25 @@ public class PelaajaTest {
 
     @Test
     public void lisaysPositiivisellaTest() {
-        float alkuarvo = pelaaja.getAlyllinen();
-        pelaaja.lisaaSelviytymisarvoIndeksissa(1, 1);
-        Assert.assertEquals(pelaaja.getAlyllinen(), alkuarvo + 1f);
+        float alkuarvo = pelaaja.getSelviytymisarvo(Pelaaja.ALYLLINEN);
+        pelaaja.lisaaSelviytymisarvoIndeksissa(Pelaaja.ALYLLINEN, 1);
+        Assert.assertEquals(pelaaja.getSelviytymisarvo(Pelaaja.ALYLLINEN), alkuarvo + 1f);
+    }
+
+    @Test
+    public void getVastausprosenttiToimii() {
+        pelaaja.setVaittamienMaara(100);
+        pelaaja.lisaaVastauksia(50);
+        Assert.assertEquals(50, pelaaja.getVastausprosentti());
+
+        pelaaja.setVaittamienMaara(101);
+        Assert.assertEquals(50, pelaaja.getVastausprosentti()); //ylöspäin pyöristys
+
+        pelaaja.setVaittamienMaara(102);
+        Assert.assertEquals(49, pelaaja.getVastausprosentti()); //alaspäin pyöristys
+
+        pelaaja.setVaittamienMaara(54);
+        Assert.assertEquals(93, pelaaja.getVastausprosentti()); //ylöspäin pyöristys
     }
 
     //Todo testejä pelaajalle

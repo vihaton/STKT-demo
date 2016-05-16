@@ -18,8 +18,10 @@ public class Vaittamat {
 
     private HashMap<String, ArrayList<Vaittama>> karttaSolmujenVaittamista; //avaimena toisen tason solmun id (7-24)
     private ArrayList<String[]> rivit;
+    private int vaittamienMaara;
 
     public Vaittamat() {
+        vaittamienMaara = 0;
         Scanner lukija = luoLukija("vaittamat.csv");
 
         rivit = new ArrayList<>();
@@ -123,10 +125,11 @@ public class Vaittamat {
                 solmunVaittamat.add(v);                     //...lisätään se väittämälistaan ja...
             }
 
+            vaittamienMaara += solmunVaittamat.size();
             karttaSolmujenVaittamista.put(id, solmunVaittamat); //...talletetaan väittämälista karttaan kyseisen solmun id.llä
         }
 
-        karttaSolmujenVaittamista.put("alkutesti", alkutestinVaittamat);
+        karttaSolmujenVaittamista.put("alkutesti", alkutestinVaittamat); //lisätään lopuksi alkutestiin valitut väittämät erikseen karttaan
     }
 
 
@@ -148,5 +151,9 @@ public class Vaittamat {
      */
     public ArrayList<Vaittama> getYhdenSolmunVaittamat(String solmunID) {
         return karttaSolmujenVaittamista.get(solmunID);
+    }
+
+    public int getMaara() {
+        return vaittamienMaara;
     }
 }

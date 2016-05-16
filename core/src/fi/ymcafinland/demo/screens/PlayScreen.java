@@ -101,6 +101,7 @@ public class PlayScreen extends PohjaScreen {
 
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 
+        edistymismittarinKasittelija.paivitaMittarinArvo(renderinLoggausAlaraja); //päivitetään edistymismittarin arvo vain kun siirrytään playscreeniin
         hud.resetInputProcessor();
     }
 
@@ -167,7 +168,7 @@ public class PlayScreen extends PohjaScreen {
 
     public void paivitaKasittelijat(float delta) {
         solmunKasittelija.paivitaSolmut(angleToPoint);
-        edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint);
+        edistymismittarinKasittelija.pyoritaMittaria(angleToPoint);
         infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
     }
 

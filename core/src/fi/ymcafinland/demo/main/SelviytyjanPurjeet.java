@@ -60,6 +60,7 @@ public class SelviytyjanPurjeet extends Game {
 
         luoSkin();
         pelaaja = new Pelaaja();
+        pelaaja.setVaittamienMaara(vaittamat.getMaara());
 
         this.questionScreen = new QuestionScreen(this, pelaaja, vaittamat, masterSkin);
         this.palauteScreen = new PalauteScreen(this, pelaaja, masterSkin);

@@ -4,16 +4,25 @@ import java.util.HashSet;
 
 /**
  * Pelaaja -luokalla on selviytymisarvosanat joihin vaikutetaan vastaamalla väittämiin.
+ *
+ * indeksit:
+ * 0 - Fyysinen
+ * 1 - Älyllinen
+ * 2 - Eettinen
+ * 3 - Tunteellinen
+ * 4 - Sosiaalinen
+ * 5 - Luova
  */
 public class Pelaaja {
 
-    public final int FYYSINEN = 0;
-    public final int ALYLLINEN = 1;
-    public final int EETTINEN = 2;
-    public final int TUNTEELLINEN = 3;
-    public final int SOSIAALINEN = 4;
-    public final int LUOVA = 5;
+    public static final int FYYSINEN = 0;
+    public static final int ALYLLINEN = 1;
+    public static final int EETTINEN = 2;
+    public static final int TUNTEELLINEN = 3;
+    public static final int SOSIAALINEN = 4;
+    public static final int LUOVA = 5;
 
+    private int vaittamienMaara = 1;
     protected float[] selviytyisArvot;
     private int vastausmaara;
     private HashSet<Integer> vastatutVaittamat;
@@ -31,54 +40,27 @@ public class Pelaaja {
     }
 
     /**
-     * indeksit:
-     * 0 - Fyysinen
-     * 1 - Älyllinen
-     * 2 - Eettinen
-     * 3 - Tunteellinen
-     * 4 - Sosiaalinen
-     * 5 - Luova
+     * @return prosenttiluvun (0-100)
      */
-    //ToDo vastausmaara prosentteina kaikista vastauksista. (jos 200 väittämää ja olet vastannut sataan niin palauttaa 50)
-    public int getVastausmaara() {
-        return vastausmaara;
+    public int getVastausprosentti() {
+        return 50;
     }
 
     public void lisaaVastaus(Vaittama v) {
-        vastausmaara++;
+        lisaaVastauksia(1);
         vastatutVaittamat.add(v.hashCode());
     }
 
-    public void lisaaSelviytymisarvoIndeksissa(int i, float maara) {
-        selviytyisArvot[i] += maara;
+    public void lisaaVastauksia(int maara) {
+        vastausmaara += maara;
+    }
+
+    public void lisaaSelviytymisarvoIndeksissa(int indeksissa, float maara) {
+        selviytyisArvot[indeksissa] += maara;
     }
 
     public void setSelviytymisarvoaIndeksissa(int i, float arvo) {
         selviytyisArvot[i] = arvo;
-    }
-
-    public float getFyysinen() {
-        return selviytyisArvot[FYYSINEN];
-    }
-
-    public float getAlyllinen() {
-        return selviytyisArvot[ALYLLINEN];
-    }
-
-    public float getEettinen() {
-        return selviytyisArvot[EETTINEN];
-    }
-
-    public float getTunteellinen() {
-        return selviytyisArvot[TUNTEELLINEN];
-    }
-
-    public float getSosiaalinen() {
-        return selviytyisArvot[SOSIAALINEN];
-    }
-
-    public float getLuova() {
-        return selviytyisArvot[LUOVA];
     }
 
     public int getMaxSelviytymisenIndeksi() {
@@ -112,4 +94,14 @@ public class Pelaaja {
     public boolean onkoVastannut(Vaittama v) {
         return vastatutVaittamat.contains(v.hashCode());
     }
+
+    public float getSelviytymisarvo(int selviytymisaronIndeksi) {
+        return selviytyisArvot[selviytymisaronIndeksi];
+    }
+
+    public void setVaittamienMaara(int vaittamienMaara) {
+        this.vaittamienMaara = vaittamienMaara;
+    }
+
+
 }
