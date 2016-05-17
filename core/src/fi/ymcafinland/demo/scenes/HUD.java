@@ -44,6 +44,7 @@ public class HUD {
     protected Button child3;
     protected Button kysymys;
     protected Button palaute;
+    protected Button menu;
     private Button.ButtonStyle styleParent;
     private Button.ButtonStyle styleLeft;
     private Button.ButtonStyle styleRight;
@@ -153,7 +154,19 @@ public class HUD {
                 }
             }
         });
+        menu.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor){
+                Table menuTable = new Table();
+                menuTable.setBounds(topTable.getX(),topTable.getY()+(0.8f*SelviytyjanPurjeet.V_HEIGHT), 200,200);
+                menuTable.add(palaute).minSize(64, 64);
+                menuTable.setBackground(skin.getDrawable("menutausta"));
+                topTable.top().left().add(menuTable);
 
+                stage.addActor(menuTable);
+                //ToDo Järkevä layout menun sisälle ja jonkinlainen collapse menulle. (joko ruksi tai kun painaa muualle kun menuun)
+
+            }
+        });
         palaute.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 playScreen.getSp().setPalauteScreen();
@@ -238,7 +251,7 @@ public class HUD {
      */
     private void updateTables() {
         topTable.clearChildren();
-        topTable.top().left().add(palaute);
+        topTable.top().left().add(menu);
         topTable.add(parent).expandX();
         minimapTable.right().top().add(karttaNappi).size(230);
 
@@ -321,6 +334,11 @@ public class HUD {
         kysymys = new Button(skin.get("styleKysymys", Button.ButtonStyle.class));
         kysymys.setScale(scale);
 
+        //ToDo oikea skin
+        menu = new Button(skin.get("styleMenu", Button.ButtonStyle.class));
+        menu.setScale(scale);
+
+
         palaute = new Button(skin.get("stylePalaute", Button.ButtonStyle.class));
         palaute.setScale(scale);
 
@@ -346,7 +364,7 @@ public class HUD {
         Collections.addAll(midJaBotTablejenNapit, leftSister, rightSister, child1, child2, child3, kysymys);
 
         ylarivinNapit = new ArrayList<>();
-        Collections.addAll(ylarivinNapit, karttaNappi, parent, palaute);
+        Collections.addAll(ylarivinNapit, karttaNappi, parent, menu);
     }
 
 
