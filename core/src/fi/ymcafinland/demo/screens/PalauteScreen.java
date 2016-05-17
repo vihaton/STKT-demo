@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.util.ArrayList;
 
@@ -36,6 +35,7 @@ public class PalauteScreen extends PohjaScreen {
         rootTable.add(otsikko).top().expandX().padTop(otsikko.getHeight());
         rootTable.row();
 
+        //todo palautteet kolmesarakkeiseen taulukkoon: numero/nimi/prosentit
         this.arvio = new Label(pelaaja.toString(), skin, "arvio");
         arvio.setFontScale(2);
         rootTable.add(arvio).expand();
@@ -50,7 +50,6 @@ public class PalauteScreen extends PohjaScreen {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
     }
 
-    //todo palautteet kolmesarakkeiseen taulukkoon: numero/nimi/prosentit
     private void paivitaPalaute() {
         String palaute = "";
         ArrayList<String> keinotJarjestyksessa = pelaaja.getSelviytymiskeinotJarjestyksessa();
