@@ -103,7 +103,7 @@ public class Pelaaja {
             float selviytymisarvo = selviytyisArvot[i];
             for (int j = 0; j < 6; j++) {   //...verrataan kaikkiin muihin...
                 if (i == j) continue;       //...paitsi itseensä...
-                if (selviytymisarvo < selviytyisArvot[j])
+                if (selviytymisarvo <= selviytyisArvot[j])
                     isompia++;              // ...ja käydään läpi kuinka monta isompaa arvoa on
             }
             keinojenIndeksitJarjestyksessa[isompia] = i; //lopuksi lisätään tarkasteltu selviytymiskeino omalle paikalleen

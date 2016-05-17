@@ -46,11 +46,11 @@ public class PalauteScreen extends PohjaScreen {
     public void show() {
         super.show();
 
-        arvio.setText(pelaaja.valuesToString());
-//        paivitaPalaute();
+        paivitaPalaute();
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
     }
 
+    //todo palautteet kolmesarakkeiseen taulukkoon: numero/nimi/prosentit
     private void paivitaPalaute() {
         String palaute = "";
         ArrayList<String> keinotJarjestyksessa = pelaaja.getSelviytymiskeinotJarjestyksessa();

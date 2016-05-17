@@ -53,7 +53,8 @@ public class PelaajaTest {
         for (int i = 0; i < 6; i++) {
             pelaaja.lisaaSelviytymisarvoIndeksissa(i, i);
             ArrayList<String> jarjestetytKeinot = pelaaja.getSelviytymiskeinotJarjestyksessa();
-            Assert.assertTrue(selviytymiskeinot[i].equalsIgnoreCase(jarjestetytKeinot.get(0)));
+            Assert.assertTrue("Ensimmäisenä keinona oli " + jarjestetytKeinot.get(0) + ", olisi pitänyt olla " + selviytymiskeinot[i],
+                    selviytymiskeinot[i].equalsIgnoreCase(jarjestetytKeinot.get(0)));
         }
     }
     //Todo testejä pelaajalle
