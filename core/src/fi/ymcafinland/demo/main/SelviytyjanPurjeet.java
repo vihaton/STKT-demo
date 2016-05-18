@@ -24,6 +24,7 @@ import fi.ymcafinland.demo.screens.InfoScreen;
 import fi.ymcafinland.demo.screens.LauncherScreen;
 import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
+import fi.ymcafinland.demo.screens.PohjaScreen;
 import fi.ymcafinland.demo.screens.QuestionScreen;
 
 public class SelviytyjanPurjeet extends Game {
@@ -256,6 +257,14 @@ public class SelviytyjanPurjeet extends Game {
         super.dispose();
     }
 
+    /**
+     * Screenin vaihto mielivaltaiseen screeniin
+     * @param screen
+     */
+    public void vaihdaScreeniin(PohjaScreen screen) {
+        setScreen(screen);
+    }
+
     public void setQuestionScreen(Solmu solmu) {
         questionScreen.setSolmu(solmu);
         setScreen(questionScreen);
@@ -268,6 +277,13 @@ public class SelviytyjanPurjeet extends Game {
     public void setPlayScreen() {
         playscreen.resetStateTime();
         setScreen(playscreen);
+    }
+
+    public void setAlkuScreen() {
+        setScreen(launcherScreen);
+    }
+    public void setInfoScreen(){
+        setScreen(infoScreen);
     }
 
     public Verkko getVerkko() {
@@ -302,13 +318,6 @@ public class SelviytyjanPurjeet extends Game {
     public QuestionScreen getQuestionScreen() {
         return questionScreen;
 
-    }
-
-    public void setAlkuScreen() {
-        setScreen(launcherScreen);
-    }
-    public void setInfoScreen(){
-        setScreen(infoScreen);
     }
 
     public LauncherScreen getAlkuScreen() {

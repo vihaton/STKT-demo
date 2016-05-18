@@ -201,10 +201,10 @@ public class HUD {
         ScreenTransition st = new ScreenTransition(playScreen, qs, 0.5f);
 
         if (solmu.getID().equals("13")) {
-            Gdx.app.log("HUD", "kutsutaan ST.wildFadeTransitionia playScreenistä quostionScreeniin");
+            Gdx.app.log("HUD", "kutsutaan ST.wildFadeTransitionia playScreenistä questionScreeniin");
             st.wildFadeTransition();
         } else {
-            Gdx.app.log("HUD", "kutsutaan ST.fadeTransitionia playScreenistä quostionScreeniin");
+            Gdx.app.log("HUD", "kutsutaan ST.fadeTransitionia playScreenistä questionScreeniin");
             st.fadeTransition();
         }
     }
