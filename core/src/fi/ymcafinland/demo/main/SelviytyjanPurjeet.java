@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
@@ -121,6 +122,8 @@ public class SelviytyjanPurjeet extends Game {
 
         masterSkin.add("menutausta", new Texture("menutausta.png"));
 
+        masterSkin.add("menubar", new Texture("menubar.png"));
+
     }
 
     private void generoiFontit() {
@@ -220,7 +223,10 @@ public class SelviytyjanPurjeet extends Game {
         Button.ButtonStyle stylePalaute = new Button.ButtonStyle();
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
         Button.ButtonStyle styleMenu = new Button.ButtonStyle();
+        TextButton.TextButtonStyle styleMenubar = new TextButton.TextButtonStyle();
 
+        styleMenubar.font = masterSkin.getFont("libgdxFont");
+        styleMenubar.up = masterSkin.getDrawable("menubar");
 
         styleKartta.up = masterSkin.getDrawable("minimap");
         styleKysymys.up = masterSkin.getDrawable("mini_kysymys");
@@ -237,6 +243,7 @@ public class SelviytyjanPurjeet extends Game {
         masterSkin.add("stylePalaute", stylePalaute);
         masterSkin.add("styleKysymys", styleKysymys);
         masterSkin.add("styleMenu", styleMenu);
+        masterSkin.add("styleMenubar", styleMenubar);
     }
 
     @Override
@@ -295,6 +302,17 @@ public class SelviytyjanPurjeet extends Game {
     public QuestionScreen getQuestionScreen() {
         return questionScreen;
 
+    }
+
+    public void setAlkuScreen() {
+        setScreen(launcherScreen);
+    }
+    public void setInfoScreen(){
+        setScreen(infoScreen);
+    }
+
+    public LauncherScreen getAlkuScreen() {
+        return launcherScreen;
     }
 }
 
