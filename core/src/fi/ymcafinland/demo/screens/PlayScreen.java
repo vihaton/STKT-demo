@@ -180,12 +180,6 @@ public class PlayScreen extends PohjaScreen {
         }
     }
 
-    public void paivitaKasittelijat(float delta) {
-        solmunKasittelija.paivitaSolmut(angleToPoint);
-        edistymismittarinKasittelija.paivitaMittari(delta, angleToPoint);
-        infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
-    }
-
     //Purkkaviritelmä Selviytyjän purjeiden screeninvaihtometodia varten
     public SelviytyjanPurjeet getSp() {
         return this.sp;
