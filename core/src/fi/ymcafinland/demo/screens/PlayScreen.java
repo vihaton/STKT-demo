@@ -141,6 +141,7 @@ public class PlayScreen extends PohjaScreen {
         if (log)
             Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter paivitaKamera");
 
+        angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         paivitaKasittelijat(delta);
         if (log)
             Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter käsittelijöiden päivitys");
@@ -178,6 +179,17 @@ public class PlayScreen extends PohjaScreen {
         } else {
             trans = false;
         }
+    }
+
+    /**
+     * Hakee kulman pisteiden välillä;
+     *
+     * @param start  aloituspiste
+     * @param target lopetuspiste
+     * @return palauttaa kulman
+     */
+    public float getAngleToPoint(Vector3 start, Vector3 target) {
+        return (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
     }
 
     //Purkkaviritelmä Selviytyjän purjeiden screeninvaihtometodia varten

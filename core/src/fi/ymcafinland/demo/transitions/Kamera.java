@@ -14,7 +14,6 @@ public class Kamera extends OrthographicCamera {
     private  float deltaAVG;
     protected boolean zoomedOut;
     protected boolean trans;
-    private float angleToPoint;
     private PlayScreen playScreen;
     private ZoomTransition zoomTransition;
     private final float zoomDuration = 1.0f;    //s
@@ -54,20 +53,10 @@ public class Kamera extends OrthographicCamera {
     }
 
     private void rotateCamera() {
-        angleToPoint = getAngleToPoint(playScreen.polttopiste, playScreen.keskipiste);
-        this.rotate(-angleToPoint + 90);
+        this.rotate(-playScreen.getAngleToPoint(playScreen.polttopiste, playScreen.keskipiste) + 90);
     }
 
-    /**
-     * Hakee kulman pisteiden välillä;
-     *
-     * @param start  aloituspiste
-     * @param target lopetuspiste
-     * @return palauttaa kulman
-     */
-    private float getAngleToPoint(Vector3 start, Vector3 target) {
-        return (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
-    }
+
 
 
 
