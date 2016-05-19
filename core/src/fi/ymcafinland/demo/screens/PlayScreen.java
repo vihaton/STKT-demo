@@ -301,6 +301,13 @@ public class PlayScreen extends PohjaScreen {
         alkaaTapahtua();
         zoomTransition = new ZoomTransition(camera.zoom, 1f, zoomDuration * 2, true);
     }
+
+    public void resetPan() {
+        alkaaTapahtua();
+        transition = new CameraTransition(panpiste, polttopiste, moveDuration);
+        panpiste = polttopiste;
+    }
+
     public Vector3 getPolttopiste(){
         return polttopiste;
     }
@@ -310,4 +317,5 @@ public class PlayScreen extends PohjaScreen {
     public OrthographicCamera getCamera(){
         return camera;
     }
+
 }
