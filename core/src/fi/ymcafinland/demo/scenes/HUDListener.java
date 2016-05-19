@@ -47,17 +47,19 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         Gdx.app.log("HLIST", "fling -metodia kutsuttu");
 
-        if (Math.abs(velocityX) > Math.abs(velocityY)) {
-            if (velocityX > 0) {
-                hud.right();
+        if (Math.abs(velocityX) > 250 || Math.abs(velocityY) > 250) {
+            if (Math.abs(velocityX) > Math.abs(velocityY)) {
+                if (velocityX > 0) {
+                    hud.right();
+                } else {
+                    hud.left();
+                }
             } else {
-                hud.left();
-            }
-        } else {
-            if (velocityY > 0) {
-                hud.down();
-            } else {
-                hud.up();
+                if (velocityY > 0) {
+                    hud.down();
+                } else {
+                    hud.up();
+                }
             }
         }
         return true;
