@@ -3,7 +3,6 @@ package fi.ymcafinland.demo.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -32,9 +31,9 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean tap(float x, float y, int count, int button) {
         //debug
-        Gdx.app.log("HLIST", "tap -metodia kutsuttu");
+        Gdx.app.log("HL", "tap -metodia kutsuttu");
 
-        if(count >1) {
+        if (count > 1) {
             hud.siirryLahinpaanPalloon(x, y);
         }
         return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
@@ -48,9 +47,9 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
-        Gdx.app.log("HLIST", "fling -metodia kutsuttu");
+        Gdx.app.log("HL", "fling -metodia kutsuttu");
 
-        if(velocityX > 250 || velocityY > 250) {
+        if (velocityX > 250 || velocityY > 250) {
             if (Math.abs(velocityX) > Math.abs(velocityY)) {
                 if (velocityX > 0) {
                     hud.right();
@@ -71,15 +70,11 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        Gdx.app.log("HLIST", "pan -metodia kutsuttu");
+        Gdx.app.log("HL", "pan -metodia kutsuttu");
 
-        if (hud.playScreen.zoomedOut) {
-            Vector3 touchPos = new Vector3(x, y, 0);
-            hud.playScreen.getCamera().unproject(touchPos);
-            Vector3 panpiste = hud.playScreen.getPanpiste();
-            hud.playScreen.seurataanPolttoa = false;
-            panpiste.add(deltaX * hud.playScreen.getZoom() / 2, -deltaY * hud.playScreen.getZoom() / 2, 0);
-        }
+        Vector3 panpiste = hud.playScreen.getPanpiste();
+        hud.playScreen.seurataanPolttoa = false;
+        panpiste.add(deltaX * hud.playScreen.kamera.getZoom(), -deltaY * hud.playScreen.kamera.getZoom(), 0);
 
         return false;
     }
@@ -87,7 +82,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
         //debug
-        Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
+        Gdx.app.log("HL", "panStop -metodia kutsuttu");
 
         hud.playScreen.resetPan();
 
@@ -97,13 +92,13 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean zoom(float initialDistance, float distance) {
         //debug
-        Gdx.app.log("HLIST", "zoom -metodia kutsuttu");
+        Gdx.app.log("HL", "zoom -metodia kutsuttu");
 
         hud.playScreen.alkaaTapahtua();
         if (initialDistance < distance) {
-            hud.playScreen.setZoom(-0.03f);
+            hud.playScreen.kamera.setZoom(-0.03f);
         } else {
-            hud.playScreen.setZoom(0.03f);
+            hud.playScreen.kamera.setZoom(0.03f);
         }
         return true;
     }
