@@ -227,6 +227,7 @@ public class PlayScreen extends PohjaScreen {
         timeSinceTransitionZoom = 0;
         zoomed = true;
         if (in) {
+            seurataanPolttoa = true;
             transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), moveDuration);
             zoomTransition = new ZoomTransition(camera.zoom, 1f, zoomDuration, true);
             zoomedOut = false;
