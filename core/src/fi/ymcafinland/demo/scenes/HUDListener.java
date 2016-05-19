@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
@@ -41,7 +42,6 @@ public class HUDListener implements GestureDetector.GestureListener {
         return false;
     }
 
-    //todo swaippi on liian herkkä, rajoja suuremmiksi kuin nolla
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
@@ -70,6 +70,10 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         Gdx.app.log("HLIST", "pan -metodia kutsuttu");
 
+        Vector3 panpiste = hud.playScreen.getPanpiste();
+        hud.playScreen.seurataanPolttoa = false;
+        panpiste.add(deltaX * hud.playScreen.kamera.getZoom(), -deltaY * hud.playScreen.kamera.getZoom(), 0);
+
         return false;
     }
 
@@ -77,6 +81,8 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean panStop(float x, float y, int pointer, int button) {
         //debug
         Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
+
+        hud.playScreen.resetPan();
 
         return false;
     }
@@ -87,10 +93,10 @@ public class HUDListener implements GestureDetector.GestureListener {
         Gdx.app.log("HLIST", "zoom -metodia kutsuttu");
 
         hud.playScreen.alkaaTapahtua();
-        if (initialDistance < distance && hud.playScreen.getZoom() > 0.2f) {
-            hud.playScreen.setZoom(-0.03f);
-        } else if (hud.playScreen.getZoom() < 5f) {
-            hud.playScreen.setZoom(0.03f);
+        if (initialDistance < distance) {
+            hud.playScreen.kamera.setZoom(-0.03f);
+        } else {
+            hud.playScreen.kamera.setZoom(0.03f);
         }
         return true;
     }

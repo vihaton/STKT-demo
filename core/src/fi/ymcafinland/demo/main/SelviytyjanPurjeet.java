@@ -33,8 +33,6 @@ public class SelviytyjanPurjeet extends Game {
     public static final int TAUSTAN_LEVEYS = 8192;
     public static final int TAUSTAN_KORKEUS = 8192;
 
-    protected SpriteBatch batch;
-
     private Verkko verkko;
     private PlayScreen playscreen;
     private PalauteScreen palauteScreen;
@@ -58,7 +56,7 @@ public class SelviytyjanPurjeet extends Game {
         vaittamat = new Vaittamat();
         Gdx.app.log("SP", "Vaittamien luominen on valmis");
 
-        luoSkin();
+        masterSkin = new MasterSkin();
         pelaaja = new Pelaaja();
         pelaaja.setVaittamienMaara(vaittamat.getMaara());
 
@@ -77,160 +75,6 @@ public class SelviytyjanPurjeet extends Game {
      */
     public void init() {
         setScreen(infoScreen);
-    }
-
-    /**
-     * Tarkoitus olisi, että kaikki pelissä käytetyt UI elementit (fontit, tyylit, textuurit...)
-     * luodaan Selviytyjän purjeissa. Näin ollen kaikki olisi helposti päivitettävissä yhdessä paikassa.
-     */
-    private void luoSkin() {
-        masterSkin = new Skin();
-
-        generoiTexturet();
-        generoiFontit();
-        generoiLabelStylet();
-        generoiSliderStyle();
-        generoiProgressBarStylet();
-        generoiButtonStylet();
-        generoiTextureAtlakset();
-    }
-
-    private void generoiTexturet() {
-        masterSkin.add("infonTausta", new Texture("sails02.png"));
-
-        masterSkin.add("alku", new Texture("alku.png"));
-
-        masterSkin.add("ruksi", new Texture("ruksi.png"));
-
-        masterSkin.add("emptynode", new Texture("emptynode.png"));
-
-        masterSkin.add("mini_palaute", new Texture("hahmo.png"));
-
-        masterSkin.add("i", new Texture("i.png"));
-
-        masterSkin.add("transparent", new Texture("transparent.png"));
-
-        masterSkin.add("minimap", new Texture("minimap.png"));
-
-        masterSkin.add("launcher", new Texture("launcherBackground.png"));
-
-        masterSkin.add("SP_logo", new Texture("ic_launcher-web.png"));
-
-        masterSkin.add("unavailable", new Texture("unavailable.png"));
-
-    }
-
-    private void generoiFontit() {
-        BitmapFont fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
-        masterSkin.add("fontti", fontti);
-
-        BitmapFont libgdxFont = new BitmapFont(Gdx.files.internal("default.fnt"), Gdx.files.internal("default.png"), false);
-        masterSkin.add("libgdxFont", libgdxFont);
-    }
-
-    private void generoiLabelStylet() {
-        //TODO tehdään eri fontti kuin libgdx:n defaultfontti
-        Label.LabelStyle launcherStyle = new Label.LabelStyle(masterSkin.getFont("libgdxFont"), masterSkin.getFont("libgdxFont").getColor());
-        masterSkin.add("launcher", launcherStyle);
-
-        Label.LabelStyle otsikkoStyle = new Label.LabelStyle(masterSkin.getFont("fontti"), masterSkin.getFont("fontti").getColor());
-        masterSkin.add("otsikko", otsikkoStyle);
-
-        Label.LabelStyle sisaltotyyli = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
-        masterSkin.add("sisalto", sisaltotyyli);
-
-        Label.LabelStyle vaittamatyyli = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-        masterSkin.add("vaittamatyyli", vaittamatyyli);
-
-        Label.LabelStyle arvioStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-        masterSkin.add("arvio", arvioStyle);
-
-        Label.LabelStyle infotekstiStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-        masterSkin.add("infoteksti", infotekstiStyle);
-    }
-
-    private void generoiSliderStyle() {
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("slider/slider.pack"));
-        masterSkin.addRegions(atlas);
-
-        Slider.SliderStyle sliderStyle = new Slider.SliderStyle(masterSkin.getDrawable("sliderbackground"), masterSkin.getDrawable("sliderknob"));
-        masterSkin.add("sliderStyle", sliderStyle);
-    }
-
-    private void generoiProgressBarStylet() {
-        ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();
-
-        Texture progressBackground = new Texture("progressbar2/progressbackground.png");
-        Texture progressKnob = new Texture("progressbar2/progressknob.png");
-
-        progressBarStyle.knobBefore = new TextureRegionDrawable(new TextureRegion(progressKnob));
-        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progressBackground));
-        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progressKnob));
-
-        masterSkin.add("progressBarStyle", progressBarStyle);
-    }
-
-    private void generoiButtonStylet() {
-        Button.ButtonStyle styleAlku = new Button.ButtonStyle();
-        styleAlku.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("alku", Texture.class)));
-        masterSkin.add("alkuButtonStyle", styleAlku);
-
-        Button.ButtonStyle styleExit = new Button.ButtonStyle();
-        styleExit.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("ruksi", Texture.class)));
-        masterSkin.add("exitButtonStyle", styleExit);
-
-        Button.ButtonStyle styleInfo = new Button.ButtonStyle();
-        styleInfo.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("i", Texture.class)));
-        masterSkin.add("infoButtonStyle", styleInfo);
-
-        Button.ButtonStyle styleTrans = new Button.ButtonStyle();
-        styleTrans.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("transparent", Texture.class)));
-        masterSkin.add("transButtonStyle", styleTrans);
-
-        Button.ButtonStyle styleSp = new Button.ButtonStyle();
-        styleSp.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("SP_logo", Texture.class)));
-        masterSkin.add("spButtonStyle", styleSp);
-
-        Button.ButtonStyle styleUnavailable = new Button.ButtonStyle();
-        styleUnavailable.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("unavailable", Texture.class)));
-        masterSkin.add("unavailableButtonStyle", styleUnavailable);
-    }
-
-    private void generoiTextureAtlakset() {
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("minisolmut/minisolmut.pack"));
-        masterSkin.addRegions(atlas);
-
-        generoiHUDinButtonStylet();
-    }
-
-    /**
-     * kutsuttava vasta, kun masterSkiniin on lisätty textureatlas minisolmuista.
-     */
-    private void generoiHUDinButtonStylet() {
-        Button.ButtonStyle styleParent = new Button.ButtonStyle();
-        Button.ButtonStyle styleLeft = new Button.ButtonStyle();
-        Button.ButtonStyle styleRight = new Button.ButtonStyle();
-        Button.ButtonStyle styleChild1 = new Button.ButtonStyle();
-        Button.ButtonStyle styleChild2 = new Button.ButtonStyle();
-        Button.ButtonStyle styleChild3 = new Button.ButtonStyle();
-        Button.ButtonStyle styleKartta = new Button.ButtonStyle();
-        Button.ButtonStyle stylePalaute = new Button.ButtonStyle();
-        Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
-
-
-        styleKartta.up = masterSkin.getDrawable("minimap");
-        styleKysymys.up = masterSkin.getDrawable("mini_kysymys");
-        stylePalaute.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("mini_palaute", Texture.class)));
-
-        masterSkin.add("styleParent", styleParent);
-        masterSkin.add("styleLeft", styleLeft);
-        masterSkin.add("styleRight", styleRight);
-        masterSkin.add("styleChild1", styleChild1);
-        masterSkin.add("styleChild2", styleChild2);
-        masterSkin.add("styleChild3", styleChild3);
-        masterSkin.add("styleKartta", styleKartta);
-        masterSkin.add("stylePalaute", stylePalaute);
-        masterSkin.add("styleKysymys", styleKysymys);
     }
 
     @Override
