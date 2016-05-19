@@ -1,6 +1,7 @@
 package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -290,5 +291,11 @@ public class PlayScreen extends PohjaScreen {
         zoomedOut = false;
         alkaaTapahtua();
         zoomTransition = new ZoomTransition(camera.zoom, 1f, zoomDuration * 2, true);
+    }
+    public Vector3 getPolttopiste(){
+        return polttopiste;
+    }
+    public OrthographicCamera getCamera(){
+        return camera;
     }
 }

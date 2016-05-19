@@ -2,7 +2,9 @@ package fi.ymcafinland.demo.scenes;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
@@ -28,7 +30,9 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        hud.siirryLahinpaanPalloon(x, y);
+        if(count >1) {
+            hud.siirryLahinpaanPalloon(x, y);
+        }
         return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
     }
 
@@ -37,20 +41,21 @@ public class HUDListener implements GestureDetector.GestureListener {
         return false;
     }
 
-    //todo swaippi on liian herkkä, rajoja suuremmiksi kuin nolla
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        if (Math.abs(velocityX) > Math.abs(velocityY)) {
-            if (velocityX > 0) {
-                hud.right();
+        if(velocityX > 250 || velocityY > 250) {
+            if (Math.abs(velocityX) > Math.abs(velocityY)) {
+                if (velocityX > 0) {
+                    hud.right();
+                } else {
+                    hud.left();
+                }
             } else {
-                hud.left();
-            }
-        } else {
-            if (velocityY > 0) {
-                hud.down();
-            } else {
-                hud.up();
+                if (velocityY > 0) {
+                    hud.down();
+                } else {
+                    hud.up();
+                }
             }
         }
         return true;
@@ -58,7 +63,13 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-        return false;
+        Vector3 touchPos = new Vector3(x,y,0);
+        hud.playScreen.getCamera().unproject(touchPos);
+        hud.playScreen.getPolttopiste().x = touchPos.x;
+        hud.playScreen.getPolttopiste().y = touchPos.y;
+
+
+        return true;
     }
 
     @Override
