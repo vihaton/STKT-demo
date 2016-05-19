@@ -1,5 +1,6 @@
 package fi.ymcafinland.demo.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector;
@@ -81,9 +82,9 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean zoom(float initialDistance, float distance) {
         hud.playScreen.alkaaTapahtua();
-        if (initialDistance < distance && hud.playScreen.getZoom() > 0.2f) {
+        if (initialDistance < distance) {
             hud.playScreen.setZoom(-0.03f);
-        } else if (hud.playScreen.getZoom() < 5f) {
+        } else {
             hud.playScreen.setZoom(0.03f);
         }
         return true;
