@@ -37,6 +37,9 @@ public class Kamera extends OrthographicCamera {
         Gdx.app.log("Kamera", "Seurataanko polttopistettä? " + playScreen.seurataanPolttoa);
         if (playScreen.seurataanPolttoa) {
             this.position.set(playScreen.polttopiste);
+            playScreen.panpiste.x = playScreen.polttopiste.x;
+            playScreen.panpiste.y = playScreen.polttopiste.y;
+
         } else {
             this.position.set(playScreen.panpiste);
         }
