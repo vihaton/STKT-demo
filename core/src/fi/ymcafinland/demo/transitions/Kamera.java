@@ -36,10 +36,10 @@ public class Kamera extends OrthographicCamera {
 
         if (playScreen.seurataanPolttoa) {
             this.position.set(playScreen.polttopiste);
-            rotateCamera();
         } else {
             this.position.set(playScreen.panpiste);
         }
+        rotateCamera();
         actZoom(delta);
 
         this.update();

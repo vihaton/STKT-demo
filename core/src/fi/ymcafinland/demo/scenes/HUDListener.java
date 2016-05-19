@@ -46,22 +46,27 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
         Gdx.app.log("HLIST", "fling -metodia kutsuttu");
-
+        if(!hud.playScreen.zoomedOut) {
+            return false;
+        }
         if (Math.abs(velocityX) > 250 || Math.abs(velocityY) > 250) {
-            if (Math.abs(velocityX) > Math.abs(velocityY)) {
-                if (velocityX > 0) {
-                    hud.right();
-                } else {
-                    hud.left();
-                }
+            return false;
+        }
+        if (Math.abs(velocityX) > Math.abs(velocityY)) {
+            if (velocityX > 0) {
+                hud.right();
             } else {
-                if (velocityY > 0) {
-                    hud.down();
-                } else {
-                    hud.up();
-                }
+                hud.left();
+            }
+        } else {
+            if (velocityY > 0) {
+                hud.down();
+            } else {
+                hud.up();
             }
         }
+
+
         return true;
     }
 
@@ -69,11 +74,11 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
         Gdx.app.log("HLIST", "pan -metodia kutsuttu");
-        if(hud.playScreen.zoomedOut) {
             Vector3 panpiste = hud.playScreen.getPanpiste();
             hud.playScreen.seurataanPolttoa = false;
+
             panpiste.add(-deltaX * hud.playScreen.kamera.getZoom() / 2, deltaY * hud.playScreen.kamera.getZoom() / 2, 0);
-        }
+//
         return false;
     }
 
@@ -82,7 +87,9 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
-//        hud.playScreen.resetPan();
+        if(!hud.playScreen.zoomedOut) {
+            hud.playScreen.resetPan();
+        }
 
         return false;
     }
