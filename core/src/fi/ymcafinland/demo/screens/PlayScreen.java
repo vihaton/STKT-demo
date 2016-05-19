@@ -174,7 +174,7 @@ public class PlayScreen extends PohjaScreen {
 
     private void actTransition(float delta) {
         if (stateTime < moveDuration * 1000 + idleTime) {
-            polttopiste = transition.act(delta);
+            transition.act(delta);
             stateTime = System.currentTimeMillis() - timer;
         } else {
             trans = false;
@@ -263,8 +263,10 @@ public class PlayScreen extends PohjaScreen {
 
     public void resetPan() {
         alkaaTapahtua();
-        transition = new CameraTransition(panpiste.cpy(), polttopiste, moveDuration);
-        panpiste = polttopiste;
+        Vector3 kpy = polttopiste.cpy();
+        polttopiste.x = panpiste.x;
+        polttopiste.y = panpiste.y;
+        transition = new CameraTransition(polttopiste, kpy, moveDuration);
         seurataanPolttoa = true;
     }
 

@@ -1,5 +1,6 @@
 package fi.ymcafinland.demo.transitions;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 
@@ -33,7 +34,7 @@ public class Kamera extends OrthographicCamera {
 
     public void paivitaKamera(float delta) {
         this.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
-
+        Gdx.app.log("Kamera", "Seurataanko polttopistettä? " + playScreen.seurataanPolttoa);
         if (playScreen.seurataanPolttoa) {
             this.position.set(playScreen.polttopiste);
         } else {
