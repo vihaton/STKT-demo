@@ -43,21 +43,21 @@ public class Pelaaja {
         selviytyisArvot = new float[]{7f, 7f, 7f, 7f, 7f, 7f};
         vastausmaara = 0;
         vastatutVaittamat = new HashSet<>();
-        lueSelviytymiskeinot();
+//        lueSelviytymiskeinot();
     }
 
-    private void lueSelviytymiskeinot() {
-        selviytymiskeinot = new String[6];
-        keinojenIndeksitJarjestyksessa = new int[6];
-        FileHandle fh = new FileHandle("solmujentekstit/solmut");
-        I18NBundle myBundle = I18NBundle.createBundle(fh);
-
-        for (int i = 1; i < 7; i++) {
-            String selviytyja = myBundle.format("solmun_otsikko_" + i);
-            selviytymiskeinot[i - 1] = selviytyja;
-            keinojenIndeksitJarjestyksessa[i - 1] = i - 1;
-        }
-    }
+//    private void lueSelviytymiskeinot() {
+//        selviytymiskeinot = new String[6];
+//        keinojenIndeksitJarjestyksessa = new int[6];
+//        FileHandle fh = new FileHandle("solmujentekstit/solmut");
+//        I18NBundle myBundle = I18NBundle.createBundle(fh);
+//
+//        for (int i = 1; i < 7; i++) {
+//            String selviytyja = myBundle.format("solmun_otsikko_" + i);
+//            selviytymiskeinot[i - 1] = selviytyja;
+//            keinojenIndeksitJarjestyksessa[i - 1] = i - 1;
+//        }
+//    }
 
     /**
      * @return prosenttiluvun (0-100)

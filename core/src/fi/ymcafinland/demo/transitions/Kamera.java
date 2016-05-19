@@ -37,10 +37,10 @@ public class Kamera extends OrthographicCamera {
 
         if (playScreen.seurataanPolttoa) {
             this.position.set(playScreen.polttopiste);
+            rotateCamera();
         } else {
             this.position.set(playScreen.panpiste);
         }
-        rotateCamera();
         actZoom(delta);
 
         this.update();
@@ -54,7 +54,7 @@ public class Kamera extends OrthographicCamera {
     }
 
     private void rotateCamera() {
-        angleToPoint = getAngleToPoint(playScreen.panpiste, playScreen.keskipiste);
+        angleToPoint = getAngleToPoint(playScreen.polttopiste, playScreen.keskipiste);
         this.rotate(-angleToPoint + 90);
     }
 
@@ -86,6 +86,7 @@ public class Kamera extends OrthographicCamera {
     }
 
     public void zoomaaNormaaliin() {
+        playScreen.seurataanPolttoa = true;
         zoomTransition = new ZoomTransition(this.zoom, 1f, zoomDuration * 2, true);
 
     }

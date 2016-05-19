@@ -72,7 +72,7 @@ public class HUDListener implements GestureDetector.GestureListener {
 
         Vector3 panpiste = hud.playScreen.getPanpiste();
         hud.playScreen.seurataanPolttoa = false;
-        panpiste.add(deltaX * hud.playScreen.kamera.getZoom(), -deltaY * hud.playScreen.kamera.getZoom(), 0);
+        panpiste.add(-deltaX * hud.playScreen.kamera.getZoom()/2, deltaY * hud.playScreen.kamera.getZoom()/2, 0);
 
         return false;
     }
@@ -82,7 +82,7 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
-        hud.playScreen.resetPan();
+//        hud.playScreen.resetPan();
 
         return false;
     }
