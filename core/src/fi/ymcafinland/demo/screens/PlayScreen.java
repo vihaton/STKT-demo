@@ -230,12 +230,12 @@ public class PlayScreen extends PohjaScreen {
         alkaaTapahtua();
     }
 
-    public void setZoom(float ratio) {
+    public void setZoom(float increment) {
         float z = getZoom();
-        if (z + ratio < 3 && z + ratio > 0.75) {
+        if (z + increment < 3 && z + increment > 0.75) {
             //debug
             //Gdx.app.log("PS", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
-            camera.zoom += ratio;
+            camera.zoom += increment;
         }
     }
 
