@@ -31,6 +31,9 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
+        //debug
+        Gdx.app.log("HLIST", "tap -metodia kutsuttu");
+
         if(count >1) {
             hud.siirryLahinpaanPalloon(x, y);
         }
@@ -44,6 +47,9 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
+        //debug
+        Gdx.app.log("HLIST", "fling -metodia kutsuttu");
+
         if(velocityX > 250 || velocityY > 250) {
             if (Math.abs(velocityX) > Math.abs(velocityY)) {
                 if (velocityX > 0) {
@@ -64,6 +70,9 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
+        //debug
+        Gdx.app.log("HLIST", "pan -metodia kutsuttu");
+
         if(hud.playScreen.zoomedOut) {
             Vector3 touchPos = new Vector3(x, y, 0);
             hud.playScreen.getCamera().unproject(touchPos);
@@ -76,11 +85,17 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
+        //debug
+        Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
+
         return false;
     }
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
+        //debug
+        Gdx.app.log("HLIST", "zoom -metodia kutsuttu");
+
         hud.playScreen.alkaaTapahtua();
         if (initialDistance < distance) {
             hud.playScreen.setZoom(-0.03f);
