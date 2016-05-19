@@ -30,10 +30,12 @@ public class PlayScreen extends PohjaScreen {
     public boolean zoomedOut = false;
     protected boolean zoomed = false;
     protected Vector3 polttopiste;
+    protected Vector3 panpiste;
     protected Vector3 keskipiste;
     protected float angleToPoint;
     protected long stateTime;
     protected long timer;
+    public boolean seurataanPolttoa = true;
     private final float moveDuration = 1.0f;    //s
     private final float zoomDuration = 1.0f;    //s
     private final float minFPS = 55;         //fps
@@ -80,6 +82,8 @@ public class PlayScreen extends PohjaScreen {
         this.timer = System.currentTimeMillis();
         this.keskipiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
+        this.panpiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
+
         this.angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         this.stateTime = 0;
 
@@ -135,10 +139,13 @@ public class PlayScreen extends PohjaScreen {
         if (log)
             Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter actTransition");
 
-        camera.position.set(polttopiste);
-
+        if(seurataanPolttoa) {
+            camera.position.set(polttopiste);
+            rotateCamera();
+        }else{
+            camera.position.set(panpiste);
+        }
         actZoom(delta);
-        rotateCamera();
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -294,6 +301,9 @@ public class PlayScreen extends PohjaScreen {
     }
     public Vector3 getPolttopiste(){
         return polttopiste;
+    }
+    public Vector3 getPanpiste(){
+        return panpiste;
     }
     public OrthographicCamera getCamera(){
         return camera;

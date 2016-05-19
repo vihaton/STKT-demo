@@ -63,13 +63,14 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-        Vector3 touchPos = new Vector3(x,y,0);
-        hud.playScreen.getCamera().unproject(touchPos);
-        hud.playScreen.getPolttopiste().x = touchPos.x;
-        hud.playScreen.getPolttopiste().y = touchPos.y;
-
-
-        return true;
+        if(hud.playScreen.zoomedOut) {
+            Vector3 touchPos = new Vector3(x, y, 0);
+            hud.playScreen.getCamera().unproject(touchPos);
+            Vector3 panpiste = hud.playScreen.getPanpiste();
+            hud.playScreen.seurataanPolttoa = false;
+            panpiste.add(-deltaX*hud.playScreen.getZoom()/2,deltaY*hud.playScreen.getZoom()/2,0);
+        }
+        return false;
     }
 
     @Override
