@@ -203,7 +203,7 @@ public class PlayScreen extends PohjaScreen {
         //Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
     }
 
-    public void rotateCamera() {
+    private void rotateCamera() {
         angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         camera.rotate(-angleToPoint + 90);
     }
