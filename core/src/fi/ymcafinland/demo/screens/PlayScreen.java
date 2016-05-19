@@ -141,10 +141,10 @@ public class PlayScreen extends PohjaScreen {
 
         if(seurataanPolttoa) {
             camera.position.set(polttopiste);
-            rotateCamera();
         }else{
             camera.position.set(panpiste);
         }
+        rotateCamera();
         actZoom(delta);
 
         camera.update();
@@ -200,9 +200,10 @@ public class PlayScreen extends PohjaScreen {
 
     private void actZoom(float delta) {
         camera.zoom = zoomTransition.zoomAct(delta);
+        //Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
     }
 
-    private void rotateCamera() {
+    public void rotateCamera() {
         angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         camera.rotate(-angleToPoint + 90);
     }
