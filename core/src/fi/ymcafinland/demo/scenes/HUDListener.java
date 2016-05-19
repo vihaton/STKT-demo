@@ -1,5 +1,6 @@
 package fi.ymcafinland.demo.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
@@ -28,6 +29,9 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
+        //debug
+        Gdx.app.log("HLIST", "tap -metodia kutsuttu");
+
         hud.siirryLahinpaanPalloon(x, y);
         return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
     }
@@ -40,17 +44,22 @@ public class HUDListener implements GestureDetector.GestureListener {
     //todo swaippi on liian herkkä, rajoja suuremmiksi kuin nolla
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        if (Math.abs(velocityX) > Math.abs(velocityY)) {
-            if (velocityX > 0) {
-                hud.right();
+        //debug
+        Gdx.app.log("HLIST", "fling -metodia kutsuttu");
+
+        if (Math.abs(velocityX) > 250 || Math.abs(velocityY) > 250) {
+            if (Math.abs(velocityX) > Math.abs(velocityY)) {
+                if (velocityX > 0) {
+                    hud.right();
+                } else {
+                    hud.left();
+                }
             } else {
-                hud.left();
-            }
-        } else {
-            if (velocityY > 0) {
-                hud.down();
-            } else {
-                hud.up();
+                if (velocityY > 0) {
+                    hud.down();
+                } else {
+                    hud.up();
+                }
             }
         }
         return true;
@@ -58,16 +67,25 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
+        //debug
+        Gdx.app.log("HLIST", "pan -metodia kutsuttu");
+
         return false;
     }
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
+        //debug
+        Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
+
         return false;
     }
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
+        //debug
+        Gdx.app.log("HLIST", "zoom -metodia kutsuttu");
+
         hud.playScreen.alkaaTapahtua();
         if (initialDistance < distance && hud.playScreen.getZoom() > 0.2f) {
             hud.playScreen.setZoom(-0.03f);
