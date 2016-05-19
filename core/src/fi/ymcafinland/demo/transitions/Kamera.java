@@ -2,7 +2,6 @@ package fi.ymcafinland.demo.transitions;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector3;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.screens.PlayScreen;
@@ -12,13 +11,12 @@ import fi.ymcafinland.demo.screens.PlayScreen;
  */
 public class Kamera extends OrthographicCamera {
 
-    private  float deltaAVG;
+    private float deltaAVG;
     protected boolean zoomedOut;
     protected boolean trans;
     private PlayScreen playScreen;
     private ZoomTransition zoomTransition;
     private final float zoomDuration = 1.0f;    //s
-
 
 
     public Kamera(PlayScreen playScreen) {
@@ -34,7 +32,6 @@ public class Kamera extends OrthographicCamera {
 
     public void paivitaKamera(float delta) {
         this.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
-        Gdx.app.log("Kamera", "Seurataanko polttopistettä? " + playScreen.seurataanPolttoa);
         if (playScreen.seurataanPolttoa) {
             this.position.set(playScreen.polttopiste);
             playScreen.panpiste.x = playScreen.polttopiste.x;
@@ -50,7 +47,6 @@ public class Kamera extends OrthographicCamera {
     }
 
 
-
     private void actZoom(float delta) {
         this.zoom = zoomTransition.zoomAct(delta);
         //Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
@@ -59,10 +55,6 @@ public class Kamera extends OrthographicCamera {
     private void rotateCamera() {
         this.rotate(-playScreen.getAngleToPoint(playScreen.polttopiste, playScreen.keskipiste) + 90);
     }
-
-
-
-
 
 
     public void setZoom(float ratio) {

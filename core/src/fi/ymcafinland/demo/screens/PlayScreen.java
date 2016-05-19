@@ -110,7 +110,7 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void alkaaTapahtua() {
-        trans =true;
+        trans = true;
         stateTime = 0;
         timer = System.currentTimeMillis();
         hud.update(solmu, zoomedOut);
@@ -141,16 +141,17 @@ public class PlayScreen extends PohjaScreen {
         if (log)
             Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter paivitaKamera");
 
-        angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         paivitaKasittelijat(delta);
-        if (log)
+        if (log) {
             Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter käsittelijöiden päivitys");
+        }
 
         stage.draw();
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        if (log)
+        if (log) {
             Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter stagejen piirtämiset");
+        }
 
 //        odota(10);
 //        if (log)
@@ -162,11 +163,12 @@ public class PlayScreen extends PohjaScreen {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
-            Gdx.app.log("PS" , "odota -metodi keskeytettiin, time in render:" + (System.currentTimeMillis() - timer - stateTime));
+            Gdx.app.log("PS", "odota -metodi keskeytettiin, time in render:" + (System.currentTimeMillis() - timer - stateTime));
         }
     }
 
     public void paivitaKasittelijat(float delta) {
+        angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         solmunKasittelija.paivitaSolmut(angleToPoint);
         edistymismittarinKasittelija.pyoritaMittaria(angleToPoint);
         infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
@@ -186,7 +188,7 @@ public class PlayScreen extends PohjaScreen {
      *
      * @param start  aloituspiste
      * @param target lopetuspiste
-     * @return palauttaa kulman
+     * @return palauttaa kulman asteissa
      */
     public float getAngleToPoint(Vector3 start, Vector3 target) {
         return (float) Math.toDegrees(Math.atan2(target.y - start.y, target.x - start.x));
@@ -270,14 +272,33 @@ public class PlayScreen extends PohjaScreen {
         seurataanPolttoa = true;
     }
 
-    public Vector3 getPolttopiste(){
+    public Vector3 getPolttopiste() {
         return polttopiste;
     }
-    public Vector3 getPanpiste(){
+
+    public Vector3 getPanpiste() {
         return panpiste;
     }
-    public OrthographicCamera getCamera(){
+
+    public OrthographicCamera getCamera() {
         return kamera;
     }
 
+    public void panoroi(float deltaX, float deltaY) {
+        seurataanPolttoa = false;
+
+
+        float cos = (float) Math.cos(angleToPoint);
+        float sin = (float) Math.sin(angleToPoint);
+        float atan = (float) Math.atan(angleToPoint + 90);
+        Gdx.app.log("PS", "@panoroi\n" +
+                "cos " + cos + " sin " + sin + "\n" +
+                "atan" + atan);
+
+        deltaX = deltaX * atan;
+        deltaY = deltaY * atan;
+
+        panpiste.x -= deltaX;
+        panpiste.y += deltaY;
+    }
 }

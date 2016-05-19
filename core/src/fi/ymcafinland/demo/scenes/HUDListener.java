@@ -11,16 +11,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * Created by jwinter on 29.3.2016.
  */
 public class HUDListener implements GestureDetector.GestureListener {
-    private Viewport viewport;
-    private SpriteBatch sb;
-    private GestureDetector detector;
+
     private HUD hud;
 
     //todo zoomit, swaipit ja tapit yhteisymmärrykseen
-    public HUDListener(HUD hud, Viewport viewport, SpriteBatch sb) {
+    public HUDListener(HUD hud) {
         this.hud = hud;
-        this.viewport = viewport;
-        this.sb = sb;
     }
 
     @Override
@@ -45,7 +41,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
-        if(!hud.playScreen.zoomedOut) {
+        if (!hud.playScreen.zoomedOut) {
             return false;
         }
         if (Math.abs(velocityX) > 250 || Math.abs(velocityY) > 250) {
@@ -75,17 +71,13 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         Gdx.app.log("HLIST", "pan -metodia kutsuttu");
 
-        hud.playScreen.seurataanPolttoa = false;
-        Gdx.app.log("HLIST", "Seurataanko polttopistettä?" + hud.playScreen.seurataanPolttoa);
+        hud.playScreen.panoroi(deltaX, deltaY);
 
-        hud.playScreen.panpiste.x += -deltaX * hud.playScreen.kamera.getZoom()/2;
-        hud.playScreen.panpiste.y += deltaY * hud.playScreen.kamera.getZoom()/2;
         return false;
     }
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
-        //debug
 
         if(!hud.playScreen.zoomedOut) {
             Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
