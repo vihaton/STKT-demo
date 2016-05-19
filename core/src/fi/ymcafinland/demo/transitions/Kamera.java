@@ -34,7 +34,7 @@ public class Kamera extends OrthographicCamera {
 
     public void paivitaKamera(float delta) {
         this.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
-        Gdx.app.log("Kamera", "Seurataanko polttopistettä? " + playScreen.seurataanPolttoa);
+//        Gdx.app.log("Kamera", "Seurataanko polttopistettä? " + playScreen.seurataanPolttoa);
         if (playScreen.seurataanPolttoa) {
             this.position.set(playScreen.polttopiste);
             playScreen.panpiste.x = playScreen.polttopiste.x;

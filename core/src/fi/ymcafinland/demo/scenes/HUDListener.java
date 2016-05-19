@@ -15,6 +15,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     private SpriteBatch sb;
     private GestureDetector detector;
     private HUD hud;
+    int pans =0;
 
     //todo zoomit, swaipit ja tapit yhteisymmärrykseen
     public HUDListener(HUD hud, Viewport viewport, SpriteBatch sb) {
@@ -45,18 +46,24 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
-        if(!hud.playScreen.zoomedOut) {
+//        if(!hud.playScreen.zoomedOut) {
+//            return false;
+//        }
+//        if (Math.abs(velocityX) > 0 || Math.abs(velocityY) > 0) {
+//            return false;
+//        }
+
+        if(pans > 6 || pans == 0){
             return false;
         }
-        if (Math.abs(velocityX) > 250 || Math.abs(velocityY) > 250) {
-            return false;
-        }
+
         Gdx.app.log("HLIST", "fling -metodia kutsuttu");
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
             if (velocityX > 0) {
                 hud.right();
             } else {
                 hud.left();
+
             }
         } else {
             if (velocityY > 0) {
@@ -64,19 +71,18 @@ public class HUDListener implements GestureDetector.GestureListener {
             } else {
                 hud.up();
             }
+
         }
-
-
+        pans = 0;
         return true;
     }
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        Gdx.app.log("HLIST", "pan -metodia kutsuttu");
-
+        pans++;
+        Gdx.app.log("HLIST", "pan -metodia kutsuttu " + pans);
         hud.playScreen.seurataanPolttoa = false;
-        Gdx.app.log("HLIST", "Seurataanko polttopistettä?" + hud.playScreen.seurataanPolttoa);
 
         hud.playScreen.panpiste.x += -deltaX * hud.playScreen.kamera.getZoom()/2;
         hud.playScreen.panpiste.y += deltaY * hud.playScreen.kamera.getZoom()/2;
@@ -87,11 +93,13 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean panStop(float x, float y, int pointer, int button) {
         //debug
 
-        if(!hud.playScreen.zoomedOut) {
-            Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
-            hud.playScreen.resetPan();
+        if(hud.playScreen.zoomedOut || pans < 6) {
+            return false;
         }
+        Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
+        hud.playScreen.resetPan();
 
+        pans = 0;
         return false;
     }
 
