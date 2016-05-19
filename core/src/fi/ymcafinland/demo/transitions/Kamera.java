@@ -86,9 +86,7 @@ public class Kamera extends OrthographicCamera {
     }
 
     public void zoomaaNormaaliin() {
-        playScreen.seurataanPolttoa = true;
         zoomTransition = new ZoomTransition(this.zoom, 1f, zoomDuration * 2, true);
-
     }
 
     public void zoomaaUlos() {
