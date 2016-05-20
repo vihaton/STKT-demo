@@ -40,9 +40,12 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
 
+        //todo riippuu deltasta + timeri
         if(pans > 6 || pans == 0){
             return false;
         }
+
+        hud.playScreen.paivitaPiste(hud.playScreen.polttopiste, hud.playScreen.panpiste);
 
         Gdx.app.log("HLIST", "fling -metodia kutsuttu");
         if (Math.abs(velocityX) > Math.abs(velocityY)) {

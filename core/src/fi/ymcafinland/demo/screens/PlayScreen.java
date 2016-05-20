@@ -264,11 +264,15 @@ public class PlayScreen extends PohjaScreen {
         alkaaTapahtua();
     }
 
+    public void paivitaPiste(Vector3 paivitettava, Vector3 kopioitava) {
+        paivitettava.x = kopioitava.x;
+        paivitettava.y = kopioitava.y;
+    }
+
     public void resetPan() {
         alkaaTapahtua();
         Vector3 kpy = polttopiste.cpy();
-        polttopiste.x = panpiste.x;
-        polttopiste.y = panpiste.y;
+        paivitaPiste(polttopiste, panpiste);
         transition = new CameraTransition(polttopiste, kpy, moveDuration);
         seurataanPolttoa = true;
     }
