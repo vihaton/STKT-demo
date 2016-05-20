@@ -39,6 +39,7 @@ public class HUDListener implements GestureDetector.GestureListener {
         return false;
     }
 
+    //todo bug: flingaus ylös kun ei oo parenttii jäädyttää ruudun eikä palauta sitä solmuun kun päästää irti
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
@@ -67,7 +68,7 @@ public class HUDListener implements GestureDetector.GestureListener {
         }
 
         pans = 0;
-        return true;
+        return false;
     }
 
     @Override
@@ -108,7 +109,7 @@ public class HUDListener implements GestureDetector.GestureListener {
         } else {
             hud.playScreen.kamera.setZoom(0.03f);
         }
-        return true;
+        return false;
     }
 
     @Override
