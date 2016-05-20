@@ -72,10 +72,10 @@ public class PlayScreen extends PohjaScreen {
         this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.panpiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
 
-
         this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin);
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
         this.infoButtonKasittelija = new InfoButtonKasittelija(stage, masterSkin, verkko);
+        this.angleToPoint = getAngleToPoint(new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, 0, 0), keskipiste);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
@@ -286,19 +286,23 @@ public class PlayScreen extends PohjaScreen {
 
     public void panoroi(float deltaX, float deltaY) {
         seurataanPolttoa = false;
+        float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
+        float muutos = (float) Math.hypot(deltaX, deltaY);
 
+        float atanRadians = (float) Math.atan2(deltaY, deltaX);
+        float cos = (float) Math.cos(Math.toRadians(PPtoKP + 90) - atanRadians);
+        float sin = (float) Math.sin(Math.toRadians(PPtoKP + 90) - atanRadians);
 
-        float cos = (float) Math.cos(angleToPoint);
-        float sin = (float) Math.sin(angleToPoint);
-        float atan = (float) Math.atan(angleToPoint + 90);
+        deltaX = muutos * cos * kamera.zoom;
+        deltaY = muutos * sin * kamera.zoom;
+
         Gdx.app.log("PS", "@panoroi\n" +
-                "cos " + cos + " sin " + sin + "\n" +
-                "atan" + atan);
+                "PPtoKP: " + PPtoKP + "\n" +
+                "cos " + cos + ", sin " + sin + "\n" +
+                "atan " + Math.toDegrees(atanRadians) + "\n" +
+                "deltaX: " + deltaX + ", deltaY: " + deltaY);
 
-        deltaX = deltaX * atan;
-        deltaY = deltaY * atan;
-
-        panpiste.x -= deltaX;
+        panpiste.x += deltaX;
         panpiste.y += deltaY;
     }
 }

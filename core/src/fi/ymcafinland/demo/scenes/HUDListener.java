@@ -1,11 +1,8 @@
 package fi.ymcafinland.demo.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by jwinter on 29.3.2016.
@@ -69,7 +66,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        Gdx.app.log("HLIST", "pan -metodia kutsuttu");
+        Gdx.app.log("HLIST", "pan -metodia kutsuttu, deltaX: " + deltaX + ", deltaY: " + deltaY);
 
         hud.playScreen.panoroi(deltaX, deltaY);
 
@@ -79,7 +76,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
 
-        if(!hud.playScreen.zoomedOut) {
+        if (!hud.playScreen.zoomedOut) {
             Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
             hud.playScreen.resetPan();
         }
