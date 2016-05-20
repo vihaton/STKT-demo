@@ -122,12 +122,12 @@ public class PlayScreen extends PohjaScreen {
     public void render(float delta) {
         //debug
         boolean log = false;
-        if (delta > renderinLoggausAlaraja) {
-            Gdx.app.log("PS", "renderloggaus käynnistetty\n" +
-                    "minimi fps:" + minFPS + " fps, tämän ruudun fps:" + Math.pow(delta, -1) + " fps\n" +
-                    "stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
-            log = true;
-        }
+//        if (delta > renderinLoggausAlaraja) {
+//            Gdx.app.log("PS", "renderloggaus käynnistetty\n" +
+//                    "minimi fps:" + minFPS + " fps, tämän ruudun fps:" + Math.pow(delta, -1) + " fps\n" +
+//                    "stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
+//            log = true;
+//        }
 
         super.render(delta);
 
@@ -210,6 +210,7 @@ public class PlayScreen extends PohjaScreen {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
             alkaaTapahtua();
+            seurataanPolttoa = true;
             transition = new CameraTransition(polttopiste, goal, moveDuration);
         }
     }

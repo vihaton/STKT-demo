@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 public class HUDListener implements GestureDetector.GestureListener {
 
     private HUD hud;
+    int pans =0;
 
     //todo zoomit, swaipit ja tapit yhteisymmärrykseen
     public HUDListener(HUD hud) {
@@ -39,11 +40,11 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
         if (!hud.playScreen.zoomedOut) {
+
+        if(pans > 6 || pans == 0){
             return false;
         }
-        if (Math.abs(velocityX) > 250 || Math.abs(velocityY) > 250) {
-            return false;
-        }
+
         Gdx.app.log("HLIST", "fling -metodia kutsuttu");
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
             if (velocityX > 0) {
@@ -59,28 +60,35 @@ public class HUDListener implements GestureDetector.GestureListener {
             }
         }
 
-
+        }
+        pans = 0;
         return true;
     }
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        Gdx.app.log("HLIST", "pan -metodia kutsuttu, deltaX: " + deltaX + ", deltaY: " + deltaY);
+        pans++;
+        Gdx.app.log("HLIST", "pan -metodia kutsuttu " + pans);
+        hud.playScreen.seurataanPolttoa = false;
 
         hud.playScreen.panoroi(deltaX, deltaY);
 
+        hud.playScreen.panpiste.x += -deltaX * hud.playScreen.kamera.getZoom()/2;
+        hud.playScreen.panpiste.y += deltaY * hud.playScreen.kamera.getZoom()/2;
         return false;
     }
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
 
-        if (!hud.playScreen.zoomedOut) {
-            Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
-            hud.playScreen.resetPan();
+        if(hud.playScreen.zoomedOut || pans < 6) {
+            return false;
         }
+        Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
+        hud.playScreen.resetPan();
 
+        pans = 0;
         return false;
     }
 
