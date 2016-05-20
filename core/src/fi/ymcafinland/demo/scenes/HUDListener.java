@@ -39,7 +39,6 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
-        if (!hud.playScreen.zoomedOut) {
 
         if(pans > 6 || pans == 0){
             return false;
@@ -60,7 +59,6 @@ public class HUDListener implements GestureDetector.GestureListener {
             }
         }
 
-        }
         pans = 0;
         return true;
     }
@@ -70,12 +68,9 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         pans++;
         Gdx.app.log("HLIST", "pan -metodia kutsuttu " + pans);
-        hud.playScreen.seurataanPolttoa = false;
 
         hud.playScreen.panoroi(deltaX, deltaY);
 
-        hud.playScreen.panpiste.x += -deltaX * hud.playScreen.kamera.getZoom()/2;
-        hud.playScreen.panpiste.y += deltaY * hud.playScreen.kamera.getZoom()/2;
         return false;
     }
 
