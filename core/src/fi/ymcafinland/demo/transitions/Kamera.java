@@ -10,6 +10,7 @@ import fi.ymcafinland.demo.screens.PlayScreen;
 /**
  * Created by xvixvi on 19.5.2016.
  */
+//todo kamerasta kamerankäsittelijä, joka ei peri orthoa vaan käyttää sitä. Kaikki kameran liikuttamiset ja zoomit on kamerankäsittelijän vastuulla.
 public class Kamera extends OrthographicCamera {
 
     private float deltaAVG;
@@ -50,7 +51,7 @@ public class Kamera extends OrthographicCamera {
 
     private void actZoom(float delta) {
         this.zoom = zoomTransition.zoomAct(delta);
-        //Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
+        //Gdx.app.LOG("PS", "camera.zoom: " + camera.zoom);
     }
 
     private void rotateCamera() {
@@ -62,7 +63,7 @@ public class Kamera extends OrthographicCamera {
         float z = getZoom();
         if (z + ratio < 3 && z + ratio > 0.75) {
             //debug
-            //Gdx.app.log("PS", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
+            //Gdx.app.LOG("PS", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
             this.zoom += ratio;
         }
     }

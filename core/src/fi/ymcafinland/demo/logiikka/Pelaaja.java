@@ -46,6 +46,7 @@ public class Pelaaja {
 //        lueSelviytymiskeinot();
     }
 
+    //todo fixfix
 //    private void lueSelviytymiskeinot() {
 //        selviytymiskeinot = new String[6];
 //        keinojenIndeksitJarjestyksessa = new int[6];
