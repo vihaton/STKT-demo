@@ -33,6 +33,8 @@ public class SelviytyjanPurjeet extends Game {
     public static final int TAUSTAN_LEVEYS = 8192;
     public static final int TAUSTAN_KORKEUS = 8192;
 
+    public static final boolean LOG = false;
+
     private Verkko verkko;
     private PlayScreen playscreen;
     private PalauteScreen palauteScreen;

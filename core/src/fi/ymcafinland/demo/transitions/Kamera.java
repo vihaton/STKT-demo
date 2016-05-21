@@ -2,6 +2,7 @@ package fi.ymcafinland.demo.transitions;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.screens.PlayScreen;
@@ -9,6 +10,7 @@ import fi.ymcafinland.demo.screens.PlayScreen;
 /**
  * Created by xvixvi on 19.5.2016.
  */
+//todo kamerasta kamerankäsittelijä, joka ei peri orthoa vaan käyttää sitä. Kaikki kameran liikuttamiset ja zoomit on kamerankäsittelijän vastuulla.
 public class Kamera extends OrthographicCamera {
 
     private float deltaAVG;
@@ -96,8 +98,6 @@ public class Kamera extends OrthographicCamera {
         currentZoomDuration = zoomDuration * 2;
 
         zoomTransition = new ZoomTransition(this.zoom, 1f, zoomDuration * 2, true);
-//        alaraja = 0.75f;
-//        ylaraja = 3f;
     }
 
     public void zoomaaUlos() {

@@ -72,10 +72,10 @@ public class PlayScreen extends PohjaScreen {
         this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.panpiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
 
-
         this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin);
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
         this.infoButtonKasittelija = new InfoButtonKasittelija(stage, masterSkin, verkko);
+        this.angleToPoint = getAngleToPoint(new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, 0, 0), keskipiste);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
@@ -115,14 +115,14 @@ public class PlayScreen extends PohjaScreen {
         timer = System.currentTimeMillis();
         hud.update(solmu, zoomedOut);
         //debug
-//        Gdx.app.log("PS", "UUSI SIIRTO" + stateTime + " " + trans);
+//        Gdx.app.LOG("PS", "UUSI SIIRTO" + stateTime + " " + trans);
     }
 
     @Override
     public void render(float delta) {
         //debug
         boolean log = false;
-        if (delta > renderinLoggausAlaraja) {
+        if (delta > renderinLoggausAlaraja && SelviytyjanPurjeet.LOG) {
             Gdx.app.log("PS", "renderloggaus käynnistetty\n" +
                     "minimi fps:" + minFPS + " fps, tämän ruudun fps:" + Math.pow(delta, -1) + " fps\n" +
                     "stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
@@ -154,8 +154,8 @@ public class PlayScreen extends PohjaScreen {
         }
 
 //        odota(10);
-//        if (log)
-//            Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter loppuodotus");
+//        if (LOG)
+//            Gdx.app.LOG("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter loppuodotus");
     }
 
 
@@ -163,7 +163,8 @@ public class PlayScreen extends PohjaScreen {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
-            Gdx.app.log("PS", "odota -metodi keskeytettiin, time in render:" + (System.currentTimeMillis() - timer - stateTime));
+            if (SelviytyjanPurjeet.LOG)
+                Gdx.app.log("PS", "odota -metodi keskeytettiin, time in render:" + (System.currentTimeMillis() - timer - stateTime));
         }
     }
 
@@ -210,6 +211,7 @@ public class PlayScreen extends PohjaScreen {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
             alkaaTapahtua();
+            seurataanPolttoa = true;
             transition = new CameraTransition(polttopiste, goal, moveDuration);
         }
     }
@@ -263,11 +265,15 @@ public class PlayScreen extends PohjaScreen {
         alkaaTapahtua();
     }
 
+    public void paivitaPiste(Vector3 paivitettava, Vector3 kopioitava) {
+        paivitettava.x = kopioitava.x;
+        paivitettava.y = kopioitava.y;
+    }
+
     public void resetPan() {
         alkaaTapahtua();
         Vector3 kpy = polttopiste.cpy();
-        polttopiste.x = panpiste.x;
-        polttopiste.y = panpiste.y;
+        paivitaPiste(polttopiste, panpiste);
         transition = new CameraTransition(polttopiste, kpy, moveDuration);
         seurataanPolttoa = true;
     }
@@ -286,19 +292,24 @@ public class PlayScreen extends PohjaScreen {
 
     public void panoroi(float deltaX, float deltaY) {
         seurataanPolttoa = false;
+        float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
+        float muutos = (float) Math.hypot(deltaX, deltaY);
 
+        float atanRadians = (float) Math.atan2(deltaY, deltaX);
+        float cos = (float) Math.cos(Math.toRadians(PPtoKP + 90) - atanRadians);
+        float sin = (float) Math.sin(Math.toRadians(PPtoKP + 90) - atanRadians);
 
-        float cos = (float) Math.cos(angleToPoint);
-        float sin = (float) Math.sin(angleToPoint);
-        float atan = (float) Math.atan(angleToPoint + 90);
-        Gdx.app.log("PS", "@panoroi\n" +
-                "cos " + cos + " sin " + sin + "\n" +
-                "atan" + atan);
+        deltaX = muutos * cos * kamera.zoom;
+        deltaY = muutos * sin * kamera.zoom;
 
-        deltaX = deltaX * atan;
-        deltaY = deltaY * atan;
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("PS", "@panoroi\n" +
+                "PPtoKP: " + PPtoKP + "\n" +
+                "cos " + cos + ", sin " + sin + "\n" +
+                "atan " + Math.toDegrees(atanRadians) + "\n" +
+                "deltaX: " + deltaX + ", deltaY: " + deltaY);
 
-        panpiste.x -= deltaX;
+        panpiste.x += deltaX;
         panpiste.y += deltaY;
     }
 }

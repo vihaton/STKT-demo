@@ -64,6 +64,7 @@ public class InfoButtonKasittelija {
         }
     }
 
+    //todo bug: infonappulat ei toimi, luuleeko panoroinniks?
     private void luoKuuntelija(Button button, Solmu s) {
         if (Integer.parseInt(s.getID()) == 1) {
             button.addListener(new ChangeListener() {

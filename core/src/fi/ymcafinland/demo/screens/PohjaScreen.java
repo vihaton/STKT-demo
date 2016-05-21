@@ -56,7 +56,8 @@ public class PohjaScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.log(logTag, "show() -metodia kutsuttiin");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log(logTag, "show() -metodia kutsuttiin");
         Gdx.input.setInputProcessor(stage);
 
         for (Stage stage : screeniinLiittyvatStaget) {
@@ -82,23 +83,27 @@ public class PohjaScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.log(logTag, "resize: width " + width + " height " + height);
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log(logTag, "resize: width " + width + " height " + height);
         viewport.update(width, height);
     }
 
     @Override
     public void pause() {
-        Gdx.app.log(logTag, "pause() - metodia kutsuttiin");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log(logTag, "pause() - metodia kutsuttiin");
     }
 
     @Override
     public void resume() {
-        Gdx.app.log(logTag, "resume() - metodia kutsuttiin");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log(logTag, "resume() - metodia kutsuttiin");
     }
 
     @Override
     public void hide() {
-        Gdx.app.log(logTag, "hide() - metodia kutsuttiin");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log(logTag, "hide() - metodia kutsuttiin");
     }
 
     /**
@@ -107,7 +112,8 @@ public class PohjaScreen implements Screen {
      */
     @Override
     public void dispose() {
-        Gdx.app.log(logTag, "dispose() - metodia kutsuttiin");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log(logTag, "dispose() - metodia kutsuttiin");
     }
 
     public ArrayList<Stage> getScreeniinLiittyvatStaget() {
