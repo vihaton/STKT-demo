@@ -70,7 +70,7 @@ public class Kamera extends OrthographicCamera {
         this.ylaraja = zoom * 1.75f;
 
         //Debug
-        //Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
+        //Gdx.app.log("Kamera", "camera.zoom: " + camera.zoom);
         //Gdx.app.log("Kamera", "alaraja: " + alaraja + "ylaraja:" + ylaraja);
     }
 
