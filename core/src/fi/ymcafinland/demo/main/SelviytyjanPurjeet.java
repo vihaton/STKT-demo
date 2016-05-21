@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
@@ -23,6 +24,7 @@ import fi.ymcafinland.demo.screens.InfoScreen;
 import fi.ymcafinland.demo.screens.LauncherScreen;
 import fi.ymcafinland.demo.screens.PalauteScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
+import fi.ymcafinland.demo.screens.PohjaScreen;
 import fi.ymcafinland.demo.screens.QuestionScreen;
 
 public class SelviytyjanPurjeet extends Game {
@@ -116,6 +118,12 @@ public class SelviytyjanPurjeet extends Game {
         masterSkin.add("SP_logo", new Texture("ic_launcher-web.png"));
 
         masterSkin.add("unavailable", new Texture("unavailable.png"));
+
+        masterSkin.add("menubutton", new Texture("menubutton.png"));
+
+        masterSkin.add("menutausta", new Texture("menutausta.png"));
+
+        masterSkin.add("menubar", new Texture("menubar.png"));
 
     }
 
@@ -215,11 +223,16 @@ public class SelviytyjanPurjeet extends Game {
         Button.ButtonStyle styleKartta = new Button.ButtonStyle();
         Button.ButtonStyle stylePalaute = new Button.ButtonStyle();
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
+        Button.ButtonStyle styleMenu = new Button.ButtonStyle();
+        TextButton.TextButtonStyle styleMenubar = new TextButton.TextButtonStyle();
 
+        styleMenubar.font = masterSkin.getFont("libgdxFont");
+        styleMenubar.up = masterSkin.getDrawable("menubar");
 
         styleKartta.up = masterSkin.getDrawable("minimap");
         styleKysymys.up = masterSkin.getDrawable("mini_kysymys");
         stylePalaute.up = new TextureRegionDrawable(new TextureRegion(masterSkin.get("mini_palaute", Texture.class)));
+        styleMenu.up = masterSkin.getDrawable("menubutton");
 
         masterSkin.add("styleParent", styleParent);
         masterSkin.add("styleLeft", styleLeft);
@@ -230,6 +243,8 @@ public class SelviytyjanPurjeet extends Game {
         masterSkin.add("styleKartta", styleKartta);
         masterSkin.add("stylePalaute", stylePalaute);
         masterSkin.add("styleKysymys", styleKysymys);
+        masterSkin.add("styleMenu", styleMenu);
+        masterSkin.add("styleMenubar", styleMenubar);
     }
 
     @Override
@@ -240,6 +255,14 @@ public class SelviytyjanPurjeet extends Game {
     @Override
     public void dispose() {
         super.dispose();
+    }
+
+    /**
+     * Screenin vaihto mielivaltaiseen screeniin
+     * @param screen
+     */
+    public void vaihdaScreeniin(PohjaScreen screen) {
+        setScreen(screen);
     }
 
     public void setQuestionScreen(Solmu solmu) {
@@ -254,6 +277,13 @@ public class SelviytyjanPurjeet extends Game {
     public void setPlayScreen() {
         playscreen.resetStateTime();
         setScreen(playscreen);
+    }
+
+    public void setAlkuScreen() {
+        setScreen(launcherScreen);
+    }
+    public void setInfoScreen(){
+        setScreen(infoScreen);
     }
 
     public Verkko getVerkko() {
@@ -288,6 +318,10 @@ public class SelviytyjanPurjeet extends Game {
     public QuestionScreen getQuestionScreen() {
         return questionScreen;
 
+    }
+
+    public LauncherScreen getAlkuScreen() {
+        return launcherScreen;
     }
 }
 

@@ -76,8 +76,6 @@ public class LauncherScreen extends PohjaScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log(logtag, "aloitusbuttonia painettiin, aloitetaan Selviytyjän Purjeet");
                 sp.init();
-                stage.dispose();
-                dispose();
             }
         });
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -20,6 +21,8 @@ import java.util.Collections;
 
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.screens.InfoScreen;
+import fi.ymcafinland.demo.screens.LauncherScreen;
 import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.screens.QuestionScreen;
 import fi.ymcafinland.demo.transitions.ScreenTransition;
@@ -43,7 +46,10 @@ public class HUD {
     protected Button child2;
     protected Button child3;
     protected Button kysymys;
-    protected Button palaute;
+    protected TextButton palaute;
+    protected TextButton info;
+    protected TextButton quit;
+    protected Button menu;
     private Button.ButtonStyle styleParent;
     private Button.ButtonStyle styleLeft;
     private Button.ButtonStyle styleRight;
@@ -52,6 +58,7 @@ public class HUD {
     private Button.ButtonStyle styleChild3;
 
     private Viewport viewport;
+    private Table menuTable;
     private Table topTable;
     private Table midTable;
     private Table botTable;
@@ -79,7 +86,7 @@ public class HUD {
         skin = masterSkin;
         this.solmu = solmu;
         this.playScreen = playScreen;
-
+        menuTable = new Table();
         hasParent = solmu.getMutsi() != null;
         lapsia = solmu.getLapset().size() > 1;
         sidePad = 10;
@@ -153,10 +160,36 @@ public class HUD {
                 }
             }
         });
+        menu.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                menuTable = new Table();
+                menuTable.setBounds(topTable.getX(), topTable.getY() + (0.8f * SelviytyjanPurjeet.V_HEIGHT), 200, 200);
+                menuTable.add(palaute).minSize(200, 66);
+                menuTable.row();
+                menuTable.add(info).minSize(200, 66);
+                menuTable.row();
+                menuTable.add(quit).minSize(200, 66);
+                menuTable.setBackground(skin.getDrawable("menutausta"));
+                topTable.top().left().add(menuTable);
 
+                stage.addActor(menuTable);
+                //ToDo Järkevä layout menun sisälle ja jonkinlainen collapse menulle. (joko ruksi tai kun painaa muualle kun menuun)
+
+            }
+        });
         palaute.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 playScreen.getSp().setPalauteScreen();
+            }
+        });
+        info.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                siirryInfoScreeniin();
+            }
+        });
+        quit.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                siirryAlkuScreeniin();
             }
         });
 
@@ -168,12 +201,22 @@ public class HUD {
         ScreenTransition st = new ScreenTransition(playScreen, qs, 0.5f);
 
         if (solmu.getID().equals("13")) {
-            Gdx.app.log("HUD", "kutsutaan ST.wildFadeTransitionia playScreenistä quostionScreeniin");
+            Gdx.app.log("HUD", "kutsutaan ST.wildFadeTransitionia playScreenistä questionScreeniin");
             st.wildFadeTransition();
         } else {
-            Gdx.app.log("HUD", "kutsutaan ST.fadeTransitionia playScreenistä quostionScreeniin");
+            Gdx.app.log("HUD", "kutsutaan ST.fadeTransitionia playScreenistä questionScreeniin");
             st.fadeTransition();
         }
+    }
+    public void siirryInfoScreeniin() {
+        InfoScreen is = playScreen.getSp().getInfoScreen();
+        ScreenTransition st = new ScreenTransition(playScreen, is, 0.5f);
+        st.fadeTransition();
+    }
+    public void siirryAlkuScreeniin() {
+        LauncherScreen as = playScreen.getSp().getAlkuScreen();
+        ScreenTransition st = new ScreenTransition(playScreen, as, 0.5f);
+        st.fadeTransition();
     }
 
 
@@ -185,6 +228,9 @@ public class HUD {
     public void update(Solmu solmu, boolean zoomedOut) {
         hasParent = solmu.getMutsi() != null;
         lapsia = solmu.getLapset().size() > 0;
+
+        menuTable.remove();
+
 
         updateButtons(solmu);
         updateTables();
@@ -238,7 +284,7 @@ public class HUD {
      */
     private void updateTables() {
         topTable.clearChildren();
-        topTable.top().left().add(palaute);
+        topTable.top().left().add(menu);
         topTable.add(parent).expandX();
         minimapTable.right().top().add(karttaNappi).size(230);
 
@@ -321,8 +367,20 @@ public class HUD {
         kysymys = new Button(skin.get("styleKysymys", Button.ButtonStyle.class));
         kysymys.setScale(scale);
 
-        palaute = new Button(skin.get("stylePalaute", Button.ButtonStyle.class));
+        //ToDo oikea skin
+        menu = new Button(skin.get("styleMenu", Button.ButtonStyle.class));
+        menu.setScale(scale);
+
+
+        palaute = new TextButton("Palaute",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         palaute.setScale(scale);
+
+        info = new TextButton("Info",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        info.setScale(scale);
+
+        quit = new TextButton("QUIT",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        quit.setScale(scale);
+
 
         parent = new Button(styleParent);
         parent.setScale(scale);
@@ -346,7 +404,7 @@ public class HUD {
         Collections.addAll(midJaBotTablejenNapit, leftSister, rightSister, child1, child2, child3, kysymys);
 
         ylarivinNapit = new ArrayList<>();
-        Collections.addAll(ylarivinNapit, karttaNappi, parent, palaute);
+        Collections.addAll(ylarivinNapit, karttaNappi, parent, menu);
     }
 
 

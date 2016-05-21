@@ -84,13 +84,12 @@ public class InfoScreen extends PohjaScreen {
     }
 
     private void createAlkuTestiButton(final SelviytyjanPurjeet sp) {
+        //Todo alkutesti näkyy nyt joka kerta kun infoscreen avataan, pitäiskö se olla näkyvissä vaan kerran?
         alkuButton = new Button(skin.get("alkuButtonStyle", Button.ButtonStyle.class));
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "alkutestibuttonia painettiin");
                 sp.setQuestionScreen(new Solmu("alkutesti", null));
-                stage.dispose();
-                dispose();
             }
         });
     }
@@ -101,8 +100,6 @@ public class InfoScreen extends PohjaScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "exitbuttonia painettiin");
                 sp.setPlayScreenMaxSelviytyjaan();
-                stage.dispose();
-                dispose();
             }
         });
     }
