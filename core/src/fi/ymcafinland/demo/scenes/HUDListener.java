@@ -94,9 +94,9 @@ public class HUDListener implements GestureDetector.GestureListener {
 
         hud.playScreen.alkaaTapahtua();
         if (initialDistance < distance) {
-            hud.playScreen.kamera.setZoom(-0.03f);
+            hud.playScreen.kamera.setZoom(-0.04f);
         } else {
-            hud.playScreen.kamera.setZoom(0.03f);
+            hud.playScreen.kamera.setZoom(0.04f);
         }
         return true;
     }

@@ -16,7 +16,11 @@ public class Kamera extends OrthographicCamera {
     protected boolean trans;
     private PlayScreen playScreen;
     private ZoomTransition zoomTransition;
-    private final float zoomDuration = 1.0f;    //s
+    private final float zoomDuration = 1.0f;    // s
+    private float currentZoomDuration = 0;      // viimeisimpänä suoritetun zoomin kesto
+    private float timeSinceLastZoomEvent = 0;   // kumulatiivinen deltalukema, nollataan zoomatessa
+    private float ylaraja;
+    private float alaraja;
 
 
     public Kamera(PlayScreen playScreen) {
@@ -31,6 +35,11 @@ public class Kamera extends OrthographicCamera {
     }
 
     public void paivitaKamera(float delta) {
+        // Lasketaan kumulatiivinen delta siten ettei ole mahdollisuutta ylivuotoon
+        if (timeSinceLastZoomEvent < Float.MAX_VALUE) {
+            this.timeSinceLastZoomEvent += delta;
+        }
+
         this.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
         if (playScreen.seurataanPolttoa) {
             this.position.set(playScreen.polttopiste);
@@ -41,7 +50,11 @@ public class Kamera extends OrthographicCamera {
             this.position.set(playScreen.panpiste);
         }
         rotateCamera();
-        actZoom(delta);
+
+        //actZoomia kutsutaan vain jos tällä zoomTransition on käynnissä
+        if (timeSinceLastZoomEvent < currentZoomDuration) {
+            actZoom(delta);
+        }
 
         this.update();
     }
@@ -49,7 +62,14 @@ public class Kamera extends OrthographicCamera {
 
     private void actZoom(float delta) {
         this.zoom = zoomTransition.zoomAct(delta);
+
+        //Zoom alaraja on 3/4 nykyisestä zoomista, yläraja 1.75 * normaali zoomi.
+        this.alaraja = (zoom / 4) * 3;
+        this.ylaraja = zoom * 1.75f;
+
+        //Debug
         //Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
+        //Gdx.app.log("Kamera", "alaraja: " + alaraja + "ylaraja:" + ylaraja);
     }
 
     private void rotateCamera() {
@@ -57,12 +77,13 @@ public class Kamera extends OrthographicCamera {
     }
 
 
-    public void setZoom(float ratio) {
+    public void setZoom(float lisays) {
         float z = getZoom();
-        if (z + ratio < 3 && z + ratio > 0.75) {
+        float uusiZoom = z + lisays;
+        if (uusiZoom < ylaraja && uusiZoom > alaraja) {
             //debug
-            //Gdx.app.log("PS", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
-            this.zoom += ratio;
+//            Gdx.app.log("Kamera", "vanha zoom " + getZoom() + ", uusi " + (z + increment));
+            this.zoom = uusiZoom;
         }
     }
 
@@ -71,10 +92,18 @@ public class Kamera extends OrthographicCamera {
     }
 
     public void zoomaaNormaaliin() {
+        timeSinceLastZoomEvent = 0;
+        currentZoomDuration = zoomDuration * 2;
+
         zoomTransition = new ZoomTransition(this.zoom, 1f, zoomDuration * 2, true);
+//        alaraja = 0.75f;
+//        ylaraja = 3f;
     }
 
     public void zoomaaUlos() {
+        timeSinceLastZoomEvent = 0;
+        currentZoomDuration = zoomDuration;
+
         zoomTransition = new ZoomTransition(this.zoom, 6f, zoomDuration, false);
     }
 
