@@ -134,7 +134,7 @@ public class Verkko {
         return lapset;
     }
 
-    //todo toisen tason solmujen sisältöjen päivitys assetteihin
+    //todo toisen tason solmujen otsikkojen päivitys assetteihin
     private void asetaOtsikotJaSisallot() {
         for (Solmu s : solmut) {
             String otsikko = myBundle.format("solmun_otsikko_" + s.getID());

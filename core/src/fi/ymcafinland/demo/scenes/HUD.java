@@ -80,7 +80,7 @@ public class HUD {
 
         //HUD EI implementoi inputProcessorin rajapintaa, vaan asettaa inputprocessoriksi tuntemansa inputmultiplexerin.
         this.stage = new Stage(viewport, sb);
-        this.im = new InputMultiplexer(this.stage, new GestureDetector(new HUDListener(this, viewport, sb)), playScreen.stage);
+        this.im = new InputMultiplexer(this.stage, new GestureDetector(new HUDListener(this)), playScreen.stage);
 //        playScreen.lisaaStage(stage); //lisää hudin stagen playscreenin tietoon näkymien vaihdoksia varten.
 
         skin = masterSkin;
@@ -201,10 +201,12 @@ public class HUD {
         ScreenTransition st = new ScreenTransition(playScreen, qs, 0.5f);
 
         if (solmu.getID().equals("13")) {
-            Gdx.app.log("HUD", "kutsutaan ST.wildFadeTransitionia playScreenistä questionScreeniin");
+            if (SelviytyjanPurjeet.LOG)
+                Gdx.app.log("HUD", "kutsutaan ST.wildFadeTransitionia playScreenistä quostionScreeniin");
             st.wildFadeTransition();
         } else {
-            Gdx.app.log("HUD", "kutsutaan ST.fadeTransitionia playScreenistä questionScreeniin");
+            if (SelviytyjanPurjeet.LOG)
+                Gdx.app.log("HUD", "kutsutaan ST.fadeTransitionia playScreenistä quostionScreeniin");
             st.fadeTransition();
         }
     }
@@ -409,24 +411,28 @@ public class HUD {
 
 
     public void right() {
-        Gdx.app.log("HList", "Swaipattu oikealle");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("HList", "Swaipattu oikealle");
         playScreen.setSolmu(solmu.getVasenSisarus());
     }
 
     public void left() {
-        Gdx.app.log("HList", "Swaipattu vasemmalle");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("HList", "Swaipattu vasemmalle");
         playScreen.setSolmu(solmu.getOikeaSisarus());
     }
 
     public void down() {
-        Gdx.app.log("Hlist", "Swaipattu alas");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("Hlist", "Swaipattu alas");
         if (hasParent) {
             playScreen.setSolmu(solmu.getMutsi());
         }
     }
 
     public void up() {
-        Gdx.app.log("HList", "Swaipattu ylös");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("HList", "Swaipattu ylös");
         if (lapsia) {
             playScreen.setSolmu(solmu.getLapset().get(1));
         } else if (kysymys.isVisible()) {

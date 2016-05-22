@@ -49,11 +49,13 @@ public class EdistymismittarinKasittelija {
         stage.addActor(progressTable);
     }
 
-    public void paivitaMittari(float delta, float angleToPoint1) {
-        progressBar.setValue(pelaaja.getVastausmaara());
-        progressBar.act(delta);
-
+    public void pyoritaMittaria(float angleToPoint) {
         progressTable.setTransform(true);
-        progressTable.setRotation(angleToPoint1 - 90);
+        progressTable.setRotation(angleToPoint - 90);
+    }
+
+    public void paivitaMittarinArvo(float delta) {
+        progressBar.setValue(pelaaja.getVastausprosentti());
+        progressBar.act(delta);
     }
 }

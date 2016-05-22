@@ -1,24 +1,22 @@
 package fi.ymcafinland.demo.scenes;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.viewport.Viewport;
+
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
  * Created by jwinter on 29.3.2016.
  */
 public class HUDListener implements GestureDetector.GestureListener {
-    private Viewport viewport;
-    private SpriteBatch sb;
-    private GestureDetector detector;
+
     private HUD hud;
+    int pans = 0;
 
     //todo zoomit, swaipit ja tapit yhteisymmärrykseen
-    public HUDListener(HUD hud, Viewport viewport, SpriteBatch sb) {
+    public HUDListener(HUD hud) {
         this.hud = hud;
-        this.viewport = viewport;
-        this.sb = sb;
     }
 
     @Override
@@ -28,6 +26,10 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
+        //debug
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("HLIST", "tap -metodia kutsuttu");
+
         hud.siirryLahinpaanPalloon(x, y);
         return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
     }
@@ -37,9 +39,20 @@ public class HUDListener implements GestureDetector.GestureListener {
         return false;
     }
 
-    //todo swaippi on liian herkkä, rajoja suuremmiksi kuin nolla
+    //todo bug: flingaus ylös kun ei oo parenttii jäädyttää ruudun eikä palauta sitä solmuun kun päästää irti
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
+        //debug
+
+        //todo riippuu deltasta + timeri
+        if (pans > 6 || pans == 0) {
+            return false;
+        }
+
+        hud.playScreen.paivitaPiste(hud.playScreen.polttopiste, hud.playScreen.panpiste);
+
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("HLIST", "fling -metodia kutsuttu");
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
             if (velocityX > 0) {
                 hud.right();
@@ -53,28 +66,50 @@ public class HUDListener implements GestureDetector.GestureListener {
                 hud.up();
             }
         }
-        return true;
+
+        pans = 0;
+        return false;
     }
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
+        //debug
+        pans++;
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("HLIST", "pan -metodia kutsuttu " + pans);
+
+        hud.playScreen.panoroi(deltaX, deltaY);
+
         return false;
     }
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
+
+        if (hud.playScreen.zoomedOut || pans < 6) {
+            return false;
+        }
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
+        hud.playScreen.resetPan();
+
+        pans = 0;
         return false;
     }
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
+        //debug
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("HLIST", "zoom -metodia kutsuttu");
+
         hud.playScreen.alkaaTapahtua();
-        if (initialDistance < distance && hud.playScreen.getZoom() > 0.2f) {
-            hud.playScreen.setZoom(-0.03f);
-        } else if (hud.playScreen.getZoom() < 5f) {
-            hud.playScreen.setZoom(0.03f);
+        if (initialDistance < distance) {
+            hud.playScreen.kamera.setZoom(-0.04f);
+        } else {
+            hud.playScreen.kamera.setZoom(0.04f);
         }
-        return true;
+        return false;
     }
 
     @Override
