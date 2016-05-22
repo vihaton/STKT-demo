@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
@@ -56,6 +57,12 @@ public class MasterSkin extends Skin {
         this.add("SP_logo", new Texture("ic_launcher-web.png"));
 
         this.add("unavailable", new Texture("unavailable.png"));
+
+        this.add("menubar", new Texture("menubar.png"));
+
+        this.add("menubutton", new Texture("menubutton.png"));
+
+        this.add("menutausta", new Texture("menutausta.png"));
 
     }
 
@@ -155,11 +162,15 @@ public class MasterSkin extends Skin {
         Button.ButtonStyle styleKartta = new Button.ButtonStyle();
         Button.ButtonStyle stylePalaute = new Button.ButtonStyle();
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
-
+        Button.ButtonStyle styleMenu = new Button.ButtonStyle();
+        TextButton.TextButtonStyle styleMenubar = new TextButton.TextButtonStyle();
 
         styleKartta.up = this.getDrawable("minimap");
         styleKysymys.up = this.getDrawable("mini_kysymys");
         stylePalaute.up = new TextureRegionDrawable(new TextureRegion(this.get("mini_palaute", Texture.class)));
+        styleMenu.up = this.getDrawable("menubutton");
+        styleMenubar.font = this.getFont("libgdxFont");
+        styleMenubar.up = this.getDrawable("menubar");
 
         this.add("styleParent", styleParent);
         this.add("styleLeft", styleLeft);
@@ -170,6 +181,8 @@ public class MasterSkin extends Skin {
         this.add("styleKartta", styleKartta);
         this.add("stylePalaute", stylePalaute);
         this.add("styleKysymys", styleKysymys);
+        this.add("styleMenu", styleMenu);
+        this.add("styleMenubar", styleMenubar);
     }
 
 }
