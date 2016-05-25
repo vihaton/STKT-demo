@@ -39,7 +39,6 @@ public class HUDListener implements GestureDetector.GestureListener {
         return false;
     }
 
-    //todo bug: flingaus ylös kun ei oo parenttii jäädyttää ruudun eikä palauta sitä solmuun kun päästää irti
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
@@ -49,7 +48,7 @@ public class HUDListener implements GestureDetector.GestureListener {
             return false;
         }
 
-        hud.playScreen.paivitaPiste(hud.playScreen.polttopiste, hud.playScreen.panpiste);
+
 
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HLIST", "fling -metodia kutsuttu");

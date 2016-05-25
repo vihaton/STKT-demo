@@ -73,6 +73,7 @@ public class HUD {
     private Solmu lapsi1;
     private Solmu lapsi2;
     private Solmu lapsi3;
+    private HUDListener hudListener;
 
     public HUD(final PlayScreen playScreen, SpriteBatch sb, Skin masterSkin, Solmu solmu) {
 
@@ -80,7 +81,8 @@ public class HUD {
 
         //HUD EI implementoi inputProcessorin rajapintaa, vaan asettaa inputprocessoriksi tuntemansa inputmultiplexerin.
         this.stage = new Stage(viewport, sb);
-        this.im = new InputMultiplexer(this.stage, new GestureDetector(new HUDListener(this)), playScreen.stage);
+        hudListener = new HUDListener(this);
+        this.im = new InputMultiplexer(this.stage, new GestureDetector(hudListener), playScreen.stage);
 //        playScreen.lisaaStage(stage); //lisää hudin stagen playscreenin tietoon näkymien vaihdoksia varten.
 
         skin = masterSkin;
@@ -413,27 +415,41 @@ public class HUD {
     public void right() {
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HList", "Swaipattu oikealle");
+        playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
+
         playScreen.setSolmu(solmu.getVasenSisarus());
     }
 
     public void left() {
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HList", "Swaipattu vasemmalle");
+        playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
+
         playScreen.setSolmu(solmu.getOikeaSisarus());
     }
 
     public void down() {
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("Hlist", "Swaipattu alas");
+
         if (hasParent) {
+            playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
             playScreen.setSolmu(solmu.getMutsi());
+        }else{
+            playScreen.setSolmu(solmu);
+            playScreen.resetPan();
         }
+
     }
 
     public void up() {
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HList", "Swaipattu ylös");
+
         if (lapsia) {
+
+            playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
+
             playScreen.setSolmu(solmu.getLapset().get(1));
         } else if (kysymys.isVisible()) {
             siirryQuestionScreeniin(solmu);
