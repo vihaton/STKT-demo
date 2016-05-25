@@ -49,7 +49,7 @@ public class HUDListener implements GestureDetector.GestureListener {
             return false;
         }
 
-        hud.playScreen.paivitaPiste(hud.playScreen.polttopiste, hud.playScreen.panpiste);
+
 
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HLIST", "fling -metodia kutsuttu");
