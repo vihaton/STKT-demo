@@ -12,11 +12,13 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 public class HUDListener implements GestureDetector.GestureListener {
 
     private HUD hud;
-    int pans = 0;
+    float delta;
+    float timer;
 
-    //todo zoomit, swaipit ja tapit yhteisymmärrykseen
-    public HUDListener(HUD hud) {
+    public HUDListener(HUD hud, float delta) {
         this.hud = hud;
+        this.delta = delta;
+        this.timer = 0;
     }
 
     @Override
@@ -41,10 +43,15 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
+        fling(velocityX,  velocityY,button, delta);
+        return false;
+    }
+
+
+    public boolean fling(float velocityX, float velocityY, int button, float delta) {
         //debug
 
-        //todo riippuu deltasta + timeri
-        if (pans > 6 || pans == 0) {
+        if (timer > 0.1f || timer == 0) {
             return false;
         }
 
@@ -66,17 +73,16 @@ public class HUDListener implements GestureDetector.GestureListener {
             }
         }
 
-        pans = 0;
+        timer = 0;
         return false;
     }
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        pans++;
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "pan -metodia kutsuttu " + pans);
-
+            Gdx.app.log("HLIST", "pan -metodia kutsuttu " + timer);
+        timer += delta;
         hud.playScreen.panoroi(deltaX, deltaY);
 
         return false;
@@ -85,14 +91,14 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
 
-        if (hud.playScreen.zoomedOut || pans < 6) {
+        if (hud.playScreen.zoomedOut || timer < 0.1f) {
             return false;
         }
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
         hud.playScreen.resetPan();
 
-        pans = 0;
+        timer = 0;
         return false;
     }
 
@@ -114,5 +120,8 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
         return false;
+    }
+    public void paivitaDelta(float delta){
+        this.delta = delta;
     }
 }

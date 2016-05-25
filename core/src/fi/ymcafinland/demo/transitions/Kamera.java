@@ -32,7 +32,6 @@ public class Kamera extends OrthographicCamera {
         this.playScreen = playScreen;
 
         this.zoomTransition = new ZoomTransition(1f, 1f, 0, true);
-
         this.deltaAVG = 0.02f;
         //näkymä on aluksi kaukana
         zoomedOut = false;

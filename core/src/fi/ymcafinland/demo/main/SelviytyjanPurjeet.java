@@ -35,7 +35,7 @@ public class SelviytyjanPurjeet extends Game {
     public static final int TAUSTAN_LEVEYS = 8192;
     public static final int TAUSTAN_KORKEUS = 8192;
 
-    public static final boolean LOG = false;
+    public static final boolean LOG = true;
 
     private Verkko verkko;
     private PlayScreen playscreen;
@@ -110,6 +110,7 @@ public class SelviytyjanPurjeet extends Game {
 
     public void setPlayScreen() {
         playscreen.resetStateTime();
+        playscreen.seurataanPolttoa = true;
         setScreen(playscreen);
     }
 

@@ -52,6 +52,7 @@ public class PlayScreen extends PohjaScreen {
     private boolean trans;
     private boolean zoomed;
 
+
     /**
      * Playscreen luokan konstruktori
      *
@@ -156,6 +157,7 @@ public class PlayScreen extends PohjaScreen {
 //        odota(10);
 //        if (LOG)
 //            Gdx.app.LOG("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter loppuodotus");
+        hud.paivitaDelta(delta);
     }
 
 
