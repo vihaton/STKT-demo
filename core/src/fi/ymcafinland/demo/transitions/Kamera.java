@@ -2,6 +2,7 @@ package fi.ymcafinland.demo.transitions;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -23,6 +24,8 @@ public class Kamera extends OrthographicCamera {
     private float timeSinceLastZoomEvent = 0;   // kumulatiivinen deltalukema, nollataan zoomatessa
     private float ylaraja;
     private float alaraja;
+    private Vector2 camMax = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS*0.8f, SelviytyjanPurjeet.TAUSTAN_KORKEUS*0.8f);
+    private Vector2 camMin = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS*0.2f, SelviytyjanPurjeet.TAUSTAN_KORKEUS*0.2f);
 
 
     public Kamera(PlayScreen playScreen) {
@@ -49,6 +52,8 @@ public class Kamera extends OrthographicCamera {
             playScreen.panpiste.y = playScreen.polttopiste.y;
 
         } else {
+            playScreen.panpiste.x = Math.min(camMax.x, Math.max(playScreen.panpiste.x, camMin.x));
+            playScreen.panpiste.y = Math.min(camMax.y, Math.max(playScreen.panpiste.y, camMin.y));
             this.position.set(playScreen.panpiste);
         }
         rotateCamera();
