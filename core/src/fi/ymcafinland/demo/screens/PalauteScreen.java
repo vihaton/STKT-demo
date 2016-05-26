@@ -4,7 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
+import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -18,7 +19,6 @@ public class PalauteScreen extends PohjaScreen {
     private final SelviytyjanPurjeet sp;
     private Pelaaja pelaaja;
     private Label arvio;
-    private Table rootTable;
 
     public PalauteScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja, Skin masterSkin) {
         super(masterSkin, "PalS");
@@ -31,26 +31,33 @@ public class PalauteScreen extends PohjaScreen {
     }
 
     private void luoSisalto() {
-        this.rootTable = new Table();
-        rootTable.setFillParent(true);
-
         Label otsikko = new Label(pelaaja.getNimi(), skin, "otsikko");
         rootTable.add(otsikko).top().expandX().padTop(otsikko.getHeight());
         rootTable.row();
 
+        //todo palautteet kolmesarakkeiseen taulukkoon: numero/nimi/prosentit
         this.arvio = new Label(pelaaja.toString(), skin, "arvio");
         arvio.setFontScale(2);
         rootTable.add(arvio).expand();
-
-        stage.addActor(rootTable);
     }
 
 
     @Override
     public void show() {
         super.show();
-        arvio.setText(pelaaja.valuesToString());
+
+        paivitaPalaute();
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+    }
+
+    private void paivitaPalaute() {
+        String palaute = "";
+        ArrayList<String> keinotJarjestyksessa = pelaaja.getSelviytymiskeinotJarjestyksessa();
+
+        for (int i = 0; i < keinotJarjestyksessa.size(); i++) {
+            palaute += keinotJarjestyksessa.get(i) + "\n";
+        }
+        arvio.setText(palaute);
     }
 
     @Override

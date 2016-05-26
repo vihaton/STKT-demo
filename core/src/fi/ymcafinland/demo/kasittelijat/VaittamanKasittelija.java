@@ -95,7 +95,8 @@ public class VaittamanKasittelija {
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("UITest", "slider: " + slider.getValue());
+                if (SelviytyjanPurjeet.LOG)
+                    Gdx.app.log("VK", "slider: " + slider.getValue());
                 nykyinenVaittama.setArvo(slider.getValue());
             }
         });

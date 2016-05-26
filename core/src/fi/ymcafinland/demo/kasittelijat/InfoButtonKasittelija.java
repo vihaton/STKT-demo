@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Verkko;
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
  * Created by Sasu on 2.5.2016.
@@ -47,7 +48,7 @@ public class InfoButtonKasittelija {
     private void luoInfoNapit() {
         for (Solmu s : solmut) {
             Button infoButton = new Button(skin.get("infoButtonStyle", Button.ButtonStyle.class));
-            luoKuuntelija(infoButton, s);
+            lisaaKuuntelija(infoButton, s);
 
             Table buttonTable = new Table();
 
@@ -64,76 +65,46 @@ public class InfoButtonKasittelija {
         }
     }
 
-    private void luoKuuntelija(Button button, Solmu s) {
-        if (Integer.parseInt(s.getID()) == 1) {
-            button.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    Gdx.app.log("IBK", "Info nappulaa painettu");
+    //todo bug: infonappulat ei toimi, luuleeko panoroinniks?
+    private void lisaaKuuntelija(Button button, Solmu s) {
 
-                    if (!zoomedOut) {
-                        Gdx.net.openURI("http://www.ymca.fi");
-                    }
-                }
-            });
-        }
-        if (Integer.parseInt(s.getID()) == 2) {
-            button.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    Gdx.app.log("IBK", "Info nappulaa painettu");
-
-                    if (!zoomedOut) {
-                        Gdx.net.openURI("http://www.mielenterveysseura.fi/fi");
-                    }
-                }
-            });
-        }
-        if (Integer.parseInt(s.getID()) == 3) {
-            button.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    Gdx.app.log("IBK", "Info nappulaa painettu");
-
-                    if (!zoomedOut) {
-                        Gdx.net.openURI("https://www.ray.fi");
-                    }
-                }
-            });
-        }
-        if (Integer.parseInt(s.getID()) == 4) {
-            button.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    Gdx.app.log("IBK", "Info nappulaa painettu");
-
-                    if (!zoomedOut) {
-                        Gdx.net.openURI("http://www.cameraobscura.fi/");
-                    }
-                }
-            });
-        }
-        if (Integer.parseInt(s.getID()) == 5) {
-            button.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    Gdx.app.log("IBK", "Info nappulaa painettu");
-
-                    if (!zoomedOut) {
-                        Gdx.net.openURI("https://www.youtube.com/watch?v=9R8aSKwTEMg");
-                    }
-                }
-            });
-        }
-        if (Integer.parseInt(s.getID()) == 6) {
-            button.addListener(new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    Gdx.app.log("IBK", "Info nappulaa painettu");
-
-                    if (!zoomedOut) {
-                        Gdx.net.openURI("https://www.riemurasia.net/kuva/Typera-jaatelo/164917");
-                    }
-                }
-            });
+        //Switch case hoitaa vertailun, luoKuuntelija metodi luo kuuntelijan nappulalle halutun nettisivun kera
+        switch (Integer.parseInt(s.getID())) {
+            case 1:
+                button.addListener(luoKuuntelija("http://www.ymca.fi"));
+                break;
+            case 2:
+                button.addListener(luoKuuntelija("http://www.mielenterveysseura.fi/fi"));
+                break;
+            case 3:
+                button.addListener(luoKuuntelija("https://www.ray.fi"));
+                break;
+            case 4:
+                button.addListener(luoKuuntelija("http://www.cameraobscura.fi/"));
+                break;
+            case 5:
+                button.addListener(luoKuuntelija("https://www.youtube.com/watch?v=9R8aSKwTEMg"));
+                break;
+            case 6:
+                button.addListener(luoKuuntelija("https://www.riemurasia.net/kuva/Typera-jaatelo/164917"));
+                break;
         }
 
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("IBK", "kuuntelija " + button.getClickListener() + " luotu");
     }
 
+    private ChangeListener luoKuuntelija(final String linkkisivu) {
+        return new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("IBK", "Info nappulaa painettu");
+
+                if (!zoomedOut) {
+                    Gdx.net.openURI(linkkisivu);
+                }
+            }
+        };
+    }
 
     public void paivitaInfoButtonit(float delta, float angleToPoint, boolean zoomedOut) {
         this.zoomedOut = zoomedOut;

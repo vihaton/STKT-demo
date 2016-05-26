@@ -23,6 +23,9 @@ public class Vaittama {
         this.mihinSelviytymiskeinoonVaikuttaa = (id - 7) / 3;
     }
 
+    /**
+     * @return sen ensimmäisen tason solmun id, mihin tämä väittämä vaikuttaa
+     */
     public int getMihinSelviytymiskeinoonVaikuttaa() {
         return mihinSelviytymiskeinoonVaikuttaa;
     }

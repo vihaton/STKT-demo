@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+
 /**
  * Created by xvixvi on 16.4.2016.
  * <p/>
@@ -18,8 +20,10 @@ public class Vaittamat {
 
     private HashMap<String, ArrayList<Vaittama>> karttaSolmujenVaittamista; //avaimena toisen tason solmun id (7-24)
     private ArrayList<String[]> rivit;
+    private int vaittamienMaara;
 
     public Vaittamat() {
+        vaittamienMaara = 0;
         Scanner lukija = luoLukija("vaittamat.csv");
 
         rivit = new ArrayList<>();
@@ -49,7 +53,8 @@ public class Vaittamat {
     }
 
     private void lueRivit(Scanner lukija) {
-        Gdx.app.log("VAITTAMAT", "luetaan rivit");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("VAITTAMAT", "luetaan rivit");
         while (lukija.hasNextLine()) {
             rivit.add(pilkoRivi(lukija.nextLine()));
         }
@@ -102,7 +107,8 @@ public class Vaittamat {
     }
 
     private void generoiVaittamat() {
-        Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
         ArrayList<Vaittama> alkutestinVaittamat = new ArrayList<>();
 
         for (int i = 0; i < 18; i++) { //jokaisen solmun...
@@ -123,10 +129,11 @@ public class Vaittamat {
                 solmunVaittamat.add(v);                     //...lisätään se väittämälistaan ja...
             }
 
+            vaittamienMaara += solmunVaittamat.size();
             karttaSolmujenVaittamista.put(id, solmunVaittamat); //...talletetaan väittämälista karttaan kyseisen solmun id.llä
         }
 
-        karttaSolmujenVaittamista.put("alkutesti", alkutestinVaittamat);
+        karttaSolmujenVaittamista.put("alkutesti", alkutestinVaittamat); //lisätään lopuksi alkutestiin valitut väittämät erikseen karttaan
     }
 
 
@@ -148,5 +155,9 @@ public class Vaittamat {
      */
     public ArrayList<Vaittama> getYhdenSolmunVaittamat(String solmunID) {
         return karttaSolmujenVaittamista.get(solmunID);
+    }
+
+    public int getMaara() {
+        return vaittamienMaara;
     }
 }
