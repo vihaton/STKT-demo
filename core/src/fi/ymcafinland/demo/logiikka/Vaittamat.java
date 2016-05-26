@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+
 /**
  * Created by xvixvi on 16.4.2016.
  * <p/>
@@ -51,7 +53,8 @@ public class Vaittamat {
     }
 
     private void lueRivit(Scanner lukija) {
-        Gdx.app.log("VAITTAMAT", "luetaan rivit");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("VAITTAMAT", "luetaan rivit");
         while (lukija.hasNextLine()) {
             rivit.add(pilkoRivi(lukija.nextLine()));
         }
@@ -104,7 +107,8 @@ public class Vaittamat {
     }
 
     private void generoiVaittamat() {
-        Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
         ArrayList<Vaittama> alkutestinVaittamat = new ArrayList<>();
 
         for (int i = 0; i < 18; i++) { //jokaisen solmun...

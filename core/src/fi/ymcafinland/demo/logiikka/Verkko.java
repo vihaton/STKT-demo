@@ -13,6 +13,8 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+
 /**
  * Selviytyjän purjeiden solmujen kokoelma. Vastaa solmujen luomisesta ja ylläpidosta.
  */
@@ -40,6 +42,8 @@ public class Verkko {
         try {
             myBundle = I18NBundle.createBundle(baseFileHandle);
         } catch (Exception e) {
+            if (SelviytyjanPurjeet.LOG)
+                Gdx.app.log("VERKKO", "ERROR: kielibundlen teko ei onnistunut, käytetään jesarimenetelmää.");
             String absolutePath = getAbsolutePathToFile();
             baseFileHandle = Gdx.files.absolute(absolutePath);
             myBundle = I18NBundle.createBundle(baseFileHandle);

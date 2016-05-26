@@ -35,7 +35,7 @@ public class SelviytyjanPurjeet extends Game {
     public static final int TAUSTAN_LEVEYS = 8192;
     public static final int TAUSTAN_KORKEUS = 8192;
 
-    public static final boolean LOG = false;
+    public static final boolean LOG = true;
 
     private Verkko verkko;
     private PlayScreen playscreen;
@@ -50,15 +50,20 @@ public class SelviytyjanPurjeet extends Game {
 
     @Override
     public void create() {
-        Gdx.app.log("SP", "SelviytyjänPurjeet -luokan create() -metodia kutsuttiin");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("SP", "SelviytyjänPurjeet -luokan create() -metodia kutsuttiin");
 
-        Gdx.app.log("SP", "Verkon luominen aloitetaan");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("SP", "Verkon luominen aloitetaan");
         verkko = new Verkko(TAUSTAN_LEVEYS, TAUSTAN_KORKEUS);
-        Gdx.app.log("SP", "Verkko luominen on valmis");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("SP", "Verkko luominen on valmis");
 
-        Gdx.app.log("SP", "Vaittamien luominen aloitetaan");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("SP", "Vaittamien luominen aloitetaan");
         vaittamat = new Vaittamat();
-        Gdx.app.log("SP", "Vaittamien luominen on valmis");
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("SP", "Vaittamien luominen on valmis");
 
         masterSkin = new MasterSkin();
         pelaaja = new Pelaaja();
@@ -130,7 +135,8 @@ public class SelviytyjanPurjeet extends Game {
      */
     public void setPlayScreenMaxSelviytyjaan() {
         Solmu vahvinSelviytymiskeino = verkko.getSolmut().get(pelaaja.getMaxSelviytymisenIndeksi());
-        Gdx.app.log("SP", "setPlayScreenMaxSelviytyjaan: vahvimman selviytymiskeinon perusteella set solmuksi laitetaan " + vahvinSelviytymiskeino.getOtsikko());
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("SP", "setPlayScreenMaxSelviytyjaan: vahvimman selviytymiskeinon perusteella set solmuksi laitetaan " + vahvinSelviytymiskeino.getOtsikko());
         playscreen.setSolmu(vahvinSelviytymiskeino);
         playscreen.asetaAlkuZoom();
         setScreen(playscreen);

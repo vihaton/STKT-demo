@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Verkko;
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
  * Created by Sasu on 2.5.2016.
@@ -88,8 +89,9 @@ public class InfoButtonKasittelija {
                 button.addListener(luoKuuntelija("https://www.riemurasia.net/kuva/Typera-jaatelo/164917"));
                 break;
         }
-        //Todo tänne log ehdollisuus masterswitchin kautta?
-        Gdx.app.log("IBK", "kuuntelija " + button.getClickListener() + "luotu");
+
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("IBK", "kuuntelija " + button.getClickListener() + " luotu");
     }
 
     private ChangeListener luoKuuntelija(final String linkkisivu) {

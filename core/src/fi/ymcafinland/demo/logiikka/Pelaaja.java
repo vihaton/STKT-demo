@@ -44,21 +44,41 @@ public class Pelaaja {
         vastausmaara = 0;
         vastatutVaittamat = new HashSet<>();
 //        lueSelviytymiskeinot();
+        kirjoitaSelviytymiskeinot();
+    }
+
+    /**
+     * Väliaikainen ratkaisu,kunnes @lueSelviytymiskeinot on korjattu.
+     */
+    private void kirjoitaSelviytymiskeinot() {
+        selviytymiskeinot = new String[6];
+        keinojenIndeksitJarjestyksessa = new int[6];
+
+        selviytymiskeinot[0] = "Fyysinen selviytyjä";
+        selviytymiskeinot[1] = "Älyllinen selviytyjä";
+        selviytymiskeinot[2] = "Eettinen selviytyjä";
+        selviytymiskeinot[3] = "Tunteellinen selviytyjä";
+        selviytymiskeinot[4] = "Sosiaalinen selviytyjä";
+        selviytymiskeinot[5] = "Luova selviytyjä";
+
+        for (int i = 0; i < 6; i++) {
+            keinojenIndeksitJarjestyksessa[i] = i;
+        }
     }
 
     //todo fixfix
-//    private void lueSelviytymiskeinot() {
-//        selviytymiskeinot = new String[6];
-//        keinojenIndeksitJarjestyksessa = new int[6];
-//        FileHandle fh = new FileHandle("solmujentekstit/solmut");
-//        I18NBundle myBundle = I18NBundle.createBundle(fh);
-//
-//        for (int i = 1; i < 7; i++) {
-//            String selviytyja = myBundle.format("solmun_otsikko_" + i);
-//            selviytymiskeinot[i - 1] = selviytyja;
-//            keinojenIndeksitJarjestyksessa[i - 1] = i - 1;
-//        }
-//    }
+    private void lueSelviytymiskeinot() {
+        selviytymiskeinot = new String[6];
+        keinojenIndeksitJarjestyksessa = new int[6];
+        FileHandle fh = new FileHandle("solmujentekstit/solmut");
+        I18NBundle myBundle = I18NBundle.createBundle(fh);
+
+        for (int i = 1; i < 7; i++) {
+            String selviytyja = myBundle.format("solmun_otsikko_" + i);
+            selviytymiskeinot[i - 1] = selviytyja;
+            keinojenIndeksitJarjestyksessa[i - 1] = i - 1;
+        }
+    }
 
     /**
      * @return prosenttiluvun (0-100)
@@ -99,6 +119,7 @@ public class Pelaaja {
      * Järjestää pelaajan selviytymiskeinot paremmuusjärjestykseen.
      */
     private void jarjestaSelviytymisarvot() {
+        //todo fix bug
         for (int i = 0; i < 6; i++) {       //jokaista selviytymiskeinoa...
             int isompia = 0;
             float selviytymisarvo = selviytyisArvot[i];
