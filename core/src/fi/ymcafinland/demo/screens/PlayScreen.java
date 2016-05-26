@@ -3,6 +3,7 @@ package fi.ymcafinland.demo.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -56,6 +57,8 @@ public class PlayScreen extends PohjaScreen {
     private ZoomTransition zoomTransition;
     private float zoomAlaraja;
     private float zoomYlaraja;
+    private Vector2 camMax = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS*0.8f, SelviytyjanPurjeet.TAUSTAN_KORKEUS*0.8f);
+    private Vector2 camMin = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS*0.2f, SelviytyjanPurjeet.TAUSTAN_KORKEUS*0.2f);
 
     /**
      * Playscreen luokan konstruktori
@@ -160,6 +163,8 @@ public class PlayScreen extends PohjaScreen {
             panpiste.y = polttopiste.y;
 
         } else {
+            panpiste.x = Math.min(camMax.x, Math.max(panpiste.x, camMin.x));
+            panpiste.y = Math.min(camMax.y, Math.max(panpiste.y, camMin.y));
             camera.position.set(panpiste);
         }
 
