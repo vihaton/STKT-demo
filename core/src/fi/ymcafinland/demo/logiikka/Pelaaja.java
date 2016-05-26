@@ -40,7 +40,7 @@ public class Pelaaja {
      */
     public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
-        selviytyisArvot = new float[]{7f, 7f, 7f, 7f, 7f, 7f};
+        selviytyisArvot = new float[]{0, 0, 0, 0, 0, 0};
         vastausmaara = 0;
         vastatutVaittamat = new HashSet<>();
 //        lueSelviytymiskeinot();
@@ -212,7 +212,11 @@ public class Pelaaja {
     }
 
     public float getSelviytymisarvo(int selviytymisaronIndeksi) {
-        return selviytyisArvot[selviytymisaronIndeksi];
+        float kaikkiarvot = 0;
+        for (int i = 0; i < 6; i++) {
+            kaikkiarvot += selviytyisArvot[i];
+        }
+        return selviytyisArvot[selviytymisaronIndeksi]/kaikkiarvot * 100;
     }
 
     public void setVaittamienMaara(int vaittamienMaara) {
