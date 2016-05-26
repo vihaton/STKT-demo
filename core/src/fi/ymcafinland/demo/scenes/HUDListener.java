@@ -30,8 +30,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean tap(float x, float y, int count, int button) {
         //debug
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "tap -metodia kutsuttu");
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "tap -metodia kutsuttu");
 
         hud.siirryLahinpaanPalloon(x, y);
         return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
@@ -78,8 +77,8 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "pan -metodia kutsuttu " + timer);
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "pan -metodia kutsuttu " + timer);
+
         timer += delta;
         hud.playScreen.panoroi(deltaX, deltaY);
 
