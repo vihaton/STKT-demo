@@ -2,6 +2,7 @@ package fi.ymcafinland.demo.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -42,16 +43,13 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         //debug
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "fling -metodia kutsuttu");
 
         //todo riippuu deltasta + timeri
         if (pans > 6 || pans == 0) {
             return false;
         }
 
-
-
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "fling -metodia kutsuttu");
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
             if (velocityX > 0) {
                 hud.right();
@@ -84,6 +82,8 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
+        //debug
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
         if (hud.playScreen.zoomedOut || pans < 6) {
             return false;
@@ -99,14 +99,13 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean zoom(float initialDistance, float distance) {
         //debug
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "zoom -metodia kutsuttu");
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "zoom -metodia kutsuttu");
 
         hud.playScreen.alkaaTapahtua();
         if (initialDistance < distance) {
-            hud.playScreen.kamera.setZoom(-0.04f);
+            hud.playScreen.setZoom(-0.03f);
         } else {
-            hud.playScreen.kamera.setZoom(0.04f);
+            hud.playScreen.setZoom(0.03f);
         }
         return false;
     }

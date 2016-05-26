@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import java.util.ArrayList;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
-import fi.ymcafinland.demo.transitions.Kamera;
 
 /**
  * Created by xvixvi on 30.4.2016.
