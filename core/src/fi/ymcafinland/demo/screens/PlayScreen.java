@@ -60,6 +60,7 @@ public class PlayScreen extends PohjaScreen {
     private Vector2 camMax = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS*0.8f, SelviytyjanPurjeet.TAUSTAN_KORKEUS*0.8f);
     private Vector2 camMin = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS*0.2f, SelviytyjanPurjeet.TAUSTAN_KORKEUS*0.2f);
 
+
     /**
      * Playscreen luokan konstruktori
      *
@@ -193,6 +194,7 @@ public class PlayScreen extends PohjaScreen {
 //        odota(10);
 //        if (LOG)
 //            Gdx.app.LOG("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter loppuodotus");
+        hud.paivitaDelta(delta);
     }
 
     public void odota(long milliseconds) {
