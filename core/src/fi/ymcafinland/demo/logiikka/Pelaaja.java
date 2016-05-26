@@ -119,17 +119,57 @@ public class Pelaaja {
      * Järjestää pelaajan selviytymiskeinot paremmuusjärjestykseen.
      */
     private void jarjestaSelviytymisarvot() {
-        //todo fix bug
+        //todo varmistu toiminnan oikeellisuudesta
+        int isompia;
         for (int i = 0; i < 6; i++) {       //jokaista selviytymiskeinoa...
-            int isompia = 0;
+            isompia = 0;
             float selviytymisarvo = selviytyisArvot[i];
             for (int j = 0; j < 6; j++) {   //...verrataan kaikkiin muihin...
                 if (i == j) continue;       //...paitsi itseensä...
-                if (selviytymisarvo <= selviytyisArvot[j])
+                if (selviytymisarvo < selviytyisArvot[j])
                     isompia++;              // ...ja käydään läpi kuinka monta isompaa arvoa on
             }
             keinojenIndeksitJarjestyksessa[isompia] = i; //lopuksi lisätään tarkasteltu selviytymiskeino omalle paikalleen
         }
+        poistaDuplikaattiListaltaJaLisaaPuuttuvaSelviytymyisKeino();
+    }
+
+
+    private void poistaDuplikaattiListaltaJaLisaaPuuttuvaSelviytymyisKeino(){
+        for(int i = 0; i< 6;i++){
+            int x = keinojenIndeksitJarjestyksessa[i];
+            for (int j = 0; j < 6; j++) {
+                int y = keinojenIndeksitJarjestyksessa[j];
+                if(i == j) continue;
+                if(x == y){
+                    ArrayList<Integer> vittu = new ArrayList<>();
+
+                    for(int a = 0; a <6;a++){
+                        vittu.add(keinojenIndeksitJarjestyksessa[a]);
+                    }
+                    for (int a = 0; a < 6; a++) {
+                        if(!vittu.contains(a)){
+                         vittu.add(a);
+                        }
+                    }
+                    Object[] st = vittu.toArray();
+                    for (Object s : st) {
+                        if (vittu.indexOf(s) != vittu.lastIndexOf(s)) {
+                            vittu.remove(vittu.lastIndexOf(s));
+                        }
+                    }
+                    for (int a = 0; a < 6; a++) {
+                        keinojenIndeksitJarjestyksessa[a] = vittu.get(a);
+
+                    }
+                }
+
+            }
+        }
+    }
+    public int getIndeksiJarjestetystaListasta(int i){
+
+        return keinojenIndeksitJarjestyksessa[i];
     }
 
     /**
