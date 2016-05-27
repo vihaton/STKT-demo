@@ -1,6 +1,5 @@
 package fi.ymcafinland.demo.logiikka;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.I18NBundle;
 
@@ -31,7 +30,7 @@ public class Pelaaja {
     private int vastausmaara;
     private HashSet<Integer> vastatutVaittamat;
     private String[] selviytymiskeinot;
-    private float[] selviytyisArvot;
+    private float[] selviytymisarvot;
     private Integer[] keinojenIndeksitJarjestyksessa;
 
     private String nimi;
@@ -41,7 +40,7 @@ public class Pelaaja {
      */
     public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
-        selviytyisArvot = new float[]{9.05f, 9.05f, 9.05f, 9.05f, 9.05f, 9.05f};
+        selviytymisarvot = new float[]{9.05f, 9.05f, 9.05f, 9.05f, 9.05f, 9.05f};
         vastausmaara = 0;
         vastatutVaittamat = new HashSet<>();
 //        lueSelviytymiskeinot();
@@ -68,18 +67,18 @@ public class Pelaaja {
     }
 
     //todo fixfix
-//    private void lueSelviytymiskeinot() {
-//        selviytymiskeinot = new String[6];
-//        keinojenIndeksitJarjestyksessa = new int[6];
-//        FileHandle fh = new FileHandle("solmujentekstit/solmut");
-//        I18NBundle myBundle = I18NBundle.createBundle(fh);
-//
-//        for (int i = 1; i < 7; i++) {
-//            String selviytyja = myBundle.format("solmun_otsikko_" + i);
-//            selviytymiskeinot[i - 1] = selviytyja;
-//            keinojenIndeksitJarjestyksessa[i - 1] = i - 1;
-//        }
-//    }
+    private void lueSelviytymiskeinot() {
+        selviytymiskeinot = new String[6];
+        keinojenIndeksitJarjestyksessa = new Integer[6];
+        FileHandle fh = new FileHandle("solmujentekstit/solmut");
+        I18NBundle myBundle = I18NBundle.createBundle(fh);
+
+        for (int i = 1; i < 7; i++) {
+            String selviytyja = myBundle.format("solmun_otsikko_" + i);
+            selviytymiskeinot[i - 1] = selviytyja;
+            keinojenIndeksitJarjestyksessa[i - 1] = i - 1;
+        }
+    }
 
     /**
      * @return prosenttiluvun (0-100)
@@ -98,18 +97,18 @@ public class Pelaaja {
     }
 
     public void lisaaSelviytymisarvoIndeksissa(int indeksissa, float maara) {
-        selviytyisArvot[indeksissa] += maara;
+        selviytymisarvot[indeksissa] += maara;
     }
 
     public void setSelviytymisarvoaIndeksissa(int i, float arvo) {
-        selviytyisArvot[i] = arvo;
+        selviytymisarvot[i] = arvo;
     }
 
     public int getMaxSelviytymisenIndeksi() {
         int maxID = 0;
-        float maxArvo = selviytyisArvot[maxID];
-        for (int i = 1; i < selviytyisArvot.length; i++) {
-            if (maxArvo < selviytyisArvot[i]) {
+        float maxArvo = selviytymisarvot[maxID];
+        for (int i = 1; i < selviytymisarvot.length; i++) {
+            if (maxArvo < selviytymisarvot[i]) {
                 maxID = i;
             }
         }
@@ -121,14 +120,13 @@ public class Pelaaja {
      */
     private void jarjestaSelviytymisarvot() {
         //todo varmistu toiminnan oikeellisuudesta
-        float [] kopio = selviytyisArvot.clone();
+        float [] kopio = selviytymisarvot.clone();
 
         for (int i = 0; i < 6; i++) {
             int kopionSuurin = etsiSuurimmanIndeksi(kopio);
+            kopio[kopionSuurin] = Float.MIN_VALUE;
             keinojenIndeksitJarjestyksessa[i] = kopionSuurin;
         }
-
-        kopio = null;
     }
 
     private int etsiSuurimmanIndeksi(float [] lista) {
@@ -144,43 +142,9 @@ public class Pelaaja {
                 suurimmanIndeksi = i;
             }
         }
-        lista[suurimmanIndeksi] = Float.MIN_VALUE;
         return suurimmanIndeksi;
     }
 
-
-//    private void poistaDuplikaattiListaltaJaLisaaPuuttuvaSelviytymyisKeino(){
-//        for(int i = 0; i< 6;i++){
-//            int x = keinojenIndeksitJarjestyksessa[i];
-//            for (int j = 0; j < 6; j++) {
-//                int y = keinojenIndeksitJarjestyksessa[j];
-//                if(i == j) continue;
-//                if(x == y){
-//                    ArrayList<Integer> selviytymisia = new ArrayList<>();
-//
-//                    for(int a = 0; a <6;a++){
-//                        selviytymisia.add(keinojenIndeksitJarjestyksessa[a]);
-//                    }
-//                    for (int a = 0; a < 6; a++) {
-//                        if(!selviytymisia.contains(a)){
-//                         selviytymisia.add(a);
-//                        }
-//                    }
-//                    Object[] st = selviytymisia.toArray();
-//                    for (Object s : st) {
-//                        if (selviytymisia.indexOf(s) != selviytymisia.lastIndexOf(s)) {
-//                            selviytymisia.remove(selviytymisia.lastIndexOf(s));
-//                        }
-//                    }
-//                    for (int a = 0; a < 6; a++) {
-//                        keinojenIndeksitJarjestyksessa[a] = selviytymisia.get(a);
-//
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
     public int getIndeksiJarjestetystaListasta(int i){
 
         return keinojenIndeksitJarjestyksessa[i];
@@ -213,30 +177,30 @@ public class Pelaaja {
     }
 
     public String valuesToString() {
-        return "Fyysinen: " + String.format("%.1f", selviytyisArvot[FYYSINEN]) + "\n" +
-                "Älyllinen: " + String.format("%.1f", selviytyisArvot[ALYLLINEN]) + "\n" +
-                "Eettinen: " + String.format("%.1f", selviytyisArvot[EETTINEN]) + "\n" +
-                "Tunteellinen: " + String.format("%.1f", selviytyisArvot[TUNTEELLINEN]) + "\n" +
-                "Sosiaalinen: " + String.format("%.1f", selviytyisArvot[SOSIAALINEN]) + "\n" +
-                "Luova: " + String.format("%.1f", selviytyisArvot[LUOVA]) + "\n";
+        return "Fyysinen: " + String.format("%.1f", selviytymisarvot[FYYSINEN]) + "\n" +
+                "Älyllinen: " + String.format("%.1f", selviytymisarvot[ALYLLINEN]) + "\n" +
+                "Eettinen: " + String.format("%.1f", selviytymisarvot[EETTINEN]) + "\n" +
+                "Tunteellinen: " + String.format("%.1f", selviytymisarvot[TUNTEELLINEN]) + "\n" +
+                "Sosiaalinen: " + String.format("%.1f", selviytymisarvot[SOSIAALINEN]) + "\n" +
+                "Luova: " + String.format("%.1f", selviytymisarvot[LUOVA]) + "\n";
     }
 
     public boolean onkoVastannut(Vaittama v) {
         return vastatutVaittamat.contains(v.hashCode());
     }
 
-    public float getSelviytymisprosentit(int selviytymisaronIndeksi) {
+    public float getSelviytymisprosentit(int selviytymisarvonIndeksi) {
         float kaikkiarvot = 0;
         float lisattava = 0;
-        if(selviytyisArvot[keinojenIndeksitJarjestyksessa[5]] < 0) {
-            lisattava = -selviytyisArvot[keinojenIndeksitJarjestyksessa[5]];
+        if(selviytymisarvot[keinojenIndeksitJarjestyksessa[5]] < 0) {
+            lisattava = -selviytymisarvot[keinojenIndeksitJarjestyksessa[5]];
         }
-        float[] palautettavatArvot = selviytyisArvot;
+        float[] palautettavatArvot = selviytymisarvot;
         for (int i = 0; i < 6; i++) {
             palautettavatArvot[i] += lisattava;
             kaikkiarvot += palautettavatArvot[i];
         }
-        return palautettavatArvot[selviytymisaronIndeksi]/kaikkiarvot * 100;
+        return palautettavatArvot[selviytymisarvonIndeksi]/kaikkiarvot * 100;
     }
 
     public void setVaittamienMaara(int vaittamienMaara) {
