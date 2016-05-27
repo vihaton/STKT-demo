@@ -1,5 +1,6 @@
 package fi.ymcafinland.demo.logiikka;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.I18NBundle;
 
@@ -120,46 +121,30 @@ public class Pelaaja {
      */
     private void jarjestaSelviytymisarvot() {
         //todo varmistu toiminnan oikeellisuudesta
-        int isompia;
-        Integer[] laitettavaindeksi = new Integer[6];
+        float [] kopio = selviytyisArvot.clone();
+
         for (int i = 0; i < 6; i++) {
-            isompia = 0;
-            float selviytymisarvo = selviytyisArvot[i];
-            for (int j = 0; j < 6; j++) {
-                if (i == j) continue;
-                if(selviytymisarvo <= selviytyisArvot[j]){
-                    isompia++;
-                }
+            int kopionSuurin = etsiSuurimmanIndeksi(kopio);
+            keinojenIndeksitJarjestyksessa[i] = kopionSuurin;
+        }
+
+        kopio = null;
+    }
+
+    private int etsiSuurimmanIndeksi(float [] lista) {
+        int suurin = 0;
+        int suurimmanIndeksi = 0;
+
+        for (int i = 0; i < lista.length; i++) {
+            if (lista[i] == Float.MIN_VALUE) {
+                continue;
             }
-            laitettavaindeksi[i] = isompia;
+            if (suurin < lista[i]) {
+                suurimmanIndeksi = i;
+            }
         }
-
-        for (int i = 0; i < 5; i++) {
-            keinojenIndeksitJarjestyksessa[laitettavaindeksi[i]] = i;
-        }
-
-
-
-
-
-
-
-
-
-
-
-//        int isompia;
-//        for (int i = 0; i < 6; i++) {       //jokaista selviytymiskeinoa...
-//            isompia = 0;
-//            float selviytymisarvo = selviytyisArvot[i];
-//            for (int j = 0; j < 6; j++) {   //...verrataan kaikkiin muihin...
-//                if (i == j) continue;       //...paitsi itseensä...
-//                if (selviytymisarvo < selviytyisArvot[j])
-//                    isompia++;              // ...ja käydään läpi kuinka monta isompaa arvoa on
-//            }
-//            keinojenIndeksitJarjestyksessa[isompia] = i; //lopuksi lisätään tarkasteltu selviytymiskeino omalle paikalleen
-//        }
-//        poistaDuplikaattiListaltaJaLisaaPuuttuvaSelviytymyisKeino();
+        lista[suurimmanIndeksi] = Float.MIN_VALUE;
+        return suurimmanIndeksi;
     }
 
 
