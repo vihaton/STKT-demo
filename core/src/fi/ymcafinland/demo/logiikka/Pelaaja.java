@@ -41,7 +41,7 @@ public class Pelaaja {
      */
     public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
-        selviytyisArvot = new float[]{10, 10, 10, 10, 10, 10};
+        selviytyisArvot = new float[]{9.05f, 9.05f, 9.05f, 9.05f, 9.05f, 9.05f};
         vastausmaara = 0;
         vastatutVaittamat = new HashSet<>();
 //        lueSelviytymiskeinot();
