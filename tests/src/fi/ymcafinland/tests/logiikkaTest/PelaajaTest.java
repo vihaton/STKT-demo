@@ -27,9 +27,9 @@ public class PelaajaTest {
 
     @Test
     public void lisaysPositiivisellaTest() {
-        float alkuarvo = pelaaja.getSelviytymisarvo(Pelaaja.ALYLLINEN);
+        float alkuarvo = pelaaja.getSelviytymisprosentit(Pelaaja.ALYLLINEN);
         pelaaja.lisaaSelviytymisarvoIndeksissa(Pelaaja.ALYLLINEN, 1);
-        Assert.assertEquals(pelaaja.getSelviytymisarvo(Pelaaja.ALYLLINEN), alkuarvo + 1f);
+        Assert.assertEquals(pelaaja.getSelviytymisprosentit(Pelaaja.ALYLLINEN), alkuarvo + 1f);
     }
 
     @Test

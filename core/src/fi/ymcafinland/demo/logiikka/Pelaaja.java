@@ -211,12 +211,16 @@ public class Pelaaja {
         return vastatutVaittamat.contains(v.hashCode());
     }
 
-    public float getSelviytymisarvo(int selviytymisaronIndeksi) {
+    public float getSelviytymisprosentit(int selviytymisaronIndeksi) {
         float kaikkiarvot = 0;
+        float lisattava = selviytyisArvot[keinojenIndeksitJarjestyksessa[5]];
+        float[] palautettavatArvot = selviytyisArvot;
         for (int i = 0; i < 6; i++) {
-            kaikkiarvot += selviytyisArvot[i];
+            if(lisattava < 0)
+                palautettavatArvot[i] += -lisattava;
+            kaikkiarvot += palautettavatArvot[i];
         }
-        return selviytyisArvot[selviytymisaronIndeksi]/kaikkiarvot * 100;
+        return palautettavatArvot[selviytymisaronIndeksi]/kaikkiarvot * 100;
     }
 
     public void setVaittamienMaara(int vaittamienMaara) {
