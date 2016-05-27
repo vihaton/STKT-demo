@@ -213,11 +213,13 @@ public class Pelaaja {
 
     public float getSelviytymisprosentit(int selviytymisaronIndeksi) {
         float kaikkiarvot = 0;
-        float lisattava = selviytyisArvot[keinojenIndeksitJarjestyksessa[5]];
+        float lisattava = 0;
+        if(selviytyisArvot[keinojenIndeksitJarjestyksessa[5]] < 0) {
+            lisattava = -selviytyisArvot[keinojenIndeksitJarjestyksessa[5]];
+        }
         float[] palautettavatArvot = selviytyisArvot;
         for (int i = 0; i < 6; i++) {
-            if(lisattava < 0)
-                palautettavatArvot[i] += -lisattava;
+            palautettavatArvot[i] += lisattava;
             kaikkiarvot += palautettavatArvot[i];
         }
         return palautettavatArvot[selviytymisaronIndeksi]/kaikkiarvot * 100;
