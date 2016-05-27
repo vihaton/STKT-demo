@@ -31,7 +31,7 @@ public class Pelaaja {
     private HashSet<Integer> vastatutVaittamat;
     private String[] selviytymiskeinot;
     private float[] selviytyisArvot;
-    private int[] keinojenIndeksitJarjestyksessa;
+    private Integer[] keinojenIndeksitJarjestyksessa;
 
     private String nimi;
 
@@ -40,7 +40,7 @@ public class Pelaaja {
      */
     public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
-        selviytyisArvot = new float[]{0, 0, 0, 0, 0, 0};
+        selviytyisArvot = new float[]{13, 13, 13, 13, 13, 13};
         vastausmaara = 0;
         vastatutVaittamat = new HashSet<>();
 //        lueSelviytymiskeinot();
@@ -52,7 +52,7 @@ public class Pelaaja {
      */
     private void kirjoitaSelviytymiskeinot() {
         selviytymiskeinot = new String[6];
-        keinojenIndeksitJarjestyksessa = new int[6];
+        keinojenIndeksitJarjestyksessa = new Integer[6];
 
         selviytymiskeinot[0] = "Fyysinen selviytyjä";
         selviytymiskeinot[1] = "Älyllinen selviytyjä";
@@ -67,18 +67,18 @@ public class Pelaaja {
     }
 
     //todo fixfix
-    private void lueSelviytymiskeinot() {
-        selviytymiskeinot = new String[6];
-        keinojenIndeksitJarjestyksessa = new int[6];
-        FileHandle fh = new FileHandle("solmujentekstit/solmut");
-        I18NBundle myBundle = I18NBundle.createBundle(fh);
-
-        for (int i = 1; i < 7; i++) {
-            String selviytyja = myBundle.format("solmun_otsikko_" + i);
-            selviytymiskeinot[i - 1] = selviytyja;
-            keinojenIndeksitJarjestyksessa[i - 1] = i - 1;
-        }
-    }
+//    private void lueSelviytymiskeinot() {
+//        selviytymiskeinot = new String[6];
+//        keinojenIndeksitJarjestyksessa = new int[6];
+//        FileHandle fh = new FileHandle("solmujentekstit/solmut");
+//        I18NBundle myBundle = I18NBundle.createBundle(fh);
+//
+//        for (int i = 1; i < 7; i++) {
+//            String selviytyja = myBundle.format("solmun_otsikko_" + i);
+//            selviytymiskeinot[i - 1] = selviytyja;
+//            keinojenIndeksitJarjestyksessa[i - 1] = i - 1;
+//        }
+//    }
 
     /**
      * @return prosenttiluvun (0-100)
@@ -121,52 +121,80 @@ public class Pelaaja {
     private void jarjestaSelviytymisarvot() {
         //todo varmistu toiminnan oikeellisuudesta
         int isompia;
-        for (int i = 0; i < 6; i++) {       //jokaista selviytymiskeinoa...
+        Integer[] laitettavaindeksi = new Integer[6];
+        for (int i = 0; i < 6; i++) {
             isompia = 0;
             float selviytymisarvo = selviytyisArvot[i];
-            for (int j = 0; j < 6; j++) {   //...verrataan kaikkiin muihin...
-                if (i == j) continue;       //...paitsi itseensä...
-                if (selviytymisarvo < selviytyisArvot[j])
-                    isompia++;              // ...ja käydään läpi kuinka monta isompaa arvoa on
-            }
-            keinojenIndeksitJarjestyksessa[isompia] = i; //lopuksi lisätään tarkasteltu selviytymiskeino omalle paikalleen
-        }
-        poistaDuplikaattiListaltaJaLisaaPuuttuvaSelviytymyisKeino();
-    }
-
-
-    private void poistaDuplikaattiListaltaJaLisaaPuuttuvaSelviytymyisKeino(){
-        for(int i = 0; i< 6;i++){
-            int x = keinojenIndeksitJarjestyksessa[i];
             for (int j = 0; j < 6; j++) {
-                int y = keinojenIndeksitJarjestyksessa[j];
-                if(i == j) continue;
-                if(x == y){
-                    ArrayList<Integer> vittu = new ArrayList<>();
-
-                    for(int a = 0; a <6;a++){
-                        vittu.add(keinojenIndeksitJarjestyksessa[a]);
-                    }
-                    for (int a = 0; a < 6; a++) {
-                        if(!vittu.contains(a)){
-                         vittu.add(a);
-                        }
-                    }
-                    Object[] st = vittu.toArray();
-                    for (Object s : st) {
-                        if (vittu.indexOf(s) != vittu.lastIndexOf(s)) {
-                            vittu.remove(vittu.lastIndexOf(s));
-                        }
-                    }
-                    for (int a = 0; a < 6; a++) {
-                        keinojenIndeksitJarjestyksessa[a] = vittu.get(a);
-
-                    }
+                if (i == j) continue;
+                if(selviytymisarvo <= selviytyisArvot[j]){
+                    isompia++;
                 }
-
             }
+            laitettavaindeksi[i] = isompia;
         }
+
+        for (int i = 0; i < 5; i++) {
+            keinojenIndeksitJarjestyksessa[laitettavaindeksi[i]] = i;
+        }
+
+
+
+
+
+
+
+
+
+
+
+//        int isompia;
+//        for (int i = 0; i < 6; i++) {       //jokaista selviytymiskeinoa...
+//            isompia = 0;
+//            float selviytymisarvo = selviytyisArvot[i];
+//            for (int j = 0; j < 6; j++) {   //...verrataan kaikkiin muihin...
+//                if (i == j) continue;       //...paitsi itseensä...
+//                if (selviytymisarvo < selviytyisArvot[j])
+//                    isompia++;              // ...ja käydään läpi kuinka monta isompaa arvoa on
+//            }
+//            keinojenIndeksitJarjestyksessa[isompia] = i; //lopuksi lisätään tarkasteltu selviytymiskeino omalle paikalleen
+//        }
+//        poistaDuplikaattiListaltaJaLisaaPuuttuvaSelviytymyisKeino();
     }
+
+
+//    private void poistaDuplikaattiListaltaJaLisaaPuuttuvaSelviytymyisKeino(){
+//        for(int i = 0; i< 6;i++){
+//            int x = keinojenIndeksitJarjestyksessa[i];
+//            for (int j = 0; j < 6; j++) {
+//                int y = keinojenIndeksitJarjestyksessa[j];
+//                if(i == j) continue;
+//                if(x == y){
+//                    ArrayList<Integer> selviytymisia = new ArrayList<>();
+//
+//                    for(int a = 0; a <6;a++){
+//                        selviytymisia.add(keinojenIndeksitJarjestyksessa[a]);
+//                    }
+//                    for (int a = 0; a < 6; a++) {
+//                        if(!selviytymisia.contains(a)){
+//                         selviytymisia.add(a);
+//                        }
+//                    }
+//                    Object[] st = selviytymisia.toArray();
+//                    for (Object s : st) {
+//                        if (selviytymisia.indexOf(s) != selviytymisia.lastIndexOf(s)) {
+//                            selviytymisia.remove(selviytymisia.lastIndexOf(s));
+//                        }
+//                    }
+//                    for (int a = 0; a < 6; a++) {
+//                        keinojenIndeksitJarjestyksessa[a] = selviytymisia.get(a);
+//
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
     public int getIndeksiJarjestetystaListasta(int i){
 
         return keinojenIndeksitJarjestyksessa[i];
