@@ -57,8 +57,8 @@ public class PlayScreen extends PohjaScreen {
     private ZoomTransition zoomTransition;
     private float zoomAlaraja;
     private float zoomYlaraja;
-    private Vector2 camMax = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS*0.8f, SelviytyjanPurjeet.TAUSTAN_KORKEUS*0.8f);
-    private Vector2 camMin = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS*0.2f, SelviytyjanPurjeet.TAUSTAN_KORKEUS*0.2f);
+    private Vector2 camMax = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS * 0.8f, SelviytyjanPurjeet.TAUSTAN_KORKEUS * 0.8f);
+    private Vector2 camMin = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS * 0.2f, SelviytyjanPurjeet.TAUSTAN_KORKEUS * 0.2f);
 
 
     /**
@@ -213,21 +213,6 @@ public class PlayScreen extends PohjaScreen {
         infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
     }
 
-    private float deltaManipulation(float delta) {
-        if (delta > 0.1f || delta < 0.005f) {
-            delta = deltaAVG;
-        }
-
-        deltaAVG = (deltaAVG * 19 + delta) / 20;
-
-        return delta;
-    }
-
-//        private void actTransition(float delta) {
-//            if (stateTime < moveDuration * 1000 + idleTime) {
-//                transition.act(delta);
-//                =======
-
     public void actTransition(float delta) {
         if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
             transition.act(delta);
@@ -239,7 +224,8 @@ public class PlayScreen extends PohjaScreen {
 
     private void actZoom(float delta) {
         camera.zoom = zoomTransition.zoomAct(delta);
-        //Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
+//        if (SelviytyjanPurjeet.LOG)
+//            Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
 
         //Zoom alaraja on 3/4 nykyisestä zoomista, yläraja 1.75 * normaali zoomi.
         this.zoomAlaraja = (camera.zoom / 4) * 3;
@@ -369,7 +355,7 @@ public class PlayScreen extends PohjaScreen {
         return panpiste;
     }
 
-    public OrthographicCamera getCamera(){
+    public OrthographicCamera getCamera() {
         return camera;
     }
 
@@ -387,10 +373,10 @@ public class PlayScreen extends PohjaScreen {
 
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("PS", "@panoroi\n" +
-                "PPtoKP: " + PPtoKP + "\n" +
-                "cos " + cos + ", sin " + sin + "\n" +
-                "atan " + Math.toDegrees(atanRadians) + "\n" +
-                "deltaX: " + deltaX + ", deltaY: " + deltaY);
+                    "PPtoKP: " + PPtoKP + "\n" +
+                    "cos " + cos + ", sin " + sin + "\n" +
+                    "atan " + Math.toDegrees(atanRadians) + "\n" +
+                    "deltaX: " + deltaX + ", deltaY: " + deltaY);
 
         panpiste.x += deltaX;
         panpiste.y += deltaY;
