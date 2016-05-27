@@ -30,8 +30,8 @@ public class Pelaaja {
     private int vastausmaara;
     private HashSet<Integer> vastatutVaittamat;
     private String[] selviytymiskeinot;
-    private float[] selviytyisArvot;
-    private int[] keinojenIndeksitJarjestyksessa;
+    private float[] selviytymisarvot;
+    private Integer[] keinojenIndeksitJarjestyksessa;
 
     private String nimi;
 
@@ -40,7 +40,7 @@ public class Pelaaja {
      */
     public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
-        selviytyisArvot = new float[]{7f, 7f, 7f, 7f, 7f, 7f};
+        selviytymisarvot = new float[]{9.05f, 9.05f, 9.05f, 9.05f, 9.05f, 9.05f};
         vastausmaara = 0;
         vastatutVaittamat = new HashSet<>();
 //        lueSelviytymiskeinot();
@@ -52,7 +52,7 @@ public class Pelaaja {
      */
     private void kirjoitaSelviytymiskeinot() {
         selviytymiskeinot = new String[6];
-        keinojenIndeksitJarjestyksessa = new int[6];
+        keinojenIndeksitJarjestyksessa = new Integer[6];
 
         selviytymiskeinot[0] = "Fyysinen selviytyjä";
         selviytymiskeinot[1] = "Älyllinen selviytyjä";
@@ -69,7 +69,7 @@ public class Pelaaja {
     //todo fixfix
     private void lueSelviytymiskeinot() {
         selviytymiskeinot = new String[6];
-        keinojenIndeksitJarjestyksessa = new int[6];
+        keinojenIndeksitJarjestyksessa = new Integer[6];
         FileHandle fh = new FileHandle("solmujentekstit/solmut");
         I18NBundle myBundle = I18NBundle.createBundle(fh);
 
@@ -97,18 +97,18 @@ public class Pelaaja {
     }
 
     public void lisaaSelviytymisarvoIndeksissa(int indeksissa, float maara) {
-        selviytyisArvot[indeksissa] += maara;
+        selviytymisarvot[indeksissa] += maara;
     }
 
     public void setSelviytymisarvoaIndeksissa(int i, float arvo) {
-        selviytyisArvot[i] = arvo;
+        selviytymisarvot[i] = arvo;
     }
 
     public int getMaxSelviytymisenIndeksi() {
         int maxID = 0;
-        float maxArvo = selviytyisArvot[maxID];
-        for (int i = 1; i < selviytyisArvot.length; i++) {
-            if (maxArvo < selviytyisArvot[i]) {
+        float maxArvo = selviytymisarvot[maxID];
+        for (int i = 1; i < selviytymisarvot.length; i++) {
+            if (maxArvo < selviytymisarvot[i]) {
                 maxID = i;
             }
         }
@@ -119,17 +119,35 @@ public class Pelaaja {
      * Järjestää pelaajan selviytymiskeinot paremmuusjärjestykseen.
      */
     private void jarjestaSelviytymisarvot() {
-        //todo fix bug
-        for (int i = 0; i < 6; i++) {       //jokaista selviytymiskeinoa...
-            int isompia = 0;
-            float selviytymisarvo = selviytyisArvot[i];
-            for (int j = 0; j < 6; j++) {   //...verrataan kaikkiin muihin...
-                if (i == j) continue;       //...paitsi itseensä...
-                if (selviytymisarvo <= selviytyisArvot[j])
-                    isompia++;              // ...ja käydään läpi kuinka monta isompaa arvoa on
-            }
-            keinojenIndeksitJarjestyksessa[isompia] = i; //lopuksi lisätään tarkasteltu selviytymiskeino omalle paikalleen
+        //todo varmistu toiminnan oikeellisuudesta
+        float [] kopio = selviytymisarvot.clone();
+
+        for (int i = 0; i < 6; i++) {
+            int kopionSuurin = etsiSuurimmanIndeksi(kopio);
+            kopio[kopionSuurin] = Float.MIN_VALUE;
+            keinojenIndeksitJarjestyksessa[i] = kopionSuurin;
         }
+    }
+
+    private int etsiSuurimmanIndeksi(float [] lista) {
+        float suurin = 0;
+        int suurimmanIndeksi = 0;
+
+        for (int i = 0; i < lista.length; i++) {
+            if (lista[i] == Float.MIN_VALUE) {
+                continue;
+            }
+            if (suurin < lista[i]) {
+                suurin = lista[i];
+                suurimmanIndeksi = i;
+            }
+        }
+        return suurimmanIndeksi;
+    }
+
+    public int getIndeksiJarjestetystaListasta(int i){
+
+        return keinojenIndeksitJarjestyksessa[i];
     }
 
     /**
@@ -159,20 +177,30 @@ public class Pelaaja {
     }
 
     public String valuesToString() {
-        return "Fyysinen: " + String.format("%.1f", selviytyisArvot[FYYSINEN]) + "\n" +
-                "Älyllinen: " + String.format("%.1f", selviytyisArvot[ALYLLINEN]) + "\n" +
-                "Eettinen: " + String.format("%.1f", selviytyisArvot[EETTINEN]) + "\n" +
-                "Tunteellinen: " + String.format("%.1f", selviytyisArvot[TUNTEELLINEN]) + "\n" +
-                "Sosiaalinen: " + String.format("%.1f", selviytyisArvot[SOSIAALINEN]) + "\n" +
-                "Luova: " + String.format("%.1f", selviytyisArvot[LUOVA]) + "\n";
+        return "Fyysinen: " + String.format("%.1f", selviytymisarvot[FYYSINEN]) + "\n" +
+                "Älyllinen: " + String.format("%.1f", selviytymisarvot[ALYLLINEN]) + "\n" +
+                "Eettinen: " + String.format("%.1f", selviytymisarvot[EETTINEN]) + "\n" +
+                "Tunteellinen: " + String.format("%.1f", selviytymisarvot[TUNTEELLINEN]) + "\n" +
+                "Sosiaalinen: " + String.format("%.1f", selviytymisarvot[SOSIAALINEN]) + "\n" +
+                "Luova: " + String.format("%.1f", selviytymisarvot[LUOVA]) + "\n";
     }
 
     public boolean onkoVastannut(Vaittama v) {
         return vastatutVaittamat.contains(v.hashCode());
     }
 
-    public float getSelviytymisarvo(int selviytymisaronIndeksi) {
-        return selviytyisArvot[selviytymisaronIndeksi];
+    public float getSelviytymisprosentit(int selviytymisarvonIndeksi) {
+        float kaikkiarvot = 0;
+        float lisattava = 0;
+        if(selviytymisarvot[keinojenIndeksitJarjestyksessa[5]] < 0) {
+            lisattava = -selviytymisarvot[keinojenIndeksitJarjestyksessa[5]];
+        }
+        float[] palautettavatArvot = selviytymisarvot;
+        for (int i = 0; i < 6; i++) {
+            palautettavatArvot[i] += lisattava;
+            kaikkiarvot += palautettavatArvot[i];
+        }
+        return palautettavatArvot[selviytymisarvonIndeksi]/kaikkiarvot * 100;
     }
 
     public void setVaittamienMaara(int vaittamienMaara) {

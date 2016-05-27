@@ -55,7 +55,8 @@ public class PalauteScreen extends PohjaScreen {
         ArrayList<String> keinotJarjestyksessa = pelaaja.getSelviytymiskeinotJarjestyksessa();
 
         for (int i = 0; i < keinotJarjestyksessa.size(); i++) {
-            palaute += keinotJarjestyksessa.get(i) + "\n";
+            String kaksdesimaalinenArvo = String.format("%.1f", pelaaja.getSelviytymisprosentit(pelaaja.getIndeksiJarjestetystaListasta(i)));
+            palaute += i+1 + ". " + keinotJarjestyksessa.get(i) + " " + kaksdesimaalinenArvo + "%\n";
         }
         arvio.setText(palaute);
     }
