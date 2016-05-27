@@ -81,7 +81,7 @@ public class HUD {
 
         //HUD EI implementoi inputProcessorin rajapintaa, vaan asettaa inputprocessoriksi tuntemansa inputmultiplexerin.
         this.stage = new Stage(viewport, sb);
-        hudListener = new HUDListener(this);
+        hudListener = new HUDListener(this, 0);
         this.im = new InputMultiplexer(this.stage, new GestureDetector(hudListener), playScreen.stage);
 //        playScreen.lisaaStage(stage); //lisää hudin stagen playscreenin tietoon näkymien vaihdoksia varten.
 
@@ -175,7 +175,6 @@ public class HUD {
                 topTable.top().left().add(menuTable);
 
                 stage.addActor(menuTable);
-                //ToDo Järkevä layout menun sisälle ja jonkinlainen collapse menulle. (joko ruksi tai kun painaa muualle kun menuun)
 
             }
         });
@@ -462,5 +461,8 @@ public class HUD {
 
     public void resize(int width, int height) {
         viewport.update(width, height);
+    }
+    public void paivitaDelta(float delta){
+        hudListener.paivitaDelta(delta);
     }
 }

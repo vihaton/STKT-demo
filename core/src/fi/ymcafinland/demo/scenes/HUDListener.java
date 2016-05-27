@@ -2,6 +2,7 @@ package fi.ymcafinland.demo.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -12,11 +13,13 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 public class HUDListener implements GestureDetector.GestureListener {
 
     private HUD hud;
-    int pans = 0;
+    float delta;
+    float timer;
 
-    //todo zoomit, swaipit ja tapit yhteisymmärrykseen
-    public HUDListener(HUD hud) {
+    public HUDListener(HUD hud, float delta) {
         this.hud = hud;
+        this.delta = delta;
+        this.timer = 0;
     }
 
     @Override
@@ -27,8 +30,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean tap(float x, float y, int count, int button) {
         //debug
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "tap -metodia kutsuttu");
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "tap -metodia kutsuttu");
 
         hud.siirryLahinpaanPalloon(x, y);
         return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
@@ -41,17 +43,19 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        //debug
+        fling(velocityX,  velocityY,button, delta);
+        return false;
+    }
 
-        //todo riippuu deltasta + timeri
-        if (pans > 6 || pans == 0) {
+
+    public boolean fling(float velocityX, float velocityY, int button, float delta) {
+        //debug
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "fling -metodia kutsuttu");
+
+        if (timer > 0.1f || timer == 0) {
             return false;
         }
 
-
-
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "fling -metodia kutsuttu");
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
             if (velocityX > 0) {
                 hud.right();
@@ -66,17 +70,16 @@ public class HUDListener implements GestureDetector.GestureListener {
             }
         }
 
-        pans = 0;
+        timer = 0;
         return false;
     }
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        pans++;
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "pan -metodia kutsuttu " + pans);
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "pan -metodia kutsuttu " + timer);
 
+        timer += delta;
         hud.playScreen.panoroi(deltaX, deltaY);
 
         return false;
@@ -84,29 +87,30 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
+        //debug
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
-        if (hud.playScreen.zoomedOut || pans < 6) {
+        if (hud.playScreen.zoomedOut || timer < 0.1f) {
             return false;
         }
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
         hud.playScreen.resetPan();
 
-        pans = 0;
+        timer = 0;
         return false;
     }
 
     @Override
     public boolean zoom(float initialDistance, float distance) {
         //debug
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "zoom -metodia kutsuttu");
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "zoom -metodia kutsuttu");
 
         hud.playScreen.alkaaTapahtua();
         if (initialDistance < distance) {
-            hud.playScreen.kamera.setZoom(-0.04f);
+            hud.playScreen.setZoom(-0.03f);
         } else {
-            hud.playScreen.kamera.setZoom(0.04f);
+            hud.playScreen.setZoom(0.03f);
         }
         return false;
     }
@@ -114,5 +118,8 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
         return false;
+    }
+    public void paivitaDelta(float delta){
+        this.delta = delta;
     }
 }

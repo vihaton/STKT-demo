@@ -86,7 +86,7 @@ public class SolmunKasittelija {
     /**
      * Päivittää solmujen asennot ym.
      * <p/>
-     * * @param angleToPointCamera kulma, jolla camera on suunnattu keskipisteeseen
+     * * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
      */
     public void paivitaSolmut(float angleToPointCamera) {
         rotateTables(angleToPointCamera);

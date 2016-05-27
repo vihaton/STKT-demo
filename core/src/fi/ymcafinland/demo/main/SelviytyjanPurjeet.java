@@ -115,6 +115,7 @@ public class SelviytyjanPurjeet extends Game {
 
     public void setPlayScreen() {
         playscreen.resetStateTime();
+        playscreen.seurataanPolttoa = true;
         setScreen(playscreen);
     }
 
