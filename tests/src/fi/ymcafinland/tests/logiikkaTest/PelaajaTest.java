@@ -26,6 +26,7 @@ public class PelaajaTest {
     }
 
     @Test
+    @Ignore
     public void lisaysPositiivisellaTest() {
         float alkuarvo = pelaaja.getSelviytymisprosentit(Pelaaja.ALYLLINEN);
         pelaaja.lisaaSelviytymisarvoIndeksissa(Pelaaja.ALYLLINEN, 1);
