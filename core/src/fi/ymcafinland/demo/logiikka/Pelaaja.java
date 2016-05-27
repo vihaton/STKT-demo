@@ -41,7 +41,7 @@ public class Pelaaja {
      */
     public Pelaaja() {
         this.nimi = "Seini Selviytyjä";
-        selviytyisArvot = new float[]{13, 13, 13, 13, 13, 13};
+        selviytyisArvot = new float[]{10, 10, 10, 10, 10, 10};
         vastausmaara = 0;
         vastatutVaittamat = new HashSet<>();
 //        lueSelviytymiskeinot();
@@ -132,7 +132,7 @@ public class Pelaaja {
     }
 
     private int etsiSuurimmanIndeksi(float [] lista) {
-        int suurin = 0;
+        float suurin = 0;
         int suurimmanIndeksi = 0;
 
         for (int i = 0; i < lista.length; i++) {
@@ -140,6 +140,7 @@ public class Pelaaja {
                 continue;
             }
             if (suurin < lista[i]) {
+                suurin = lista[i];
                 suurimmanIndeksi = i;
             }
         }
