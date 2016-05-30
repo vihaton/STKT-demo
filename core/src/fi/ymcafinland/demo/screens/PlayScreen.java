@@ -359,6 +359,14 @@ public class PlayScreen extends PohjaScreen {
         return camera;
     }
 
+    /**
+     * Muuttaa panorointiliikkeen puhelimen näytöltä pelin taustan avaruuteen.
+     * <p/>
+     * Ottaa huomioon kulman solmusta keskipisteeseen (PPtoKP) ja panoroinnin suunnan näytöllä (atanRadians).
+     *
+     * @param deltaX äxän muutos puhelimen näytöllä
+     * @param deltaY yyn muutos puhelimen näytöllä
+     */
     public void panoroi(float deltaX, float deltaY) {
         seurataanPolttoa = false;
         float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
