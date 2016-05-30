@@ -35,7 +35,7 @@ public class ScreenTransition {
     }
 
     /**
-     * Vaihtaa screenin toiseen animoimalla startScreenin poistumaan ylös ja vaihtaa endScreeniksi.
+     * Vaihtaa screenin toiseen animoimalla startScreenin feidaamalla endScreeniksi.
      */
     public void fadeTransition() {
         for (Stage stage : startScreen.getScreeniinLiittyvatStaget()) {
