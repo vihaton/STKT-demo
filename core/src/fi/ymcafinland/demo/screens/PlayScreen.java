@@ -52,7 +52,6 @@ public class PlayScreen extends PohjaScreen {
     private SolmunKasittelija solmunKasittelija;
     private EdistymismittarinKasittelija edistymismittarinKasittelija;
     private InfoButtonKasittelija infoButtonKasittelija;
-    private float deltaAVG;
     public boolean ensimmainenSiirtyma = true;
     private ZoomTransition zoomTransition;
     private float zoomAlaraja;
@@ -107,8 +106,6 @@ public class PlayScreen extends PohjaScreen {
         //Asetetaan jatkuva renderin pois päältä, renderöidään kerran.
 //        Gdx.graphics.setContinuousRendering(false);
 //        Gdx.graphics.requestRendering();
-
-        this.deltaAVG = 0.02f;
 
         Gdx.graphics.requestRendering();
     }
