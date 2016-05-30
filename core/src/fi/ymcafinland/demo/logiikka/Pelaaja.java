@@ -120,7 +120,7 @@ public class Pelaaja {
      */
     private void jarjestaSelviytymisarvot() {
         //todo varmistu toiminnan oikeellisuudesta
-        float [] kopio = selviytymisarvot.clone();
+        float[] kopio = selviytymisarvot.clone();
 
         for (int i = 0; i < 6; i++) {
             int kopionSuurin = etsiSuurimmanIndeksi(kopio);
