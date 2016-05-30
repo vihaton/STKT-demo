@@ -135,7 +135,7 @@ public class PlayScreen extends PohjaScreen {
         boolean log = false;
         if (delta > renderinLoggausAlaraja && SelviytyjanPurjeet.LOG) {
             Gdx.app.log("PS", "renderloggaus käynnistetty\n" +
-                    "minimi fps:" + minFPS + " fps, tämän ruudun fps:" + Math.pow(renderinLoggausAlaraja, -1) + " fps\n" +
+                    "minimi fps:" + minFPS + " fps, tämän ruudun fps:" + Math.pow(delta, -1) + " fps\n" +
                     "stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
             log = true;
         }
