@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 
+import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Verkko;
 
@@ -26,16 +27,18 @@ public class SolmunKasittelija {
     private float pallonLeveys;
     private float pallonKorkeus;
     private ArrayList<Table> solmuTaulukot;
+    private ArrayList<Table> solmuKuvaTaulukot;
+    private Pelaaja pelaaja;
 
-
-    public SolmunKasittelija(Stage stage, Verkko verkko, Skin masterSkin) {
+    public SolmunKasittelija(Stage stage, Verkko verkko, Skin masterSkin, Pelaaja pelaaja) {
         this.stage = stage;
         solmut = verkko.getSolmut();
         skin = masterSkin;
         pallonKuva = skin.get("emptynode", Texture.class);
         pallonLeveys = pallonKuva.getWidth();
         pallonKorkeus = pallonKuva.getHeight();
-
+        this.pelaaja = pelaaja;
+        solmuKuvaTaulukot = new ArrayList<>();
         solmuTaulukot = new ArrayList<>();
         lisaaSolmutStageen();
     }
@@ -47,15 +50,19 @@ public class SolmunKasittelija {
 
             Image taustapallo = luoTaustapallo();
             Table tekstit = luoTekstitaulukko(s);
+            Table pallot = new Table();
 
-            taustapallo.setPosition(x - pallonLeveys / 2, y - pallonKorkeus / 2);
             tekstit.setPosition(x, y);
+            pallot.setPosition(x, y);
+            pallot.setOrigin(Align.center);
+            pallot.setRotation(s.getKulma());
 
-            taustapallo.setOrigin(Align.center);
-            taustapallo.setRotation(s.getKulma());
+            pallot.add(taustapallo).minSize(pallonLeveys,pallonKorkeus);
+            if(Integer.parseInt(s.getID()) < 7)
+                solmuKuvaTaulukot.add(pallot);
             solmuTaulukot.add(tekstit);
 
-            stage.addActor(taustapallo);
+            stage.addActor(pallot);
             stage.addActor(tekstit);
         }
     }
@@ -90,6 +97,19 @@ public class SolmunKasittelija {
      */
     public void paivitaSolmut(float angleToPointCamera) {
         rotateTables(angleToPointCamera);
+        paivitaSolmujenKoko();
+    }
+
+    /**
+     * Päivittää ylemmäntason pallojen koot pelaajan selviytymispreferenssin mukaan
+     */
+    private void paivitaSolmujenKoko() {
+        for (int i = 0; i < 6; i++) {
+            Table t = solmuKuvaTaulukot.get(i);
+            t.setDebug(true);
+            t.setTransform(true);
+            t.setScale(pelaaja.getSelviytymisprosentit(i)*0.07f);
+        }
     }
 
     public void rotateTables(float angleToPointCamera) {
