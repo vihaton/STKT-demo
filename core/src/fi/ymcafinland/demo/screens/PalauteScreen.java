@@ -2,8 +2,12 @@ package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import java.util.ArrayList;
 
@@ -19,12 +23,14 @@ public class PalauteScreen extends PohjaScreen {
     private final SelviytyjanPurjeet sp;
     private Pelaaja pelaaja;
     private Label arvio;
+    private Table exitTable;
 
     public PalauteScreen(SelviytyjanPurjeet sp, Pelaaja pelaaja, Skin masterSkin) {
         super(masterSkin, "PalS");
         this.sp = sp;
         this.batch = new SpriteBatch();
         this.pelaaja = pelaaja;
+        this.exitTable = createReturnButton(sp);
         camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
 
         luoSisalto();
@@ -39,6 +45,9 @@ public class PalauteScreen extends PohjaScreen {
         this.arvio = new Label(pelaaja.toString(), skin, "arvio");
         arvio.setFontScale(2);
         rootTable.add(arvio).expand();
+        rootTable.row();
+
+        rootTable.add(exitTable).bottom().center();
     }
 
 
@@ -69,11 +78,23 @@ public class PalauteScreen extends PohjaScreen {
         batch.setProjectionMatrix(camera.combined);
 
         stage.draw();
+    }
 
-        if (Gdx.input.isTouched()) {
-            sp.setPlayScreen();
-            dispose();
-        }
+    //Todo createReturnButton copypastettu lähes suoraan QuestionScreenistä -> createReturnButton PohjaScreeniin?
+    private Table createReturnButton(final SelviytyjanPurjeet sp) {
+        Button returnButton = new Button(skin.get("returnButtonStyle", Button.ButtonStyle.class));
+        returnButton.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("PalS", "returnbuttonia painettiin");
+                sp.setPlayScreen();
+            }
+        });
 
+        Table exitTable = new Table();
+        exitTable.add(returnButton);
+
+        exitTable.validate();
+
+        return exitTable;
     }
 }
