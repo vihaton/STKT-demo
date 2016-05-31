@@ -36,9 +36,11 @@ public class MasterSkin extends Skin {
     }
 
     private void generoiTexturet() {
+        //infoscreenin taustakuva
         this.add("infonTausta", new Texture("sails02.png"));
 
         this.add("alku", new Texture("alku.png"));
+
 
         this.add("ruksi", new Texture("ruksi.png"));
 
@@ -46,10 +48,12 @@ public class MasterSkin extends Skin {
 
         this.add("mini_palaute", new Texture("hahmo.png"));
 
+        //infonappula jossa merkki i.
         this.add("i", new Texture("i.png"));
 
         this.add("transparent", new Texture("transparent.png"));
 
+        //minimap placeholder kuva
         this.add("minimap", new Texture("minimap.png"));
 
         this.add("launcher", new Texture("launcherBackground.png"));
@@ -58,6 +62,7 @@ public class MasterSkin extends Skin {
 
         this.add("unavailable", new Texture("unavailable.png"));
 
+        //menu-alkuiset kuvat ovat playscreenin menuboxia varten.
         this.add("menubar", new Texture("menubar.png"));
 
         this.add("menubutton", new Texture("menubutton.png"));
@@ -67,6 +72,8 @@ public class MasterSkin extends Skin {
     }
 
     private void generoiFontit() {
+
+        //omatekemäfontti
         BitmapFont fontti = new BitmapFont(Gdx.files.internal("font/fontti.fnt"), Gdx.files.internal("font/fontti.png"), false); //must be set true to be flipped
         this.add("fontti", fontti);
 
@@ -101,6 +108,9 @@ public class MasterSkin extends Skin {
 
         Slider.SliderStyle sliderStyle = new Slider.SliderStyle(this.getDrawable("sliderbackground"), this.getDrawable("sliderknob"));
         this.add("sliderStyle", sliderStyle);
+
+        Slider.SliderStyle sliderStyleMid = new Slider.SliderStyle(this.getDrawable("sliderbackgroundmid"), this.getDrawable("sliderknob"));
+        this.add("sliderStyleMid", sliderStyleMid);
     }
 
     private void generoiProgressBarStylet() {
