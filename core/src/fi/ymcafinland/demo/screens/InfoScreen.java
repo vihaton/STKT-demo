@@ -95,7 +95,7 @@ public class InfoScreen extends PohjaScreen {
     }
 
     public void createExitButton(final SelviytyjanPurjeet sp) {
-        exitButton = new Button(skin.get("exitButtonStyle", Button.ButtonStyle.class));
+        exitButton = new Button(skin.get("jatkaButtonStyle", Button.ButtonStyle.class));
         exitButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "exitbuttonia painettiin");

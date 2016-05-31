@@ -41,8 +41,11 @@ public class MasterSkin extends Skin {
 
         this.add("alku", new Texture("alku.png"));
 
+        this.add("jatka", new Texture("jatka.png"));
 
         this.add("ruksi", new Texture("ruksi.png"));
+
+        this.add("return", new Texture("return.png"));
 
         this.add("emptynode", new Texture("emptynode.png"));
 
@@ -134,6 +137,14 @@ public class MasterSkin extends Skin {
         Button.ButtonStyle styleExit = new Button.ButtonStyle();
         styleExit.up = new TextureRegionDrawable(new TextureRegion(this.get("ruksi", Texture.class)));
         this.add("exitButtonStyle", styleExit);
+
+        Button.ButtonStyle styleJatka = new Button.ButtonStyle();
+        styleJatka.up = new TextureRegionDrawable(new TextureRegion(this.get("jatka", Texture.class)));
+        this.add("jatkaButtonStyle", styleJatka);
+
+        Button.ButtonStyle styleReturn = new Button.ButtonStyle();
+        styleReturn.up = new TextureRegionDrawable(new TextureRegion(this.get("return", Texture.class)));
+        this.add("returnButtonStyle", styleReturn);
 
         Button.ButtonStyle styleInfo = new Button.ButtonStyle();
         styleInfo.up = new TextureRegionDrawable(new TextureRegion(this.get("i", Texture.class)));

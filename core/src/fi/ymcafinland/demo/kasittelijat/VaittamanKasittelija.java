@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -29,13 +30,15 @@ public class VaittamanKasittelija {
     private Stage stage;
     private Table rootTable;
     private ScrollPane pane;
+    private SelviytyjanPurjeet sp;
 
-    public VaittamanKasittelija(Stage stage, Skin masterSkin) {
+    public VaittamanKasittelija(Stage stage, Skin masterSkin, SelviytyjanPurjeet sp) {
         this.stage = stage;
         this.rootTable = new Table();
         this.sliderit = new ArrayList<>();
         skin = masterSkin;
         luoScrollPane();
+        this.sp = sp;
     }
 
     private void luoScrollPane() {
@@ -96,7 +99,28 @@ public class VaittamanKasittelija {
         rootTable.padTop(10);
         rootTable.padBottom(Gdx.graphics.getHeight() / 6);
 
+        Table exitTable = createReturnButton();
+        rootTable.add(exitTable).pad(64);
+
         return vaittamienAlkuperaisetArvot;
+    }
+    private Table createReturnButton() {
+        Button returnButton = new Button(skin.get("returnButtonStyle", Button.ButtonStyle.class));
+        returnButton.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("QS", "returnbuttonia painettiin");
+
+                    sp.setPlayScreen();
+
+            }
+        });
+
+        Table exitTable = new Table();
+        exitTable.add(returnButton);
+
+        exitTable.validate();
+
+        return exitTable;
     }
 
     /**
