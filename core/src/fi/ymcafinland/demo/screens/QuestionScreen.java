@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import fi.ymcafinland.demo.kasittelijat.VaittamanKasittelija;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
-import fi.ymcafinland.demo.logiikka.SliderVaittama;
+import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
@@ -30,7 +30,7 @@ public class QuestionScreen extends PohjaScreen {
 
     private final Pelaaja pelaaja;
     private final Vaittamat vaittamat;
-    private ArrayList<SliderVaittama> solmunVaittamat;
+    private ArrayList<Vaittama> solmunVaittamat;
     private VaittamanKasittelija vaittamanKasittelija;
     Solmu solmu;
     private Table exitTable;
@@ -104,8 +104,8 @@ public class QuestionScreen extends PohjaScreen {
      */
     public void sendData() {
         for (int i = 0; i < solmunVaittamat.size(); i++) {
-            SliderVaittama v = solmunVaittamat.get(i);
-            float uusiArvo = v.getArvo();
+            Vaittama v = solmunVaittamat.get(i);
+            float uusiArvo = v.getVaikuttavaArvo();
             float vanhaArvo = alkuarvot.get(i);
 
             if (uusiArvo == vanhaArvo) {        //jos arvoa ei ole muutettu, ei vastausta tarvitse lisätä mihinkään
@@ -116,7 +116,7 @@ public class QuestionScreen extends PohjaScreen {
                 pelaaja.lisaaVastaus(v);
             }
             //muutetaan selviytymisarvoa vain oikean muutoksen verran
-            pelaaja.lisaaSelviytymisarvoIndeksissa(v.getMihinSelviytymiskeinoonVaikuttaa(), v.getArvo() - alkuarvot.get(i));
+            pelaaja.lisaaSelviytymisarvoIndeksissa(v.getMihinSelviytymiskeinoonVaikuttaa(), v.getVaikuttavaArvo() - alkuarvot.get(i));
         }
     }
 

@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 
-import fi.ymcafinland.demo.logiikka.SliderVaittama;
+import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
@@ -64,25 +64,25 @@ public class VaittamanKasittelija {
      * @param solmunVaittamat
      * @return
      */
-    public ArrayList<Float> paivitaVaittamat(ArrayList<SliderVaittama> solmunVaittamat) {
+    public ArrayList<Float> paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         ArrayList<Float> vaittamienAlkuperaisetArvot = new ArrayList<>();
         rootTable.reset();
         pane.setScrollY(0); //asettaa scrollin yläasentoon
 
-        for (final SliderVaittama nykyinenSliderVaittama : solmunVaittamat) {
-            vaittamienAlkuperaisetArvot.add(nykyinenSliderVaittama.getArvo());
+        for (final Vaittama nykyinenVaittama : solmunVaittamat) {
+            vaittamienAlkuperaisetArvot.add(nykyinenVaittama.getVaikuttavaArvo());
 
             Table vaittamanTaulukko = new Table();
-            Label otsikko = new Label(nykyinenSliderVaittama.getVaittamanTeksti(), skin, "vaittamatyyli");
+            Label otsikko = new Label(nykyinenVaittama.getVaittamanTeksti(), skin, "vaittamatyyli");
             otsikko.setFontScale(2);
             otsikko.setWrap(true);
             otsikko.setAlignment(Align.center);
 
             final Slider slider = new Slider(-0.5f, 0.5f, .01f, false, skin.get("sliderStyleMid", Slider.SliderStyle.class));
             slider.setAnimateDuration(0.1f);
-            slider.setValue(nykyinenSliderVaittama.getArvo());
+            slider.setValue(nykyinenVaittama.getNakyvaArvo());
 
-            luoKuuntelijat(nykyinenSliderVaittama, slider);
+            luoKuuntelijat(nykyinenVaittama, slider);
 
             sliderit.add(slider);
             vaittamanTaulukko.add(otsikko).pad(15).width(slider.getWidth() * 3);
@@ -145,13 +145,13 @@ public class VaittamanKasittelija {
         return sliderTaulukko;
     }
 
-    private void luoKuuntelijat(final SliderVaittama nykyinenSliderVaittama, final Slider slider) {
+    private void luoKuuntelijat(final Vaittama nykyinenVaittama, final Slider slider) {
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (SelviytyjanPurjeet.LOG)
                     Gdx.app.log("VK", "slider: " + slider.getValue());
-                nykyinenSliderVaittama.setArvo(slider.getValue());
+                nykyinenVaittama.setArvo(slider.getValue());
             }
         });
         slider.addListener(new InputListener() {

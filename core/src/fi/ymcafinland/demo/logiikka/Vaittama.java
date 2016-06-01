@@ -9,7 +9,11 @@ package fi.ymcafinland.demo.logiikka;
  */
 public interface Vaittama {
 
-    float getArvo();
+    void setArvo(float uusiArvo);
+
+    float getVaikuttavaArvo();
+
+    float getNakyvaArvo();
 
     String getVaittamanTeksti();
 

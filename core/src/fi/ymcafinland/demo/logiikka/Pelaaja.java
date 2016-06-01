@@ -88,7 +88,7 @@ public class Pelaaja {
         return (vastausmaara * 100 + 50) / vaittamienMaara;
     }
 
-    public void lisaaVastaus(SliderVaittama v) {
+    public void lisaaVastaus(Vaittama v) {
         lisaaVastauksia(1);
         vastatutVaittamat.add(v.hashCode());
     }
@@ -186,7 +186,7 @@ public class Pelaaja {
                 "Luova: " + String.format("%.1f", selviytymisarvot[LUOVA]) + "\n";
     }
 
-    public boolean onkoVastannut(SliderVaittama v) {
+    public boolean onkoVastannut(Vaittama v) {
         return vastatutVaittamat.contains(v.hashCode());
     }
 
