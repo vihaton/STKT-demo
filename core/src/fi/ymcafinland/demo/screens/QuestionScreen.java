@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import fi.ymcafinland.demo.kasittelijat.VaittamanKasittelija;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
-import fi.ymcafinland.demo.logiikka.Vaittama;
+import fi.ymcafinland.demo.logiikka.SliderVaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
@@ -30,7 +30,7 @@ public class QuestionScreen extends PohjaScreen {
 
     private final Pelaaja pelaaja;
     private final Vaittamat vaittamat;
-    private ArrayList<Vaittama> solmunVaittamat;
+    private ArrayList<SliderVaittama> solmunVaittamat;
     private VaittamanKasittelija vaittamanKasittelija;
     Solmu solmu;
     private Table exitTable;
@@ -104,7 +104,7 @@ public class QuestionScreen extends PohjaScreen {
      */
     public void sendData() {
         for (int i = 0; i < solmunVaittamat.size(); i++) {
-            Vaittama v = solmunVaittamat.get(i);
+            SliderVaittama v = solmunVaittamat.get(i);
             float uusiArvo = v.getArvo();
             float vanhaArvo = alkuarvot.get(i);
 

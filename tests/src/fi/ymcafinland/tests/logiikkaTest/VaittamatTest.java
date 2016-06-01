@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import fi.ymcafinland.demo.logiikka.Vaittama;
+import fi.ymcafinland.demo.logiikka.SliderVaittama;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 
 /**
@@ -24,7 +24,7 @@ public class VaittamatTest {
 
     @Test
     public void testVaittamatTest() {
-        HashMap<String, ArrayList<Vaittama>> kartta = vaittamat.getKarttaSolmujenVaittamista();
+        HashMap<String, ArrayList<SliderVaittama>> kartta = vaittamat.getKarttaSolmujenVaittamista();
 
     }
 

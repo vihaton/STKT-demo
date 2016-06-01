@@ -1,56 +1,17 @@
 package fi.ymcafinland.demo.logiikka;
 
 /**
- * Created by xvixvi on 16.4.2016.
+ * Created by xvixvi on 1.6.2016.
+ * <p/>
+ * Väittämällä täytyy olla arvo, väittämän teksti sekä sen pitää tietää, mihin selviytymiskeinoon se vaikuttaa.
+ * <p/>
+ * Tämä toteutus tarkoittaa, että yksi väittämä vaikuttaa vain yhteen selviytymiskeinoon positiivisesti tai negatiivisesti.
  */
-public class Vaittama {
+public interface Vaittama {
 
-    private String teksti;
-    private String solmunID;
-    private int mihinSelviytymiskeinoonVaikuttaa;
-    private float arvo;
-    private boolean checked;
+    float getArvo();
 
-    public Vaittama(String txt, String solmunID) {
-        this.teksti = txt;
-        this.solmunID = solmunID;
-        asetaVaikutusSelviytyjaan(Integer.parseInt(solmunID));
-        arvo = 0f;
-        checked = false;
-    }
+    String getVaittamanTeksti();
 
-    private void asetaVaikutusSelviytyjaan(int id) {
-        this.mihinSelviytymiskeinoonVaikuttaa = (id - 7) / 3;
-    }
-
-    /**
-     * @return sen ensimmäisen tason solmun id, mihin tämä väittämä vaikuttaa
-     */
-    public int getMihinSelviytymiskeinoonVaikuttaa() {
-        return mihinSelviytymiskeinoonVaikuttaa;
-    }
-
-    public String getTeksti() {
-        return teksti;
-    }
-
-    public String getSolmunID() {
-        return solmunID;
-    }
-
-    public float getArvo() {
-        return this.arvo;
-    }
-
-    public void setArvo(float arvo) {
-        this.arvo = arvo;
-    }
-
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
-
-    public boolean getChecked() {
-        return checked;
-    }
+    int getMihinSelviytymiskeinoonVaikuttaa();
 }

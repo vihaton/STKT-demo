@@ -7,7 +7,7 @@ import org.junit.Test;
  * Created by xvixvi on 16.4.2016.
  */
 
-public class VaittamaTest {
+public class SliderVaittamaTest {
 
     @Before
     public void setUp() throws Exception {
