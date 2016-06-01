@@ -74,6 +74,7 @@ public class MasterSkin extends Skin {
 
     }
 
+    //todo fonttien päivitys järkevämpiin
     private void generoiFontit() {
 
         //omatekemäfontti
