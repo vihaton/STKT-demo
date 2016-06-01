@@ -139,8 +139,8 @@ public class VaittamanKasittelija {
 
         Table sliderTaulukko = new Table();
         sliderTaulukko.add(miinus).pad(15).padBottom(30);
-        //LUL NICE ONELINER M8, NO H8. Asettaa sliderin koon sopivaksi.
-        sliderTaulukko.add(slider).padBottom(15).minWidth(skin.get("sliderStyleMid", Slider.SliderStyle.class).background.getMinWidth() * 0.8f).minHeight(skin.get("sliderStyleMid", Slider.SliderStyle.class).background.getMinHeight() * 0.6f);
+        Slider.SliderStyle mid = skin.get("sliderStyleMid", Slider.SliderStyle.class);
+        sliderTaulukko.add(slider).padBottom(15).minWidth(mid.background.getMinWidth() * 0.8f).minHeight(mid.background.getMinHeight() * 0.6f);
         sliderTaulukko.add(plus).pad(15).padBottom(30);
         return sliderTaulukko;
     }
