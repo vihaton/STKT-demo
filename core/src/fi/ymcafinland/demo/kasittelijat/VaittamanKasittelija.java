@@ -78,7 +78,7 @@ public class VaittamanKasittelija {
             otsikko.setWrap(true);
             otsikko.setAlignment(Align.center);
 
-            final Slider slider = new Slider(-0.5f, 0.5f, .1f, false, skin.get("sliderStyleMid", Slider.SliderStyle.class));
+            final Slider slider = new Slider(-0.5f, 0.5f, .01f, false, skin.get("sliderStyleMid", Slider.SliderStyle.class));
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getArvo());
 
