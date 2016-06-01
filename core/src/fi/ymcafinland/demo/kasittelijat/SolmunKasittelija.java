@@ -50,19 +50,19 @@ public class SolmunKasittelija {
 
             Image taustapallo = luoTaustapallo();
             Table tekstit = luoTekstitaulukko(s);
-            Table pallot = new Table();
+            Table pallontaulukko = new Table();
 
             tekstit.setPosition(x, y);
-            pallot.setPosition(x, y);
-            pallot.setOrigin(Align.center);
-            pallot.setRotation(s.getKulma());
+            pallontaulukko.setPosition(x, y);
+            pallontaulukko.setOrigin(Align.center);
+            pallontaulukko.setRotation(s.getKulma());
 
-            pallot.add(taustapallo).minSize(pallonLeveys,pallonKorkeus);
+            pallontaulukko.add(taustapallo).minSize(pallonLeveys,pallonKorkeus);
             if(Integer.parseInt(s.getID()) < 7)
-                solmuKuvaTaulukot.add(pallot);
+                solmuKuvaTaulukot.add(pallontaulukko);
             solmuTaulukot.add(tekstit);
 
-            stage.addActor(pallot);
+            stage.addActor(pallontaulukko);
             stage.addActor(tekstit);
         }
     }
