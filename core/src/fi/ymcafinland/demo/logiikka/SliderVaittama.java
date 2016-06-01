@@ -10,12 +10,14 @@ public class SliderVaittama implements Vaittama {
     private int mihinSelviytymiskeinoonVaikuttaa;
     private float arvo;
     private boolean checked;
+    private boolean antiVaittama;
 
-    public SliderVaittama(String txt, String solmunID) {
+    public SliderVaittama(String txt, String solmunID, boolean antiVaittama) {
         this.teksti = txt;
         this.solmunID = solmunID;
         asetaVaikutusSelviytyjaan(Integer.parseInt(solmunID));
         arvo = 0f;
+        this.antiVaittama = antiVaittama;
         checked = false;
     }
 
@@ -43,6 +45,9 @@ public class SliderVaittama implements Vaittama {
     }
 
     public void setArvo(float arvo) {
+        if (antiVaittama) {
+            arvo = -arvo;
+        }
         this.arvo = arvo;
     }
 
