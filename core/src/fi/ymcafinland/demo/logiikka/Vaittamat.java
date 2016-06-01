@@ -43,10 +43,7 @@ public class Vaittamat {
             FileHandle file = Gdx.files.internal(tiedostonNimi);
             lukija = new Scanner(file.read());
         } catch (Exception e) {
-            int loglevel = Gdx.app.getLogLevel();
-            Gdx.app.setLogLevel(Application.LOG_ERROR);
-            Gdx.app.log("VAITTAMAT", "lukuongelmia \n" + e);
-            Gdx.app.setLogLevel(loglevel);
+            Gdx.app.log("ERROR", "lukuongelmia \n" + e);
         }
 
         return lukija;

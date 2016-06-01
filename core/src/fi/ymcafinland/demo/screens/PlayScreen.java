@@ -41,7 +41,7 @@ public class PlayScreen extends PohjaScreen {
     private final float zoomDuration = 1.0f;    //s
     private float currentZoomDuration = 3.0f;      // viimeisimpänä suoritetun zoomin kesto
     private float timeSinceLastZoomEvent = 0;   // kumulatiivinen deltalukema, nollataan zoomatessa
-    private final float minFPS = 55;         //fps
+    private final float minFPS = 45;         //fps
     private final float renderinLoggausAlaraja = (float) Math.pow(minFPS, -1.0);  //s, eli deltan maximiarvo (jos delta on isompi kuin tämä, niin fps on liian pieni
     private final int idleTime = 3000; //ms
     private float laskuriOdotukseen = 0; //ms
@@ -316,14 +316,26 @@ public class PlayScreen extends PohjaScreen {
     public void siirryLahinpaanSolmuun(float x, float y) {
 
         Vector3 vect = new Vector3(x, y, 0);
+        //todo unproject ei toimi täysin oikein kun ollaan zoomattu ulos
         camera.unproject(vect); // camera is your game camera
 
         float trueX = vect.x;
         float trueY = vect.y;
 
-        Solmu tappaustaLahinSolmu = verkko.annaLahinSolmu(trueX, trueY, solmu);
-        setSolmu(tappaustaLahinSolmu);
-        asetaAlkuZoom();
+        if (SelviytyjanPurjeet.LOG) {
+            Gdx.app.log("PS", "täppäyksen koordinaatit x: " + trueX + " y: " + trueY);
+        }
+
+        if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY)) {
+            Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
+
+            if (SelviytyjanPurjeet.LOG)
+                Gdx.app.log("PS", "kosketus osui tarpeeksi lähelle solmua " + tappaustaLahinSolmu.getID() + "\n" +
+                        "täppäyksen etäisyys solmuun " + Math.hypot(tappaustaLahinSolmu.getXKoordinaatti() - trueX, tappaustaLahinSolmu.getYKoordinaatti() - trueY));
+
+            setSolmu(tappaustaLahinSolmu);
+            asetaAlkuZoom();
+        }
     }
 
     public void asetaAlkuZoom() {
