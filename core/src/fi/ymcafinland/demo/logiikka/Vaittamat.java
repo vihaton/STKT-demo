@@ -94,12 +94,6 @@ public class Vaittamat {
             ind = i + 1;
         }
 
-        //debuggaukseen
-        if (ind != 18) {
-            Gdx.app.log("VAITTAMAT", "pilkottuun riviin ei tullut 18  palasta (18*väittämäsarake)!\n"
-                    + "palasia oli " + ind);
-        }
-
         return pilkottuRivi;
     }
 
@@ -118,7 +112,13 @@ public class Vaittamat {
                     break;
                 }
 
-                SliderVaittama v = new SliderVaittama(vaittamatxt, id, false); //luodaan uusi väittämä, ...
+                boolean antivaittama = false;
+                if (vaittamatxt.endsWith("-")) {    //Jos teksti loppuu miinukseen, kyseessä on antiväittämä...
+                    antivaittama = true;
+                    vaittamatxt = vaittamatxt.substring(0, vaittamatxt.length() - 1); //...ja miinus otetaan pois. Sitten...
+                }
+
+                SliderVaittama v = new SliderVaittama(vaittamatxt, id, antivaittama); //luodaan uusi väittämä, ...
 
                 if (j == 2) { //...ylimmän rivin väittämistä tehdään alkutesti, ...
                     alkutestinVaittamat.add(v);
