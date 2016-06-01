@@ -106,7 +106,6 @@ public class SolmunKasittelija {
     private void paivitaSolmujenKoko() {
         for (int i = 0; i < 6; i++) {
             Table t = solmuKuvaTaulukot.get(i);
-            t.setDebug(true);
             t.setTransform(true);
             t.setScale(pelaaja.getSelviytymisprosentit(i)*0.07f);
         }
