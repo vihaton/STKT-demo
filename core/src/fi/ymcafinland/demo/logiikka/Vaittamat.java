@@ -1,7 +1,6 @@
 package fi.ymcafinland.demo.logiikka;
 
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
@@ -117,7 +116,19 @@ public class Vaittamat {
                     vaittamatxt = vaittamatxt.substring(0, vaittamatxt.length() - 1); //...ja miinus otetaan pois. Sitten...
                 }
 
-                SliderVaittama v = new SliderVaittama(vaittamatxt, id, antivaittama); //luodaan uusi väittämä, ...
+                Vaittama v;
+                String linkki = "";
+
+                if (vaittamatxt.contains("<") && vaittamatxt.contains(">")) {   //...jos väittämässä on linkki, niin otetaan se talteen...
+                    int alku = vaittamatxt.indexOf("<");
+                    int loppu = vaittamatxt.length() - 1;
+                    linkki = vaittamatxt.substring(alku + 1, loppu);
+                    vaittamatxt = vaittamatxt.substring(0, alku);
+                    v = new LinkillinenVaittama(new SliderVaittama(vaittamatxt, id, antivaittama), linkki);
+                } else {
+                    v = new SliderVaittama(vaittamatxt, id, antivaittama); //muuten luodaan uusi väittämä, ...
+                }
+
 
                 if (j == 2) { //...ylimmän rivin väittämistä tehdään alkutesti, ...
                     alkutestinVaittamat.add(v);
