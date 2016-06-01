@@ -45,10 +45,10 @@ public class QuestionScreen extends PohjaScreen {
         this.vaittamat = vaittamat;
         this.sidePad = 64;
 
-        this.exitTable = createExitButton(sp);
+        this.exitTable = createReturnButton(sp);
         taytaRootTable();
 
-        this.vaittamanKasittelija = new VaittamanKasittelija(stage, masterSkin);
+        this.vaittamanKasittelija = new VaittamanKasittelija(stage, masterSkin, sp);
     }
 
     private void taytaRootTable() {
@@ -75,11 +75,11 @@ public class QuestionScreen extends PohjaScreen {
         return ot;
     }
 
-    private Table createExitButton(final SelviytyjanPurjeet sp) {
-        Button exitButton = new Button(skin.get("exitButtonStyle", Button.ButtonStyle.class));
-        exitButton.addListener(new ChangeListener() {
+    private Table createReturnButton(final SelviytyjanPurjeet sp) {
+        Button returnButton = new Button(skin.get("returnButtonStyle", Button.ButtonStyle.class));
+        returnButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("QS", "exitbuttonia painettiin");
+                Gdx.app.log("QS", "returnbuttonia painettiin");
                 sendData();
                 if (solmu.getMutsi() == null) {
                     sp.setPlayScreenMaxSelviytyjaan();
@@ -90,7 +90,7 @@ public class QuestionScreen extends PohjaScreen {
         });
 
         Table exitTable = new Table();
-        exitTable.add(exitButton);
+        exitTable.add(returnButton).padRight(sidePad);
 
         exitTable.validate();
 
