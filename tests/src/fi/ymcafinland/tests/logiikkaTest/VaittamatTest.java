@@ -24,7 +24,6 @@ public class VaittamatTest {
 
     @Test
     public void testVaittamatTest() {
-        HashMap<String, ArrayList<SliderVaittama>> kartta = vaittamat.getKarttaSolmujenVaittamista();
 
     }
 

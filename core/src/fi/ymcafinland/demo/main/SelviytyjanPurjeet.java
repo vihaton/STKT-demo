@@ -75,8 +75,8 @@ public class SelviytyjanPurjeet extends Game {
         this.infoScreen = new InfoScreen(this, masterSkin);
         this.launcherScreen = new LauncherScreen(this, masterSkin, "LS");
 
-        setScreen(launcherScreen);
-//        setScreen(playscreen);
+//        setScreen(launcherScreen);
+        setScreen(playscreen);
     }
 
     /**

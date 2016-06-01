@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 
+import fi.ymcafinland.demo.logiikka.LinkillinenVaittama;
 import fi.ymcafinland.demo.logiikka.Vaittama;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
@@ -28,21 +29,26 @@ public class VaittamanKasittelija {
     private final Skin skin;
     private ArrayList<Slider> sliderit;
     private Stage stage;
-    private Table rootTable;
+    private Table scrollPanesRootTable;
     private ScrollPane pane;
     private SelviytyjanPurjeet sp;
+    private final float sliderinLeveys;
+    private final float sliderinKorkeus;
 
     public VaittamanKasittelija(Stage stage, Skin masterSkin, SelviytyjanPurjeet sp) {
         this.stage = stage;
-        this.rootTable = new Table();
+        this.scrollPanesRootTable = new Table();
         this.sliderit = new ArrayList<>();
         skin = masterSkin;
         luoScrollPane();
         this.sp = sp;
+        Slider.SliderStyle mid = skin.get("sliderStyleMid", Slider.SliderStyle.class);
+        sliderinLeveys = mid.background.getMinWidth() * 0.8f;
+        sliderinKorkeus = mid.background.getMinHeight() * 0.6f;
     }
 
     private void luoScrollPane() {
-        pane = new ScrollPane(rootTable.top());
+        pane = new ScrollPane(scrollPanesRootTable.top());
         pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.35f);
         pane.validate();
 
@@ -61,56 +67,84 @@ public class VaittamanKasittelija {
 
     /**
      * Ylläpitää questionscreenissä esiintyvää väittämä+slider kokonaisuutta.
+     *
      * @param solmunVaittamat
      * @return
      */
     public ArrayList<Float> paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         ArrayList<Float> vaittamienAlkuperaisetArvot = new ArrayList<>();
-        rootTable.reset();
+        scrollPanesRootTable.reset();
         pane.setScrollY(0); //asettaa scrollin yläasentoon
 
         for (final Vaittama nykyinenVaittama : solmunVaittamat) {
             vaittamienAlkuperaisetArvot.add(nykyinenVaittama.getVaikuttavaArvo());
 
-            Table vaittamanTaulukko = new Table();
-            Label otsikko = new Label(nykyinenVaittama.getVaittamanTeksti(), skin, "vaittamatyyli");
-            otsikko.setFontScale(2);
-            otsikko.setWrap(true);
-            otsikko.setAlignment(Align.center);
+            Table vaittamanTaulukko = luoVaittamanTaulukko(nykyinenVaittama);
 
             final Slider slider = new Slider(-0.5f, 0.5f, .01f, false, skin.get("sliderStyleMid", Slider.SliderStyle.class));
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getNakyvaArvo());
+            sliderit.add(slider);
 
             luoKuuntelijat(nykyinenVaittama, slider);
 
-            sliderit.add(slider);
-            vaittamanTaulukko.add(otsikko).pad(15).width(slider.getWidth() * 3);
-            vaittamanTaulukko.row();
-
             Table sliderTaulukko = createSliderToTable(slider);
 
-            rootTable.add(vaittamanTaulukko);
-            rootTable.row();
-            rootTable.add(sliderTaulukko);
-            rootTable.row();
+            scrollPanesRootTable.add(vaittamanTaulukko);
+            scrollPanesRootTable.row();
+            scrollPanesRootTable.add(sliderTaulukko);
+            scrollPanesRootTable.row();
         }
 
-        rootTable.padTop(10);
-        rootTable.padBottom(Gdx.graphics.getHeight() / 6);
+        scrollPanesRootTable.padTop(10);
+        scrollPanesRootTable.padBottom(Gdx.graphics.getHeight() / 6);
 
         Table exitTable = createReturnButton();
-        rootTable.add(exitTable).pad(64);
+        scrollPanesRootTable.add(exitTable).pad(64);
 
         return vaittamienAlkuperaisetArvot;
     }
+
+    public Table luoVaittamanTaulukko(Vaittama nykyinenVaittama) {
+        Table vaittamanTaulukko = new Table();
+
+        Label otsikko = new Label(nykyinenVaittama.getVaittamanTeksti(), skin, "vaittamatyyli");
+        otsikko.setFontScale(2);
+        otsikko.setWrap(true);
+        otsikko.setAlignment(Align.center);
+
+        //todo väittämän asettaminen kivasti silloinkin, kun on infobutton kehissä
+        vaittamanTaulukko.add(otsikko).pad(15).width(sliderinLeveys);
+
+        if (nykyinenVaittama.getClass().equals(LinkillinenVaittama.class)) {
+            LinkillinenVaittama lv = (LinkillinenVaittama) nykyinenVaittama;
+            Button infoButton = new Button(skin.get("infoButtonStyle", Button.ButtonStyle.class));
+            infoButton.addListener(luoKuuntelija(lv.getLinkki()));
+
+            vaittamanTaulukko.add(infoButton).maxSize(64);
+        }
+
+        return vaittamanTaulukko;
+    }
+
+    private ChangeListener luoKuuntelija(final String linkkisivu) {
+        return new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                if (SelviytyjanPurjeet.LOG)
+                    Gdx.app.log("VK", "Infonappulaa painettu");
+
+                Gdx.net.openURI(linkkisivu);
+            }
+        };
+    }
+
     private Table createReturnButton() {
         Button returnButton = new Button(skin.get("returnButtonStyle", Button.ButtonStyle.class));
         returnButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("QS", "returnbuttonia painettiin");
 
-                    sp.setPlayScreen();
+                sp.setPlayScreen();
 
             }
         });
@@ -139,8 +173,7 @@ public class VaittamanKasittelija {
 
         Table sliderTaulukko = new Table();
         sliderTaulukko.add(miinus).pad(15).padBottom(30);
-        Slider.SliderStyle mid = skin.get("sliderStyleMid", Slider.SliderStyle.class);
-        sliderTaulukko.add(slider).padBottom(15).minWidth(mid.background.getMinWidth() * 0.8f).minHeight(mid.background.getMinHeight() * 0.6f);
+        sliderTaulukko.add(slider).padBottom(15).minWidth(sliderinLeveys).minHeight(sliderinKorkeus);
         sliderTaulukko.add(plus).pad(15).padBottom(30);
         return sliderTaulukko;
     }
