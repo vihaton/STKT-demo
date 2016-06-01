@@ -1,10 +1,12 @@
 package fi.ymcafinland.demo.kasittelijat;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -28,13 +30,15 @@ public class VaittamanKasittelija {
     private Stage stage;
     private Table rootTable;
     private ScrollPane pane;
+    private SelviytyjanPurjeet sp;
 
-    public VaittamanKasittelija(Stage stage, Skin masterSkin) {
+    public VaittamanKasittelija(Stage stage, Skin masterSkin, SelviytyjanPurjeet sp) {
         this.stage = stage;
         this.rootTable = new Table();
         this.sliderit = new ArrayList<>();
         skin = masterSkin;
         luoScrollPane();
+        this.sp = sp;
     }
 
     private void luoScrollPane() {
@@ -54,6 +58,12 @@ public class VaittamanKasittelija {
     }
 
     //todo panen yläboundi asetetaan käytössä näkymän otsikon mukaan (jos pitkä otsikko, niin yläraja tulee alemmas)
+
+    /**
+     * Ylläpitää questionscreenissä esiintyvää väittämä+slider kokonaisuutta.
+     * @param solmunVaittamat
+     * @return
+     */
     public ArrayList<Float> paivitaVaittamat(ArrayList<Vaittama> solmunVaittamat) {
         ArrayList<Float> vaittamienAlkuperaisetArvot = new ArrayList<>();
         rootTable.reset();
@@ -68,27 +78,71 @@ public class VaittamanKasittelija {
             otsikko.setWrap(true);
             otsikko.setAlignment(Align.center);
 
-            final Slider slider = new Slider(-0.5f, 0.5f, .1f, false, skin.get("sliderStyle", Slider.SliderStyle.class));
+            final Slider slider = new Slider(-0.5f, 0.5f, .01f, false, skin.get("sliderStyleMid", Slider.SliderStyle.class));
             slider.setAnimateDuration(0.1f);
             slider.setValue(nykyinenVaittama.getArvo());
 
             luoKuuntelijat(nykyinenVaittama, slider);
 
             sliderit.add(slider);
-
-            //todo väittämien ja sliderien koko paremmaksi
-            vaittamanTaulukko.add(otsikko).width(slider.getWidth() * 3);
+            vaittamanTaulukko.add(otsikko).pad(15).width(slider.getWidth() * 3);
             vaittamanTaulukko.row();
-            vaittamanTaulukko.add(slider).padBottom(15);
+
+            Table sliderTaulukko = createSliderToTable(slider);
 
             rootTable.add(vaittamanTaulukko);
+            rootTable.row();
+            rootTable.add(sliderTaulukko);
             rootTable.row();
         }
 
         rootTable.padTop(10);
         rootTable.padBottom(Gdx.graphics.getHeight() / 6);
 
+        Table exitTable = createReturnButton();
+        rootTable.add(exitTable).pad(64);
+
         return vaittamienAlkuperaisetArvot;
+    }
+    private Table createReturnButton() {
+        Button returnButton = new Button(skin.get("returnButtonStyle", Button.ButtonStyle.class));
+        returnButton.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("QS", "returnbuttonia painettiin");
+
+                    sp.setPlayScreen();
+
+            }
+        });
+
+        Table exitTable = new Table();
+        exitTable.add(returnButton);
+
+        exitTable.validate();
+
+        return exitTable;
+    }
+
+    /**
+     * Luo slideriin kuuluvat komponentit questionscreenin Tableen.
+     *
+     * @param slider
+     * @return
+     */
+    private Table createSliderToTable(Slider slider) {
+        Label miinus = new Label("-", skin, "vaittamatyyli");
+        miinus.setColor(Color.RED);
+        miinus.setFontScale(3);
+        Label plus = new Label("+", skin, "vaittamatyyli");
+        plus.setColor(Color.GREEN);
+        plus.setFontScale(2);
+
+        Table sliderTaulukko = new Table();
+        sliderTaulukko.add(miinus).pad(15).padBottom(30);
+        //LUL NICE ONELINER M8, NO H8. Asettaa sliderin koon sopivaksi.
+        sliderTaulukko.add(slider).padBottom(15).minWidth(skin.get("sliderStyleMid", Slider.SliderStyle.class).background.getMinWidth() * 0.8f).minHeight(skin.get("sliderStyleMid", Slider.SliderStyle.class).background.getMinHeight() * 0.6f);
+        sliderTaulukko.add(plus).pad(15).padBottom(30);
+        return sliderTaulukko;
     }
 
     private void luoKuuntelijat(final Vaittama nykyinenVaittama, final Slider slider) {
