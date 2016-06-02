@@ -84,7 +84,7 @@ public class QuestionScreen extends PohjaScreen {
                 if (solmu.getMutsi() == null) {
                     sp.setPlayScreenMaxSelviytyjaan();
                 } else {
-                    sp.setPlayScreen();
+                    sp.setPlayScreen(solmu);
                 }
             }
         });
