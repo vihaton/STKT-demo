@@ -194,6 +194,7 @@ public class PlayScreen extends PohjaScreen {
         hud.paivitaDelta(delta);
     }
 
+
     public void odota(long milliseconds) {
         try {
             Thread.sleep(milliseconds);
@@ -205,7 +206,7 @@ public class PlayScreen extends PohjaScreen {
 
     public void paivitaKasittelijat(float delta) {
         angleToPoint = getAngleToPoint(polttopiste, keskipiste);
-        solmunKasittelija.paivitaSolmut(angleToPoint);
+        solmunKasittelija.paivitaSolmut(angleToPoint, batch);
         edistymismittarinKasittelija.pyoritaMittaria(angleToPoint);
         infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, zoomedOut);
     }
