@@ -1,7 +1,6 @@
 package fi.ymcafinland.demo.logiikka;
 
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
@@ -43,10 +42,7 @@ public class Vaittamat {
             FileHandle file = Gdx.files.internal(tiedostonNimi);
             lukija = new Scanner(file.read());
         } catch (Exception e) {
-            int loglevel = Gdx.app.getLogLevel();
-            Gdx.app.setLogLevel(Application.LOG_ERROR);
-            Gdx.app.log("VAITTAMAT", "lukuongelmia \n" + e);
-            Gdx.app.setLogLevel(loglevel);
+            Gdx.app.log("ERROR", "lukuongelmia \n" + e);
         }
 
         return lukija;
@@ -94,13 +90,6 @@ public class Vaittamat {
         //lisätään loppuun tyhjät väittämäsarakkeet, jos tarvetta
         for (int i = ind; i < 18; i++) {
             pilkottuRivi[i] = "";
-            ind = i + 1;
-        }
-
-        //debuggaukseen
-        if (ind != 18) {
-            Gdx.app.log("VAITTAMAT", "pilkottuun riviin ei tullut 18  palasta (18*väittämäsarake)!\n"
-                    + "palasia oli " + ind);
         }
 
         return pilkottuRivi;
@@ -121,7 +110,25 @@ public class Vaittamat {
                     break;
                 }
 
-                Vaittama v = new Vaittama(vaittamatxt, id); //luodaan uusi väittämä, ...
+                boolean antivaittama = false;
+                if (vaittamatxt.endsWith("-")) {    //Jos teksti loppuu miinukseen, kyseessä on antiväittämä...
+                    antivaittama = true;
+                    vaittamatxt = vaittamatxt.substring(0, vaittamatxt.length() - 1); //...ja miinus otetaan pois. Sitten...
+                }
+
+                Vaittama v;
+                String linkki = "";
+
+                if (vaittamatxt.contains("<") && vaittamatxt.contains(">")) {   //...jos väittämässä on linkki, niin otetaan se talteen...
+                    int alku = vaittamatxt.indexOf("<");
+                    int loppu = vaittamatxt.length() - 1;
+                    linkki = vaittamatxt.substring(alku + 1, loppu);
+                    vaittamatxt = vaittamatxt.substring(0, alku);
+                    v = new LinkillinenVaittama(new SliderVaittama(vaittamatxt, id, antivaittama), linkki);
+                } else {
+                    v = new SliderVaittama(vaittamatxt, id, antivaittama); //muuten luodaan uusi väittämä, ...
+                }
+
 
                 if (j == 2) { //...ylimmän rivin väittämistä tehdään alkutesti, ...
                     alkutestinVaittamat.add(v);

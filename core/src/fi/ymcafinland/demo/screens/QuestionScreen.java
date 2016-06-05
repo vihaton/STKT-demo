@@ -84,7 +84,7 @@ public class QuestionScreen extends PohjaScreen {
                 if (solmu.getMutsi() == null) {
                     sp.setPlayScreenMaxSelviytyjaan();
                 } else {
-                    sp.setPlayScreen();
+                    sp.setPlayScreen(solmu);
                 }
             }
         });
@@ -105,7 +105,7 @@ public class QuestionScreen extends PohjaScreen {
     public void sendData() {
         for (int i = 0; i < solmunVaittamat.size(); i++) {
             Vaittama v = solmunVaittamat.get(i);
-            float uusiArvo = v.getArvo();
+            float uusiArvo = v.getVaikuttavaArvo();
             float vanhaArvo = alkuarvot.get(i);
 
             if (uusiArvo == vanhaArvo) {        //jos arvoa ei ole muutettu, ei vastausta tarvitse lisätä mihinkään
@@ -116,7 +116,7 @@ public class QuestionScreen extends PohjaScreen {
                 pelaaja.lisaaVastaus(v);
             }
             //muutetaan selviytymisarvoa vain oikean muutoksen verran
-            pelaaja.lisaaSelviytymisarvoIndeksissa(v.getMihinSelviytymiskeinoonVaikuttaa(), v.getArvo() - alkuarvot.get(i));
+            pelaaja.lisaaSelviytymisarvoIndeksissa(v.getMihinSelviytymiskeinoonVaikuttaa(), v.getVaikuttavaArvo() - alkuarvot.get(i));
         }
     }
 

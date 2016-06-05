@@ -13,8 +13,6 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
-
 /**
  * Selviytyjän purjeiden solmujen kokoelma. Vastaa solmujen luomisesta ja ylläpidosta.
  */
@@ -25,34 +23,36 @@ public class Verkko {
     private final int leveysPalikka;
     private final int korkeusPalikka;
     private final Vector2 keskipiste;
+    private Solmu edellistaKosketustaLahinSolmu;
 
     public Verkko(int taustakuvanLeveys, int taustakuvanKorkeus) {
         this.leveysPalikka = taustakuvanLeveys / 100;
         this.korkeusPalikka = taustakuvanKorkeus / 100;
         keskipiste = new Vector2(korkeusPalikka * 50, leveysPalikka * 50);
         solmut = new ArrayList<>();
+
+        luoBundle();
+        generoiSolmut();
+        edellistaKosketustaLahinSolmu = solmut.get(0);
+    }
+
+    public void luoBundle() {
         String polkuTiedostolle = "solmujentekstit/solmut";
         FileHandle baseFileHandle = Gdx.files.internal(polkuTiedostolle);
 
         /*
         try-catch rakenne testaamista ja pöytäkonetta varten, voidaan poistaa(/kommentoida) kun demo valmis.
         Androidilla toimii moitteetta try-lohkossa oleva rivi, koska android poikkeuksetta on asetettu
-        etsimään internal-memoryä assets-kansiosta (jossa solmut/solmut.properties sijaitsee.
+        etsimään internal-memoryä assets-kansiosta (jossa solmut/solmut.properties sijaitsee).
          */
         try {
             myBundle = I18NBundle.createBundle(baseFileHandle);
         } catch (Exception e) {
-            if (SelviytyjanPurjeet.LOG)
-                Gdx.app.log("VERKKO", "ERROR: kielibundlen teko ei onnistunut, käytetään jesarimenetelmää.");
+            Gdx.app.log("ERROR", "kielibundlen teko ei onnistunut, käytetään jesarimenetelmää.");
             String absolutePath = getAbsolutePathToFile();
             baseFileHandle = Gdx.files.absolute(absolutePath);
             myBundle = I18NBundle.createBundle(baseFileHandle);
         }
-
-//        //englanninkielisen version testaamiseen
-//        Locale locale = new Locale("en");
-//        myBundle = I18NBundle.createBundle(baseFileHandle, locale);
-        generoiSolmut();
     }
 
     //Jesarimetodi korjaamaan ajettavuus desktopille ja testeille androidin lisäksi.
@@ -138,7 +138,6 @@ public class Verkko {
         return lapset;
     }
 
-    //todo toisen tason solmujen otsikkojen päivitys assetteihin
     private void asetaOtsikotJaSisallot() {
         for (Solmu s : solmut) {
             String otsikko = myBundle.format("solmun_otsikko_" + s.getID());
@@ -194,19 +193,27 @@ public class Verkko {
         return solmut;
     }
 
-    public Solmu annaLahinSolmu(float x, float y, Solmu nykyinenSolmu) {
+    public boolean kosketusTarpeeksiLahelleJotainSolmua(float x, float y) {
         double lahimmanSolmunEtaisyys = Double.MAX_VALUE;
+        Solmu lahinSolmu = null;
 
         for (Solmu s : solmut) {
-            double etaisyys = Math.sqrt(Math.pow(s.getXKoordinaatti() - x, 2f) + Math.pow(s.getYKoordinaatti() - y, 2f));
+            double etaisyys = Math.hypot(s.getXKoordinaatti() - x, s.getYKoordinaatti() - y);
 
-            //todo jos klikataan vitun-liaan-kauas-kaikesta ei tehdä mitään
             if (etaisyys < lahimmanSolmunEtaisyys) {
-                nykyinenSolmu = s;
+                lahinSolmu = s;
                 lahimmanSolmunEtaisyys = etaisyys;
             }
         }
 
-        return nykyinenSolmu;
+        if (lahimmanSolmunEtaisyys < 700) {
+            edellistaKosketustaLahinSolmu = lahinSolmu;
+            return true;
+        }
+        return false;
+    }
+
+    public Solmu annaEdellistaKosketustaLahinSolmu() {
+        return edellistaKosketustaLahinSolmu;
     }
 }

@@ -113,9 +113,11 @@ public class SelviytyjanPurjeet extends Game {
         setScreen(palauteScreen);
     }
 
-    public void setPlayScreen() {
+    public void setPlayScreen(Solmu solmu) {
         playscreen.resetStateTime();
         playscreen.seurataanPolttoa = true;
+        if(solmu != null)
+            playscreen.setSolmu(solmu);
         setScreen(playscreen);
     }
 

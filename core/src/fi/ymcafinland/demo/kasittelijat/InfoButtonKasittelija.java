@@ -65,7 +65,6 @@ public class InfoButtonKasittelija {
         }
     }
 
-    //todo bug: infonappulat ei toimi, luuleeko panoroinniks?
     private void lisaaKuuntelija(Button button, Solmu s) {
 
         //Switch case hoitaa vertailun, luoKuuntelija metodi luo kuuntelijan nappulalle halutun nettisivun kera
@@ -97,7 +96,8 @@ public class InfoButtonKasittelija {
     private ChangeListener luoKuuntelija(final String linkkisivu) {
         return new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("IBK", "Info nappulaa painettu");
+                if (SelviytyjanPurjeet.LOG)
+                    Gdx.app.log("IBK", "Info nappulaa painettu");
 
                 if (!zoomedOut) {
                     Gdx.net.openURI(linkkisivu);
