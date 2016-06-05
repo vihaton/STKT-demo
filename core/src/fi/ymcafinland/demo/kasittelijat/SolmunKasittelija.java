@@ -1,8 +1,12 @@
 package fi.ymcafinland.demo.kasittelijat;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -28,7 +32,11 @@ public class SolmunKasittelija {
     private float pallonKorkeus;
     private ArrayList<Table> solmuTaulukot;
     private ArrayList<Table> solmuKuvaTaulukot;
+    private ArrayList<Table> glowKuvaTaulukot;
     private Pelaaja pelaaja;
+
+
+    Sprite sprite;
 
     public SolmunKasittelija(Stage stage, Verkko verkko, Skin masterSkin, Pelaaja pelaaja) {
         this.stage = stage;
@@ -40,7 +48,10 @@ public class SolmunKasittelija {
         this.pelaaja = pelaaja;
         solmuKuvaTaulukot = new ArrayList<>();
         solmuTaulukot = new ArrayList<>();
+        glowKuvaTaulukot = new ArrayList<>();
         lisaaSolmutStageen();
+        Texture glow = skin.get("glow", Texture.class);
+        sprite = new Sprite(glow);
     }
 
     private void lisaaSolmutStageen() {
@@ -49,6 +60,8 @@ public class SolmunKasittelija {
             float y = s.getYKoordinaatti();
 
             Image taustapallo = luoTaustapallo();
+
+
             Table tekstit = luoTekstitaulukko(s);
             Table pallontaulukko = new Table();
 
@@ -57,15 +70,37 @@ public class SolmunKasittelija {
             pallontaulukko.setOrigin(Align.center);
             pallontaulukko.setRotation(s.getKulma());
 
-            pallontaulukko.add(taustapallo).minSize(pallonLeveys,pallonKorkeus);
-            if(Integer.parseInt(s.getID()) < 7)
+            pallontaulukko.add(taustapallo).minSize(pallonLeveys, pallonKorkeus);
+
+            Table glowiTaulu = new Table();
+            Image glowimage = luoGlowKuva();
+            glowiTaulu.setPosition(x, y);
+            glowiTaulu.setOrigin(Align.center);
+            glowiTaulu.setRotation(s.getKulma());
+
+
+            glowiTaulu.add(glowimage).minSize(pallonLeveys*1.5f, pallonKorkeus*1.5f);
+
+            glowiTaulu.setDebug(true);
+
+            if(Integer.parseInt(s.getID()) < 25) {
                 solmuKuvaTaulukot.add(pallontaulukko);
+                glowKuvaTaulukot.add(glowiTaulu);
+            }
             solmuTaulukot.add(tekstit);
 
             stage.addActor(pallontaulukko);
             stage.addActor(tekstit);
+            stage.addActor(glowiTaulu);
         }
     }
+
+    private Image luoGlowKuva() {
+        Texture glow = skin.get("glow", Texture.class);
+        TextureRegion region = new TextureRegion(glow, 0, 0, glow.getWidth(), glow.getHeight());
+        return new Image(region);
+    }
+
 
     private Table luoTekstitaulukko(Solmu s) {
         Label otsikko = new Label(s.getOtsikko(), skin, "otsikko");
@@ -96,8 +131,15 @@ public class SolmunKasittelija {
      * * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
      */
     public void paivitaSolmut(float angleToPointCamera) {
+
         rotateTables(angleToPointCamera);
         paivitaSolmujenKoko();
+        for (Table t : glowKuvaTaulukot) {
+            t.setTransform(true);
+            t.addAction(Actions.sequence(Actions.alpha(0.4f, 1.5f), Actions.alpha(1f, 1.5f)));
+            t.addAction(Actions.sequence(Actions.scaleBy(1.2f, 1.2f, 3), Actions.scaleBy(0.8f, 0.8f, 3)));
+        }
+
     }
 
     /**

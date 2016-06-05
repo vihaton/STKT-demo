@@ -49,6 +49,8 @@ public class MasterSkin extends Skin {
 
         this.add("emptynode", new Texture("emptynode.png"));
 
+        this.add("glow", new Texture("glow.png"));
+
         this.add("mini_palaute", new Texture("hahmo.png"));
 
         //infonappula jossa merkki i.
