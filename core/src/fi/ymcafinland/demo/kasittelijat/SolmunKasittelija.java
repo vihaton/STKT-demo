@@ -1,12 +1,11 @@
 package fi.ymcafinland.demo.kasittelijat;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -66,42 +65,49 @@ public class SolmunKasittelija {
             Table pallontaulukko = new Table();
 
             tekstit.setPosition(x, y);
-            pallontaulukko.setPosition(x, y);
-            pallontaulukko.setOrigin(Align.center);
-            pallontaulukko.setRotation(s.getKulma());
+            asetaTauluSolmujenPaikalle(s, x, y, pallontaulukko);
 
             pallontaulukko.add(taustapallo).minSize(pallonLeveys, pallonKorkeus);
 
             Table glowiTaulu = new Table();
             Image glowimage = luoGlowKuva();
-            glowiTaulu.setPosition(x, y);
-            glowiTaulu.setOrigin(Align.center);
-            glowiTaulu.setRotation(s.getKulma());
+            asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
 
 
-            glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.5f, pallonKorkeus * 1.5f);
+            glowiTaulu.add(glowimage).minSize(pallonLeveys*1.29f, pallonKorkeus*1.29f);
 
 
 
-            if(Integer.parseInt(s.getID()) < 25) {
+            if(Integer.parseInt(s.getID()) < 25)
                 solmuKuvaTaulukot.add(pallontaulukko);
-                glowKuvaTaulukot.add(glowiTaulu);
-            }
-            solmuTaulukot.add(tekstit);
 
+            if(Integer.parseInt(s.getID()) < 25 && Integer.parseInt(s.getID())> 6) {
+                glowKuvaTaulukot.add(glowiTaulu);
+                stage.addActor(glowiTaulu);
+            }
+
+            solmuTaulukot.add(tekstit);
             stage.addActor(pallontaulukko);
             stage.addActor(tekstit);
-            stage.addActor(glowiTaulu);
         }
         luoGlowAnimaatiot();
     }
 
+    private void asetaTauluSolmujenPaikalle(Solmu s, float x, float y, Table glowiTaulu) {
+        glowiTaulu.setPosition(x, y);
+        glowiTaulu.setOrigin(Align.center);
+        glowiTaulu.setRotation(s.getKulma());
+    }
+//ToDo parempi glow kuva.
     private void luoGlowAnimaatiot() {
+
         for (Table t : glowKuvaTaulukot) {
             t.setTransform(true);
-            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.4f, 1f), Actions.alpha(1f, 1f))));
-            t.addAction(Actions.forever(Actions.rotateBy(1, 0.5f)));
+            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.7f, 1f), Actions.alpha(1f, 1f))));
+            t.addAction(Actions.forever(Actions.rotateBy(2, 0.5f)));
             t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 3), Actions.scaleTo(1, 1, 3))));
+            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 3), Actions.moveBy(-2, -2, 3))));
+            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 5), Actions.moveBy(1, -2, 5))));
         }
     }
 
