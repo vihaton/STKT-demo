@@ -79,9 +79,9 @@ public class SolmunKasittelija {
             glowiTaulu.setRotation(s.getKulma());
 
 
-            glowiTaulu.add(glowimage).minSize(pallonLeveys*1.5f, pallonKorkeus*1.5f);
+            glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.5f, pallonKorkeus * 1.5f);
 
-            glowiTaulu.setDebug(true);
+
 
             if(Integer.parseInt(s.getID()) < 25) {
                 solmuKuvaTaulukot.add(pallontaulukko);
@@ -92,6 +92,16 @@ public class SolmunKasittelija {
             stage.addActor(pallontaulukko);
             stage.addActor(tekstit);
             stage.addActor(glowiTaulu);
+        }
+        luoGlowAnimaatiot();
+    }
+
+    private void luoGlowAnimaatiot() {
+        for (Table t : glowKuvaTaulukot) {
+            t.setTransform(true);
+            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.4f, 1f), Actions.alpha(1f, 1f))));
+            t.addAction(Actions.forever(Actions.rotateBy(1, 0.5f)));
+            t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 3), Actions.scaleTo(1, 1, 3))));
         }
     }
 
@@ -134,11 +144,7 @@ public class SolmunKasittelija {
 
         rotateTables(angleToPointCamera);
         paivitaSolmujenKoko();
-        for (Table t : glowKuvaTaulukot) {
-            t.setTransform(true);
-            t.addAction(Actions.sequence(Actions.alpha(0.4f, 1.5f), Actions.alpha(1f, 1.5f)));
-            t.addAction(Actions.sequence(Actions.scaleBy(1.2f, 1.2f, 3), Actions.scaleBy(0.8f, 0.8f, 3)));
-        }
+
 
     }
 
