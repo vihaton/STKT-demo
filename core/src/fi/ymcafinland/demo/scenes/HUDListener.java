@@ -2,9 +2,9 @@ package fi.ymcafinland.demo.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 
+import fi.ymcafinland.demo.kasittelijat.KameranKasittelija;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
@@ -13,11 +13,13 @@ import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 public class HUDListener implements GestureDetector.GestureListener {
 
     private HUD hud;
+    private KameranKasittelija kameranKasittelija;
     float delta;
     float timer;
 
-    public HUDListener(HUD hud, float delta) {
+    public HUDListener(HUD hud, KameranKasittelija kameranKasittelija, float delta) {
         this.hud = hud;
+        this.kameranKasittelija = kameranKasittelija;
         this.delta = delta;
         this.timer = 0;
     }
@@ -108,9 +110,9 @@ public class HUDListener implements GestureDetector.GestureListener {
 
         hud.playScreen.alkaaTapahtua();
         if (initialDistance < distance) {
-            hud.playScreen.setZoom(-0.03f);
+            kameranKasittelija.pinchZoom(-0.03f);
         } else {
-            hud.playScreen.setZoom(0.03f);
+            kameranKasittelija.pinchZoom(0.03f);
         }
         return false;
     }
