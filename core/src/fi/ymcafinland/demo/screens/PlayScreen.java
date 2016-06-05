@@ -28,7 +28,6 @@ public class PlayScreen extends PohjaScreen {
 
     protected SpriteBatch batch;
     protected Solmu solmu;
-    protected CameraTransition transition;
     protected float timeSinceTransitionZoom = 0;
     protected boolean trans = false;
     public boolean zoomedOut = false;
@@ -99,9 +98,6 @@ public class PlayScreen extends PohjaScreen {
 
         this.angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         this.stateTime = 0;
-
-        //Ilman näitä rivejä zoomin kutsuminen ennen liikkumista aiheuttaa NullPointerExeptionin
-        this.transition = new CameraTransition(polttopiste, polttopiste, 0);
 
         //Asetetaan jatkuva renderin pois päältä, renderöidään kerran.
 //        Gdx.graphics.setContinuousRendering(false);
@@ -212,7 +208,7 @@ public class PlayScreen extends PohjaScreen {
 
     public void actTransition(float delta) {
         if (stateTime < Math.max(moveDuration * 1000, zoomDuration * 1000) + idleTime) {
-            transition.act(delta);
+            kameranKasittelija.actTransition(delta);
             stateTime = System.currentTimeMillis() - timer;
         } else {
             trans = false;
@@ -247,11 +243,11 @@ public class PlayScreen extends PohjaScreen {
         zoomed = true;
         if (in) {
             seurataanPolttoa = true;
-            transition = new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), moveDuration);
+            kameranKasittelija.setTransition(new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), moveDuration));
             kameranKasittelija.setZoomTransition(new ZoomTransition(camera.zoom, 1f, zoomDuration, true));
             zoomedOut = false;
         } else {
-            transition = new CameraTransition(polttopiste, keskipiste.cpy().lerp(polttopiste, 0.05f), moveDuration);
+            kameranKasittelija.setTransition(new CameraTransition(polttopiste, keskipiste.cpy().lerp(polttopiste, 0.05f), moveDuration));
             kameranKasittelija.setZoomTransition(new ZoomTransition(camera.zoom, 6f, zoomDuration, false));
             zoomedOut = true;
         }
@@ -276,7 +272,7 @@ public class PlayScreen extends PohjaScreen {
             this.solmu = solmu;
             alkaaTapahtua();
             seurataanPolttoa = true;
-            transition = new CameraTransition(polttopiste, goal, moveDuration);
+            kameranKasittelija.setTransition(new CameraTransition(polttopiste, goal, moveDuration));
         }
     }
 
@@ -330,7 +326,7 @@ public class PlayScreen extends PohjaScreen {
         alkaaTapahtua();
         Vector3 kpy = polttopiste.cpy();
         paivitaPiste(polttopiste, panpiste);
-        transition = new CameraTransition(polttopiste, kpy, moveDuration);
+        kameranKasittelija.setTransition(new CameraTransition(polttopiste, kpy, moveDuration));
         seurataanPolttoa = true;
     }
 

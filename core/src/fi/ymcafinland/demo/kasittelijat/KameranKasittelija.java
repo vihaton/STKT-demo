@@ -1,7 +1,10 @@
 package fi.ymcafinland.demo.kasittelijat;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.transitions.CameraTransition;
 import fi.ymcafinland.demo.transitions.ZoomTransition;
 
 /**
@@ -11,13 +14,19 @@ public class KameranKasittelija {
     //todo playscreenista kaikki kameran käsittely tänne
 
     private OrthographicCamera camera;
+    private Vector3 polttopiste;
+    private CameraTransition transition;
     private ZoomTransition zoomTransition;
-
     private float zoomAlaraja;
     private float zoomYlaraja;
 
     public KameranKasittelija(OrthographicCamera camera) {
         this.camera = camera;
+
+        this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
+        
+        //Ilman näitä rivejä zoomin kutsuminen ennen liikkumista aiheuttaa NullPointerExeptionin
+        this.transition = new CameraTransition(polttopiste, polttopiste, 0);
         this.zoomTransition = new ZoomTransition(1f, 1f, 0, true);
     }
 
@@ -41,5 +50,13 @@ public class KameranKasittelija {
             //Gdx.app.log("PS", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
             camera.zoom += increment;
         }
+    }
+
+    public void actTransition(float delta) {
+        transition.act(delta);
+    }
+
+    public void setTransition(CameraTransition transition) {
+        this.transition = transition;
     }
 }
