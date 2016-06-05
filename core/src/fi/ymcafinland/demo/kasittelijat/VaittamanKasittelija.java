@@ -144,7 +144,7 @@ public class VaittamanKasittelija {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("QS", "returnbuttonia painettiin");
 
-                sp.setPlayScreen();
+                sp.setPlayScreen(null);
 
             }
         });

@@ -86,7 +86,7 @@ public class PalauteScreen extends PohjaScreen {
         returnButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("PalS", "returnbuttonia painettiin");
-                sp.setPlayScreen();
+                sp.setPlayScreen(null);
             }
         });
 
