@@ -73,7 +73,7 @@ public class SolmunKasittelija {
             pallontaulukko.setRotation(s.getKulma());
 
             pallontaulukko.add(taustapallo).minSize(pallonLeveys,pallonKorkeus);
-            if(Integer.parseInt(s.getID()) < 24)
+            if(Integer.parseInt(s.getID()) <= 24)
                 solmuKuvaTaulukot.add(pallontaulukko);
             solmuTaulukot.add(tekstit);
 
@@ -130,7 +130,7 @@ public class SolmunKasittelija {
     }
 // AngletoPoint ei toimi tässä yhteydessä?
     private void paivitaOutlineGlow(float angleToPointCamera, Batch batch) {
-        for (int i = 0; i < 23; i++) {
+        for (int i = 0; i < 24; i++) {
             Table t = solmuKuvaTaulukot.get(i);
             t.setTransform(true);
             t.setDebug(true);
@@ -143,7 +143,7 @@ public class SolmunKasittelija {
             shaderOutline.end();
             batch.setShader(shaderOutline);
             batch.begin();
-            batch.draw(sprite, t.getX(), t.getY(), pallonLeveys/2, pallonKorkeus/2, pallonLeveys, pallonKorkeus, 1f, 1f, angleToPointCamera);
+            batch.draw(sprite, t.getX() - pallonLeveys*0.5f + 0.5f, t.getY() - pallonKorkeus*0.5f + 0.5f, pallonLeveys, pallonKorkeus);
             batch.end();
             batch.setShader(null);
         }
