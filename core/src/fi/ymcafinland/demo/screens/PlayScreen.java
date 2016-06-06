@@ -38,7 +38,6 @@ public class PlayScreen extends PohjaScreen {
     protected float angleToPoint;
     protected long stateTime;
     protected long timer;
-    //public boolean seurataanPolttoa = true;
     private final float moveDuration = 1.0f;    //s
     private final float zoomDuration = 1.0f;    //s
     private float currentZoomDuration = 3.0f;      // viimeisimpänä suoritetun zoomin kesto
