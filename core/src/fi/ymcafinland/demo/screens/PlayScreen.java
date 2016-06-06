@@ -119,25 +119,25 @@ public class PlayScreen extends PohjaScreen {
     @Override
     public void render(float delta) {
         //debug
+        boolean log = false;
         if (delta > renderinLoggausAlaraja && SelviytyjanPurjeet.LOG) {
             Gdx.app.log("PS", "renderloggaus käynnistetty\n" +
                     "minimi fps:" + minFPS + " fps, tämän ruudun fps:" + Math.pow(delta, -1) + " fps\n" +
                     "stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
+            log = true;
         }
 
         super.render(delta);
 
         // Lasketaan kumulatiivinen delta siten ettei ole mahdollisuutta ylivuotoon
-        if (timeSinceLastZoomEvent < Float.MAX_VALUE) {
-            this.timeSinceLastZoomEvent += delta;
-        }
+        if (timeSinceLastZoomEvent + delta < Float.MAX_VALUE) this.timeSinceLastZoomEvent += delta;
 
         camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
 
         if (trans) {
             actTransition(delta);
         }
-        if (SelviytyjanPurjeet.LOG) Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter actTransition");
+        if (log) Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter actTransition");
 
         kameranKasittelija.siirrySeurattavaanPisteeseen();
         kameranKasittelija.rotateCamera(getAngleToPoint(polttopiste, keskipiste));
@@ -151,12 +151,12 @@ public class PlayScreen extends PohjaScreen {
         batch.setProjectionMatrix(camera.combined);
 
         paivitaKasittelijat(delta);
-        if (SelviytyjanPurjeet.LOG) Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter käsittelijöiden päivitys");
+        if (log) Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter käsittelijöiden päivitys");
 
         stage.draw();
         batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        if (SelviytyjanPurjeet.LOG) Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter stagejen piirtämiset");
+        if (log) Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter stagejen piirtämiset");
 
 //        odota(10);
 //        if (SelviytyjanPurjeet.LOG) Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter loppuodotus");
