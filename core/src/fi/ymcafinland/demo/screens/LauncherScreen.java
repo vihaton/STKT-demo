@@ -55,19 +55,25 @@ public class LauncherScreen extends PohjaScreen {
 
         Table nappitaulukko = new Table();
 
-        nappitaulukko.left().add(spButton).pad(5);
-        nappitaulukko.center().add(mockButton1).pad(5);
-        nappitaulukko.right().add(mockButton2).pad(5);
+        nappitaulukko.add(spButton).expandX().pad(5);
+        nappitaulukko.add(mockButton1).expandX().pad(5);
+        nappitaulukko.add(mockButton2).expandX().pad(5);
 
         nappitaulukko.row().height(5);
 
-        nappitaulukko.left().add(new Label("Selvityjän Purjeet", skin, "launcher"));
-        nappitaulukko.center().add(new Label("Turvaverkko", skin, "launcher"));
-        nappitaulukko.right().add(new Label("Laiva -sovellus", skin, "launcher"));
+        nappitaulukko.add(luoLabel("Selviytyjän purjeet")).expandX().pad(10);
+        nappitaulukko.add(luoLabel("Turvaverkko")).expandX().pad(10);
+        nappitaulukko.add(luoLabel("Laiva -sovellus")).expandX().pad(10);
 
         rootTable.add(nappitaulukko).top().padBottom(sp.V_HEIGHT/4 * 3);
 
         rootTable.validate();
+    }
+
+    private Label luoLabel(String teksti) {
+        Label label = new Label(teksti, skin, "launcher");
+        label.setFontScale(0.25f);
+        return label;
     }
 
     private void createButtons() {
