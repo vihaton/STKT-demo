@@ -79,23 +79,18 @@ public class PlayScreen extends PohjaScreen {
         this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin, pelaaja);
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
         this.infoButtonKasittelija = new InfoButtonKasittelija(stage, masterSkin, verkko);
-        this.angleToPoint = getAngleToPoint(new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, 0, 0), keskipiste);
 
         //  "The image's dimensions should be powers of two (16x16, 64x256, etc) for compatibility and performance reasons."
         this.batch = new SpriteBatch();
 
         //näkymä on aluksi kaukana
         zoomedOut = false;
-        camera.zoom = 4f;
+        kameranKasittelija.setZoom(4f);
 
         // Playscreen ei tunne sovelluksen inputprocessoria, vaan tietää HUDin joka huolehtii I/O:sta.
         this.hud = new HUD(this, batch, masterSkin, solmu);
 
         this.timer = System.currentTimeMillis();
-        this.keskipiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
-        this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
-        this.panpiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
-
         this.angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         this.stateTime = 0;
 
@@ -162,7 +157,7 @@ public class PlayScreen extends PohjaScreen {
             camera.position.set(panpiste);
         }
 
-        rotateCamera();
+        kameranKasittelija.rotateCamera(getAngleToPoint(polttopiste, keskipiste));
 
         //actZoomia kutsutaan vain jos zoomTransition on käynnissä
         if (timeSinceLastZoomEvent < currentZoomDuration) {
@@ -213,11 +208,6 @@ public class PlayScreen extends PohjaScreen {
         } else {
             trans = false;
         }
-    }
-
-    private void rotateCamera() {
-        angleToPoint = getAngleToPoint(polttopiste, keskipiste);
-        camera.rotate(-angleToPoint + 90);
     }
 
     /**

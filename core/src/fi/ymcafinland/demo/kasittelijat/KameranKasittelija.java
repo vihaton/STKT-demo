@@ -59,4 +59,13 @@ public class KameranKasittelija {
     public void setTransition(CameraTransition transition) {
         this.transition = transition;
     }
+
+    public void setZoom(float zoom) {
+        camera.zoom = zoom;
+    }
+
+    public void rotateCamera(float angleToPoint) {
+        camera.rotate(-angleToPoint + 90);
+    }
+
 }
