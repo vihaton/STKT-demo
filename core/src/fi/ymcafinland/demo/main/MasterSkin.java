@@ -90,7 +90,7 @@ public class MasterSkin extends Skin {
 
     private void generoiLabelStylet() {
         //TODO tehdään eri fontti kuin libgdx:n defaultfontti
-        Label.LabelStyle launcherStyle = new Label.LabelStyle(this.getFont("libgdxFont"), this.getFont("libgdxFont").getColor());
+        Label.LabelStyle launcherStyle = new Label.LabelStyle(this.getFont("hieroFont"), Color.WHITE);
         this.add("launcher", launcherStyle);
 
         Label.LabelStyle otsikkoStyle = new Label.LabelStyle(this.getFont("fontti"), this.getFont("fontti").getColor());
