@@ -1,6 +1,8 @@
 package fi.ymcafinland.demo.kasittelijat;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
@@ -15,15 +17,20 @@ public class KameranKasittelija {
 
     private OrthographicCamera camera;
     private Vector3 polttopiste;
+    private Vector3 panpiste;
+    private Vector2 camMax = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS * 0.8f, SelviytyjanPurjeet.TAUSTAN_KORKEUS * 0.8f);
+    private Vector2 camMin = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS * 0.2f, SelviytyjanPurjeet.TAUSTAN_KORKEUS * 0.2f);
     private CameraTransition transition;
     private ZoomTransition zoomTransition;
     private float zoomAlaraja;
     private float zoomYlaraja;
+    private boolean seurataanPolttoa = true;
 
-    public KameranKasittelija(OrthographicCamera camera) {
+    public KameranKasittelija(OrthographicCamera camera, Vector3 keskipiste, Vector3 polttopiste, Vector3 panpiste) {
         this.camera = camera;
 
-        this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
+        this.polttopiste = polttopiste;
+        this.panpiste = panpiste;
         
         //Ilman näitä rivejä zoomin kutsuminen ennen liikkumista aiheuttaa NullPointerExeptionin
         this.transition = new CameraTransition(polttopiste, polttopiste, 0);
@@ -32,8 +39,7 @@ public class KameranKasittelija {
 
     public void actZoom(float delta) {
         camera.zoom = zoomTransition.zoomAct(delta);
-//        if (SelviytyjanPurjeet.LOG)
-//            Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
 
         //Zoom alaraja on 3/4 nykyisestä zoomista, yläraja 1.75 * normaali zoomi.
         this.zoomAlaraja = (camera.zoom / 4) * 3;
@@ -68,4 +74,20 @@ public class KameranKasittelija {
         camera.rotate(-angleToPoint + 90);
     }
 
+    public void setSeurataanPolttoa(boolean seurataanPolttoa) {
+        this.seurataanPolttoa = seurataanPolttoa;
+    }
+
+    public void siirrySeurattavaanPisteeseen() {
+        if (seurataanPolttoa) {
+            camera.position.set(polttopiste);
+            panpiste.x = polttopiste.x;
+            panpiste.y = polttopiste.y;
+
+        } else {
+            panpiste.x = Math.min(camMax.x, Math.max(panpiste.x, camMin.x));
+            panpiste.y = Math.min(camMax.y, Math.max(panpiste.y, camMin.y));
+            camera.position.set(panpiste);
+        }
+    }
 }

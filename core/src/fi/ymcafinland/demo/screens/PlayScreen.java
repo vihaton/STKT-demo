@@ -38,7 +38,7 @@ public class PlayScreen extends PohjaScreen {
     protected float angleToPoint;
     protected long stateTime;
     protected long timer;
-    public boolean seurataanPolttoa = true;
+    //public boolean seurataanPolttoa = true;
     private final float moveDuration = 1.0f;    //s
     private final float zoomDuration = 1.0f;    //s
     private float currentZoomDuration = 3.0f;      // viimeisimpänä suoritetun zoomin kesto
@@ -55,8 +55,6 @@ public class PlayScreen extends PohjaScreen {
     private EdistymismittarinKasittelija edistymismittarinKasittelija;
     private InfoButtonKasittelija infoButtonKasittelija;
     public boolean ensimmainenSiirtyma = true;
-    private Vector2 camMax = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS * 0.8f, SelviytyjanPurjeet.TAUSTAN_KORKEUS * 0.8f);
-    private Vector2 camMin = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS * 0.2f, SelviytyjanPurjeet.TAUSTAN_KORKEUS * 0.2f);
 
 
     /**
@@ -75,7 +73,7 @@ public class PlayScreen extends PohjaScreen {
         this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.panpiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
 
-        this.kameranKasittelija = new KameranKasittelija(camera);
+        this.kameranKasittelija = new KameranKasittelija(camera, keskipiste, polttopiste, panpiste);
         this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin, pelaaja);
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
         this.infoButtonKasittelija = new InfoButtonKasittelija(stage, masterSkin, verkko);
@@ -146,17 +144,7 @@ public class PlayScreen extends PohjaScreen {
         if (log)
             Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter actTransition");
 
-        if (seurataanPolttoa) {
-            camera.position.set(polttopiste);
-            panpiste.x = polttopiste.x;
-            panpiste.y = polttopiste.y;
-
-        } else {
-            panpiste.x = Math.min(camMax.x, Math.max(panpiste.x, camMin.x));
-            panpiste.y = Math.min(camMax.y, Math.max(panpiste.y, camMin.y));
-            camera.position.set(panpiste);
-        }
-
+        kameranKasittelija.siirrySeurattavaanPisteeseen();
         kameranKasittelija.rotateCamera(getAngleToPoint(polttopiste, keskipiste));
 
         //actZoomia kutsutaan vain jos zoomTransition on käynnissä
@@ -232,7 +220,7 @@ public class PlayScreen extends PohjaScreen {
         timeSinceLastZoomEvent = 0;
         zoomed = true;
         if (in) {
-            seurataanPolttoa = true;
+            kameranKasittelija.setSeurataanPolttoa(true);
             kameranKasittelija.setTransition(new CameraTransition(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f), moveDuration));
             kameranKasittelija.setZoomTransition(new ZoomTransition(camera.zoom, 1f, zoomDuration, true));
             zoomedOut = false;
@@ -261,7 +249,7 @@ public class PlayScreen extends PohjaScreen {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
             alkaaTapahtua();
-            seurataanPolttoa = true;
+            kameranKasittelija.setSeurataanPolttoa(true);
             kameranKasittelija.setTransition(new CameraTransition(polttopiste, goal, moveDuration));
         }
     }
@@ -317,7 +305,7 @@ public class PlayScreen extends PohjaScreen {
         Vector3 kpy = polttopiste.cpy();
         paivitaPiste(polttopiste, panpiste);
         kameranKasittelija.setTransition(new CameraTransition(polttopiste, kpy, moveDuration));
-        seurataanPolttoa = true;
+        kameranKasittelija.setSeurataanPolttoa(true);
     }
 
     public Vector3 getPolttopiste() {
@@ -341,7 +329,7 @@ public class PlayScreen extends PohjaScreen {
      * @param deltaY yyn muutos puhelimen näytöllä
      */
     public void panoroi(float deltaX, float deltaY) {
-        seurataanPolttoa = false;
+        kameranKasittelija.setSeurataanPolttoa(false);
         float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
         float muutos = (float) Math.hypot(deltaX, deltaY);
 
