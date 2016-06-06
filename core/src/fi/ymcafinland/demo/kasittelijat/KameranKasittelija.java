@@ -24,6 +24,7 @@ public class KameranKasittelija {
     private ZoomTransition zoomTransition;
     private float zoomAlaraja;
     private float zoomYlaraja;
+    private final float transDuration = 1.0f;
     private boolean seurataanPolttoa = true;
 
     public KameranKasittelija(OrthographicCamera camera, Vector3 keskipiste, Vector3 polttopiste, Vector3 panpiste) {
@@ -46,8 +47,8 @@ public class KameranKasittelija {
         this.zoomYlaraja = camera.zoom * 1.75f;
     }
 
-    public void setZoomTransition(ZoomTransition zoomTransition) {
-        this.zoomTransition = zoomTransition;
+    public void changeZoom(float endZoom, boolean zoomingIn) {
+        this.zoomTransition = new ZoomTransition(camera.zoom, endZoom, transDuration, zoomingIn);
     }
 
     public void pinchZoom(float increment) {
@@ -62,8 +63,8 @@ public class KameranKasittelija {
         transition.act(delta);
     }
 
-    public void setTransition(CameraTransition transition) {
-        this.transition = transition;
+    public void transitionFromTo(Vector3 start, Vector3 finish) {
+        this.transition = new CameraTransition(start, finish, transDuration);
     }
 
     public void setZoom(float zoom) {
@@ -89,5 +90,13 @@ public class KameranKasittelija {
             panpiste.y = Math.min(camMax.y, Math.max(panpiste.y, camMin.y));
             camera.position.set(panpiste);
         }
+    }
+
+    public float getTransDuration() {
+        return transDuration;
+    }
+
+    public void initialZoom() {
+        this.zoomTransition = new ZoomTransition(camera.zoom, 1f, transDuration * 2, true);
     }
 }
