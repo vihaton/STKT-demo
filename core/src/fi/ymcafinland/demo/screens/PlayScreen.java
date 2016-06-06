@@ -46,7 +46,6 @@ public class PlayScreen extends PohjaScreen {
     private final float minFPS = 45;         //fps
     private final float renderinLoggausAlaraja = (float) Math.pow(minFPS, -1.0);  //s, eli deltan maximiarvo (jos delta on isompi kuin tämä, niin fps on liian pieni
     private final int idleTime = 3000; //ms
-    private float laskuriOdotukseen = 0; //ms
 
     private SelviytyjanPurjeet sp;
     private Verkko verkko;
