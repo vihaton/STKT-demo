@@ -226,6 +226,7 @@ public class PlayScreen extends PohjaScreen {
      * @param solmu käsiteltävä solmu
      */
     public void setSolmu(Solmu solmu) {
+        //Todo ensimmainenSiirtyma pois?
         if (!this.solmu.equals(solmu) || ensimmainenSiirtyma) {
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
             this.solmu = solmu;
