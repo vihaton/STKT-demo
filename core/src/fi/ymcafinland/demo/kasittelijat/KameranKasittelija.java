@@ -99,4 +99,9 @@ public class KameranKasittelija {
     public void initialZoom() {
         this.zoomTransition = new ZoomTransition(camera.zoom, 1f, transDuration * 2, true);
     }
+
+    public void reset(Vector3 kpy) {
+        transitionFromTo(polttopiste, kpy);
+        seurataanPolttoa = true;
+    }
 }

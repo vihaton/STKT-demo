@@ -139,11 +139,7 @@ public class PlayScreen extends PohjaScreen {
 
         kameranKasittelija.siirrySeurattavaanPisteeseen();
         kameranKasittelija.rotateCamera(getAngleToPoint(polttopiste, keskipiste));
-
-        //actZoomia kutsutaan vain jos zoomTransition on käynnissä
-        if (timeSinceLastZoomEvent < currentZoomDuration) {
-            kameranKasittelija.actZoom(delta);
-        }
+        if (timeSinceLastZoomEvent < currentZoomDuration) kameranKasittelija.actZoom(delta);
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -293,8 +289,7 @@ public class PlayScreen extends PohjaScreen {
         alkaaTapahtua();
         Vector3 kpy = polttopiste.cpy();
         paivitaPiste(polttopiste, panpiste);
-        kameranKasittelija.transitionFromTo(polttopiste, kpy);
-        kameranKasittelija.setSeurataanPolttoa(true);
+        kameranKasittelija.reset(kpy);
     }
 
     public Vector3 getPolttopiste() {
