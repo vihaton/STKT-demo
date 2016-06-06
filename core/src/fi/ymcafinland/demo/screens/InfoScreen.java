@@ -77,7 +77,7 @@ public class InfoScreen extends PohjaScreen {
     private Label luoInfoteksti() {
         Label label = new Label(infoText, skin, "infoteksti");
         label.setWrap(true);
-        label.setFontScale(2);
+        label.setFontScale(0.5f);
         label.setAlignment(Align.center);
 
         return label;
