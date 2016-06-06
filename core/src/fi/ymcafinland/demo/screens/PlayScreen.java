@@ -23,33 +23,32 @@ import fi.ymcafinland.demo.transitions.ZoomTransition;
  */
 public class PlayScreen extends PohjaScreen {
 
+    private SelviytyjanPurjeet sp;
+    private Verkko verkko;
+    private HUD hud;
+    private SpriteBatch batch;
     private KameranKasittelija kameranKasittelija;
+    private SolmunKasittelija solmunKasittelija;
+    private EdistymismittarinKasittelija edistymismittarinKasittelija;
+    private InfoButtonKasittelija infoButtonKasittelija;
+    private Solmu solmu;
 
-    protected SpriteBatch batch;
-    protected Solmu solmu;
-    protected float timeSinceTransitionZoom = 0;
-    protected boolean trans = false;
+    private boolean trans = false;
     public boolean zoomedOut = false;
-    protected boolean zoomed = false;
+
     public Vector3 polttopiste;
     public Vector3 panpiste;
-    protected Vector3 keskipiste;
-    protected float angleToPoint;
-    protected long stateTime;
-    protected long timer;
+    private Vector3 keskipiste;
+    private float angleToPoint;
+
+    private long stateTime;
+    private long timer;
     private float currentZoomDuration = 3.0f;      // viimeisimpänä suoritetun zoomin kesto
     private float timeSinceLastZoomEvent = 0;   // kumulatiivinen deltalukema, nollataan zoomatessa
     private final float minFPS = 45;         //fps
     private final float renderinLoggausAlaraja = (float) Math.pow(minFPS, -1.0);  //s, eli deltan maximiarvo (jos delta on isompi kuin tämä, niin fps on liian pieni
     private final float maxDuration = 1000f;
     private final int idleTime = 3000; //ms
-
-    private SelviytyjanPurjeet sp;
-    private Verkko verkko;
-    private HUD hud;
-    private SolmunKasittelija solmunKasittelija;
-    private EdistymismittarinKasittelija edistymismittarinKasittelija;
-    private InfoButtonKasittelija infoButtonKasittelija;
     public boolean ensimmainenSiirtyma = true;
 
 
@@ -69,7 +68,7 @@ public class PlayScreen extends PohjaScreen {
         this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.panpiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
 
-        this.kameranKasittelija = new KameranKasittelija(camera, keskipiste, polttopiste, panpiste);
+        this.kameranKasittelija = new KameranKasittelija(camera, polttopiste, panpiste);
         this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin, pelaaja);
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
         this.infoButtonKasittelija = new InfoButtonKasittelija(stage, masterSkin, verkko);
@@ -132,9 +131,8 @@ public class PlayScreen extends PohjaScreen {
 
         camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
 
-        if (trans) {
-            actTransition(delta);
-        }
+        if (trans) actTransition(delta);
+
         if (log) Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter actTransition");
 
         kameranKasittelija.siirrySeurattavaanPisteeseen();
@@ -201,9 +199,7 @@ public class PlayScreen extends PohjaScreen {
      */
     //ToDo Zoom riippumaan pallon koosta?
     public void nappulaZoom(boolean in) {
-        timeSinceTransitionZoom = 0;
         timeSinceLastZoomEvent = 0;
-        zoomed = true;
         if (in) {
             kameranKasittelija.setSeurataanPolttoa(true);
             kameranKasittelija.transitionFromTo(polttopiste, new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f));

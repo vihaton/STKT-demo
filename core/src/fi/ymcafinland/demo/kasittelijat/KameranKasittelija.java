@@ -27,7 +27,7 @@ public class KameranKasittelija {
     private final float transDuration = 1.0f;
     private boolean seurataanPolttoa = true;
 
-    public KameranKasittelija(OrthographicCamera camera, Vector3 keskipiste, Vector3 polttopiste, Vector3 panpiste) {
+    public KameranKasittelija(OrthographicCamera camera, Vector3 polttopiste, Vector3 panpiste) {
         this.camera = camera;
 
         this.polttopiste = polttopiste;
