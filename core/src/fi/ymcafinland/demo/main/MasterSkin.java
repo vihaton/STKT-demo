@@ -85,11 +85,14 @@ public class MasterSkin extends Skin {
 
         BitmapFont libgdxFont = new BitmapFont(Gdx.files.internal("default.fnt"), Gdx.files.internal("default.png"), false);
         this.add("libgdxFont", libgdxFont);
+
+        BitmapFont hieroFont = new BitmapFont(Gdx.files.internal("font/fonttihiero.fnt"), false);
+        this.add("hieroFont", hieroFont);
     }
 
     private void generoiLabelStylet() {
         //TODO tehdään eri fontti kuin libgdx:n defaultfontti
-        Label.LabelStyle launcherStyle = new Label.LabelStyle(this.getFont("libgdxFont"), this.getFont("libgdxFont").getColor());
+        Label.LabelStyle launcherStyle = new Label.LabelStyle(this.getFont("hieroFont"), Color.WHITE);
         this.add("launcher", launcherStyle);
 
         Label.LabelStyle otsikkoStyle = new Label.LabelStyle(this.getFont("fontti"), this.getFont("fontti").getColor());
@@ -104,7 +107,7 @@ public class MasterSkin extends Skin {
         Label.LabelStyle arvioStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         this.add("arvio", arvioStyle);
 
-        Label.LabelStyle infotekstiStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        Label.LabelStyle infotekstiStyle = new Label.LabelStyle(this.getFont("hieroFont"), Color.WHITE);
         this.add("infoteksti", infotekstiStyle);
     }
 
