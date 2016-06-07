@@ -59,7 +59,7 @@ public class SolmunKasittelija {
             float y = s.getYKoordinaatti();
 
             Image taustapallo = luoTaustapallo();
-
+            taustapallo.setOrigin(Align.center);
 
             Table tekstit = luoTekstitaulukko(s);
             Table pallontaulukko = new Table();
@@ -71,10 +71,11 @@ public class SolmunKasittelija {
 
             Table glowiTaulu = new Table();
             Image glowimage = luoGlowKuva();
+            glowimage.setOrigin(Align.center);
             asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
 
 
-            glowiTaulu.add(glowimage).minSize(pallonLeveys*1.29f, pallonKorkeus*1.29f);
+            glowiTaulu.add(glowimage).minSize(pallonLeveys*1.27f, pallonKorkeus*1.27f);
 
 
 
@@ -83,19 +84,19 @@ public class SolmunKasittelija {
 
             if(Integer.parseInt(s.getID()) < 25 && Integer.parseInt(s.getID())> 6) {
                 glowKuvaTaulukot.add(glowiTaulu);
-                stage.addActor(glowiTaulu);
             }
 
             solmuTaulukot.add(tekstit);
             stage.addActor(pallontaulukko);
             stage.addActor(tekstit);
+            stage.addActor(glowiTaulu);
         }
         luoGlowAnimaatiot();
     }
 
     private void asetaTauluSolmujenPaikalle(Solmu s, float x, float y, Table glowiTaulu) {
-        glowiTaulu.setPosition(x, y);
         glowiTaulu.setOrigin(Align.center);
+        glowiTaulu.setPosition(x, y);
         glowiTaulu.setRotation(s.getKulma());
     }
 //ToDo parempi glow kuva.
@@ -103,11 +104,11 @@ public class SolmunKasittelija {
 
         for (Table t : glowKuvaTaulukot) {
             t.setTransform(true);
-            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.7f, 1f), Actions.alpha(1f, 1f))));
-            t.addAction(Actions.forever(Actions.rotateBy(2, 0.5f)));
-            t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 3), Actions.scaleTo(1, 1, 3))));
-            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 3), Actions.moveBy(-2, -2, 3))));
-            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 5), Actions.moveBy(1, -2, 5))));
+            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.7f, 0.5f), Actions.alpha(1f, 0.5f))));
+            t.addAction(Actions.forever(Actions.rotateBy(2, 0.25f)));
+            t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
+//            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));
+//            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 2.5f), Actions.moveBy(1, -2, 2.5f))));
         }
     }
 
