@@ -72,17 +72,18 @@ public class SolmunKasittelija {
             Table glowiTaulu = new Table();
             Image glowimage = luoGlowKuva();
             glowimage.setOrigin(Align.center);
-            asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
 
 
-            glowiTaulu.add(glowimage).minSize(pallonLeveys*1.27f, pallonKorkeus*1.27f);
+            glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
 
 
 
-            if(Integer.parseInt(s.getID()) < 25)
+            if(Integer.parseInt(s.getID()) < 25) {
                 solmuKuvaTaulukot.add(pallontaulukko);
+            }
 
             if(Integer.parseInt(s.getID()) < 25 && Integer.parseInt(s.getID())> 6) {
+                asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
                 glowKuvaTaulukot.add(glowiTaulu);
             }
 
