@@ -209,4 +209,7 @@ public class Pelaaja {
         this.vaittamienMaara = vaittamienMaara;
     }
 
+    public float getVastausprosenttiSolmusta(int id) {
+        return 1f;
+    }
 }

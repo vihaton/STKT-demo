@@ -1,9 +1,10 @@
 package fi.ymcafinland.demo.kasittelijat;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -92,7 +93,7 @@ public class SolmunKasittelija {
             stage.addActor(tekstit);
             stage.addActor(glowiTaulu);
         }
-        luoGlowAnimaatiot();
+        paivitaGlowAnimaatiot();
     }
 
     private void asetaTauluSolmujenPaikalle(Solmu s, float x, float y, Table glowiTaulu) {
@@ -101,16 +102,21 @@ public class SolmunKasittelija {
         glowiTaulu.setRotation(s.getKulma());
     }
 //ToDo parempi glow kuva.
-    private void luoGlowAnimaatiot() {
+    private void paivitaGlowAnimaatiot() {
 
         for (Table t : glowKuvaTaulukot) {
+            for (Action a : t.getActions()) {
+                t.removeAction(a);
+            }
+            float solmunAlpha = 0.7f * 1;
+            Gdx.app.log("SK", "Solmun alpha: " + solmunAlpha);
             t.setTransform(true);
-            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.1f, 0.5f), Actions.alpha(0.4f, 0.5f))));
+            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 0.5f), Actions.alpha((solmunAlpha + 0.3f), 0.5f))));
             t.addAction(Actions.forever(Actions.rotateBy(2, 0.25f)));
             t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
-
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 2.5f), Actions.moveBy(1, -2, 2.5f))));
+
         }
     }
 
