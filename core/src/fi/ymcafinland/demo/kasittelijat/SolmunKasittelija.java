@@ -105,9 +105,10 @@ public class SolmunKasittelija {
 
         for (Table t : glowKuvaTaulukot) {
             t.setTransform(true);
-            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.7f, 0.5f), Actions.alpha(1f, 0.5f))));
+            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(0.1f, 0.5f), Actions.alpha(0.4f, 0.5f))));
             t.addAction(Actions.forever(Actions.rotateBy(2, 0.25f)));
             t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
+
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 2.5f), Actions.moveBy(1, -2, 2.5f))));
         }
@@ -152,7 +153,11 @@ public class SolmunKasittelija {
 
         rotateTables(angleToPointCamera);
         paivitaSolmujenKoko();
+        paivitaSolmujenAnimaatiot();
 
+    }
+
+    private void paivitaSolmujenAnimaatiot() {
 
     }
 

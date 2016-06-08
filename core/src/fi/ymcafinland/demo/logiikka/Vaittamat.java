@@ -167,4 +167,9 @@ public class Vaittamat {
     public int getMaara() {
         return vaittamienMaara;
     }
+
+    public float getSolmunVastausProsentti(String id) {
+
+        return 0;
+    }
 }
