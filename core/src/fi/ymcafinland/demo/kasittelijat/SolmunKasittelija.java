@@ -110,7 +110,7 @@ public void paivitaGlowAnimaatiot() {
             for (Action a : t.getActions()) {
                 t.removeAction(a);
             }
-            float solmunAlpha = 0.7f * vaittamat.getVastausprosenttiSolmusta("" + nykyisenSolmunID);
+            float solmunAlpha = 0.6f * vaittamat.getVastausprosenttiSolmusta("" + nykyisenSolmunID) + 0.1f;
             Gdx.app.log("SK", "Solmun alpha: " + solmunAlpha);
             t.setTransform(true);
             t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 1f), Actions.alpha((solmunAlpha + 0.3f), 1f))));
