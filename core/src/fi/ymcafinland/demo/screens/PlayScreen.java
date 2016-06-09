@@ -117,6 +117,7 @@ public class PlayScreen extends PohjaScreen {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 
         edistymismittarinKasittelija.paivitaMittarinArvo(renderinLoggausAlaraja); //päivitetään edistymismittarin arvo vain kun siirrytään playscreeniin
+        solmunKasittelija.paivitaGlowAnimaatiot();
         hud.resetInputProcessor();
     }
 

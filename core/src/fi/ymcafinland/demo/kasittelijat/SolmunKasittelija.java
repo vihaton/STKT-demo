@@ -79,7 +79,7 @@ public class SolmunKasittelija {
 
             glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
 
-            Gdx.app.log("SK", "solmu: " + s.getID());
+
 
             if(Integer.parseInt(s.getID()) < 25) {
                 solmuKuvaTaulukot.add(pallontaulukko);
@@ -104,7 +104,7 @@ public class SolmunKasittelija {
         glowiTaulu.setRotation(s.getKulma());
     }
 //ToDo parempi glow kuva.
-    private void paivitaGlowAnimaatiot() {
+public void paivitaGlowAnimaatiot() {
         int nykyisenSolmunID = 7;
         for (Table t : glowKuvaTaulukot) {
             for (Action a : t.getActions()) {
@@ -158,15 +158,8 @@ public class SolmunKasittelija {
      * * @param angleToPointCamera kulma, jolla kamera on suunnattu keskipisteeseen
      */
     public void paivitaSolmut(float angleToPointCamera) {
-
         rotateTables(angleToPointCamera);
         paivitaSolmujenKoko();
-        paivitaSolmujenAnimaatiot();
-
-    }
-
-    private void paivitaSolmujenAnimaatiot() {
-
     }
 
     /**
