@@ -183,10 +183,6 @@ public class Vaittamat {
             }
         }
 
-        if (vastatut == 0) {
-            return 0.001f;
-        }
-
         return vastatut / (float) solmunVaittamat.size();
     }
 }
