@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.logiikka.Verkko;
 
 /**
@@ -34,14 +35,15 @@ public class SolmunKasittelija {
     private ArrayList<Table> solmuKuvaTaulukot;
     private ArrayList<Table> glowKuvaTaulukot;
     private Pelaaja pelaaja;
-
+    private Vaittamat vaittamat;
 
     Sprite sprite;
 
-    public SolmunKasittelija(Stage stage, Verkko verkko, Skin masterSkin, Pelaaja pelaaja) {
+    public SolmunKasittelija(Stage stage, Verkko verkko, Skin masterSkin, Pelaaja pelaaja, Vaittamat vaittamat) {
         this.stage = stage;
         solmut = verkko.getSolmut();
         skin = masterSkin;
+        this.vaittamat = vaittamat;
         pallonKuva = skin.get("emptynode", Texture.class);
         pallonLeveys = pallonKuva.getWidth();
         pallonKorkeus = pallonKuva.getHeight();
@@ -77,7 +79,7 @@ public class SolmunKasittelija {
 
             glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
 
-
+            Gdx.app.log("SK", "solmu: " + s.getID());
 
             if(Integer.parseInt(s.getID()) < 25) {
                 solmuKuvaTaulukot.add(pallontaulukko);
@@ -103,15 +105,15 @@ public class SolmunKasittelija {
     }
 //ToDo parempi glow kuva.
     private void paivitaGlowAnimaatiot() {
-        int nykyisenSolmunID = 6;
+        int nykyisenSolmunID = 7;
         for (Table t : glowKuvaTaulukot) {
             for (Action a : t.getActions()) {
                 t.removeAction(a);
             }
-            float solmunAlpha = 0.7f * pelaaja.getVastausprosenttiSolmusta(nykyisenSolmunID);
+            float solmunAlpha = 0.7f * vaittamat.getVastausprosenttiSolmusta("" + nykyisenSolmunID);
             Gdx.app.log("SK", "Solmun alpha: " + solmunAlpha);
             t.setTransform(true);
-            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 0.5f), Actions.alpha((solmunAlpha + 0.3f), 0.5f))));
+            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 1f), Actions.alpha((solmunAlpha + 0.3f), 1f))));
             t.addAction(Actions.forever(Actions.rotateBy(2, 0.25f)));
             t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));

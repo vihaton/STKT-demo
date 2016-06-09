@@ -185,6 +185,7 @@ public class VaittamanKasittelija {
                 if (SelviytyjanPurjeet.LOG)
                     Gdx.app.log("VK", "slider: " + slider.getValue());
                 nykyinenVaittama.setArvo(slider.getValue());
+                nykyinenVaittama.setChecked(true);
             }
         });
         slider.addListener(new InputListener() {

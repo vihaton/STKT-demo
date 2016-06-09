@@ -214,8 +214,4 @@ public class Pelaaja {
     public void setVaittamienMaara(int vaittamienMaara) {
         this.vaittamienMaara = vaittamienMaara;
     }
-
-    public float getVastausprosenttiSolmusta(int id) {
-        return 1f;
-    }
 }

@@ -76,7 +76,7 @@ public class PlayScreen extends PohjaScreen {
         this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.panpiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
 
-        this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin, pelaaja);
+        this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin, pelaaja, sp.getVaittamat());
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
         this.infoButtonKasittelija = new InfoButtonKasittelija(stage, masterSkin, verkko);
         this.angleToPoint = getAngleToPoint(new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, 0, 0), keskipiste);

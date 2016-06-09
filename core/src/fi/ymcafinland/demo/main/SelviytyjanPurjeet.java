@@ -166,5 +166,9 @@ public class SelviytyjanPurjeet extends Game {
     public LauncherScreen getAlkuScreen() {
         return launcherScreen;
     }
+
+    public Vaittamat getVaittamat() {
+        return vaittamat;
+    }
 }
 
