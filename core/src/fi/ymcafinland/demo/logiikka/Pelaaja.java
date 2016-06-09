@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -29,7 +30,7 @@ public class Pelaaja {
     private int vaittamienMaara = 1;
     private int vastausmaara;
     //Todo vastatutVaittamat Vaittamat -luokan vastuulle
-    private HashSet<Integer> vastatutVaittamat;
+    private HashMap<Integer, ArrayList<Integer>> vastatutVaittamat;
     private String[] selviytymiskeinot;
     private float[] selviytymisarvot;
     private Integer[] keinojenIndeksitJarjestyksessa;
@@ -44,7 +45,7 @@ public class Pelaaja {
         float alkuarvo = 15f;
         selviytymisarvot = new float[]{alkuarvo, alkuarvo, alkuarvo, alkuarvo, alkuarvo, alkuarvo};
         vastausmaara = 0;
-        vastatutVaittamat = new HashSet<>();
+        vastatutVaittamat = new HashMap<>();
 //        lueSelviytymiskeinot();
         kirjoitaSelviytymiskeinot();
     }
@@ -89,9 +90,14 @@ public class Pelaaja {
         return (vastausmaara * 100 + 50) / vaittamienMaara;
     }
 
-    public void lisaaVastaus(Vaittama v) {
+    public void lisaaVastaus(Solmu s, Vaittama v) {
         lisaaVastauksia(1);
-        vastatutVaittamat.add(v.hashCode());
+        int id = Integer.parseInt(s.getID());
+        if (vastatutVaittamat.get(Integer.parseInt(s.getID())) == null) {
+            vastatutVaittamat.put(id, new ArrayList<Integer>());
+        }
+        ArrayList<Integer> solmunVastatutVaittamat = vastatutVaittamat.get(id);
+        solmunVastatutVaittamat.add(v.hashCode());
     }
 
     public void lisaaVastauksia(int maara) {
@@ -188,7 +194,7 @@ public class Pelaaja {
     }
 
     public boolean onkoVastannut(Vaittama v) {
-        return vastatutVaittamat.contains(v.hashCode());
+        return vastatutVaittamat.values().contains(v.hashCode());
     }
 
     public float getSelviytymisprosentit(int selviytymisarvonIndeksi) {

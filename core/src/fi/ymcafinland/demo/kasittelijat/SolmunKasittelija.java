@@ -103,12 +103,12 @@ public class SolmunKasittelija {
     }
 //ToDo parempi glow kuva.
     private void paivitaGlowAnimaatiot() {
-
+        int nykyisenSolmunID = 6;
         for (Table t : glowKuvaTaulukot) {
             for (Action a : t.getActions()) {
                 t.removeAction(a);
             }
-            float solmunAlpha = 0.7f * 1;
+            float solmunAlpha = 0.7f * pelaaja.getVastausprosenttiSolmusta(nykyisenSolmunID);
             Gdx.app.log("SK", "Solmun alpha: " + solmunAlpha);
             t.setTransform(true);
             t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 0.5f), Actions.alpha((solmunAlpha + 0.3f), 0.5f))));
@@ -116,7 +116,7 @@ public class SolmunKasittelija {
             t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 2.5f), Actions.moveBy(1, -2, 2.5f))));
-
+            nykyisenSolmunID++;
         }
     }
 
