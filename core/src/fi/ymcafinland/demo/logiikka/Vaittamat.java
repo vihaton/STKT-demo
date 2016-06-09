@@ -168,11 +168,6 @@ public class Vaittamat {
         return vaittamienMaara;
     }
 
-    public float getSolmunVastausProsentti(String id) {
-
-        return 0;
-    }
-
     public float getVastausprosenttiSolmusta(String s) {
         ArrayList<Vaittama> solmunVaittamat = karttaSolmujenVaittamista.get(s);
         int vastatut = 0;

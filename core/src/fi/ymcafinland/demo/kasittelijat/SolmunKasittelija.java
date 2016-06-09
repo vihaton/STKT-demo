@@ -73,7 +73,7 @@ public class SolmunKasittelija {
             pallontaulukko.add(taustapallo).minSize(pallonLeveys, pallonKorkeus);
 
             Table glowiTaulu = new Table();
-            Image glowimage = luoGlowKuva();
+            Image glowimage = luoGlowKuva("glow");
             glowimage.setOrigin(Align.center);
 
 
@@ -110,20 +110,28 @@ public void paivitaGlowAnimaatiot() {
             for (Action a : t.getActions()) {
                 t.removeAction(a);
             }
-            float solmunAlpha = 0.6f * vaittamat.getVastausprosenttiSolmusta("" + nykyisenSolmunID) + 0.1f;
-            Gdx.app.log("SK", "Solmun alpha: " + solmunAlpha);
-            t.setTransform(true);
-            //t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 1f), Actions.alpha((solmunAlpha + 0.3f), 1f))));
-            t.addAction(Actions.forever(Actions.rotateBy(2, 0.005f)));
-            //t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
+            float vastausProsentti = vaittamat.getVastausprosenttiSolmusta("" + nykyisenSolmunID);
+            if (vastausProsentti == 1) {
+                t.clear();
+                Image glowimage = luoGlowKuva("glowReady");
+                glowimage.setOrigin(Align.center);
+                t.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
+                t.addAction(Actions.forever(Actions.rotateBy(2, 0.005f)));
+            } else {
+                float solmunAlpha = 0.6f * vastausProsentti + 0.1f;
+                t.setTransform(true);
+                t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 1f), Actions.alpha((solmunAlpha + 0.3f), 1f))));
+                t.addAction(Actions.forever(Actions.rotateBy(2, 0.25f)));
+                t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 2.5f), Actions.moveBy(1, -2, 2.5f))));
+            }
             nykyisenSolmunID++;
         }
     }
 
-    private Image luoGlowKuva() {
-        Texture glow = skin.get("glowReady", Texture.class);
+    private Image luoGlowKuva(String asset) {
+        Texture glow = skin.get(asset, Texture.class);
         TextureRegion region = new TextureRegion(glow, 0, 0, glow.getWidth(), glow.getHeight());
         return new Image(region);
     }
