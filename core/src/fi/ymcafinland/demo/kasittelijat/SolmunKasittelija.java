@@ -113,9 +113,9 @@ public void paivitaGlowAnimaatiot() {
             float solmunAlpha = 0.6f * vaittamat.getVastausprosenttiSolmusta("" + nykyisenSolmunID) + 0.1f;
             Gdx.app.log("SK", "Solmun alpha: " + solmunAlpha);
             t.setTransform(true);
-            t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 1f), Actions.alpha((solmunAlpha + 0.3f), 1f))));
-            t.addAction(Actions.forever(Actions.rotateBy(2, 0.25f)));
-            t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
+            //t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 1f), Actions.alpha((solmunAlpha + 0.3f), 1f))));
+            t.addAction(Actions.forever(Actions.rotateBy(2, 0.005f)));
+            //t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));
 //            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 2.5f), Actions.moveBy(1, -2, 2.5f))));
             nykyisenSolmunID++;
@@ -123,7 +123,7 @@ public void paivitaGlowAnimaatiot() {
     }
 
     private Image luoGlowKuva() {
-        Texture glow = skin.get("glow", Texture.class);
+        Texture glow = skin.get("glowReady", Texture.class);
         TextureRegion region = new TextureRegion(glow, 0, 0, glow.getWidth(), glow.getHeight());
         return new Image(region);
     }
