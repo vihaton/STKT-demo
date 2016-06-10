@@ -5,12 +5,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
@@ -79,13 +81,19 @@ public class SolmunKasittelija {
 
             glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
 
+            final int solmunID = Integer.parseInt(s.getID());
 
-
-            if(Integer.parseInt(s.getID()) < 25) {
+            if(solmunID < 25) {
                 solmuKuvaTaulukot.add(pallontaulukko);
             }
 
-            if(Integer.parseInt(s.getID()) < 25 && Integer.parseInt(s.getID())> 6) {
+            if(solmunID < 25 && solmunID > 6) {
+                pallontaulukko.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        Gdx.app.log("SK", "Solmua " + solmunID + " painettu");
+                    }
+                });;
                 asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
                 glowKuvaTaulukot.add(glowiTaulu);
             }
