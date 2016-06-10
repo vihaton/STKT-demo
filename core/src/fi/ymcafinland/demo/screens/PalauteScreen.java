@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
+import fi.ymcafinland.demo.main.MasterSkin;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
@@ -43,7 +44,7 @@ public class PalauteScreen extends PohjaScreen {
 
         //todo palautteet kolmesarakkeiseen taulukkoon: numero/nimi/prosentit
         this.arvio = new Label(pelaaja.toString(), skin, "arvio");
-        arvio.setFontScale(2);
+        arvio.setFontScale(MasterSkin.HIERO_FONT_SCALE);
         rootTable.add(arvio).expand();
         rootTable.row();
 
