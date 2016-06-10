@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.main.MasterSkin;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
@@ -93,7 +94,7 @@ public class InfoScreen extends PohjaScreen {
     private Label luoInfoteksti() {
         Label label = new Label(infoText, skin, "infoteksti");
         label.setWrap(true);
-        label.setFontScale(0.25f);
+        label.setFontScale(MasterSkin.HIERO_FONT_SCALE);
         label.setAlignment(Align.center);
 
         return label;
