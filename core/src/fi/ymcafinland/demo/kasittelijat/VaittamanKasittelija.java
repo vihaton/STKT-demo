@@ -99,7 +99,7 @@ public class VaittamanKasittelija {
         scrollPanesRootTable.padTop(10);
         scrollPanesRootTable.padBottom(Gdx.graphics.getHeight() / 6);
 
-        Table exitTable = createReturnButton();
+        Table exitTable = createContinueButton();
         scrollPanesRootTable.add(exitTable).pad(64);
 
         return vaittamienAlkuperaisetArvot;
@@ -138,11 +138,11 @@ public class VaittamanKasittelija {
         };
     }
 
-    private Table createReturnButton() {
-        Button returnButton = new Button(skin.get("returnButtonStyle", Button.ButtonStyle.class));
-        returnButton.addListener(new ChangeListener() {
+    private Table createContinueButton() {
+        Button continueButton = new Button(skin.get("continueButtonStyle", Button.ButtonStyle.class));
+        continueButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("QS", "returnbuttonia painettiin");
+                Gdx.app.log("QS", "continuebuttonia painettiin");
 
                 sp.setPlayScreen(null);
 
@@ -150,7 +150,7 @@ public class VaittamanKasittelija {
         });
 
         Table exitTable = new Table();
-        exitTable.add(returnButton);
+        exitTable.add(continueButton);
 
         exitTable.validate();
 

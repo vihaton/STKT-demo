@@ -47,6 +47,8 @@ public class MasterSkin extends Skin {
 
         this.add("return", new Texture("return.png"));
 
+        this.add("continue", new Texture("continue.png"));
+
         this.add("emptynode", new Texture("emptynode.png"));
 
         this.add("glow", new Texture("glow.png"));
@@ -155,6 +157,10 @@ public class MasterSkin extends Skin {
         Button.ButtonStyle styleReturn = new Button.ButtonStyle();
         styleReturn.up = new TextureRegionDrawable(new TextureRegion(this.get("return", Texture.class)));
         this.add("returnButtonStyle", styleReturn);
+
+        Button.ButtonStyle styleContinue = new Button.ButtonStyle();
+        styleContinue.up = new TextureRegionDrawable(new TextureRegion(this.get("continue", Texture.class)));
+        this.add("continueButtonStyle", styleContinue);
 
         Button.ButtonStyle styleInfo = new Button.ButtonStyle();
         styleInfo.up = new TextureRegionDrawable(new TextureRegion(this.get("i", Texture.class)));
