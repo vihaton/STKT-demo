@@ -6,13 +6,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
@@ -77,25 +80,24 @@ public class SolmunKasittelija {
             Table glowiTaulu = new Table();
             Image glowimage = luoGlowKuva("glow");
             glowimage.setOrigin(Align.center);
-
-
             glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
 
             final int solmunID = Integer.parseInt(s.getID());
 
-            if(solmunID < 25) {
-                solmuKuvaTaulukot.add(pallontaulukko);
-            }
-
-            if(solmunID < 25 && solmunID > 6) {
-                pallontaulukko.addListener(new ChangeListener() {
+            if (solmunID < 25 && solmunID > 6) {
+                pallontaulukko.setTouchable(Touchable.enabled);
+                pallontaulukko.addListener(new ClickListener(){
                     @Override
-                    public void changed(ChangeEvent event, Actor actor) {
-                        Gdx.app.log("SK", "Solmua " + solmunID + " painettu");
+                    public void clicked(InputEvent event, float x, float y) {
+                        Gdx.app.log("SK", "solmua " + solmunID + " painettu");
                     }
-                });;
+                });
                 asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
                 glowKuvaTaulukot.add(glowiTaulu);
+            }
+
+            if (solmunID < 25) {
+                solmuKuvaTaulukot.add(pallontaulukko);
             }
 
             solmuTaulukot.add(tekstit);
