@@ -76,6 +76,8 @@ public class MasterSkin extends Skin {
 
         this.add("menutausta", new Texture("menutausta.png"));
 
+        this.add("vaittama", new Texture("vaittama.png"));
+
     }
 
     //todo fonttien päivitys järkevämpiin
@@ -169,6 +171,10 @@ public class MasterSkin extends Skin {
         Button.ButtonStyle styleUnavailable = new Button.ButtonStyle();
         styleUnavailable.up = new TextureRegionDrawable(new TextureRegion(this.get("unavailable", Texture.class)));
         this.add("unavailableButtonStyle", styleUnavailable);
+
+        Button.ButtonStyle styleVaittama = new Button.ButtonStyle();
+        styleVaittama.up = new TextureRegionDrawable(new TextureRegion(this.get("vaittama", Texture.class)));
+        this.add("vaittamaButtonStyle", styleVaittama);
     }
 
     private void generoiTextureAtlakset() {
