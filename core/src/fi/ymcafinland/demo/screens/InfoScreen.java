@@ -29,13 +29,29 @@ public class InfoScreen extends PohjaScreen {
 
 
     private static final String infoText =
-            "Tähän näkymään tulevat Selviytyjän purjeiden ohjeet: miten ja miksi sitä tehdään.\n\n" +
-                    "Tämä demo (v0.2) on kehitysvaiheessa, eikä välttämättä mikään ole vielä lopullista. " +
-                    "Erityisesti grafiikat tulevat muuttumaan vielä (moneen) kertaan. Tärkeimpänä kehityksessä " +
-                    "pidetään 1) toiminnallisuuksien implementointia, 2) minimikäytettävyyden saavuttamista ja " +
-                    "3) grafiikan ja intuitiivisen käytettävyyden saavuttamista.\n\n" +
-                    "Tätä sovellusta ovat devanneet Vili Hätönen, Sasu Mäkinen ja Jouni Winter. Materiaalia ovat " +
-                    "ensisijaisesti olleet kehittämässä Vili Hätönen, Olli Laukkanen, Tiina Saari ja Sasu Mäkinen.";
+            "Selvitä millainen selviytyjä olet!\n" +
+                    "\n" +
+                    "Ihmiset voidaan jakaa kuuteen selviytyjätyyppiin: fyysinen, älyllinen, " +
+                    "eettinen, tunteellinen, sosiaalinen ja luova selviytyjä. " +
+                    "Nämä neljä kategoriaa esiintyvät yksilöissä eri suhteissa, eli yksilöllä voi " +
+                    "esimerkiksi olla vahvat fyysiset sekä sosiaaliset selviytymistaidot.\n" +
+                    "\n" +
+                    "Tässä harjoitteessa selviytyjätyypit on jaettu konkreettisempiin selviytymistapoihin " +
+                    "(Fyysinen selviytyjä -> Lepään, Syön, Liikun). Selvitä millainen selviytyjä olet vastaamalla " +
+                    "väittämiin, jotka on laitettu jokaisen selviytymistavan alle.\n" +
+                    "\n" +
+                    "Voit aloittaa tekemällä alkutestin tai jatkamalla tarkastelemaan materiaalia.\n" +
+                    "\n" +
+                    "ps. selviytymisprofiilisi yhteenvedon löydät materiaalin vasemman yläkulman menusta ;)";
+
+
+//            "Tähän näkymään tulevat Selviytyjän purjeiden ohjeet: miten ja miksi sitä tehdään.\n\n" +
+//                    "Tämä demo (v0.2) on kehitysvaiheessa, eikä välttämättä mikään ole vielä lopullista. " +
+//                    "Erityisesti grafiikat tulevat muuttumaan vielä (moneen) kertaan. Tärkeimpänä kehityksessä " +
+//                    "pidetään 1) toiminnallisuuksien implementointia, 2) minimikäytettävyyden saavuttamista ja " +
+//                    "3) grafiikan ja intuitiivisen käytettävyyden saavuttamista.\n\n" +
+//                    "Tätä sovellusta ovat devanneet Vili Hätönen, Sasu Mäkinen ja Jouni Winter. Materiaalia ovat " +
+//                    "ensisijaisesti olleet kehittämässä Vili Hätönen, Olli Laukkanen, Tiina Saari ja Sasu Mäkinen.";
 
 
     public InfoScreen(SelviytyjanPurjeet sp, Skin masterSkin) {
