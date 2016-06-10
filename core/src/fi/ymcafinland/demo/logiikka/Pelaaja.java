@@ -29,7 +29,6 @@ public class Pelaaja {
 
     private int vaittamienMaara = 1;
     private int vastausmaara;
-    //Todo vastatutVaittamat Vaittamat -luokan vastuulle
     private HashMap<Integer, ArrayList<Integer>> vastatutVaittamat;
     private String[] selviytymiskeinot;
     private float[] selviytymisarvot;

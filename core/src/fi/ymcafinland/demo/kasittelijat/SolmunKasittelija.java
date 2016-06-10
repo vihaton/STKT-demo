@@ -111,7 +111,8 @@ public void paivitaGlowAnimaatiot() {
                 t.removeAction(a);
             }
             float vastausProsentti = vaittamat.getVastausprosenttiSolmusta("" + nykyisenSolmunID);
-            if (vastausProsentti == 1) {
+            if (vastausProsentti == 1) { //Jos kaikkeen vastattu, tyhjennetään Glowkuva -table ja lisätään eri glowkuva eri animaatiolla
+                //Todo valmiita glowanimaatioita ei luoda joka kerta uudelleen
                 t.clear();
                 Image glowimage = luoGlowKuva("glowReady");
                 glowimage.setOrigin(Align.center);
