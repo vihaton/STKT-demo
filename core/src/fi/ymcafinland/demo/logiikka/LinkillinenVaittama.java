@@ -7,6 +7,7 @@ public class LinkillinenVaittama implements Vaittama {
 
     private Vaittama vaittama;
     private String linkki;
+    private boolean checked = false;
 
     public LinkillinenVaittama(Vaittama vaittama, String linkki) {
         this.vaittama = vaittama;
@@ -40,5 +41,15 @@ public class LinkillinenVaittama implements Vaittama {
     @Override
     public int getMihinSelviytymiskeinoonVaikuttaa() {
         return vaittama.getMihinSelviytymiskeinoonVaikuttaa();
+    }
+
+    @Override
+    public boolean getChecked() {
+        return checked;
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

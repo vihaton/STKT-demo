@@ -367,7 +367,7 @@ public class HUD {
         karttaNappi.setScale(scale);
         karttaNappi.align(Align.right);
 
-        kysymys = new Button(skin.get("styleKysymys", Button.ButtonStyle.class));
+        kysymys = new Button(skin.get("vaittamaButtonStyle", Button.ButtonStyle.class));
         kysymys.setScale(scale);
 
         //ToDo oikea skin

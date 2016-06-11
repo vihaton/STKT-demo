@@ -113,7 +113,7 @@ public class QuestionScreen extends PohjaScreen {
             }
 
             if (!pelaaja.onkoVastannut(v)) {    //jos kysymykseen ei ole aikaisemmin vastattu, voidaan lisätä vastausten määrää
-                pelaaja.lisaaVastaus(v);
+                pelaaja.lisaaVastaus(solmu, v);
             }
             //muutetaan selviytymisarvoa vain oikean muutoksen verran
             pelaaja.lisaaSelviytymisarvoIndeksissa(v.getMihinSelviytymiskeinoonVaikuttaa(), v.getVaikuttavaArvo() - alkuarvot.get(i));

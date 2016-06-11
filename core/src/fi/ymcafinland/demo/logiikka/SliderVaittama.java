@@ -10,6 +10,7 @@ public class SliderVaittama implements Vaittama {
     private int mihinSelviytymiskeinoonVaikuttaa;
     private float arvo;
     private boolean antiVaittama;
+    private boolean checked;
 
     public SliderVaittama(String txt, String solmunID, boolean antiVaittama) {
         this.teksti = txt;
@@ -28,6 +29,16 @@ public class SliderVaittama implements Vaittama {
      */
     public int getMihinSelviytymiskeinoonVaikuttaa() {
         return mihinSelviytymiskeinoonVaikuttaa;
+    }
+
+    @Override
+    public boolean getChecked() {
+        return checked;
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     public String getVaittamanTeksti() {

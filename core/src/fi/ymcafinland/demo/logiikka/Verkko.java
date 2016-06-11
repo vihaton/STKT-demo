@@ -24,6 +24,7 @@ public class Verkko {
     private final int korkeusPalikka;
     private final Vector2 keskipiste;
     private Solmu edellistaKosketustaLahinSolmu;
+    private double lahimmanSolmunEtaisyys;
 
     public Verkko(int taustakuvanLeveys, int taustakuvanKorkeus) {
         this.leveysPalikka = taustakuvanLeveys / 100;
@@ -194,7 +195,7 @@ public class Verkko {
     }
 
     public boolean kosketusTarpeeksiLahelleJotainSolmua(float x, float y) {
-        double lahimmanSolmunEtaisyys = Double.MAX_VALUE;
+        lahimmanSolmunEtaisyys = Double.MAX_VALUE;
         Solmu lahinSolmu = null;
 
         for (Solmu s : solmut) {
@@ -206,7 +207,7 @@ public class Verkko {
             }
         }
 
-        if (lahimmanSolmunEtaisyys < 700) {
+        if (lahimmanSolmunEtaisyys < 250) {
             edellistaKosketustaLahinSolmu = lahinSolmu;
             return true;
         }
@@ -216,4 +217,5 @@ public class Verkko {
     public Solmu annaEdellistaKosketustaLahinSolmu() {
         return edellistaKosketustaLahinSolmu;
     }
+
 }

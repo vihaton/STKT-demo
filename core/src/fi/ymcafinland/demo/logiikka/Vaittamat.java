@@ -167,4 +167,17 @@ public class Vaittamat {
     public int getMaara() {
         return vaittamienMaara;
     }
+
+    public float getVastausprosenttiSolmusta(String s) {
+        ArrayList<Vaittama> solmunVaittamat = karttaSolmujenVaittamista.get(s);
+        int vastatut = 0;
+
+        for (Vaittama v : solmunVaittamat) {
+            if (v.getChecked()) {
+                vastatut++;
+            }
+        }
+
+        return vastatut / (float) solmunVaittamat.size();
+    }
 }
