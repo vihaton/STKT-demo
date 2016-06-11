@@ -23,6 +23,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 public class MasterSkin extends Skin {
 
+    public final static float HIERO_FONT_SCALE = 0.25f;
+
     public MasterSkin() {
         super();
 
@@ -104,13 +106,13 @@ public class MasterSkin extends Skin {
         Label.LabelStyle otsikkoStyle = new Label.LabelStyle(this.getFont("fontti"), this.getFont("fontti").getColor());
         this.add("otsikko", otsikkoStyle);
 
-        Label.LabelStyle sisaltotyyli = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
+        Label.LabelStyle sisaltotyyli = new Label.LabelStyle(this.getFont("hieroFont"), Color.BLACK);
         this.add("sisalto", sisaltotyyli);
 
-        Label.LabelStyle vaittamatyyli = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        Label.LabelStyle vaittamatyyli = new Label.LabelStyle(this.getFont("hieroFont"), Color.WHITE);
         this.add("vaittamatyyli", vaittamatyyli);
 
-        Label.LabelStyle arvioStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        Label.LabelStyle arvioStyle = new Label.LabelStyle(this.getFont("hieroFont"), Color.WHITE);
         this.add("arvio", arvioStyle);
 
         Label.LabelStyle infotekstiStyle = new Label.LabelStyle(this.getFont("hieroFont"), Color.WHITE);

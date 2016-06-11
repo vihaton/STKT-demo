@@ -24,6 +24,7 @@ import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Vaittamat;
 import fi.ymcafinland.demo.logiikka.Verkko;
+import fi.ymcafinland.demo.main.MasterSkin;
 
 /**
  * Created by xvixvi on 1.4.2016.
@@ -153,7 +154,7 @@ public void paivitaGlowAnimaatiot() {
         Label otsikko = new Label(s.getOtsikko(), skin, "otsikko");
         otsikko.setFontScale(0.7f);
         Label sisalto = new Label(s.getSisalto(), skin, "sisalto");
-        sisalto.setFontScale(2);
+        sisalto.setFontScale(MasterSkin.HIERO_FONT_SCALE - 0.03f);
 
         Table tekstit = new Table();
 

@@ -72,7 +72,7 @@ public class LauncherScreen extends PohjaScreen {
 
     private Label luoLabel(String teksti) {
         Label label = new Label(teksti, skin, "launcher");
-        label.setFontScale(0.25f);
+        label.setFontScale(0.15f);
         return label;
     }
 

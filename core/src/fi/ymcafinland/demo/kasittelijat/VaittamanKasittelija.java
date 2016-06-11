@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import fi.ymcafinland.demo.logiikka.LinkillinenVaittama;
 import fi.ymcafinland.demo.logiikka.Vaittama;
+import fi.ymcafinland.demo.main.MasterSkin;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
@@ -109,7 +110,7 @@ public class VaittamanKasittelija {
         Table vaittamanTaulukko = new Table();
 
         Label otsikko = new Label(nykyinenVaittama.getVaittamanTeksti(), skin, "vaittamatyyli");
-        otsikko.setFontScale(2);
+        otsikko.setFontScale(MasterSkin.HIERO_FONT_SCALE);
         otsikko.setWrap(true);
         otsikko.setAlignment(Align.center);
 
@@ -166,10 +167,10 @@ public class VaittamanKasittelija {
     private Table createSliderToTable(Slider slider) {
         Label miinus = new Label("-", skin, "vaittamatyyli");
         miinus.setColor(Color.RED);
-        miinus.setFontScale(3);
+        miinus.setFontScale(MasterSkin.HIERO_FONT_SCALE);
         Label plus = new Label("+", skin, "vaittamatyyli");
         plus.setColor(Color.GREEN);
-        plus.setFontScale(2);
+        plus.setFontScale(MasterSkin.HIERO_FONT_SCALE);
 
         Table sliderTaulukko = new Table();
         sliderTaulukko.add(miinus).pad(15).padBottom(30);
