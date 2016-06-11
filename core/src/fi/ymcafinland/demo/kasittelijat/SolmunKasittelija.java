@@ -127,6 +127,7 @@ public void paivitaGlowAnimaatiot() {
                 Image glowimage = luoGlowKuva("glowReady");
                 glowimage.setOrigin(Align.center);
                 t.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
+                t.addAction(Actions.forever(Actions.alpha(1f)));
                 t.addAction(Actions.forever(Actions.rotateBy(2, 0.005f)));
             } else {
                 float solmunAlpha = 0.6f * vastausProsentti + 0.1f;
