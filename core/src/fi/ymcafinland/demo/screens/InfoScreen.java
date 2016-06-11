@@ -78,8 +78,8 @@ public class InfoScreen extends PohjaScreen {
 
         Table nappiTaulukko = new Table();
 
-        nappiTaulukko.left().add(alkuButton).expandX();
-        nappiTaulukko.right().add(exitButton).expandX();
+//        nappiTaulukko.add(alkuButton).expandX();
+        nappiTaulukko.add(exitButton).expandX();
 
         rootTable.add(nappiTaulukko).padBottom(64).fillX();
 
