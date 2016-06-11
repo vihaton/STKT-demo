@@ -18,4 +18,8 @@ public interface Vaittama {
     String getVaittamanTeksti();
 
     int getMihinSelviytymiskeinoonVaikuttaa();
+
+    boolean getChecked();
+
+    void setChecked(boolean b);
 }

@@ -76,7 +76,7 @@ public class PlayScreen extends PohjaScreen {
         this.polttopiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
         this.panpiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
 
-        this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin, pelaaja);
+        this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin, pelaaja, sp.getVaittamat());
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
         this.infoButtonKasittelija = new InfoButtonKasittelija(stage, masterSkin, verkko);
         this.angleToPoint = getAngleToPoint(new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, 0, 0), keskipiste);
@@ -117,6 +117,7 @@ public class PlayScreen extends PohjaScreen {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 
         edistymismittarinKasittelija.paivitaMittarinArvo(renderinLoggausAlaraja); //päivitetään edistymismittarin arvo vain kun siirrytään playscreeniin
+        solmunKasittelija.paivitaGlowAnimaatiot();
         hud.resetInputProcessor();
     }
 
@@ -333,8 +334,12 @@ public class PlayScreen extends PohjaScreen {
                 Gdx.app.log("PS", "kosketus osui tarpeeksi lähelle solmua " + tappaustaLahinSolmu.getID() + "\n" +
                         "täppäyksen etäisyys solmuun " + Math.hypot(tappaustaLahinSolmu.getXKoordinaatti() - trueX, tappaustaLahinSolmu.getYKoordinaatti() - trueY));
 
-            setSolmu(tappaustaLahinSolmu);
-            asetaAlkuZoom();
+            if (Integer.parseInt(tappaustaLahinSolmu.getID()) > 6 && !zoomedOut) {
+                hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
+            } else {
+                setSolmu(tappaustaLahinSolmu);
+                asetaAlkuZoom();
+            }
         }
     }
 

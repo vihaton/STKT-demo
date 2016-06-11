@@ -49,9 +49,13 @@ public class MasterSkin extends Skin {
 
         this.add("return", new Texture("return.png"));
 
+        this.add("continue", new Texture("continue.png"));
+
         this.add("emptynode", new Texture("emptynode.png"));
 
         this.add("glow", new Texture("glow.png"));
+
+        this.add("glowReady", new Texture("glowReady1.png"));
 
         this.add("mini_palaute", new Texture("hahmo.png"));
 
@@ -75,6 +79,8 @@ public class MasterSkin extends Skin {
         this.add("menubutton", new Texture("menubutton.png"));
 
         this.add("menutausta", new Texture("menutausta.png"));
+
+        this.add("vaittama", new Texture("vaittama.png"));
 
     }
 
@@ -154,6 +160,10 @@ public class MasterSkin extends Skin {
         styleReturn.up = new TextureRegionDrawable(new TextureRegion(this.get("return", Texture.class)));
         this.add("returnButtonStyle", styleReturn);
 
+        Button.ButtonStyle styleContinue = new Button.ButtonStyle();
+        styleContinue.up = new TextureRegionDrawable(new TextureRegion(this.get("continue", Texture.class)));
+        this.add("continueButtonStyle", styleContinue);
+
         Button.ButtonStyle styleInfo = new Button.ButtonStyle();
         styleInfo.up = new TextureRegionDrawable(new TextureRegion(this.get("i", Texture.class)));
         this.add("infoButtonStyle", styleInfo);
@@ -169,6 +179,10 @@ public class MasterSkin extends Skin {
         Button.ButtonStyle styleUnavailable = new Button.ButtonStyle();
         styleUnavailable.up = new TextureRegionDrawable(new TextureRegion(this.get("unavailable", Texture.class)));
         this.add("unavailableButtonStyle", styleUnavailable);
+
+        Button.ButtonStyle styleVaittama = new Button.ButtonStyle();
+        styleVaittama.up = new TextureRegionDrawable(new TextureRegion(this.get("vaittama", Texture.class)));
+        this.add("vaittamaButtonStyle", styleVaittama);
     }
 
     private void generoiTextureAtlakset() {
