@@ -5,12 +5,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
@@ -75,19 +80,24 @@ public class SolmunKasittelija {
             Table glowiTaulu = new Table();
             Image glowimage = luoGlowKuva("glow");
             glowimage.setOrigin(Align.center);
-
-
             glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
 
+            final int solmunID = Integer.parseInt(s.getID());
 
-
-            if(Integer.parseInt(s.getID()) < 25) {
-                solmuKuvaTaulukot.add(pallontaulukko);
-            }
-
-            if(Integer.parseInt(s.getID()) < 25 && Integer.parseInt(s.getID())> 6) {
+            if (solmunID < 25 && solmunID > 6) {
+                pallontaulukko.setTouchable(Touchable.enabled);
+                pallontaulukko.addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        Gdx.app.log("SK", "solmua " + solmunID + " painettu");
+                    }
+                });
                 asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
                 glowKuvaTaulukot.add(glowiTaulu);
+            }
+
+            if (solmunID < 25) {
+                solmuKuvaTaulukot.add(pallontaulukko);
             }
 
             solmuTaulukot.add(tekstit);
@@ -117,6 +127,7 @@ public void paivitaGlowAnimaatiot() {
                 Image glowimage = luoGlowKuva("glowReady");
                 glowimage.setOrigin(Align.center);
                 t.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
+                t.addAction(Actions.forever(Actions.alpha(1f)));
                 t.addAction(Actions.forever(Actions.rotateBy(2, 0.005f)));
             } else {
                 float solmunAlpha = 0.6f * vastausProsentti + 0.1f;

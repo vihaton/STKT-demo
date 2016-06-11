@@ -334,8 +334,12 @@ public class PlayScreen extends PohjaScreen {
                 Gdx.app.log("PS", "kosketus osui tarpeeksi lähelle solmua " + tappaustaLahinSolmu.getID() + "\n" +
                         "täppäyksen etäisyys solmuun " + Math.hypot(tappaustaLahinSolmu.getXKoordinaatti() - trueX, tappaustaLahinSolmu.getYKoordinaatti() - trueY));
 
-            setSolmu(tappaustaLahinSolmu);
-            asetaAlkuZoom();
+            if (Integer.parseInt(tappaustaLahinSolmu.getID()) > 6 && !zoomedOut) {
+                hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
+            } else {
+                setSolmu(tappaustaLahinSolmu);
+                asetaAlkuZoom();
+            }
         }
     }
 
