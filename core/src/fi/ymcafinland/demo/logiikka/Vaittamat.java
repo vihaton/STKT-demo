@@ -140,7 +140,7 @@ public class Vaittamat {
             karttaSolmujenVaittamista.put(id, solmunVaittamat); //...talletetaan väittämälista karttaan kyseisen solmun id.llä
         }
 
-        karttaSolmujenVaittamista.put("alkutesti", alkutestinVaittamat); //lisätään lopuksi alkutestiin valitut väittämät erikseen karttaan
+        karttaSolmujenVaittamista.put("25", alkutestinVaittamat); //lisätään lopuksi alkutestiin valitut väittämät erikseen karttaan
     }
 
 

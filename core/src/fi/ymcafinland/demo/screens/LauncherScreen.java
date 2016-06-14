@@ -72,7 +72,7 @@ public class LauncherScreen extends PohjaScreen {
 
     private Label luoLabel(String teksti) {
         Label label = new Label(teksti, skin, "launcher");
-        label.setFontScale(0.15f);
+        label.setFontScale(0.28f);
         return label;
     }
 
@@ -81,7 +81,7 @@ public class LauncherScreen extends PohjaScreen {
         spButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log(logtag, "aloitusbuttonia painettiin, aloitetaan Selviytyjän Purjeet");
-                sp.init();
+                sp.setInfoScreen();
             }
         });
 

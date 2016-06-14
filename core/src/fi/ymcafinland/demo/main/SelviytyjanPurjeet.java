@@ -79,13 +79,6 @@ public class SelviytyjanPurjeet extends Game {
 //        setScreen(playscreen);
     }
 
-    /**
-     * Kutsutaan launcherissa kun SP:n käyttö aloitetaan
-     */
-    public void init() {
-        setScreen(infoScreen);
-    }
-
     @Override
     public void render() {
         super.render();
@@ -124,6 +117,7 @@ public class SelviytyjanPurjeet extends Game {
     public void setAlkuScreen() {
         setScreen(launcherScreen);
     }
+
     public void setInfoScreen(){
         setScreen(infoScreen);
     }

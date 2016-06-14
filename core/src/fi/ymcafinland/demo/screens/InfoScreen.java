@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.logiikka.Solmu;
+import fi.ymcafinland.demo.main.MasterSkin;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 
 /**
@@ -33,14 +34,14 @@ public class InfoScreen extends PohjaScreen {
                     "\n" +
                     "Ihmiset voidaan jakaa kuuteen selviytyjätyyppiin: fyysinen, älyllinen, " +
                     "eettinen, tunteellinen, sosiaalinen ja luova selviytyjä. " +
-                    "Nämä neljä kategoriaa esiintyvät yksilöissä eri suhteissa, eli yksilöllä voi " +
+                    "Nämä kuusi kategoriaa esiintyvät yksilöissä eri suhteissa, eli yksilöllä voi " +
                     "esimerkiksi olla vahvat fyysiset sekä sosiaaliset selviytymistaidot.\n" +
                     "\n" +
                     "Tässä harjoitteessa selviytyjätyypit on jaettu konkreettisempiin selviytymistapoihin " +
                     "(Fyysinen selviytyjä -> Lepään, Syön, Liikun). Selvitä millainen selviytyjä olet vastaamalla " +
                     "väittämiin, jotka on laitettu jokaisen selviytymistavan alle.\n" +
                     "\n" +
-                    "Voit aloittaa tekemällä alkutestin tai jatkamalla tarkastelemaan materiaalia.\n" +
+                    "Aloita jatkamalla tarkastelemaan materiaalia, väittämät löytyvät ympyrän ulkokehältä.\n" +
                     "\n" +
                     "ps. selviytymisprofiilisi yhteenvedon löydät materiaalin vasemman yläkulman menusta ;)";
 
@@ -77,8 +78,8 @@ public class InfoScreen extends PohjaScreen {
 
         Table nappiTaulukko = new Table();
 
-        nappiTaulukko.left().add(alkuButton).expandX();
-        nappiTaulukko.right().add(exitButton).expandX();
+        nappiTaulukko.add(alkuButton).expandX();
+        nappiTaulukko.add(exitButton).expandX();
 
         rootTable.add(nappiTaulukko).padBottom(64).fillX();
 
@@ -93,7 +94,7 @@ public class InfoScreen extends PohjaScreen {
     private Label luoInfoteksti() {
         Label label = new Label(infoText, skin, "infoteksti");
         label.setWrap(true);
-        label.setFontScale(0.25f);
+        label.setFontScale(MasterSkin.HIERO_FONT_SCALE);
         label.setAlignment(Align.center);
 
         return label;
@@ -105,7 +106,7 @@ public class InfoScreen extends PohjaScreen {
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "alkutestibuttonia painettiin");
-                sp.setQuestionScreen(new Solmu("alkutesti", null));
+                sp.setQuestionScreen(new Solmu("25", null));
             }
         });
     }

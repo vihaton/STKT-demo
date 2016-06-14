@@ -23,7 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 public class MasterSkin extends Skin {
 
-    public final static float HIERO_FONT_SCALE = 0.25f;
+    public final static float HIERO_FONT_SCALE = 0.35f;
 
     public MasterSkin() {
         super();
