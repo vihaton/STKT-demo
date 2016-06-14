@@ -99,8 +99,7 @@ public class QuestionScreen extends PohjaScreen {
 
     /**
      * sendData lähettää saadun datan eteenpäin lisäämällä pelaajan selviytymisarvoon, mihin väittämä vaikuttaa, väittämän sliderin arvon.
-     * SendData konfirmoi kysymykseen laitetun tiedon, ja
-     * kutsuu tiedon lähettämisen jälkeen dispose -metodia.
+     * SendData konfirmoi kysymykseen laitetun tiedon, ja lähettää tiedon eteenpäin
      */
     public void sendData() {
         for (int i = 0; i < solmunVaittamat.size(); i++) {
