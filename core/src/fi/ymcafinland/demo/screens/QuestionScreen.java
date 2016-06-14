@@ -33,10 +33,11 @@ public class QuestionScreen extends PohjaScreen {
     private ArrayList<Vaittama> solmunVaittamat;
     private VaittamanKasittelija vaittamanKasittelija;
     Solmu solmu;
-    private Table exitTable;
+    private Table returnButtonTable;
     private Label otsikko;
     private float sidePad;
     private ArrayList<Float> alkuarvot;
+    private Table continueButtonTable;
 
     public QuestionScreen(final SelviytyjanPurjeet sp, Pelaaja pelaaja, Vaittamat vaittamat, Skin masterSkin) {
         super(masterSkin, "QS");
@@ -45,17 +46,21 @@ public class QuestionScreen extends PohjaScreen {
         this.vaittamat = vaittamat;
         this.sidePad = 64;
 
-        this.exitTable = createReturnButton(sp);
+        this.returnButtonTable = createReturnButton(sp);
         taytaRootTable();
 
         this.vaittamanKasittelija = new VaittamanKasittelija(stage, masterSkin, sp);
+        stage.addActor(vaittamanKasittelija.getPane());
+
+        this.continueButtonTable = createContinueButton(sp);
+        vaittamanKasittelija.setContinueButtonTable(continueButtonTable);
     }
 
     private void taytaRootTable() {
         Table otsikkoTable = luoOtsikko();
 
         rootTable.top().add(otsikkoTable).padTop(sidePad / 2).padLeft(sidePad);
-        rootTable.add(exitTable).right().top();
+        rootTable.add(returnButtonTable);
 
         rootTable.validate();
     }
@@ -75,6 +80,7 @@ public class QuestionScreen extends PohjaScreen {
         return ot;
     }
 
+    //tällä hetkellä aivan sama kuin continue, tulee muuttumaan
     private Table createReturnButton(final SelviytyjanPurjeet sp) {
         Button returnButton = new Button(skin.get("returnButtonStyle", Button.ButtonStyle.class));
         returnButton.addListener(new ChangeListener() {
@@ -89,12 +95,35 @@ public class QuestionScreen extends PohjaScreen {
             }
         });
 
-        Table exitTable = new Table();
-        exitTable.add(returnButton).padRight(sidePad);
+        Table table = new Table();
+        table.add(returnButton).padRight(sidePad);
 
-        exitTable.validate();
+        table.validate();
 
-        return exitTable;
+        return table;
+    }
+
+    //tällä hetkellä aivan sama kuin return, tulee muuttumaan
+    private Table createContinueButton(final SelviytyjanPurjeet sp) {
+        Button continueButton = new Button(skin.get("continueButtonStyle", Button.ButtonStyle.class));
+        continueButton.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("QS", "continuebuttonia painettiin");
+                sendData();
+                if (solmu.getMutsi() == null) {
+                    sp.setPlayScreenMaxSelviytyjaan();
+                } else {
+                    sp.setPlayScreen(solmu);
+                }
+            }
+        });
+
+        Table table = new Table();
+        table.add(continueButton);
+
+        table.validate();
+
+        return table;
     }
 
     /**

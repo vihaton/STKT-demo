@@ -34,14 +34,14 @@ public class InfoScreen extends PohjaScreen {
                     "\n" +
                     "Ihmiset voidaan jakaa kuuteen selviytyjätyyppiin: fyysinen, älyllinen, " +
                     "eettinen, tunteellinen, sosiaalinen ja luova selviytyjä. " +
-                    "Nämä neljä kategoriaa esiintyvät yksilöissä eri suhteissa, eli yksilöllä voi " +
+                    "Nämä kuusi kategoriaa esiintyvät yksilöissä eri suhteissa, eli yksilöllä voi " +
                     "esimerkiksi olla vahvat fyysiset sekä sosiaaliset selviytymistaidot.\n" +
                     "\n" +
                     "Tässä harjoitteessa selviytyjätyypit on jaettu konkreettisempiin selviytymistapoihin " +
                     "(Fyysinen selviytyjä -> Lepään, Syön, Liikun). Selvitä millainen selviytyjä olet vastaamalla " +
                     "väittämiin, jotka on laitettu jokaisen selviytymistavan alle.\n" +
                     "\n" +
-                    "Voit aloittaa tekemällä alkutestin tai jatkamalla tarkastelemaan materiaalia.\n" +
+                    "Aloita jatkamalla tarkastelemaan materiaalia, väittämät löytyvät ympyrän ulkokehältä.\n" +
                     "\n" +
                     "ps. selviytymisprofiilisi yhteenvedon löydät materiaalin vasemman yläkulman menusta ;)";
 
@@ -78,7 +78,7 @@ public class InfoScreen extends PohjaScreen {
 
         Table nappiTaulukko = new Table();
 
-//        nappiTaulukko.add(alkuButton).expandX();
+        nappiTaulukko.add(alkuButton).expandX();
         nappiTaulukko.add(exitButton).expandX();
 
         rootTable.add(nappiTaulukko).padBottom(64).fillX();
@@ -106,7 +106,7 @@ public class InfoScreen extends PohjaScreen {
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "alkutestibuttonia painettiin");
-                sp.setQuestionScreen(new Solmu("alkutesti", null));
+                sp.setQuestionScreen(new Solmu("25", null));
             }
         });
     }
