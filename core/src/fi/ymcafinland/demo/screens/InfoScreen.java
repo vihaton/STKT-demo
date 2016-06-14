@@ -78,7 +78,7 @@ public class InfoScreen extends PohjaScreen {
 
         Table nappiTaulukko = new Table();
 
-//        nappiTaulukko.add(alkuButton).expandX();
+        nappiTaulukko.add(alkuButton).expandX();
         nappiTaulukko.add(exitButton).expandX();
 
         rootTable.add(nappiTaulukko).padBottom(64).fillX();
@@ -106,7 +106,7 @@ public class InfoScreen extends PohjaScreen {
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "alkutestibuttonia painettiin");
-                sp.setQuestionScreen(new Solmu("alkutesti", null));
+                sp.setQuestionScreen(new Solmu("25", null));
             }
         });
     }

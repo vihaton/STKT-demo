@@ -144,6 +144,7 @@ public class VaittamanKasittelija {
         continueButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("QS", "continuebuttonia painettiin");
+                sp.getQuestionScreen().sendData();
 
                 sp.setPlayScreen(null);
 
