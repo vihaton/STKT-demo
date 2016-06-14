@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import fi.ymcafinland.demo.kasittelijat.KameranKasittelija;
 import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.screens.InfoScreen;
@@ -73,15 +74,16 @@ public class HUD {
     private Solmu lapsi1;
     private Solmu lapsi2;
     private Solmu lapsi3;
+    private KameranKasittelija kameranKasittelija;
     private HUDListener hudListener;
 
     public HUD(final PlayScreen playScreen, SpriteBatch sb, Skin masterSkin, Solmu solmu) {
-
         viewport = new FitViewport(SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT, new OrthographicCamera());
+        kameranKasittelija = playScreen.getKameranKasittelija();
 
         //HUD EI implementoi inputProcessorin rajapintaa, vaan asettaa inputprocessoriksi tuntemansa inputmultiplexerin.
         this.stage = new Stage(viewport, sb);
-        hudListener = new HUDListener(this, 0);
+        hudListener = new HUDListener(this, kameranKasittelija, 0);
         this.im = new InputMultiplexer(this.stage, new GestureDetector(hudListener), playScreen.stage);
 //        playScreen.lisaaStage(stage); //lisää hudin stagen playscreenin tietoon näkymien vaihdoksia varten.
 
