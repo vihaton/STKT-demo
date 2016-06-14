@@ -31,6 +31,8 @@ public class VaittamanKasittelija {
     private ArrayList<Slider> sliderit;
     private Stage stage;
     private Table scrollPanesRootTable;
+
+    private Table continueButtonTable;
     private ScrollPane pane;
     private SelviytyjanPurjeet sp;
     private final float sliderinLeveys;
@@ -48,12 +50,14 @@ public class VaittamanKasittelija {
         sliderinKorkeus = mid.background.getMinHeight() * 0.6f;
     }
 
+    public ScrollPane getPane() {
+        return pane;
+    }
+
     private void luoScrollPane() {
         pane = new ScrollPane(scrollPanesRootTable.top());
         pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.35f);
         pane.validate();
-
-        stage.addActor(pane);
     }
 
     public void paivita(float delta) {
@@ -100,10 +104,13 @@ public class VaittamanKasittelija {
         scrollPanesRootTable.padTop(10);
         scrollPanesRootTable.padBottom(Gdx.graphics.getHeight() / 6);
 
-        Table exitTable = createContinueButton();
-        scrollPanesRootTable.add(exitTable).pad(64);
+        scrollPanesRootTable.add(continueButtonTable).expandX();
 
         return vaittamienAlkuperaisetArvot;
+    }
+
+    public void setContinueButtonTable(Table continueButtonTable) {
+        this.continueButtonTable = continueButtonTable;
     }
 
     public Table luoVaittamanTaulukko(Vaittama nykyinenVaittama) {
@@ -137,26 +144,6 @@ public class VaittamanKasittelija {
                 Gdx.net.openURI(linkkisivu);
             }
         };
-    }
-
-    private Table createContinueButton() {
-        Button continueButton = new Button(skin.get("continueButtonStyle", Button.ButtonStyle.class));
-        continueButton.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("QS", "continuebuttonia painettiin");
-                sp.getQuestionScreen().sendData();
-
-                sp.setPlayScreen(null);
-
-            }
-        });
-
-        Table exitTable = new Table();
-        exitTable.add(continueButton);
-
-        exitTable.validate();
-
-        return exitTable;
     }
 
     /**
