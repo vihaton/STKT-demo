@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
 import fi.ymcafinland.demo.kasittelijat.InfoButtonKasittelija;
+import fi.ymcafinland.demo.kasittelijat.KameranKasittelija;
 import fi.ymcafinland.demo.kasittelijat.SolmunKasittelija;
 import fi.ymcafinland.demo.logiikka.Pelaaja;
 import fi.ymcafinland.demo.logiikka.Solmu;
@@ -69,7 +70,7 @@ public class PlayScreen extends PohjaScreen {
         this.panpiste = new Vector3(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2, 0f);
 
         this.kameranKasittelija = new KameranKasittelija(camera, polttopiste, panpiste);
-        this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin, pelaaja);
+        this.solmunKasittelija = new SolmunKasittelija(stage, sp.getVerkko(), masterSkin, pelaaja, sp.getVaittamat());
         this.edistymismittarinKasittelija = new EdistymismittarinKasittelija(stage, masterSkin, pelaaja);
         this.infoButtonKasittelija = new InfoButtonKasittelija(stage, masterSkin, verkko);
 
@@ -86,10 +87,6 @@ public class PlayScreen extends PohjaScreen {
         this.timer = System.currentTimeMillis();
         this.angleToPoint = getAngleToPoint(polttopiste, keskipiste);
         this.stateTime = 0;
-
-        //Asetetaan jatkuva renderin pois päältä, renderöidään kerran.
-//        Gdx.graphics.setContinuousRendering(false);
-//        Gdx.graphics.requestRendering();
 
         Gdx.graphics.requestRendering();
     }
