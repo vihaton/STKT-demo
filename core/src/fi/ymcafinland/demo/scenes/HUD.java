@@ -95,10 +95,11 @@ public class HUD {
         lapsia = solmu.getLapset().size() > 1;
         sidePad = 10;
 
-        createButtons();
-        updateButtons(solmu);
+//        createButtons();
+        createNuolet();
+//        updateButtons(solmu);
         createTables();
-        updateTables();
+//        updateTables();
         createListeners();
     }
 
@@ -129,25 +130,24 @@ public class HUD {
                 playScreen.setSolmu(vasenSisko);
             }
         });
-        final ArrayList<Solmu> laps = solmu.getLapset();
-        child1.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi1);
-            }
-        });
-
-        child2.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi2);
-
-            }
-        });
-
-        child3.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi3);
-            }
-        });
+//        child1.addListener(new ChangeListener() {
+//            public void changed(ChangeEvent event, Actor actor) {
+//                playScreen.setSolmu(lapsi1);
+//            }
+//        });
+//
+//        child2.addListener(new ChangeListener() {
+//            public void changed(ChangeEvent event, Actor actor) {
+//                playScreen.setSolmu(lapsi2);
+//
+//            }
+//        });
+//
+//        child3.addListener(new ChangeListener() {
+//            public void changed(ChangeEvent event, Actor actor) {
+//                playScreen.setSolmu(lapsi3);
+//            }
+//        });
         kysymys.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 siirryQuestionScreeniin(solmu);
@@ -198,6 +198,7 @@ public class HUD {
 
     }
 
+
     public void siirryQuestionScreeniin(Solmu solmu) {
         QuestionScreen qs = playScreen.getSp().getQuestionScreen();
         qs.setSolmu(solmu);
@@ -213,6 +214,7 @@ public class HUD {
             st.fadeTransition();
         }
     }
+
     public void siirryInfoScreeniin() {
         InfoScreen is = playScreen.getSp().getInfoScreen();
         ScreenTransition st = new ScreenTransition(playScreen, is, 0.5f);
@@ -223,8 +225,6 @@ public class HUD {
         ScreenTransition st = new ScreenTransition(playScreen, as, 0.5f);
         st.fadeTransition();
     }
-
-
     /**
      * Päivittää HUDin tiedot
      *
@@ -237,13 +237,13 @@ public class HUD {
         menuTable.remove();
 
 
-        updateButtons(solmu);
-        updateTables();
+//        updateButtons(solmu);
         updateListeners(solmu);
 
         karttaNappi.setChecked(zoomedOut);
         setZoomedHUDState(zoomedOut);
     }
+
 
     private void updateListeners(Solmu solmu) {
         this.solmu = solmu;
@@ -316,6 +316,7 @@ public class HUD {
         }
     }
 
+
     public void resetInputProcessor() {
         Gdx.input.setInputProcessor(im);
     }
@@ -328,10 +329,12 @@ public class HUD {
     private void createTables() {
         topTable = new Table();
         topTable.setFillParent(true);
-        topTable.pad(sidePad);
-
+        topTable.top().left().add(menu);
+        topTable.add(parent).expandX();
         minimapTable = new Table();
         minimapTable.setFillParent(true);
+        minimapTable.right().top().add(karttaNappi).size(230);
+
 
 
         midTable = new Table();
@@ -343,6 +346,7 @@ public class HUD {
 
         botTable = new Table();
         botTable.setFillParent(true);
+        botTable.bottom().add(kysymys);
         botTable.pad(sidePad);
 
         stage.clear();
@@ -350,11 +354,57 @@ public class HUD {
         stage.addActor(minimapTable);
         stage.addActor(midTable);
         stage.addActor(botTable);
+
     }
+
+
+
 
     /**
      * Luo nappulat HUDiin
      */
+    private void createNuolet() {
+        float scale = 1.2f;
+
+        parent = new Button(skin.get("styleNuoliYlos", Button.ButtonStyle.class));
+        parent.setScale(scale);
+
+
+        leftSister =  new Button(skin.get("styleNuoliVasen", Button.ButtonStyle.class));
+        leftSister.setScale(scale);
+
+
+        rightSister =  new Button(skin.get("styleNuoliOikea", Button.ButtonStyle.class));
+        rightSister.setScale(scale);
+
+
+        kysymys =  new Button(skin.get("styleNuoliAlas", Button.ButtonStyle.class));
+        kysymys.setScale(scale);
+
+
+        karttaNappi = new Button(skin.get("styleKartta", Button.ButtonStyle.class));
+        karttaNappi.setScale(scale);
+        karttaNappi.align(Align.right);
+
+        palaute = new TextButton("Palaute",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        palaute.setScale(scale);
+
+        info = new TextButton("Info",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        info.setScale(scale);
+
+        quit = new TextButton("QUIT",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        quit.setScale(scale);
+
+        menu = new Button(skin.get("styleMenu", Button.ButtonStyle.class));
+        menu.setScale(scale);
+
+        midJaBotTablejenNapit = new ArrayList<>();
+        Collections.addAll(midJaBotTablejenNapit, leftSister, rightSister, kysymys);
+
+        ylarivinNapit = new ArrayList<>();
+        Collections.addAll(ylarivinNapit, karttaNappi, parent, menu);
+
+    }
     private void createButtons() {
         styleParent = skin.get("styleParent", Button.ButtonStyle.class);
         styleLeft = skin.get("styleLeft", Button.ButtonStyle.class);
