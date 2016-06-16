@@ -5,7 +5,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
 import fi.ymcafinland.demo.kasittelijat.InfoButtonKasittelija;
@@ -266,7 +270,29 @@ public class PlayScreen extends PohjaScreen {
 
             if (Integer.parseInt(tappaustaLahinSolmu.getID()) > 6 && !zoomedOut) {
                 hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
-            } else {
+            } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut){
+
+                Skin skinDialog = new Skin(Gdx.files.internal("uiskin.json"));
+                //TODO (optional) popupeille oma skini jos niitä käytetään muualla ohjelmassa
+                Dialog d = new Dialog("En tee, hekkekkee", skinDialog);
+                d.button("OK");
+
+                //keskitetään dialogi ja skaalataan suuremmaksi
+                d.align(Align.center);
+                d.setOrigin(Align.center);
+                d.setScale(2f);
+
+                d.show(stage, Actions.sequence(Actions.rotateBy(getAngleToPoint(polttopiste, keskipiste) - 90, 0), Actions.moveTo(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0)));
+
+
+//                stage.addActor(d);
+//                d.setPosition(solmu.getXKoordinaatti(), solmu.getYKoordinaatti());
+//                d.setRotation(getAngleToPoint(polttopiste,keskipiste)-90);
+
+
+
+            }
+            else {
                 setSolmu(tappaustaLahinSolmu);
                 asetaAlkuZoom();
             }
