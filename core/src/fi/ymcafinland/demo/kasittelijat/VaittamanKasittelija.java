@@ -56,7 +56,7 @@ public class VaittamanKasittelija {
 
     private void luoScrollPane() {
         pane = new ScrollPane(scrollPanesRootTable.top());
-        pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.35f);
+        pane.setBounds(0, SelviytyjanPurjeet.V_HEIGHT / 6f, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.8f);
         pane.validate();
     }
 
@@ -104,7 +104,6 @@ public class VaittamanKasittelija {
         scrollPanesRootTable.padTop(10);
         scrollPanesRootTable.padBottom(Gdx.graphics.getHeight() / 6);
 
-        scrollPanesRootTable.add(continueButtonTable).expandX();
 
         return vaittamienAlkuperaisetArvot;
     }
