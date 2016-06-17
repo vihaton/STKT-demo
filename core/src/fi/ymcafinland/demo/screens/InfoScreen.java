@@ -25,9 +25,9 @@ public class InfoScreen extends PohjaScreen {
     protected Label otsikko;
     private Texture tausta;
     private ScrollPane pane;
+    private Table nappiTaulukko;
     private Button exitButton;
     private Button alkuButton;
-
 
     private static final String infoText =
             "Selvitä millainen selviytyjä olet!\n" +
@@ -76,13 +76,10 @@ public class InfoScreen extends PohjaScreen {
         createExitButton(sp);
         createAlkuTestiButton(sp);
 
-        Table nappiTaulukko = new Table();
-
+        nappiTaulukko = new Table();
         nappiTaulukko.add(alkuButton).expandX();
-        nappiTaulukko.add(exitButton).expandX();
 
         rootTable.add(nappiTaulukko).padBottom(64).fillX();
-
         rootTable.validate();
     }
 
@@ -102,7 +99,7 @@ public class InfoScreen extends PohjaScreen {
 
     private void createAlkuTestiButton(final SelviytyjanPurjeet sp) {
         //Todo alkutesti näkyy nyt joka kerta kun infoscreen avataan, pitäiskö se olla näkyvissä vaan kerran?
-        alkuButton = new Button(skin.get("alkuButtonStyle", Button.ButtonStyle.class));
+        alkuButton = new Button(skin.get("jatkaButtonStyle", Button.ButtonStyle.class));
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "alkutestibuttonia painettiin");
@@ -141,5 +138,17 @@ public class InfoScreen extends PohjaScreen {
 
         pane.act(delta);
         stage.draw();
+    }
+
+    /**
+     * Kun alkutesti on suoritettu kerran, vaihdetaan jatkamisnappulan toiminnoksi exitButton
+     *
+     */
+    public void paivitaJatkaButton() {
+        nappiTaulukko.clear();
+        nappiTaulukko.add(exitButton).expandX();
+
+        rootTable.add(nappiTaulukko).padBottom(64).fillX();
+        rootTable.validate();
     }
 }
