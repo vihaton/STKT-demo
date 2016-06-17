@@ -102,6 +102,10 @@ public class HUD {
         createListeners();
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     /**
      * Tapahtumankuuntelijat nappuloille
      */

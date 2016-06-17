@@ -5,10 +5,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
@@ -28,6 +32,7 @@ import fi.ymcafinland.demo.transitions.ZoomTransition;
  */
 public class PlayScreen extends PohjaScreen {
 
+    private Skin skinDialog;
     private SelviytyjanPurjeet sp;
     private Verkko verkko;
     private HUD hud;
@@ -37,6 +42,7 @@ public class PlayScreen extends PohjaScreen {
     private EdistymismittarinKasittelija edistymismittarinKasittelija;
     private InfoButtonKasittelija infoButtonKasittelija;
     private Solmu solmu;
+    private Dialog d;
 
     private boolean trans = false;
     public boolean zoomedOut = false;
@@ -93,6 +99,31 @@ public class PlayScreen extends PohjaScreen {
         this.stateTime = 0;
 
         Gdx.graphics.requestRendering();
+
+        luoDialog();
+
+    }
+
+    private void luoDialog() {
+        skinDialog = new Skin(Gdx.files.internal("uiskin.json"));
+        //TODO (optional) popupeille oma skini jos niitä käytetään muualla ohjelmassa
+        this.d = new Dialog("En tee, hekkekkee", skinDialog);
+        d.button("OK", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                d.remove();
+
+                luoDialog();
+            }
+
+        });
+
+
+        //keskitetään dialogi ja skaalataan suuremmaksi
+        d.align(Align.center);
+        d.setOrigin(Align.center);
+        d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 1.8f);
+        d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.8f);
     }
 
     @Override
@@ -235,6 +266,10 @@ public class PlayScreen extends PohjaScreen {
             alkaaTapahtua();
             kameranKasittelija.setSeurataanPolttoa(true);
             kameranKasittelija.transitionFromTo(polttopiste, goal);
+            d.clear();
+
+            d.remove();
+            luoDialog();
         }
     }
 
@@ -272,22 +307,29 @@ public class PlayScreen extends PohjaScreen {
                 hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
             } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut){
 
-                Skin skinDialog = new Skin(Gdx.files.internal("uiskin.json"));
-                //TODO (optional) popupeille oma skini jos niitä käytetään muualla ohjelmassa
-                Dialog d = new Dialog("En tee, hekkekkee", skinDialog);
-                d.button("OK");
 
-                //keskitetään dialogi ja skaalataan suuremmaksi
-                d.align(Align.center);
-                d.setOrigin(Align.center);
-                d.setScale(2f);
 
-                d.show(stage, Actions.sequence(Actions.rotateBy(getAngleToPoint(polttopiste, keskipiste) - 90, 0), Actions.moveTo(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0)));
+                d.show(stage);
+                d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.8f);
+                d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 1.8f);
+
 
 
 //                stage.addActor(d);
-//                d.setPosition(solmu.getXKoordinaatti(), solmu.getYKoordinaatti());
-//                d.setRotation(getAngleToPoint(polttopiste,keskipiste)-90);
+                float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
+
+                float cos = (float) Math.cos((PPtoKP + 90));
+                float sin = (float) Math.sin((PPtoKP + 90));
+                d.setPosition(solmu.getXKoordinaatti() + (cos * SelviytyjanPurjeet.V_WIDTH / 2), solmu.getYKoordinaatti() + (sin * SelviytyjanPurjeet.V_HEIGHT / 2));
+                if (SelviytyjanPurjeet.LOG)
+                    Gdx.app.log("PS", "PPtoKP" + PPtoKP + "\n" + "cos " + cos + "\n" +
+                            "sin " + sin + "\n" +
+                                    "deltaX" + (cos * SelviytyjanPurjeet.V_WIDTH / 2) + "\n" +
+                                    "deltaY" + (sin * SelviytyjanPurjeet.V_HEIGHT / 2) + "\n" +
+                                    "position " + d.getX() + ", " + d.getY()
+
+                    );
+                d.setRotation(PPtoKP - 90);
 
 
 
@@ -295,6 +337,7 @@ public class PlayScreen extends PohjaScreen {
             else {
                 setSolmu(tappaustaLahinSolmu);
                 asetaAlkuZoom();
+
             }
         }
     }
@@ -339,6 +382,7 @@ public class PlayScreen extends PohjaScreen {
      */
     public void panoroi(float deltaX, float deltaY) {
         kameranKasittelija.setSeurataanPolttoa(false);
+
         float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
         float muutos = (float) Math.hypot(deltaX, deltaY);
 
