@@ -43,6 +43,7 @@ public class PlayScreen extends PohjaScreen {
     private InfoButtonKasittelija infoButtonKasittelija;
     private Solmu solmu;
     private Dialog d;
+    private boolean dialogFlag = false;
 
     private boolean trans = false;
     public boolean zoomedOut = false;
@@ -105,25 +106,17 @@ public class PlayScreen extends PohjaScreen {
     }
 
     private void luoDialog() {
-        skinDialog = new Skin(Gdx.files.internal("uiskin.json"));
+
+
         //TODO (optional) popupeille oma skini jos niitä käytetään muualla ohjelmassa
-        this.d = new Dialog("En tee, hekkekkee", skinDialog);
-        d.button("OK", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                d.remove();
+        this.d = new Dialog(solmu.getOtsikko(), skin.get("windowStyle", com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle.class));
 
-                luoDialog();
-            }
-
-        });
-
+        d.getTitleLabel().setFontScale(0.5f);
 
         //keskitetään dialogi ja skaalataan suuremmaksi
         d.align(Align.center);
         d.setOrigin(Align.center);
-        d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 1.8f);
-        d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.8f);
+
     }
 
     @Override
@@ -269,6 +262,7 @@ public class PlayScreen extends PohjaScreen {
             d.clear();
 
             d.remove();
+            dialogFlag = false;
             luoDialog();
         }
     }
@@ -305,30 +299,31 @@ public class PlayScreen extends PohjaScreen {
 
             if (Integer.parseInt(tappaustaLahinSolmu.getID()) > 6 && !zoomedOut) {
                 hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
-            } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut){
+            } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut && !dialogFlag){
 
 
 
                 d.show(stage);
-                d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.8f);
-                d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 1.8f);
+                dialogFlag = true;
+                d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.7f);
+                d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2f);
 
 
 
 //                stage.addActor(d);
                 float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
-
-                float cos = (float) Math.cos((PPtoKP + 90));
-                float sin = (float) Math.sin((PPtoKP + 90));
-                d.setPosition(solmu.getXKoordinaatti() + (cos * SelviytyjanPurjeet.V_WIDTH / 2), solmu.getYKoordinaatti() + (sin * SelviytyjanPurjeet.V_HEIGHT / 2));
-                if (SelviytyjanPurjeet.LOG)
-                    Gdx.app.log("PS", "PPtoKP" + PPtoKP + "\n" + "cos " + cos + "\n" +
-                            "sin " + sin + "\n" +
-                                    "deltaX" + (cos * SelviytyjanPurjeet.V_WIDTH / 2) + "\n" +
-                                    "deltaY" + (sin * SelviytyjanPurjeet.V_HEIGHT / 2) + "\n" +
-                                    "position " + d.getX() + ", " + d.getY()
-
-                    );
+//
+//                float cos = (float) Math.cos((PPtoKP+90));
+//                float sin = (float) Math.sin((PPtoKP+90));
+                d.setPosition(solmu.getXKoordinaatti() , solmu.getYKoordinaatti());
+//                if (SelviytyjanPurjeet.LOG)
+//                    Gdx.app.log("PS", "PPtoKP" + PPtoKP + "\n" + "cos " + cos + "\n" +
+//                            "sin " + sin + "\n" +
+//                                    "deltaX" + (cos * SelviytyjanPurjeet.V_WIDTH / 2) + "\n" +
+//                                    "deltaY" + (sin * SelviytyjanPurjeet.V_HEIGHT / 2) + "\n" +
+//                                    "position " + d.getX() + ", " + d.getY()
+//
+//                    );
                 d.setRotation(PPtoKP - 90);
 
 
@@ -337,6 +332,9 @@ public class PlayScreen extends PohjaScreen {
             else {
                 setSolmu(tappaustaLahinSolmu);
                 asetaAlkuZoom();
+                d.clear();
+                d.remove();
+                dialogFlag = false;
 
             }
         }
