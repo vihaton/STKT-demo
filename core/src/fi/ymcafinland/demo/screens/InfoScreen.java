@@ -71,6 +71,7 @@ public class InfoScreen extends PohjaScreen {
         luoScrollPane();
 
         rootTable.add(pane).pad(SelviytyjanPurjeet.V_WIDTH / 10).minSize(SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT * 0.5f);
+
         rootTable.row();
 
         createExitButton(sp);
@@ -87,7 +88,11 @@ public class InfoScreen extends PohjaScreen {
     }
 
     private void luoScrollPane() {
-        pane = new ScrollPane(luoInfoteksti());
+
+
+
+        pane = new ScrollPane(luoInfoteksti(), skin.get("scrollPaneKnob", ScrollPane.ScrollPaneStyle.class));
+        pane.setFadeScrollBars(false);
         pane.validate();
     }
 
