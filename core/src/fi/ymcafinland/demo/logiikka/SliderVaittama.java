@@ -21,6 +21,9 @@ public class SliderVaittama implements Vaittama {
     }
 
     private void asetaVaikutusSelviytyjaan(int id) {
+        if(id == -1){
+            return;
+        }
         this.mihinSelviytymiskeinoonVaikuttaa = (id - 7) / 3;
     }
 

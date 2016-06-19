@@ -100,6 +100,8 @@ public class Vaittamat {
             Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
         ArrayList<Vaittama> alkutestinVaittamat = new ArrayList<>();
 
+        SliderVaittama showCaseVaittama = new SliderVaittama("Eri mieltä ---------- Samaa mieltä","-1",false);
+        alkutestinVaittamat.add(showCaseVaittama);
         for (int i = 0; i < 18; i++) { //jokaisen solmun...
             String id = "" + (i + 7);
             ArrayList<Vaittama> solmunVaittamat = new ArrayList<>();

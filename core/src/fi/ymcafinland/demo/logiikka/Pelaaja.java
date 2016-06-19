@@ -104,6 +104,7 @@ public class Pelaaja {
     }
 
     public void lisaaSelviytymisarvoIndeksissa(int indeksissa, float maara) {
+
         selviytymisarvot[indeksissa] += maara;
     }
 
