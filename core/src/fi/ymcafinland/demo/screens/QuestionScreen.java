@@ -94,6 +94,9 @@ public class QuestionScreen extends PohjaScreen {
                 } else {
                     sp.setPlayScreen(solmu);
                 }
+                if (solmu.getID().equals("25")) {
+                    sp.getInfoScreen().paivitaJatkaButton();
+                }
             }
         });
 
