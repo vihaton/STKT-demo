@@ -3,16 +3,9 @@ package fi.ymcafinland.demo.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
@@ -24,8 +17,6 @@ import fi.ymcafinland.demo.logiikka.Solmu;
 import fi.ymcafinland.demo.logiikka.Verkko;
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
 import fi.ymcafinland.demo.scenes.HUD;
-import fi.ymcafinland.demo.transitions.CameraTransition;
-import fi.ymcafinland.demo.transitions.ZoomTransition;
 
 /**
  * Created by Sasu on 27.3.2016.
