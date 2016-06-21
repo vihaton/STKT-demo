@@ -26,7 +26,7 @@ public class InfoScreen extends PohjaScreen {
     private Texture tausta;
     private ScrollPane pane;
     private Table nappiTaulukko;
-    private Button exitButton;
+    private Button jatkaButton;
     private Button alkuButton;
 
     private static final String infoText =
@@ -74,7 +74,7 @@ public class InfoScreen extends PohjaScreen {
 
         rootTable.row();
 
-        createExitButton(sp);
+        createJatkaButton(sp);
         createAlkuTestiButton(sp);
 
         nappiTaulukko = new Table();
@@ -100,7 +100,6 @@ public class InfoScreen extends PohjaScreen {
     }
 
     private void createAlkuTestiButton(final SelviytyjanPurjeet sp) {
-        //Todo alkutesti näkyy nyt joka kerta kun infoscreen avataan, pitäiskö se olla näkyvissä vaan kerran?
         alkuButton = new Button(skin.get("jatkaButtonStyle", Button.ButtonStyle.class));
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
@@ -110,11 +109,11 @@ public class InfoScreen extends PohjaScreen {
         });
     }
 
-    public void createExitButton(final SelviytyjanPurjeet sp) {
-        exitButton = new Button(skin.get("jatkaButtonStyle", Button.ButtonStyle.class));
-        exitButton.addListener(new ChangeListener() {
+    public void createJatkaButton(final SelviytyjanPurjeet sp) {
+        jatkaButton = new Button(skin.get("jatkaButtonStyle", Button.ButtonStyle.class));
+        jatkaButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("IS", "exitbuttonia painettiin");
+                Gdx.app.log("IS", "jatkabuttonia painettiin");
                 sp.setPlayScreenMaxSelviytyjaan();
             }
         });
@@ -143,12 +142,12 @@ public class InfoScreen extends PohjaScreen {
     }
 
     /**
-     * Kun alkutesti on suoritettu kerran, vaihdetaan jatkamisnappulan toiminnoksi exitButton
+     * Kun alkutesti on suoritettu kerran, vaihdetaan jatkamisnappulan toiminnoksi jatkaButton
      *
      */
     public void paivitaJatkaButton() {
         nappiTaulukko.clear();
-        nappiTaulukko.add(exitButton).expandX();
+        nappiTaulukko.add(jatkaButton).expandX();
 
         rootTable.add(nappiTaulukko).padBottom(64).fillX();
         rootTable.validate();

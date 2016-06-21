@@ -97,8 +97,6 @@ public class PlayScreen extends PohjaScreen {
     }
 
     private void luoDialog() {
-
-
         //TODO (optional) popupeille oma skini jos niitä käytetään muualla ohjelmassa
         this.d = new Dialog(solmu.getOtsikko(), skin.get("windowStyle", com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle.class));
 
@@ -107,7 +105,6 @@ public class PlayScreen extends PohjaScreen {
         //keskitetään dialogi ja skaalataan suuremmaksi
         d.align(Align.center);
         d.setOrigin(Align.center);
-
     }
 
     @Override
