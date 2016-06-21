@@ -89,13 +89,11 @@ public class QuestionScreen extends PohjaScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("QS", "continuebuttonia painettiin");
                 sendData();
-                if (solmu.getMutsi() == null) {
+                if (solmu.getID().equals("0")) {
                     sp.setPlayScreenMaxSelviytyjaan();
+                    sp.getInfoScreen().paivitaJatkaButton();
                 } else {
                     sp.setPlayScreen(solmu);
-                }
-                if (solmu.getID().equals("25")) {
-                    sp.getInfoScreen().paivitaJatkaButton();
                 }
             }
         });
