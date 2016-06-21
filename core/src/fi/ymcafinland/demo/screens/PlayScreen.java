@@ -282,31 +282,32 @@ public class PlayScreen extends PohjaScreen {
         }
 
         if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY)) {
-            Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
+            hoidaKosketusSolmuun(trueX, trueY);
+        }
+    }
 
-            if (SelviytyjanPurjeet.LOG)
-                Gdx.app.log("PS", "kosketus osui tarpeeksi lähelle solmua " + tappaustaLahinSolmu.getID() + "\n" +
-                        "täppäyksen etäisyys solmuun " + Math.hypot(tappaustaLahinSolmu.getXKoordinaatti() - trueX, tappaustaLahinSolmu.getYKoordinaatti() - trueY));
+    private void hoidaKosketusSolmuun(float trueX, float trueY) {
+        Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
 
-            if (Integer.parseInt(tappaustaLahinSolmu.getID()) > 6 && !zoomedOut) {
-                hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
-            } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut && !dialogFlag){
+        if (SelviytyjanPurjeet.LOG)
+            Gdx.app.log("PS", "kosketus osui tarpeeksi lähelle solmua " + tappaustaLahinSolmu.getID() + "\n" +
+                    "täppäyksen etäisyys solmuun " + Math.hypot(tappaustaLahinSolmu.getXKoordinaatti() - trueX, tappaustaLahinSolmu.getYKoordinaatti() - trueY));
 
+        if (Integer.parseInt(tappaustaLahinSolmu.getID()) > 6 && !zoomedOut) {
+            hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
+        } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut && !dialogFlag){
 
-
-                d.show(stage);
-                dialogFlag = true;
-                d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.7f);
-                d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2f);
-
-
+            d.show(stage);
+            dialogFlag = true;
+            d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.7f);
+            d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2f);
 
 //                stage.addActor(d);
-                float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
+            float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
 //
 //                float cos = (float) Math.cos((PPtoKP+90));
 //                float sin = (float) Math.sin((PPtoKP+90));
-                d.setPosition(solmu.getXKoordinaatti() , solmu.getYKoordinaatti());
+            d.setPosition(solmu.getXKoordinaatti() , solmu.getYKoordinaatti());
 //                if (SelviytyjanPurjeet.LOG)
 //                    Gdx.app.log("PS", "PPtoKP" + PPtoKP + "\n" + "cos " + cos + "\n" +
 //                            "sin " + sin + "\n" +
@@ -315,19 +316,16 @@ public class PlayScreen extends PohjaScreen {
 //                                    "position " + d.getX() + ", " + d.getY()
 //
 //                    );
-                d.setRotation(PPtoKP - 90);
+            d.setRotation(PPtoKP - 90);
 
+        }
+        else {
+            setSolmu(tappaustaLahinSolmu);
+            asetaAlkuZoom();
+            d.clear();
+            d.remove();
+            dialogFlag = false;
 
-
-            }
-            else {
-                setSolmu(tappaustaLahinSolmu);
-                asetaAlkuZoom();
-                d.clear();
-                d.remove();
-                dialogFlag = false;
-
-            }
         }
     }
 
