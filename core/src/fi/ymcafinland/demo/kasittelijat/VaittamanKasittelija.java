@@ -55,8 +55,11 @@ public class VaittamanKasittelija {
     }
 
     private void luoScrollPane() {
-        pane = new ScrollPane(scrollPanesRootTable.top());
-        pane.setBounds(0, SelviytyjanPurjeet.V_HEIGHT / 6f, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.8f);
+
+        pane = new ScrollPane(scrollPanesRootTable.top(), skin.get("scrollPaneKnob", ScrollPane.ScrollPaneStyle.class));
+        pane.setFadeScrollBars(false);
+
+        pane.setBounds(0, 0, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT / 1.35f);
         pane.validate();
     }
 
