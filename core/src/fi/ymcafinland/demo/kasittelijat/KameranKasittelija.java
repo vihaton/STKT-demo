@@ -54,7 +54,7 @@ public class KameranKasittelija {
     public void pinchZoom(float increment) {
         if (camera.zoom + increment < zoomYlaraja && camera.zoom + increment > zoomAlaraja) {
             //debug
-            //Gdx.app.log("PS", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
+            //Gdx.app.log("KK", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
             camera.zoom += increment;
         }
     }
