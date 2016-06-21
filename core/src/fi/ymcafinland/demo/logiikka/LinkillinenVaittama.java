@@ -44,6 +44,11 @@ public class LinkillinenVaittama implements Vaittama {
     }
 
     @Override
+    public String getID() {
+        return null;
+    }
+
+    @Override
     public boolean getChecked() {
         return checked;
     }

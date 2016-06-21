@@ -117,22 +117,48 @@ public class VaittamanKasittelija {
         Table vaittamanTaulukko = new Table();
 
         Label otsikko = new Label(nykyinenVaittama.getVaittamanTeksti(), skin, "vaittamatyyli");
-        otsikko.setFontScale(MasterSkin.HIERO_FONT_SCALE);
-        otsikko.setWrap(true);
-        otsikko.setAlignment(Align.center);
 
-        //todo väittämän asettaminen kivasti silloinkin, kun on infobutton kehissä
-        vaittamanTaulukko.add(otsikko).pad(15).width(sliderinLeveys);
+        if(nykyinenVaittama.getID().equals("-1")){
+            createShowCaseVäittämäTaulukko(nykyinenVaittama, vaittamanTaulukko);
+        }else {
+            otsikko.setFontScale(MasterSkin.HIERO_FONT_SCALE);
 
-        if (nykyinenVaittama.getClass().equals(LinkillinenVaittama.class)) {
-            LinkillinenVaittama lv = (LinkillinenVaittama) nykyinenVaittama;
-            Button infoButton = new Button(skin.get("infoButtonStyle", Button.ButtonStyle.class));
-            infoButton.addListener(luoKuuntelija(lv.getLinkki()));
+            otsikko.setWrap(true);
+            otsikko.setAlignment(Align.center);
 
-            vaittamanTaulukko.add(infoButton).maxSize(64);
+            //todo väittämän asettaminen kivasti silloinkin, kun on infobutton kehissä
+            vaittamanTaulukko.add(otsikko).pad(15).width(sliderinLeveys);
+
+            if (nykyinenVaittama.getClass().equals(LinkillinenVaittama.class)) {
+                LinkillinenVaittama lv = (LinkillinenVaittama) nykyinenVaittama;
+                Button infoButton = new Button(skin.get("infoButtonStyle", Button.ButtonStyle.class));
+                infoButton.addListener(luoKuuntelija(lv.getLinkki()));
+
+                vaittamanTaulukko.add(infoButton).maxSize(64);
+            }
         }
-
         return vaittamanTaulukko;
+    }
+
+    private void createShowCaseVäittämäTaulukko(Vaittama nykyinenVaittama, Table vaittamanTaulukko) {
+        Label otsikko1 = new Label(nykyinenVaittama.getVaittamanTeksti().substring(0, 11), skin, "vaittamatyyli");
+        Label otsikko2 = new Label(nykyinenVaittama.getVaittamanTeksti().substring(11, 18), skin, "vaittamatyyli");
+        Label otsikko3 = new Label(nykyinenVaittama.getVaittamanTeksti().substring(18), skin, "vaittamatyyli");
+        otsikko1.setColor(Color.FIREBRICK);
+        otsikko2.setColor(Color.GOLD);
+        otsikko3.setColor(Color.CHARTREUSE);
+        otsikko1.setFontScale(MasterSkin.HIERO_FONT_SCALE * 1.3f);
+        otsikko2.setFontScale(MasterSkin.HIERO_FONT_SCALE);
+        otsikko3.setFontScale(MasterSkin.HIERO_FONT_SCALE*1.3f);
+
+        otsikko1.setAlignment(Align.center);
+
+        otsikko2.setAlignment(Align.center);
+
+        otsikko3.setAlignment(Align.center);
+        vaittamanTaulukko.add(otsikko1);
+        vaittamanTaulukko.add(otsikko2);
+        vaittamanTaulukko.add(otsikko3);
     }
 
     private ChangeListener luoKuuntelija(final String linkkisivu) {
