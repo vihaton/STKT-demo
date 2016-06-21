@@ -77,7 +77,7 @@ public class Verkko {
     private void generoiSolmut() {
 
         solmut.addAll(luoEnsimmainenTaso(6));
-        solmut.addAll(luoToinenTaso());
+//        solmut.addAll(luoToinenTaso());
 
         asetaOtsikotJaSisallot();
     }

@@ -85,9 +85,6 @@ public class InfoScreen extends PohjaScreen {
     }
 
     private void luoScrollPane() {
-
-
-
         pane = new ScrollPane(luoInfoteksti(), skin.get("scrollPaneKnob", ScrollPane.ScrollPaneStyle.class));
         pane.setFadeScrollBars(false);
         pane.validate();
@@ -108,7 +105,7 @@ public class InfoScreen extends PohjaScreen {
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "alkutestibuttonia painettiin");
-                sp.setQuestionScreen(new Solmu("25", null));
+                sp.setQuestionScreen(new Solmu("0", null));
             }
         });
     }
