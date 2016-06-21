@@ -91,7 +91,6 @@ public class SolmunKasittelija {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         Gdx.app.log("SK", "solmua " + solmunID + " painettu");
-
                     }
                 });
                 asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
@@ -137,7 +136,8 @@ public void paivitaGlowAnimaatiot() {
                 t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 1f), Actions.alpha((solmunAlpha + 0.3f), 1f))));
                 t.addAction(Actions.forever(Actions.rotateBy(2, 0.25f)));
                 t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
-
+//            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));
+//            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 2.5f), Actions.moveBy(1, -2, 2.5f))));
             }
             nykyisenSolmunID++;
         }

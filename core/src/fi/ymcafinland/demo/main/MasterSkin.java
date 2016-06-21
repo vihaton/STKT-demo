@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -37,6 +38,7 @@ public class MasterSkin extends Skin {
         generoiButtonStylet();
         generoiTextureAtlakset();
         generoiWindowStylet();
+        generoiScrollPaneStylet();
     }
 
     private void generoiTexturet() {
@@ -85,6 +87,13 @@ public class MasterSkin extends Skin {
         this.add("vaittama", new Texture("vaittama.png"));
         this.add("popupskin", new Texture("popupskin.png"));
 
+    }
+
+    private void generoiScrollPaneStylet() {
+        ScrollPane.ScrollPaneStyle scrollPaneKnob = new ScrollPane.ScrollPaneStyle();
+        scrollPaneKnob.vScrollKnob = this.getDrawable("sliderknob");
+
+        this.add("scrollPaneKnob", scrollPaneKnob);
     }
 
     //todo fonttien päivitys järkevämpiin
