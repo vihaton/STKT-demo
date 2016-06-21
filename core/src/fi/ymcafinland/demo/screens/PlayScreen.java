@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
@@ -293,28 +295,7 @@ public class PlayScreen extends PohjaScreen {
         if (Integer.parseInt(tappaustaLahinSolmu.getID()) > 6 && !zoomedOut) {
             hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
         } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut && !dialogFlag){
-
-            d.show(stage);
-            dialogFlag = true;
-            d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.7f);
-            d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2f);
-
-//                stage.addActor(d);
-            float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
-//
-//                float cos = (float) Math.cos((PPtoKP+90));
-//                float sin = (float) Math.sin((PPtoKP+90));
-            d.setPosition(solmu.getXKoordinaatti() , solmu.getYKoordinaatti());
-//                if (SelviytyjanPurjeet.LOG)
-//                    Gdx.app.log("PS", "PPtoKP" + PPtoKP + "\n" + "cos " + cos + "\n" +
-//                            "sin " + sin + "\n" +
-//                                    "deltaX" + (cos * SelviytyjanPurjeet.V_WIDTH / 2) + "\n" +
-//                                    "deltaY" + (sin * SelviytyjanPurjeet.V_HEIGHT / 2) + "\n" +
-//                                    "position " + d.getX() + ", " + d.getY()
-//
-//                    );
-            d.setRotation(PPtoKP - 90);
-
+            naytaDialogi(tappaustaLahinSolmu);
         }
         else {
             setSolmu(tappaustaLahinSolmu);
@@ -324,6 +305,36 @@ public class PlayScreen extends PohjaScreen {
             dialogFlag = false;
 
         }
+    }
+
+    private void naytaDialogi(Solmu solmu) {
+        d.show(stage);
+        dialogFlag = true;
+        d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.7f);
+        d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2f);
+
+//                stage.addActor(d);
+        float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
+//
+//                float cos = (float) Math.cos((PPtoKP+90));
+//                float sin = (float) Math.sin((PPtoKP+90));
+        d.setPosition(solmu.getXKoordinaatti() , solmu.getYKoordinaatti());
+//                if (SelviytyjanPurjeet.LOG)
+//                    Gdx.app.log("PS", "PPtoKP" + PPtoKP + "\n" + "cos " + cos + "\n" +
+//                            "sin " + sin + "\n" +
+//                                    "deltaX" + (cos * SelviytyjanPurjeet.V_WIDTH / 2) + "\n" +
+//                                    "deltaY" + (sin * SelviytyjanPurjeet.V_HEIGHT / 2) + "\n" +
+//                                    "position " + d.getX() + ", " + d.getY()
+//
+//                    );
+        d.setRotation(PPtoKP - 90);
+
+        Table contentTable = d.getContentTable();
+        Label sisalto = new Label(solmu.getDialoginSisalto(), skin, "sisalto");
+        sisalto.setWrap(true);
+        sisalto.setAlignment(Align.center);
+        sisalto.setFontScale(0.45f);
+        contentTable.add(sisalto);
     }
 
     public void asetaAlkuZoom() {
