@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
@@ -36,6 +37,7 @@ public class MasterSkin extends Skin {
         generoiProgressBarStylet();
         generoiButtonStylet();
         generoiTextureAtlakset();
+        generoiWindowStylet();
         generoiScrollPaneStylet();
     }
 
@@ -83,6 +85,7 @@ public class MasterSkin extends Skin {
         this.add("menutausta", new Texture("menutausta.png"));
 
         this.add("vaittama", new Texture("vaittama.png"));
+        this.add("popupskin", new Texture("popupskin.png"));
 
     }
 
@@ -105,6 +108,11 @@ public class MasterSkin extends Skin {
 
         BitmapFont hieroFont = new BitmapFont(Gdx.files.internal("font/fonttihiero.fnt"), false);
         this.add("hieroFont", hieroFont);
+    }
+
+    private void generoiWindowStylet() {
+        Window.WindowStyle windowStyle = new Window.WindowStyle(this.getFont("hieroFont"),Color.BLACK, this.getDrawable("popupskin"));
+        this.add("windowStyle", windowStyle);
     }
 
     private void generoiLabelStylet() {
@@ -138,6 +146,7 @@ public class MasterSkin extends Skin {
         Slider.SliderStyle sliderStyleMid = new Slider.SliderStyle(this.getDrawable("sliderbackgroundmid"), this.getDrawable("sliderknob"));
         this.add("sliderStyleMid", sliderStyleMid);
     }
+
 
     private void generoiProgressBarStylet() {
         ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();

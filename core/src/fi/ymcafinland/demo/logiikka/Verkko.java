@@ -77,7 +77,7 @@ public class Verkko {
     private void generoiSolmut() {
 
         solmut.addAll(luoEnsimmainenTaso(6));
-        solmut.addAll(luoToinenTaso());
+//        solmut.addAll(luoToinenTaso());
 
         asetaOtsikotJaSisallot();
     }
@@ -92,8 +92,22 @@ public class Verkko {
 
         asetaTasonSolmutToistensaSisaruksiksi(lista);
         asetaTasonSolmujenSijainnit(lista, false, leveysPalikka * 10);
+        asetaDialogienTekstit(lista);
 
         return lista;
+    }
+
+    private void asetaDialogienTekstit(ArrayList<Solmu> lista) {
+        for (Solmu s : lista) {
+            int mutsinID = Integer.parseInt(s.getID());
+            int lapsenID = 7 + (mutsinID - 1) * 3;
+            String dialoginSisalto = "";
+            for (int i = lapsenID; i < lapsenID + 3; i++) {
+                String otsikko = haeSolmunSisalto("solmun_sisalto_" + i);
+                dialoginSisalto += "\n" + otsikko;
+            }
+            s.setDialoginSisalto(dialoginSisalto);
+        }
     }
 
     private ArrayList<Solmu> luoToinenTaso() {
@@ -141,11 +155,19 @@ public class Verkko {
 
     private void asetaOtsikotJaSisallot() {
         for (Solmu s : solmut) {
-            String otsikko = myBundle.format("solmun_otsikko_" + s.getID());
+            String otsikko = haeSolmunOtsikko("solmun_otsikko_" + s.getID());
             s.setOtsikko(otsikko);
-            String sisalto = myBundle.format("solmun_sisalto_" + s.getID());
+            String sisalto = haeSolmunSisalto("solmun_sisalto_" + s.getID());
             s.setSisalto(sisalto);
         }
+    }
+
+    private String haeSolmunSisalto(String avain) {
+        return myBundle.format(avain);
+    }
+
+    private String haeSolmunOtsikko(String avain) {
+        return myBundle.format(avain);
     }
 
     /**

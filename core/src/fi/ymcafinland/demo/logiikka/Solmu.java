@@ -24,6 +24,7 @@ public class Solmu {
     private float x;
     private float y;
     private float kulma;
+    private String dialoginSisalto;
 
     /**
      * Luo solmun, jolla on tunnusluku ja vanhempi.
@@ -119,6 +120,14 @@ public class Solmu {
 
     public float getKulma() {
         return this.kulma;
+    }
+
+    public String getDialoginSisalto() {
+        return dialoginSisalto;
+    }
+
+    public void setDialoginSisalto(String dialoginSisalto) {
+        this.dialoginSisalto = dialoginSisalto;
     }
 
 }

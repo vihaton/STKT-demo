@@ -86,6 +86,13 @@ public class SolmunKasittelija {
             final int solmunID = Integer.parseInt(s.getID());
 
             if (solmunID < 25 && solmunID > 6) {
+                pallontaulukko.setTouchable(Touchable.enabled);
+                pallontaulukko.addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        Gdx.app.log("SK", "solmua " + solmunID + " painettu");
+                    }
+                });
                 asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
                 glowKuvaTaulukot.add(glowiTaulu);
             }

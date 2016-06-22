@@ -102,16 +102,18 @@ public class HUD {
         createListeners();
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     /**
      * Tapahtumankuuntelijat nappuloille
      */
     private void createListeners() {
+//        luoLapsienKuuntelijat();
         mutsi = new Solmu("0", null);
         vasenSisko = new Solmu("0", null);
         oikeaSisko = new Solmu("0", null);
-        lapsi1 = new Solmu("0", null);
-        lapsi2 = new Solmu("0", null);
-        lapsi3 = new Solmu("0", null);
 
         parent.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
@@ -127,25 +129,6 @@ public class HUD {
         leftSister.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 playScreen.setSolmu(vasenSisko);
-            }
-        });
-        final ArrayList<Solmu> laps = solmu.getLapset();
-        child1.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi1);
-            }
-        });
-
-        child2.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi2);
-
-            }
-        });
-
-        child3.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi3);
             }
         });
         kysymys.addListener(new ChangeListener() {
@@ -198,12 +181,37 @@ public class HUD {
 
     }
 
+    private void luoLapsienKuuntelijat() {
+        lapsi1 = new Solmu("0", null);
+        lapsi2 = new Solmu("0", null);
+        lapsi3 = new Solmu("0", null);
+
+        child1.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                playScreen.setSolmu(lapsi1);
+            }
+        });
+
+        child2.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                playScreen.setSolmu(lapsi2);
+
+            }
+        });
+
+        child3.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                playScreen.setSolmu(lapsi3);
+            }
+        });
+    }
+
     public void siirryQuestionScreeniin(Solmu solmu) {
         QuestionScreen qs = playScreen.getSp().getQuestionScreen();
         qs.setSolmu(solmu);
         ScreenTransition st = new ScreenTransition(playScreen, qs, 0.5f);
 
-        if (solmu.getID().equals("13")) {
+        if (solmu.getID().equals("3")) {
             if (SelviytyjanPurjeet.LOG)
                 Gdx.app.log("HUD", "kutsutaan ST.wildFadeTransitionia playScreenistä quostionScreeniin");
             st.wildFadeTransition();
@@ -291,7 +299,7 @@ public class HUD {
         topTable.clearChildren();
         topTable.top().left().add(menu);
         topTable.add(parent).expandX();
-        minimapTable.right().top().add(karttaNappi).size(230);
+//        minimapTable.right().top().add(karttaNappi).size(230);
 
         botTable.clearChildren();
         if (lapsia) {
@@ -299,7 +307,7 @@ public class HUD {
             botTable.add(child2).expandX();
             botTable.add(child3);
         } else {
-            botTable.add(kysymys);
+            botTable.bottom().add(kysymys);
         }
     }
 

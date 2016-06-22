@@ -40,7 +40,7 @@ public class KameranKasittelija {
 
     public void actZoom(float delta) {
         camera.zoom = zoomTransition.zoomAct(delta);
-        if (SelviytyjanPurjeet.LOG) Gdx.app.log("PS", "camera.zoom: " + camera.zoom);
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("KK", "camera.zoom: " + camera.zoom);
 
         //Zoom alaraja on 3/4 nykyisestä zoomista, yläraja 1.75 * normaali zoomi.
         this.zoomAlaraja = (camera.zoom / 4) * 3;
@@ -54,7 +54,7 @@ public class KameranKasittelija {
     public void pinchZoom(float increment) {
         if (camera.zoom + increment < zoomYlaraja && camera.zoom + increment > zoomAlaraja) {
             //debug
-            //Gdx.app.log("PS", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
+            //Gdx.app.log("KK", "vanha zoom " + getZoom() + ", uusi " + (z + ratio));
             camera.zoom += increment;
         }
     }
