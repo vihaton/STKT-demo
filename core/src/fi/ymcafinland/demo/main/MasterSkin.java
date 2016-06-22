@@ -87,6 +87,15 @@ public class MasterSkin extends Skin {
         this.add("vaittama", new Texture("vaittama.png"));
         this.add("popupskin", new Texture("popupskin.png"));
 
+        this.add("nuoliOikea", new Texture("nuoliOikea.png"));
+
+        this.add("nuoliVasen", new Texture("nuoliVasen.png"));
+
+        this.add("nuoliAlas", new Texture("nuoliAlas.png"));
+
+        this.add("nuoliYlos", new Texture("nuoliYlos.png"));
+
+
     }
 
     private void generoiScrollPaneStylet() {
@@ -225,6 +234,10 @@ public class MasterSkin extends Skin {
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
         Button.ButtonStyle styleMenu = new Button.ButtonStyle();
         TextButton.TextButtonStyle styleMenubar = new TextButton.TextButtonStyle();
+        Button.ButtonStyle styleNuoliOikea = new Button.ButtonStyle();
+        Button.ButtonStyle styleNuoliYlos = new Button.ButtonStyle();
+        Button.ButtonStyle styleNuoliVasen = new Button.ButtonStyle();
+        Button.ButtonStyle styleNuoliAlas = new Button.ButtonStyle();
 
         styleKartta.up = this.getDrawable("minimap");
         styleKysymys.up = this.getDrawable("mini_kysymys");
@@ -232,6 +245,10 @@ public class MasterSkin extends Skin {
         styleMenu.up = this.getDrawable("menubutton");
         styleMenubar.font = this.getFont("libgdxFont");
         styleMenubar.up = this.getDrawable("menubar");
+        styleNuoliOikea.up = this.getDrawable("nuoliOikea");
+        styleNuoliYlos.up = this.getDrawable("nuoliYlos");
+        styleNuoliVasen.up = this.getDrawable("nuoliVasen");
+        styleNuoliAlas.up = this.getDrawable("nuoliAlas");
 
         this.add("styleParent", styleParent);
         this.add("styleLeft", styleLeft);
@@ -244,6 +261,12 @@ public class MasterSkin extends Skin {
         this.add("styleKysymys", styleKysymys);
         this.add("styleMenu", styleMenu);
         this.add("styleMenubar", styleMenubar);
+        this.add("styleNuoliOikea", styleNuoliOikea);
+        this.add("styleNuoliVasen", styleNuoliVasen);
+        this.add("styleNuoliAlas", styleNuoliAlas);
+        this.add("styleNuoliYlos", styleNuoliYlos);
+
+
     }
 
 }
