@@ -76,17 +76,26 @@ public class Verkko {
 
     private void generoiSolmut() {
 
+        solmut.add(luoKeskiSolmu());
         solmut.addAll(luoEnsimmainenTaso(6));
-//        solmut.addAll(luoToinenTaso());
 
         asetaOtsikotJaSisallot();
     }
 
-    private ArrayList<Solmu> luoEnsimmainenTaso(int montako) {
+    private Solmu luoKeskiSolmu() {
+        Solmu s = new Solmu("0", null);
+        s.setVasenSisarus(s);
+        s.setOikeaSisarus(s);
+        s.setSijainti((int) keskipiste.x, (int) keskipiste.y);
+
+        return s;
+    }
+
+    private ArrayList<Solmu> luoEnsimmainenTaso(int montako, Solmu keskisolmu) {
         ArrayList<Solmu> lista = new ArrayList<>();
 
         for (int i = 1; i < montako + 1; i++) {
-            Solmu s = new Solmu("" + i, null);
+            Solmu s = new Solmu("" + i, keskisolmu);
             lista.add(s);
         }
 
@@ -113,6 +122,9 @@ public class Verkko {
     private ArrayList<Solmu> luoToinenTaso() {
         ArrayList<Solmu> toinenTaso = new ArrayList<>();
         for (Solmu s : solmut) {
+            if (s.getID().equals("0")) {
+                continue;
+            }
             toinenTaso.addAll(luoLapset(s));
         }
 
