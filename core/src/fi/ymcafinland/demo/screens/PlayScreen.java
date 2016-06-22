@@ -37,6 +37,7 @@ public class PlayScreen extends PohjaScreen {
     private Solmu solmu;
     private Dialog d;
     private boolean dialogFlag = false;
+    int solmunID;
 
     private boolean trans = false;
     public boolean zoomedOut = false;
@@ -93,7 +94,7 @@ public class PlayScreen extends PohjaScreen {
         this.stateTime = 0;
 
         Gdx.graphics.requestRendering();
-
+        this.solmunID = -1;
         luoDialog();
 
     }
@@ -280,11 +281,14 @@ public class PlayScreen extends PohjaScreen {
             Gdx.app.log("PS", "täppäyksen koordinaatit x: " + trueX + " y: " + trueY);
         }
 
-        if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY)) {
+        if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY) || solmu.getID().equals("0")) {
             Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
-            int solmunID = Integer.parseInt(tappaustaLahinSolmu.getID());
+            solmunID = Integer.parseInt(tappaustaLahinSolmu.getID());
             hoidaKosketusSolmuun(trueX, trueY);
         }
+    }
+    public void siirryPanorointiPisteenLahimpaanSolmuun(){
+        siirryLahinpaanSolmuun(panpiste.x,panpiste.y);
     }
 
     private void hoidaKosketusSolmuun(float trueX, float trueY) {
@@ -318,6 +322,9 @@ public class PlayScreen extends PohjaScreen {
     }
 
     private void naytaDialogi(Solmu solmu) {
+        if(zoomedOut){
+            return;
+        }
         d.show(stage);
         dialogFlag = true;
         d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.7f);
@@ -407,6 +414,10 @@ public class PlayScreen extends PohjaScreen {
 
         panpiste.x += deltaX;
         panpiste.y += deltaY;
+    }
+
+    public Solmu getSolmu() {
+        return solmu;
     }
 
     public KameranKasittelija getKameranKasittelija() {

@@ -25,6 +25,7 @@ public class Verkko {
     private final Vector2 keskipiste;
     private Solmu edellistaKosketustaLahinSolmu;
     private double lahimmanSolmunEtaisyys;
+    Solmu keski;
 
     public Verkko(int taustakuvanLeveys, int taustakuvanKorkeus) {
         this.leveysPalikka = taustakuvanLeveys / 100;
@@ -90,6 +91,7 @@ public class Verkko {
         s.setVasenSisarus(s);
         s.setOikeaSisarus(s);
         s.setSijainti((int) keskipiste.x, (int) keskipiste.y);
+        keski = s;
 
         return s;
     }
@@ -143,12 +145,17 @@ public class Verkko {
         Solmu vasen = tasonSolmut.get(montako - 1);
         Solmu s = tasonSolmut.get(0);
         asetaSisaruksiksi(s, vasen);
+        asetaVanhempi(s);
 
         for (int i = 1; i < montako; i++) {
             vasen = tasonSolmut.get(i - 1);
             s = tasonSolmut.get(i);
+            asetaVanhempi(s);
             asetaSisaruksiksi(s, vasen);
         }
+    }
+    private void asetaVanhempi(Solmu s){
+        s.setMutsi(keski);
     }
 
     private void asetaSisaruksiksi(Solmu s, Solmu vasen) {
@@ -237,6 +244,7 @@ public class Verkko {
         Solmu lahinSolmu = null;
 
         for (Solmu s : solmut) {
+
             double etaisyys = Math.hypot(s.getXKoordinaatti() - x, s.getYKoordinaatti() - y);
 
             if (etaisyys < lahimmanSolmunEtaisyys) {

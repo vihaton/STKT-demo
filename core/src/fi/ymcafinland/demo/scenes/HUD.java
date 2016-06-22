@@ -484,6 +484,11 @@ public class HUD {
 
             playScreen.setSolmu(solmu.getLapset().get(1));
         } else if (kysymys.isVisible()) {
+            if(solmu.getID().equals("0")){
+                playScreen.setSolmu(solmu);
+                playScreen.resetPan();
+                return;
+            }
             siirryQuestionScreeniin(solmu);
         }
     }

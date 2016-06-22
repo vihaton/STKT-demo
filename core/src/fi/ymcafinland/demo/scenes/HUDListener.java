@@ -45,7 +45,7 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        fling(velocityX,  velocityY,button, delta);
+        fling(velocityX, velocityY, button, delta);
         return false;
     }
 
@@ -93,6 +93,9 @@ public class HUDListener implements GestureDetector.GestureListener {
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
         if (hud.playScreen.zoomedOut || timer < 0.1f) {
+            if(hud.playScreen.getSolmu().getID().equals("0")){
+                hud.playScreen.siirryPanorointiPisteenLahimpaanSolmuun();
+            }
             return false;
         }
         if (SelviytyjanPurjeet.LOG)
