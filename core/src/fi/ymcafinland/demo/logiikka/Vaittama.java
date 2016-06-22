@@ -19,6 +19,8 @@ public interface Vaittama {
 
     int getMihinSelviytymiskeinoonVaikuttaa();
 
+    String getID();
+
     boolean getChecked();
 
     void setChecked(boolean b);
