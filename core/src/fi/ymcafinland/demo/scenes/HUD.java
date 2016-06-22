@@ -266,14 +266,17 @@ public class HUD {
      * @param solmu
      */
     private void updateButtons(Solmu solmu) {
-        if (hasParent) {
+        //Tilapäislisäehto, muutetaan kun hudi laitetaan toimimaan nollasolmun kanssa
+        if (hasParent && !solmu.getMutsi().getID().equals("0")) {
             styleParent.up = skin.getDrawable(solmu.getMutsi().getMinikuvanNimi());
         }
         parent.setVisible(hasParent);
         parent.setDisabled(!hasParent);
 
-        styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMinikuvanNimi());
-        styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMinikuvanNimi());
+        if (!solmu.getID().equals("0")) {
+            styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMinikuvanNimi());
+            styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMinikuvanNimi());
+        }
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 

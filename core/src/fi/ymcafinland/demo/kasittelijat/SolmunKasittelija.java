@@ -68,6 +68,7 @@ public class SolmunKasittelija {
             float y = s.getYKoordinaatti();
 
             Image taustapallo = luoTaustapallo();
+            if (s.getID().equals("0")) taustapallo.setScale(1.15f);
             taustapallo.setOrigin(Align.center);
 
             Table tekstit = luoTekstitaulukko(s);
