@@ -268,7 +268,7 @@ public class PlayScreen extends PohjaScreen {
         hud.resize(width, height);
     }
 
-    public void siirryLahinpaanSolmuun(float x, float y) {
+    public void siirryLahinpaanSolmuun(float x, float y, boolean flingkeskelta) {
 
         Vector3 vect = new Vector3(x, y, 0);
         //todo unproject ei toimi täysin oikein kun ollaan zoomattu ulos
@@ -281,22 +281,28 @@ public class PlayScreen extends PohjaScreen {
             Gdx.app.log("PS", "täppäyksen koordinaatit x: " + trueX + " y: " + trueY);
         }
 
-        if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY) || solmu.getID().equals("0")) {
+        if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY, flingkeskelta)) {
             Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
+            if(SelviytyjanPurjeet.LOG)
+                Gdx.app.log("PS", "Solmun ID: " + tappaustaLahinSolmu.getID());
             solmunID = Integer.parseInt(tappaustaLahinSolmu.getID());
-            hoidaKosketusSolmuun(trueX, trueY);
+            hoidaKosketusSolmuun(trueX, trueY, flingkeskelta, tappaustaLahinSolmu);
         }
     }
     public void siirryPanorointiPisteenLahimpaanSolmuun(){
-        siirryLahinpaanSolmuun(panpiste.x,panpiste.y);
+        siirryLahinpaanSolmuun(panpiste.x,panpiste.y, true);
+
     }
 
-    private void hoidaKosketusSolmuun(float trueX, float trueY) {
-        Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
+    private void hoidaKosketusSolmuun(float trueX, float trueY, boolean flingkeskelta, Solmu tappaustaLahinSolmu) {
 
-            if (solmunID == 0 && !zoomedOut) {
+
+            if (solmunID == 0 && !zoomedOut && !flingkeskelta) {
                 sp.setPalauteScreen();
-            } else if (solmunID > 6 && !zoomedOut) {
+            }
+            else if(solmunID == 0 && !zoomedOut && flingkeskelta){
+                setSolmu(tappaustaLahinSolmu);
+            }else if (solmunID > 6 && !zoomedOut && !flingkeskelta) {
                 hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
             } else {
                 setSolmu(tappaustaLahinSolmu);

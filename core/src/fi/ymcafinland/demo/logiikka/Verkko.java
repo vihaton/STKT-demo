@@ -239,12 +239,15 @@ public class Verkko {
         return solmut;
     }
 
-    public boolean kosketusTarpeeksiLahelleJotainSolmua(float x, float y) {
+    public boolean kosketusTarpeeksiLahelleJotainSolmua(float x, float y, boolean flingkeskelta) {
         lahimmanSolmunEtaisyys = Double.MAX_VALUE;
         Solmu lahinSolmu = null;
-
+        int i = 0;
         for (Solmu s : solmut) {
-
+            if(flingkeskelta && i == 0){
+                i++;
+                continue;
+            }
             double etaisyys = Math.hypot(s.getXKoordinaatti() - x, s.getYKoordinaatti() - y);
 
             if (etaisyys < lahimmanSolmunEtaisyys) {
@@ -253,7 +256,10 @@ public class Verkko {
             }
         }
 
-        if (lahimmanSolmunEtaisyys < 250) {
+        if (lahimmanSolmunEtaisyys < 250 && !flingkeskelta) {
+            edellistaKosketustaLahinSolmu = lahinSolmu;
+            return true;
+        }else if (flingkeskelta){
             edellistaKosketustaLahinSolmu = lahinSolmu;
             return true;
         }

@@ -494,7 +494,7 @@ public class HUD {
     }
 
     public void siirryLahinpaanPalloon(float x, float y) {
-        playScreen.siirryLahinpaanSolmuun(x, y);
+        playScreen.siirryLahinpaanSolmuun(x, y, false);
     }
 
     public void resize(int width, int height) {
