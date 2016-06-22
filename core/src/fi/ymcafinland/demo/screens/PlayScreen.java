@@ -256,7 +256,7 @@ public class PlayScreen extends PohjaScreen {
     }
 
     private void hoidaKosketusSolmuun(float trueX, float trueY) {
-        Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu()
+        Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
         int solmunID = Integer.parseInt(tappaustaLahinSolmu.getID());
         
          if (SelviytyjanPurjeet.LOG)
