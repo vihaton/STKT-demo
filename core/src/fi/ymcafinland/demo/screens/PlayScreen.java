@@ -281,6 +281,8 @@ public class PlayScreen extends PohjaScreen {
         }
 
         if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY)) {
+            Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
+            int solmunID = Integer.parseInt(tappaustaLahinSolmu.getID());
             hoidaKosketusSolmuun(trueX, trueY);
         }
     }
@@ -288,6 +290,14 @@ public class PlayScreen extends PohjaScreen {
     private void hoidaKosketusSolmuun(float trueX, float trueY) {
         Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
 
+            if (solmunID == 0 && !zoomedOut) {
+                sp.setPalauteScreen();
+            } else if (solmunID > 6 && !zoomedOut) {
+                hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
+            } else {
+                setSolmu(tappaustaLahinSolmu);
+                asetaAlkuZoom();
+            }
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("PS", "kosketus osui tarpeeksi lähelle solmua " + tappaustaLahinSolmu.getID() + "\n" +
                     "täppäyksen etäisyys solmuun " + Math.hypot(tappaustaLahinSolmu.getXKoordinaatti() - trueX, tappaustaLahinSolmu.getYKoordinaatti() - trueY));

@@ -71,7 +71,7 @@ public class SelviytyjanPurjeet extends Game {
 
         this.questionScreen = new QuestionScreen(this, pelaaja, vaittamat, masterSkin);
         this.palauteScreen = new PalauteScreen(this, pelaaja, masterSkin);
-        this.playscreen = new PlayScreen(this, verkko.getSolmut().get(0), pelaaja, masterSkin);
+        this.playscreen = new PlayScreen(this, verkko.getSolmut().get(1), pelaaja, masterSkin);
         this.infoScreen = new InfoScreen(this, masterSkin);
         this.launcherScreen = new LauncherScreen(this, masterSkin, "LS");
 
@@ -131,7 +131,7 @@ public class SelviytyjanPurjeet extends Game {
      * asettaa playscreenin ruuduksi.
      */
     public void setPlayScreenMaxSelviytyjaan() {
-        Solmu vahvinSelviytymiskeino = verkko.getSolmut().get(pelaaja.getMaxSelviytymisenIndeksi());
+        Solmu vahvinSelviytymiskeino = verkko.getSolmut().get(pelaaja.getMaxSelviytymisenIndeksi()+1); //lisätään 1 jottei koskaan valita verkon ensimmäistä solmua, eli edistysmittarisolmua
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("SP", "setPlayScreenMaxSelviytyjaan: vahvimman selviytymiskeinon perusteella set solmuksi laitetaan " + vahvinSelviytymiskeino.getOtsikko());
         playscreen.setSolmu(vahvinSelviytymiskeino);
