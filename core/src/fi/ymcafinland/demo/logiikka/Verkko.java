@@ -25,6 +25,7 @@ public class Verkko {
     private final Vector2 keskipiste;
     private Solmu edellistaKosketustaLahinSolmu;
     private double lahimmanSolmunEtaisyys;
+    Solmu keski;
 
     public Verkko(int taustakuvanLeveys, int taustakuvanKorkeus) {
         this.leveysPalikka = taustakuvanLeveys / 100;
@@ -76,8 +77,11 @@ public class Verkko {
 
     private void generoiSolmut() {
 
+        
+//        solmut.addAll(luoToinenTaso());
         solmut.add(luoKeskiSolmu());
-        solmut.addAll(luoEnsimmainenTaso(6, solmut.get(0)));
+        solmut.addAll(luoEnsimmainenTaso(6, null));
+        
 
         asetaOtsikotJaSisallot();
     }
@@ -87,6 +91,7 @@ public class Verkko {
         s.setVasenSisarus(s);
         s.setOikeaSisarus(s);
         s.setSijainti((int) keskipiste.x, (int) keskipiste.y);
+        keski = s;
 
         return s;
     }
@@ -95,7 +100,7 @@ public class Verkko {
         ArrayList<Solmu> lista = new ArrayList<>();
 
         for (int i = 1; i < montako + 1; i++) {
-            Solmu s = new Solmu("" + i, keskisolmu);
+            Solmu s = new Solmu("" + i, null);
             lista.add(s);
         }
 
@@ -140,12 +145,17 @@ public class Verkko {
         Solmu vasen = tasonSolmut.get(montako - 1);
         Solmu s = tasonSolmut.get(0);
         asetaSisaruksiksi(s, vasen);
+        asetaVanhempi(s);
 
         for (int i = 1; i < montako; i++) {
             vasen = tasonSolmut.get(i - 1);
             s = tasonSolmut.get(i);
+            asetaVanhempi(s);
             asetaSisaruksiksi(s, vasen);
         }
+    }
+    private void asetaVanhempi(Solmu s){
+        s.setMutsi(keski);
     }
 
     private void asetaSisaruksiksi(Solmu s, Solmu vasen) {
@@ -205,6 +215,7 @@ public class Verkko {
             int x = (int) (sade * Math.cos(k)) + keskiX;
             int y = (int) (sade * Math.sin(k) + keskiY);
 
+            Gdx.app.log("Verkko", "Solmun " + i + " sijainti: " + x + " " + y );
             s.setSijainti(x, y);
             asetaSolmulleKulmaKeskipisteeseen(s);
             s = s.getOikeaSisarus();
@@ -228,11 +239,15 @@ public class Verkko {
         return solmut;
     }
 
-    public boolean kosketusTarpeeksiLahelleJotainSolmua(float x, float y) {
+    public boolean kosketusTarpeeksiLahelleJotainSolmua(float x, float y, boolean flingkeskelta) {
         lahimmanSolmunEtaisyys = Double.MAX_VALUE;
         Solmu lahinSolmu = null;
-
+        int i = 0;
         for (Solmu s : solmut) {
+            if(flingkeskelta && i == 0){
+                i++;
+                continue;
+            }
             double etaisyys = Math.hypot(s.getXKoordinaatti() - x, s.getYKoordinaatti() - y);
 
             if (etaisyys < lahimmanSolmunEtaisyys) {
@@ -241,7 +256,10 @@ public class Verkko {
             }
         }
 
-        if (lahimmanSolmunEtaisyys < 250) {
+        if (lahimmanSolmunEtaisyys < 250 && !flingkeskelta) {
+            edellistaKosketustaLahinSolmu = lahinSolmu;
+            return true;
+        }else if (flingkeskelta){
             edellistaKosketustaLahinSolmu = lahinSolmu;
             return true;
         }

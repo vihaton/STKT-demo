@@ -4,7 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.kasittelijat.DialoginKasittelija;
 import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
@@ -33,6 +37,7 @@ public class PlayScreen extends PohjaScreen {
     private InfoButtonKasittelija infoButtonKasittelija;
     private Solmu solmu;
     private boolean dialogFlag = false;
+    int solmunID;
 
     private boolean trans = false;
     public boolean zoomedOut = false;
@@ -91,6 +96,9 @@ public class PlayScreen extends PohjaScreen {
         Gdx.graphics.requestRendering();
 
         dialoginKasittelija = new DialoginKasittelija(verkko, masterSkin);
+        this.solmunID = -1;
+        
+
     }
 
     @Override
@@ -250,16 +258,34 @@ public class PlayScreen extends PohjaScreen {
             Gdx.app.log("PS", "täppäyksen koordinaatit x: " + trueX + " y: " + trueY);
         }
 
-        if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY)) {
-            hoidaKosketusSolmuun(trueX, trueY);
+        if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY, flingkeskelta)) {
+            Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
+            if(SelviytyjanPurjeet.LOG)
+                Gdx.app.log("PS", "Solmun ID: " + tappaustaLahinSolmu.getID());
+            solmunID = Integer.parseInt(tappaustaLahinSolmu.getID());
+            hoidaKosketusSolmuun(trueX, trueY, flingkeskelta, tappaustaLahinSolmu);
         }
     }
+    public void siirryPanorointiPisteenLahimpaanSolmuun(){
+        siirryLahinpaanSolmuun(panpiste.x,panpiste.y, true);
 
-    private void hoidaKosketusSolmuun(float trueX, float trueY) {
-        Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
-        int solmunID = Integer.parseInt(tappaustaLahinSolmu.getID());
-        
-         if (SelviytyjanPurjeet.LOG)
+    }
+
+    private void hoidaKosketusSolmuun(float trueX, float trueY, boolean flingkeskelta, Solmu tappaustaLahinSolmu) {
+
+
+            if (solmunID == 0 && !zoomedOut && !flingkeskelta) {
+                sp.setPalauteScreen();
+            }
+            else if(solmunID == 0 && !zoomedOut && flingkeskelta){
+                setSolmu(tappaustaLahinSolmu);
+            }else if (solmunID > 6 && !zoomedOut && !flingkeskelta) {
+                hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
+            } else {
+                setSolmu(tappaustaLahinSolmu);
+                asetaAlkuZoom();
+            }
+        if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("PS", "kosketus osui tarpeeksi lähelle solmua " + tappaustaLahinSolmu.getID() + "\n" +
                     "täppäyksen etäisyys solmuun " + Math.hypot(tappaustaLahinSolmu.getXKoordinaatti() - trueX, tappaustaLahinSolmu.getYKoordinaatti() - trueY));
 
@@ -267,17 +293,23 @@ public class PlayScreen extends PohjaScreen {
             sp.setPalauteScreen();
         } else if (solmunID > 6 && !zoomedOut) {
             hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
-        } else if (solmunID <= 6 && !zoomedOut && !dialogFlag) {
+        } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut && !dialogFlag){
             naytaDialogi(tappaustaLahinSolmu);
-        } else {
+        }
+        else {
             setSolmu(tappaustaLahinSolmu);
             asetaAlkuZoom();
             dialoginKasittelija.poistaDialogit();
             dialogFlag = false;
+
         }
     }
 
     private void naytaDialogi(Solmu solmu) {
+        if(zoomedOut){
+            return;
+        }
+        
         dialogFlag = true;
         float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
         dialoginKasittelija.naytaDialogi(stage, solmu, solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), PPtoKP);
@@ -343,6 +375,10 @@ public class PlayScreen extends PohjaScreen {
 
         panpiste.x += deltaX;
         panpiste.y += deltaY;
+    }
+
+    public Solmu getSolmu() {
+        return solmu;
     }
 
     public KameranKasittelija getKameranKasittelija() {

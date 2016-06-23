@@ -182,31 +182,6 @@ public class HUD {
 
     }
 
-    private void luoLapsienKuuntelijat() {
-        lapsi1 = new Solmu("0", null);
-        lapsi2 = new Solmu("0", null);
-        lapsi3 = new Solmu("0", null);
-
-        child1.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi1);
-            }
-        });
-
-        child2.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi2);
-
-            }
-        });
-
-        child3.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi3);
-            }
-        });
-    }
-
     public void siirryQuestionScreeniin(Solmu solmu) {
         QuestionScreen qs = playScreen.getSp().getQuestionScreen();
         qs.setSolmu(solmu);
@@ -222,7 +197,6 @@ public class HUD {
             st.fadeTransition();
         }
     }
-
     public void siirryInfoScreeniin() {
         InfoScreen is = playScreen.getSp().getInfoScreen();
         ScreenTransition st = new ScreenTransition(playScreen, is, 0.5f);
@@ -233,6 +207,8 @@ public class HUD {
         ScreenTransition st = new ScreenTransition(playScreen, as, 0.5f);
         st.fadeTransition();
     }
+
+
     
     /**
      * Päivittää HUDin tiedot
@@ -252,6 +228,7 @@ public class HUD {
         karttaNappi.setChecked(zoomedOut);
         setZoomedHUDState(zoomedOut);
     }
+
 
     private void updateListeners(Solmu solmu) {
         this.solmu = solmu;
@@ -302,6 +279,7 @@ public class HUD {
         topTable.clearChildren();
         topTable.top().left().add(menu);
         topTable.add(parent).expandX();
+       
         //minimapTable.right().top().add(karttaNappi).size(230);
 
         botTable.clearChildren();
@@ -327,6 +305,7 @@ public class HUD {
         }
     }
 
+
     public void resetInputProcessor() {
         Gdx.input.setInputProcessor(im);
     }
@@ -345,6 +324,7 @@ public class HUD {
         //Turhaa jos karttanappi poistuu?
         minimapTable = new Table();
         minimapTable.setFillParent(true);
+        minimapTable.right().top().add(karttaNappi).size(230);
 
 
         midTable = new Table();
@@ -364,6 +344,7 @@ public class HUD {
         stage.addActor(minimapTable);
         stage.addActor(midTable);
         stage.addActor(botTable);
+
     }
 
     /**
@@ -509,12 +490,17 @@ public class HUD {
 
             playScreen.setSolmu(solmu.getLapset().get(1));
         } else if (kysymys.isVisible()) {
+            if(solmu.getID().equals("0")){
+                playScreen.setSolmu(solmu);
+                playScreen.resetPan();
+                return;
+            }
             siirryQuestionScreeniin(solmu);
         }
     }
 
     public void siirryLahinpaanPalloon(float x, float y) {
-        playScreen.siirryLahinpaanSolmuun(x, y);
+        playScreen.siirryLahinpaanSolmuun(x, y, false);
     }
 
     public void resize(int width, int height) {

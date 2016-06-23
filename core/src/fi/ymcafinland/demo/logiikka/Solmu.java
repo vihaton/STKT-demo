@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Solmu {
 
     private final String id;
-    private final Solmu mutsi;
+    private  Solmu mutsi;
     private String otsikko;
     private String sisalto;
     private Solmu vasenSisarus;
@@ -79,6 +79,7 @@ public class Solmu {
     public Solmu getMutsi() {
         return mutsi;
     }
+    public void setMutsi(Solmu solmu){mutsi = solmu;}
 
     public void setSijainti(int x, int y) {
         this.x = x;
