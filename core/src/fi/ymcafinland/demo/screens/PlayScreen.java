@@ -245,7 +245,7 @@ public class PlayScreen extends PohjaScreen {
         hud.resize(width, height);
     }
 
-    public void siirryLahinpaanSolmuun(float x, float y) {
+    public void siirryLahinpaanSolmuun(float x, float y, boolean flingkeskelta) {
 
         Vector3 vect = new Vector3(x, y, 0);
         //todo unproject ei toimi täysin oikein kun ollaan zoomattu ulos

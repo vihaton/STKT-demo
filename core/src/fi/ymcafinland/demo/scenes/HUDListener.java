@@ -93,8 +93,9 @@ public class HUDListener implements GestureDetector.GestureListener {
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
         if (hud.playScreen.zoomedOut || timer < 0.1f) {
-            if(hud.playScreen.getSolmu().getID().equals("0")){
+            if(hud.playScreen.getSolmu().getID().equals("0") && !hud.playScreen.zoomedOut){
                 hud.playScreen.siirryPanorointiPisteenLahimpaanSolmuun();
+                hud.playScreen.resetPan();
             }
             return false;
         }

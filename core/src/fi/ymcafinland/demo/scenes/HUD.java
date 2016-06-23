@@ -223,6 +223,7 @@ public class HUD {
 
 
 //        updateButtons(solmu);
+        updateTables(solmu);
         updateListeners(solmu);
 
         karttaNappi.setChecked(zoomedOut);
@@ -275,21 +276,17 @@ public class HUD {
     /**
      * päivittää taulukot ja napit siten, että oikeat asiat näkyvät
      */
-    private void updateTables() {
-        topTable.clearChildren();
-        topTable.top().left().add(menu);
-        topTable.add(parent).expandX();
-       
-        //minimapTable.right().top().add(karttaNappi).size(230);
-
-        botTable.clearChildren();
-        if (lapsia) {
-            botTable.bottom().add(child1);
-            botTable.add(child2).expandX();
-            botTable.add(child3);
-        } else {
-            botTable.bottom().add(kysymys);
+    private void updateTables(Solmu solmu) {
+        if(solmu.getID().equals("0")){
+            topTable.setVisible(false);
+            midTable.setVisible(false);
+            botTable.setVisible(false);
+        }else{
+            topTable.setVisible(true);
+            midTable.setVisible(true);
+            botTable.setVisible(true);
         }
+
     }
 
 
@@ -484,19 +481,15 @@ public class HUD {
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HList", "Swaipattu ylös");
 
-        if (lapsia) {
 
-            playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
 
-            playScreen.setSolmu(solmu.getLapset().get(1));
-        } else if (kysymys.isVisible()) {
-            if(solmu.getID().equals("0")){
-                playScreen.setSolmu(solmu);
-                playScreen.resetPan();
-                return;
-            }
-            siirryQuestionScreeniin(solmu);
+        if(!solmu.getID().equals("0")){
+            playScreen.setSolmu(solmu);
+            playScreen.resetPan();
+            return;
         }
+        siirryQuestionScreeniin(solmu);
+
     }
 
     public void siirryLahinpaanPalloon(float x, float y) {
