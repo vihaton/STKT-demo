@@ -1,5 +1,6 @@
 package fi.ymcafinland.demo.kasittelijat;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -21,6 +22,7 @@ public class DialoginKasittelija {
     private ArrayList<Dialog> dialogit;
     private Dialog d;
     private Skin skin;
+    public boolean DIALOG_FLAG = false;
 
     public DialoginKasittelija(Verkko verkko, Skin skin) {
         this.skin = skin;
@@ -33,13 +35,17 @@ public class DialoginKasittelija {
     }
 
     public void poistaDialogit() {
+        Gdx.app.log("PS", "Onko dialogia3 " + DIALOG_FLAG);
         for (Dialog d : dialogit) {
+            d.setVisible(false);
             d.clear();
             d.remove();
         }
-
+        d.setVisible(false);
         d.clear();
+        DIALOG_FLAG = false;
         d.remove();
+
     }
 
     private Dialog luoDialogi(Solmu solmu) {
@@ -68,8 +74,12 @@ public class DialoginKasittelija {
 //        int indeksi = Integer.parseInt(solmu.getID());
 //        Dialog d = dialogit.get(indeksi - 1);
         d = luoDialogi(solmu);
-
-        d.show(stage);
+        if(!DIALOG_FLAG) {
+            DIALOG_FLAG = true;
+            Gdx.app.log("PS", "Onko dialogia1 " + DIALOG_FLAG);
+            d.show(stage);
+        }
+        Gdx.app.log("PS", "Onko dialogia2 " + DIALOG_FLAG);
         d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.7f);
         d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2f);
 

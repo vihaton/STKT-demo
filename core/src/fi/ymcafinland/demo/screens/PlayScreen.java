@@ -4,11 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.kasittelijat.DialoginKasittelija;
 import fi.ymcafinland.demo.kasittelijat.EdistymismittarinKasittelija;
@@ -36,7 +32,7 @@ public class PlayScreen extends PohjaScreen {
     private EdistymismittarinKasittelija edistymismittarinKasittelija;
     private InfoButtonKasittelija infoButtonKasittelija;
     private Solmu solmu;
-    private boolean dialogFlag = false;
+
     int solmunID;
 
     private boolean trans = false;
@@ -231,7 +227,7 @@ public class PlayScreen extends PohjaScreen {
             kameranKasittelija.transitionFromTo(polttopiste, goal);
 
             dialoginKasittelija.poistaDialogit();
-            dialogFlag = false;
+
         }
     }
 
@@ -282,7 +278,8 @@ public class PlayScreen extends PohjaScreen {
             }else if (solmunID > 6 && !zoomedOut && !flingkeskelta) {
                 hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
             } else {
-                setSolmu(tappaustaLahinSolmu);
+                if(!solmu.equals(tappaustaLahinSolmu))
+                    setSolmu(tappaustaLahinSolmu);
                 asetaAlkuZoom();
             }
         if (SelviytyjanPurjeet.LOG)
@@ -293,24 +290,30 @@ public class PlayScreen extends PohjaScreen {
             sp.setPalauteScreen();
         } else if (solmunID > 6 && !zoomedOut) {
             hud.siirryQuestionScreeniin(tappaustaLahinSolmu);
-        } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut && !dialogFlag){
+        } else if (Integer.parseInt(tappaustaLahinSolmu.getID()) <= 6 && !zoomedOut){
+            Gdx.app.log("PS", "Onko dialogia " + dialoginKasittelija.DIALOG_FLAG);
+
             naytaDialogi(tappaustaLahinSolmu);
-        }
-        else {
-            setSolmu(tappaustaLahinSolmu);
+
+
+        } else {
+            if(!solmu.equals(tappaustaLahinSolmu))
+                setSolmu(tappaustaLahinSolmu);
             asetaAlkuZoom();
-            dialoginKasittelija.poistaDialogit();
-            dialogFlag = false;
+
 
         }
+
     }
 
     private void naytaDialogi(Solmu solmu) {
-        if(zoomedOut){
+        if(zoomedOut || dialoginKasittelija.DIALOG_FLAG){
+            dialoginKasittelija.poistaDialogit();
             return;
         }
+
         
-        dialogFlag = true;
+
         float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
         dialoginKasittelija.naytaDialogi(stage, solmu, solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), PPtoKP);
     }

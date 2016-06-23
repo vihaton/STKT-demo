@@ -54,7 +54,7 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "fling -metodia kutsuttu");
 
-        if (timer > 0.1f || timer == 0) {
+        if (timer > 0.1f || timer == 0 || hud.playScreen.getSolmu().getID().equals("0")) {
             return false;
         }
 
