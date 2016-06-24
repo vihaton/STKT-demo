@@ -484,10 +484,8 @@ public class HUD {
         if(!solmu.getID().equals("0")){
             playScreen.setSolmu(solmu);
             playScreen.resetPan();
-            return;
         }
         siirryQuestionScreeniin(solmu);
-
     }
 
     public void siirryLahinpaanPalloon(float x, float y) {
