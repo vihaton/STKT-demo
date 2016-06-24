@@ -449,7 +449,7 @@ public class HUD {
 
     public void right() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HList", "Swaipattu oikealle");
+            Gdx.app.log("HUD", "Swaipattu oikealle");
         playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
 
         playScreen.setSolmu(solmu.getVasenSisarus());
@@ -457,7 +457,7 @@ public class HUD {
 
     public void left() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HList", "Swaipattu vasemmalle");
+            Gdx.app.log("HUD", "Swaipattu vasemmalle");
         playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
 
         playScreen.setSolmu(solmu.getOikeaSisarus());
@@ -465,7 +465,7 @@ public class HUD {
 
     public void down() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("Hlist", "Swaipattu alas");
+            Gdx.app.log("HUD", "Swaipattu alas");
 
         if (hasParent) {
             playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
@@ -479,9 +479,7 @@ public class HUD {
 
     public void up() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HList", "Swaipattu ylös");
-
-
+            Gdx.app.log("HUD", "Swaipattu ylös");
 
         if(!solmu.getID().equals("0")){
             playScreen.setSolmu(solmu);

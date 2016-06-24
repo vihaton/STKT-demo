@@ -143,7 +143,7 @@ public class QuestionScreen extends PohjaScreen {
         if (solmu.getMutsi() == null) {
             otsikko.setText("Testaa, millainen selviytyjä olet:");
         } else {
-            otsikko.setText(solmu.getMutsi().getOtsikko() + ":\n" + solmu.getSisalto());
+            otsikko.setText(solmu.getOtsikko() + ":\n" + "väittämät");
         }
     }
 
