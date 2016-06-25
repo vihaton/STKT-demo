@@ -316,13 +316,12 @@ public class HUD {
     private void createTables() {
         topTable = new Table();
         topTable.setFillParent(true);
-        topTable.top().left().add(menu);
+        topTable.top().left().add(menu).expandX();
         topTable.add(parent).expandX();
 
-        //Turhaa jos karttanappi poistuu?
-        minimapTable = new Table();
-        minimapTable.setFillParent(true);
-        minimapTable.right().top().add(karttaNappi).size(64).pad(4);
+
+        topTable.add(karttaNappi).size(64).expandX();
+
 
 
         midTable = new Table();
@@ -339,7 +338,6 @@ public class HUD {
 
         stage.clear();
         stage.addActor(topTable);
-        stage.addActor(minimapTable);
         stage.addActor(midTable);
         stage.addActor(botTable);
 
