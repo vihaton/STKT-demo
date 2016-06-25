@@ -63,10 +63,21 @@ public class DialoginKasittelija {
 
     private void asetaSisalto(Solmu solmu, Dialog dialogi) {
         Table contentTable = dialogi.getContentTable();
-        Label sisalto = new Label(solmu.getDialoginSisalto(), skin, "sisalto");
+        String text = solmu.getDialoginSisalto();
+        if(text == null) return;
+        Label sisalto = new Label(text, skin, "sisalto");
+        int length = text.length();
+        if(length < 25) sisalto.setFontScale(0.8f);
+        else if(length >= 25 && length < 110) sisalto.setFontScale(0.35f);
+        else{ sisalto.setFontScale(0.2f);
+        }
+
+
         sisalto.setAlignment(Align.center);
-        sisalto.setFontScale(0.45f);
-        contentTable.add(sisalto).prefWidth(5);
+        sisalto.setWrap(true);
+        dialogi.getContentTable().center().add(sisalto).minSize(220,300).row();
+
+        dialogi.setModal(false);
         dialogi.layout();
         contentTable.setVisible(true);
     }
