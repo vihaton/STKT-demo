@@ -98,7 +98,7 @@ public class SolmunKasittelija {
                 glowKuvaTaulukot.add(glowiTaulu);
             }
 
-            if (solmunID < 25) {
+            if (solmunID < 25 && solmunID > 0) {
                 solmuKuvaTaulukot.add(pallontaulukko);
             }
 
@@ -188,11 +188,13 @@ public void paivitaGlowAnimaatiot() {
      * Päivittää ylemmäntason pallojen koot pelaajan selviytymispreferenssin mukaan
      */
     private void paivitaSolmujenKoko() {
-        for (int i = 0; i < 6; i++) {
-            Table t = solmuKuvaTaulukot.get(i);
+        int i = 0;
+        for(Table t : solmuKuvaTaulukot) {
             t.setTransform(true);
-            t.setScale(pelaaja.getSelviytymisprosentit(i)*0.07f);
+            t.setScale(pelaaja.getSelviytymisprosentit(i) * 0.07f);
+            i++;
         }
+
     }
 
     public void rotateTables(float angleToPointCamera) {
