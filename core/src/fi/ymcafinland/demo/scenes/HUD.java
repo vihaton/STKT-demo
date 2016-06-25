@@ -197,11 +197,13 @@ public class HUD {
             st.fadeTransition();
         }
     }
+
     public void siirryInfoScreeniin() {
         InfoScreen is = playScreen.getSp().getInfoScreen();
         ScreenTransition st = new ScreenTransition(playScreen, is, 0.5f);
         st.fadeTransition();
     }
+
     public void siirryAlkuScreeniin() {
         LauncherScreen as = playScreen.getSp().getAlkuScreen();
         ScreenTransition st = new ScreenTransition(playScreen, as, 0.5f);
@@ -209,7 +211,6 @@ public class HUD {
     }
 
 
-    
     /**
      * Päivittää HUDin tiedot
      *
@@ -277,11 +278,11 @@ public class HUD {
      * päivittää taulukot ja napit siten, että oikeat asiat näkyvät
      */
     private void updateTables(Solmu solmu) {
-        if(solmu.getID().equals("0")){
+        if (solmu.getID().equals("0")) {
             topTable.setVisible(false);
             midTable.setVisible(false);
             botTable.setVisible(false);
-        }else{
+        } else {
             topTable.setVisible(true);
             midTable.setVisible(true);
             botTable.setVisible(true);
@@ -317,7 +318,7 @@ public class HUD {
         topTable.setFillParent(true);
         topTable.top().left().add(menu);
         topTable.add(parent).expandX();
-        
+
         //Turhaa jos karttanappi poistuu?
         minimapTable = new Table();
         minimapTable.setFillParent(true);
@@ -354,15 +355,15 @@ public class HUD {
         parent.setScale(scale);
 
 
-        leftSister =  new Button(skin.get("styleNuoliVasen", Button.ButtonStyle.class));
+        leftSister = new Button(skin.get("styleNuoliVasen", Button.ButtonStyle.class));
         leftSister.setScale(scale);
 
 
-        rightSister =  new Button(skin.get("styleNuoliOikea", Button.ButtonStyle.class));
+        rightSister = new Button(skin.get("styleNuoliOikea", Button.ButtonStyle.class));
         rightSister.setScale(scale);
 
 
-        kysymys =  new Button(skin.get("styleNuoliAlas", Button.ButtonStyle.class));
+        kysymys = new Button(skin.get("styleNuoliAlas", Button.ButtonStyle.class));
         kysymys.setScale(scale);
 
 
@@ -370,13 +371,13 @@ public class HUD {
         karttaNappi.setScale(scale);
         karttaNappi.align(Align.right);
 
-        palaute = new TextButton("Palaute",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        palaute = new TextButton("Palaute", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         palaute.setScale(scale);
 
-        info = new TextButton("Info",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        info = new TextButton("Info", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         info.setScale(scale);
 
-        quit = new TextButton("QUIT",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        quit = new TextButton("QUIT", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         quit.setScale(scale);
 
         menu = new Button(skin.get("styleMenu", Button.ButtonStyle.class));
@@ -389,6 +390,7 @@ public class HUD {
         Collections.addAll(ylarivinNapit, karttaNappi, parent, menu);
 
     }
+
     private void createButtons() {
         styleParent = skin.get("styleParent", Button.ButtonStyle.class);
         styleLeft = skin.get("styleLeft", Button.ButtonStyle.class);
@@ -411,13 +413,13 @@ public class HUD {
         menu.setScale(scale);
 
 
-        palaute = new TextButton("Palaute",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        palaute = new TextButton("Palaute", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         palaute.setScale(scale);
 
-        info = new TextButton("Info",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        info = new TextButton("Info", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         info.setScale(scale);
 
-        quit = new TextButton("QUIT",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        quit = new TextButton("QUIT", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         quit.setScale(scale);
 
 
@@ -449,7 +451,7 @@ public class HUD {
 
     public void right() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HList", "Swaipattu oikealle");
+            Gdx.app.log("HUD", "Swaipattu oikealle");
         playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
 
         playScreen.setSolmu(solmu.getVasenSisarus());
@@ -457,7 +459,7 @@ public class HUD {
 
     public void left() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HList", "Swaipattu vasemmalle");
+            Gdx.app.log("HUD", "Swaipattu vasemmalle");
         playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
 
         playScreen.setSolmu(solmu.getOikeaSisarus());
@@ -465,12 +467,12 @@ public class HUD {
 
     public void down() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("Hlist", "Swaipattu alas");
+            Gdx.app.log("HUD", "Swaipattu alas");
 
         if (hasParent) {
             playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
             playScreen.setSolmu(solmu.getMutsi());
-        }else{
+        } else {
             playScreen.setSolmu(solmu);
             playScreen.resetPan();
         }
@@ -479,17 +481,13 @@ public class HUD {
 
     public void up() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HList", "Swaipattu ylös");
+            Gdx.app.log("HUD", "Swaipattu ylös");
 
-
-
-        if(!solmu.getID().equals("0")){
+        if (!solmu.getID().equals("0")) {
             playScreen.setSolmu(solmu);
             playScreen.resetPan();
-            return;
+            siirryQuestionScreeniin(solmu);
         }
-        siirryQuestionScreeniin(solmu);
-
     }
 
     public void siirryLahinpaanPalloon(float x, float y) {
@@ -499,7 +497,8 @@ public class HUD {
     public void resize(int width, int height) {
         viewport.update(width, height);
     }
-    public void paivitaDelta(float delta){
+
+    public void paivitaDelta(float delta) {
         hudListener.paivitaDelta(delta);
     }
 }
