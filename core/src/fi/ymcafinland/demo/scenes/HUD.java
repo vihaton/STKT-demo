@@ -322,7 +322,7 @@ public class HUD {
         //Turhaa jos karttanappi poistuu?
         minimapTable = new Table();
         minimapTable.setFillParent(true);
-        minimapTable.right().top().add(karttaNappi).size(230);
+        minimapTable.right().top().add(karttaNappi).size(64).pad(4);
 
 
         midTable = new Table();

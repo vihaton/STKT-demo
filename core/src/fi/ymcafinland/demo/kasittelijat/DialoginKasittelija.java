@@ -66,7 +66,8 @@ public class DialoginKasittelija {
         Label sisalto = new Label(solmu.getDialoginSisalto(), skin, "sisalto");
         sisalto.setAlignment(Align.center);
         sisalto.setFontScale(0.45f);
-        contentTable.add(sisalto);
+        contentTable.add(sisalto).prefWidth(5);
+        dialogi.layout();
         contentTable.setVisible(true);
     }
 

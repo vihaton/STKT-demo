@@ -69,7 +69,7 @@ public class MasterSkin extends Skin {
         this.add("transparent", new Texture("transparent.png"));
 
         //minimap placeholder kuva
-        this.add("minimap", new Texture("minimap.png"));
+        this.add("minimap", new Texture("mini_karttakuva.png"));
 
         this.add("launcher", new Texture("launcherBackground.png"));
 
