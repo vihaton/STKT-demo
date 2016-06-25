@@ -279,11 +279,13 @@ public class HUD {
      */
     private void updateTables(Solmu solmu) {
         if (solmu.getID().equals("0")) {
-            topTable.setVisible(false);
+            parent.setVisible(false);
+            menu.setVisible(false);
             midTable.setVisible(false);
             botTable.setVisible(false);
         } else {
-            topTable.setVisible(true);
+            parent.setVisible(true);
+            menu.setVisible(true);
             midTable.setVisible(true);
             botTable.setVisible(true);
         }
