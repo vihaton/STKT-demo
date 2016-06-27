@@ -93,6 +93,7 @@ public class QuestionScreen extends PohjaScreen {
                     sp.setPlayScreenMaxSelviytyjaan();
                     sp.getInfoScreen().paivitaJatkaButton();
                 } else {
+                    sp.getPlayscreen().siirraKameraPolttopisteeseen();
                     sp.setPlayScreen(solmu);
                 }
             }

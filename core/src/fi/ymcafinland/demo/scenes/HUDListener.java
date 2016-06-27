@@ -16,6 +16,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     private KameranKasittelija kameranKasittelija;
     float delta;
     float timer;
+    boolean ENSIMMAINEN_PANOROINTI_FLAG = true;
 
     public HUDListener(HUD hud, KameranKasittelija kameranKasittelija, float delta) {
         this.hud = hud;
@@ -78,7 +79,10 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        if (SelviytyjanPurjeet.SPAMLOG) Gdx.app.log("HLIST", "pan -metodia kutsuttu, timer: " + timer);
+        if (ENSIMMAINEN_PANOROINTI_FLAG) kameranKasittelija.keskeytaKameranTransitio();
+        ENSIMMAINEN_PANOROINTI_FLAG = false;
+
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "pan -metodia kutsuttu, timer: " + timer);
 
         timer += delta;
         hud.playScreen.panoroi(deltaX, deltaY);
@@ -91,14 +95,11 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
-//        if (hud.playScreen.getSolmu().getID().equals("0") && timer < 0.1f) {
-//            hud.playScreen.siirryPanorointiPisteenLahimpaanSolmuun();
-//            hud.playScreen.resetPan();
-//            return false;
-//        }
-
-        hud.playScreen.resetPan();
-        timer = 0;
+        if (timer > 0.1f) {
+            hud.playScreen.siirraPanPistePolttopisteeseen();
+            timer = 0;
+            ENSIMMAINEN_PANOROINTI_FLAG = true;
+        }
         return false;
     }
 

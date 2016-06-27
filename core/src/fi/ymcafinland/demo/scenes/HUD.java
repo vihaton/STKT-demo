@@ -452,7 +452,7 @@ public class HUD {
     public void right() {
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HUD", "Swaipattu oikealle");
-        playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
+        playScreen.paivitaPisteenKoordinaatit(playScreen.polttopiste, playScreen.panpiste);
 
         playScreen.setSolmu(solmu.getVasenSisarus());
     }
@@ -460,7 +460,7 @@ public class HUD {
     public void left() {
         if (SelviytyjanPurjeet.LOG)
             Gdx.app.log("HUD", "Swaipattu vasemmalle");
-        playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
+        playScreen.paivitaPisteenKoordinaatit(playScreen.polttopiste, playScreen.panpiste);
 
         playScreen.setSolmu(solmu.getOikeaSisarus());
     }
@@ -470,11 +470,11 @@ public class HUD {
             Gdx.app.log("HUD", "Swaipattu alas");
 
         if (hasParent) {
-            playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
+            playScreen.paivitaPisteenKoordinaatit(playScreen.polttopiste, playScreen.panpiste);
             playScreen.setSolmu(solmu.getMutsi());
         } else {
             playScreen.setSolmu(solmu);
-            playScreen.resetPan();
+            playScreen.siirraPanPistePolttopisteeseen();
         }
 
     }
@@ -485,7 +485,7 @@ public class HUD {
 
         if (!solmu.getID().equals("0")) {
             playScreen.setSolmu(solmu);
-            playScreen.resetPan();
+            playScreen.siirraPanPistePolttopisteeseen();
             siirryQuestionScreeniin(solmu);
         }
     }

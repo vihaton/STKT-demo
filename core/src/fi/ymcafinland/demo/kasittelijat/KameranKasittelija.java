@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
-import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.transitions.CameraTransition;
 import fi.ymcafinland.demo.transitions.ZoomTransition;
 
@@ -60,8 +59,17 @@ public class KameranKasittelija {
         }
     }
 
-    public void actTransition(float delta) {
+    /**
+     *
+     * @param delta
+     * @return tekeekö mitään.
+     */
+    public boolean actTransition(float delta) {
+        if (!transition.onkoValmis()) {
         transition.act(delta);
+            return true;
+        }
+        return false;
     }
 
     public void transitionFromTo(Vector3 start, Vector3 finish) {
@@ -101,8 +109,17 @@ public class KameranKasittelija {
         this.zoomTransition = new ZoomTransition(camera.zoom, 1f, transDuration * 2, true);
     }
 
-    public void reset(Vector3 kpy) {
-        transitionFromTo(polttopiste, kpy);
+    public void siirryPolttopisteestaKohteeseen(Vector3 kohde) {
+        transitionFromTo(polttopiste, kohde);
         seurataanPolttoa = true;
+    }
+
+    public void nopeaSiirtyminenPPtoKP() {
+        transition = new CameraTransition(panpiste, polttopiste, transDuration / 2);
+    }
+
+    public void keskeytaKameranTransitio() {
+        Vector3 keskenerainenSiirtymaPiste = transition.act(0);
+        transition = new CameraTransition(keskenerainenSiirtymaPiste, keskenerainenSiirtymaPiste, 0);
     }
 }

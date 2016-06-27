@@ -29,4 +29,8 @@ public class CameraTransition {
         return startPos.lerp(goalPos, percent);
     }
 
+    public boolean onkoValmis() {
+        return stateTime > duration;
+    }
+
 }

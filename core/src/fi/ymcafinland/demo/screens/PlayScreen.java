@@ -1,7 +1,6 @@
 package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -35,9 +34,10 @@ public class PlayScreen extends PohjaScreen {
 
     int solmunID;
 
-    private boolean trans = false;
+    private boolean TRANSITION_FLAG = false;
     public boolean ZOOMED_OUT_FLAG = false;
 
+    //todo pelkästään kamera tietää mitään pisteistä, pois PS.stä
     public Vector3 polttopiste;
     public Vector3 panpiste;
     private Vector3 keskipiste;
@@ -109,12 +109,12 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void alkaaTapahtua() {
-        trans = true;
+        TRANSITION_FLAG = true;
         stateTime = 0;
         timer = System.currentTimeMillis();
         hud.update(solmu, ZOOMED_OUT_FLAG);
         //debug
-//        Gdx.app.LOG("PS", "UUSI SIIRTO" + stateTime + " " + trans);
+        if (SelviytyjanPurjeet.SPAMLOG) Gdx.app.log("PS", "UUSI SIIRTO" + stateTime + " " + TRANSITION_FLAG);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class PlayScreen extends PohjaScreen {
         if (delta > renderinLoggausAlaraja && SelviytyjanPurjeet.SPAMLOG) {
             Gdx.app.log("PS", "renderloggaus käynnistetty\n" +
                     "minimi fps:" + minFPS + " fps, tämän ruudun fps:" + Math.pow(delta, -1) + " fps\n" +
-                    "stateTime:" + stateTime + "ms trans:" + trans + " delta:" + delta);
+                    "stateTime:" + stateTime + "ms TRANSITION_FLAG:" + TRANSITION_FLAG + " delta:" + delta);
             log = true;
         }
 
@@ -135,7 +135,7 @@ public class PlayScreen extends PohjaScreen {
 
         camera.setToOrtho(false, SelviytyjanPurjeet.V_WIDTH, SelviytyjanPurjeet.V_HEIGHT);
 
-        if (trans) actTransition(delta);
+        if (TRANSITION_FLAG) actTransition(delta);
 
         if (log)
             Gdx.app.log("PS", "time in render:" + (System.currentTimeMillis() - timer - stateTime) + "ms @fter actTransition");
@@ -168,12 +168,7 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void actTransition(float delta) {
-        if (stateTime < maxDuration + idleTime) {
-            kameranKasittelija.actTransition(delta);
-            stateTime = System.currentTimeMillis() - timer;
-        } else {
-            trans = false;
-        }
+        TRANSITION_FLAG = kameranKasittelija.actTransition(delta);
     }
 
     /**
@@ -221,7 +216,6 @@ public class PlayScreen extends PohjaScreen {
      * @param solmu käsiteltävä solmu
      */
     public void setSolmu(Solmu solmu) {
-        //Todo ensimmainenSiirtyma pois?
         if (!this.solmu.equals(solmu) || ensimmainenSiirtyma) {
             ensimmainenSiirtyma = false;
             Vector3 goal = new Vector3(solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), 0f);
@@ -321,28 +315,14 @@ public class PlayScreen extends PohjaScreen {
         kameranKasittelija.initialZoom();
     }
 
-    public void paivitaPiste(Vector3 paivitettava, Vector3 kopioitava) {
+    public void paivitaPisteenKoordinaatit(Vector3 paivitettava, Vector3 kopioitava) {
         paivitettava.x = kopioitava.x;
         paivitettava.y = kopioitava.y;
     }
 
-    public void resetPan() {
+    public void siirraPanPistePolttopisteeseen() {
         alkaaTapahtua();
-        Vector3 kpy = polttopiste.cpy();
-        paivitaPiste(polttopiste, panpiste);
-        kameranKasittelija.reset(kpy);
-    }
-
-    public Vector3 getPolttopiste() {
-        return polttopiste;
-    }
-
-    public Vector3 getPanpiste() {
-        return panpiste;
-    }
-
-    public OrthographicCamera getCamera() {
-        return camera;
+        kameranKasittelija.nopeaSiirtyminenPPtoKP();
     }
 
     /**
@@ -383,5 +363,10 @@ public class PlayScreen extends PohjaScreen {
 
     public KameranKasittelija getKameranKasittelija() {
         return kameranKasittelija;
+    }
+
+    public void siirraKameraPolttopisteeseen() {
+        kameranKasittelija.setSeurataanPolttoa(true);
+        kameranKasittelija.siirrySeurattavaanPisteeseen();
     }
 }
