@@ -46,12 +46,6 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        fling(velocityX, velocityY, button, delta);
-        return false;
-    }
-
-
-    public boolean fling(float velocityX, float velocityY, int button, float delta) {
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "fling -metodia kutsuttu");
 
         if (timer > 0.1f) {
@@ -60,8 +54,15 @@ public class HUDListener implements GestureDetector.GestureListener {
 
         if (hud.playScreen.getSolmu().getID().equals("0")) {
             flingKeskella(velocityX, velocityY);
+        } else {
+            flingReunalla(velocityX, velocityY);
         }
 
+        timer = 0;
+        return false;
+    }
+
+    private void flingReunalla(float velocityX, float velocityY) {
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
             if (velocityX > 0) {
                 hud.right();
@@ -75,11 +76,13 @@ public class HUDListener implements GestureDetector.GestureListener {
                 hud.up();
             }
         }
-
-        timer = 0;
-        return false;
     }
 
+    /**
+     * Hoitaa flingauksen, kun ollaan keskipisteessä. Toistaiseksi tynkä, laajennettavissa myöhemmin.
+     * @param velocityX
+     * @param velocityY
+     */
     private void flingKeskella(float velocityX, float velocityY) {
         hud.playScreen.siirryKeskipisteestaLahinpaanSolmuun();
     }

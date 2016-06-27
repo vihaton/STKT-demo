@@ -235,7 +235,8 @@ public class PlayScreen extends PohjaScreen {
     }
 
     public void siirryKeskipisteestaLahinpaanSolmuun() {
-
+        verkko.jarjestaSolmutEtaisyydenMukaan(panpiste.x, panpiste.y);
+        setSolmu(verkko.annaKosketustaLahinSolmuEiKeskipistetta());
     }
 
     /**
