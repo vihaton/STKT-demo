@@ -24,7 +24,8 @@ public class Verkko {
     private final int korkeusPalikka;
     private final Vector2 keskipiste;
     private Solmu edellistaKosketustaLahinSolmu;
-    private double lahimmanSolmunEtaisyys;
+    private float lahimmanSolmunEtaisyys;
+    private float[] solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan;
     Solmu keski;
 
     public Verkko(int taustakuvanLeveys, int taustakuvanKorkeus) {
@@ -36,6 +37,7 @@ public class Verkko {
         luoBundle();
         generoiSolmut();
         edellistaKosketustaLahinSolmu = solmut.get(0);
+        solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan = new float[solmut.size()];
     }
 
     public void luoBundle() {
@@ -77,11 +79,11 @@ public class Verkko {
 
     private void generoiSolmut() {
 
-        
+
 //        solmut.addAll(luoToinenTaso());
         solmut.add(luoKeskiSolmu());
         solmut.addAll(luoEnsimmainenTaso(6, null));
-        
+
 
         asetaOtsikotJaSisallot();
     }
@@ -154,7 +156,8 @@ public class Verkko {
             asetaSisaruksiksi(s, vasen);
         }
     }
-    private void asetaVanhempi(Solmu s){
+
+    private void asetaVanhempi(Solmu s) {
         s.setMutsi(keski);
     }
 
@@ -215,7 +218,7 @@ public class Verkko {
             int x = (int) (sade * Math.cos(k)) + keskiX;
             int y = (int) (sade * Math.sin(k) + keskiY);
 
-            Gdx.app.log("Verkko", "Solmun " + i + " sijainti: " + x + " " + y );
+            Gdx.app.log("Verkko", "Solmun " + i + " sijainti: " + x + " " + y);
             s.setSijainti(x, y);
             asetaSolmulleKulmaKeskipisteeseen(s);
             s = s.getOikeaSisarus();
@@ -239,35 +242,105 @@ public class Verkko {
         return solmut;
     }
 
-    public boolean kosketusTarpeeksiLahelleJotainSolmua(float x, float y, boolean flingkeskelta) {
-        lahimmanSolmunEtaisyys = Double.MAX_VALUE;
-        Solmu lahinSolmu = null;
-        int i = 0;
-        for (Solmu s : solmut) {
-            if(flingkeskelta && i == 0){
-                i++;
-                continue;
-            }
-            double etaisyys = Math.hypot(s.getXKoordinaatti() - x, s.getYKoordinaatti() - y);
+    /**
+     * @param x peliavaruuden oikea x
+     * @param y peliavaruuden oikea y
+     * @return onko tarpeeksi lähellä jotain solmua
+     */
+    public boolean kosketusTarpeeksiLahelleJotainSolmua(float x, float y) {
+        jarjestaSolmutEtaisyydenMukaan(x, y);
 
-            if (etaisyys < lahimmanSolmunEtaisyys) {
-                lahinSolmu = s;
-                lahimmanSolmunEtaisyys = etaisyys;
-            }
-        }
-
-        if (lahimmanSolmunEtaisyys < 250 && !flingkeskelta) {
-            edellistaKosketustaLahinSolmu = lahinSolmu;
-            return true;
-        }else if (flingkeskelta){
-            edellistaKosketustaLahinSolmu = lahinSolmu;
+        if (lahimmanSolmunEtaisyys < 250) {
             return true;
         }
+
         return false;
+    }
+
+    /**
+     * Järjestää solmut etäisyyden mukaan. Järjestelyperusteena etäisyys annettuihin koordinaatteihin.
+     *
+     * @param x peliavaruuden oikea x
+     * @param y peliavaruuden oikea y
+     */
+    public void jarjestaSolmutEtaisyydenMukaan(float x, float y) {
+        float[] etaisyydet = laskeEtaisyydet(x, y);
+
+        for (int i = 0; i < solmut.size(); i++) {
+            etsiSolmunPaikka(i, etaisyydet);
+        }
+    }
+
+    /**
+     * Päivittää solmujen paikat listaan solmujenJarjestys... sekä luokkamuuttujat lahimmanSolmunEtaisyys ja edellistaKosketustaLahinSolmu.
+     *
+     * @param solmunInd  tarkasteltavan solmun indeksi listassa solmut
+     * @param etaisyydet taulukko solmujen etaisyyksista viimeiseen kosketukseen
+     */
+    private void etsiSolmunPaikka(int solmunInd, float[] etaisyydet) {
+        float etaisyys = etaisyydet[solmunInd];
+        int solmunPaikka = 0;
+        for (int i = 0; i < etaisyydet.length; i++) {
+            if (i == solmunInd) continue;
+
+            if (etaisyys > etaisyydet[i]) {
+                solmunPaikka++;
+            }
+        }
+
+        if (solmunPaikka == 0) {
+            lahimmanSolmunEtaisyys = etaisyys;
+            edellistaKosketustaLahinSolmu = solmut.get(solmunInd);
+        }
+
+        solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan[solmunInd] = solmunPaikka;
+    }
+
+    /**
+     * laskee solmujen etaisyydet annetuista koordinaateista
+     *
+     * @param x
+     * @param y
+     * @return taulukko etaisyyksista, indeksit samat kuin listassa solmut
+     */
+    private float[] laskeEtaisyydet(float x, float y) {
+        float[] etaisyydet = new float[solmut.size()];
+
+        for (int i = 0; i < solmut.size(); i++) {
+            Solmu solmu = solmut.get(i);
+
+            float etaisyys = (float) Math.hypot(solmu.getXKoordinaatti() - x, solmu.getYKoordinaatti() - y);
+
+            etaisyydet[i] = etaisyys;
+        }
+
+        return etaisyydet;
     }
 
     public Solmu annaEdellistaKosketustaLahinSolmu() {
         return edellistaKosketustaLahinSolmu;
+    }
+
+    /**
+     * Palauttaa kosketusta lähimmän solmun, joka ei ole keskipiste.
+     *
+     * @return
+     */
+    public Solmu annaKosketustaLahinSolmuEiKeskipistetta() {
+        int etsittavaIndeksi = 0;
+
+        if (solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan[0] == 0) {
+            etsittavaIndeksi = 1;
+        }
+
+        Solmu s = null;
+        for (int i = 0; i < solmut.size(); i++) {
+            if (solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan[i] == etsittavaIndeksi) {
+                s = solmut.get(i);
+                break;
+            }
+        }
+        return s;
     }
 
 }

@@ -35,7 +35,7 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "tap -metodia kutsuttu");
 
-        hud.siirryLahinpaanPalloon(x, y);
+        hud.playScreen.hoidaKosketus(x, y);
         return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
     }
 
@@ -54,8 +54,12 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean fling(float velocityX, float velocityY, int button, float delta) {
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "fling -metodia kutsuttu");
 
-        if (timer > 0.1f || hud.playScreen.getSolmu().getID().equals("0")) {
+        if (timer > 0.1f) {
             return false;
+        }
+
+        if (hud.playScreen.getSolmu().getID().equals("0")) {
+            flingKeskella(velocityX, velocityY);
         }
 
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
@@ -74,6 +78,10 @@ public class HUDListener implements GestureDetector.GestureListener {
 
         timer = 0;
         return false;
+    }
+
+    private void flingKeskella(float velocityX, float velocityY) {
+        hud.playScreen.siirryKeskipisteestaLahinpaanSolmuun();
     }
 
     @Override

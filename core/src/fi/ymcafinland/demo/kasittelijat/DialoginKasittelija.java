@@ -35,7 +35,6 @@ public class DialoginKasittelija {
     }
 
     public void poistaDialogit() {
-        Gdx.app.log("PS", "Onko dialogia3 " + DIALOG_FLAG);
         for (Dialog d : dialogit) {
             d.setVisible(false);
             d.clear();
@@ -88,10 +87,8 @@ public class DialoginKasittelija {
         d = luoDialogi(solmu);
         if(!DIALOG_FLAG) {
             DIALOG_FLAG = true;
-            Gdx.app.log("PS", "Onko dialogia1 " + DIALOG_FLAG);
             d.show(stage);
         }
-        Gdx.app.log("PS", "Onko dialogia2 " + DIALOG_FLAG);
         d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.7f);
         d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2f);
 
