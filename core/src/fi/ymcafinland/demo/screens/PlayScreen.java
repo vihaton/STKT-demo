@@ -231,7 +231,6 @@ public class PlayScreen extends PohjaScreen {
             kameranKasittelija.transitionFromTo(polttopiste, goal);
 
             dialoginKasittelija.poistaDialogit();
-
         }
     }
 
@@ -260,8 +259,6 @@ public class PlayScreen extends PohjaScreen {
 
         if (verkko.kosketusTarpeeksiLahelleJotainSolmua(trueX, trueY, flingkeskelta)) {
             Solmu tappaustaLahinSolmu = verkko.annaEdellistaKosketustaLahinSolmu();
-            if (SelviytyjanPurjeet.LOG)
-                Gdx.app.log("PS", "Solmun ID: " + tappaustaLahinSolmu.getID());
             solmunID = Integer.parseInt(tappaustaLahinSolmu.getID());
             hoidaKosketusSolmuun(trueX, trueY, flingkeskelta, tappaustaLahinSolmu);
         }
@@ -369,7 +366,7 @@ public class PlayScreen extends PohjaScreen {
         deltaX = muutos * cos * camera.zoom;
         deltaY = muutos * sin * camera.zoom;
 
-        if (SelviytyjanPurjeet.LOG)
+        if (SelviytyjanPurjeet.SPAMLOG)
             Gdx.app.log("PS", "@panoroi\n" +
                     "PPtoKP: " + PPtoKP + "\n" +
                     "cos " + cos + ", sin " + sin + "\n" +

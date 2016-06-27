@@ -51,10 +51,9 @@ public class HUDListener implements GestureDetector.GestureListener {
 
 
     public boolean fling(float velocityX, float velocityY, int button, float delta) {
-        //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "fling -metodia kutsuttu");
 
-        if (timer > 0.1f || timer == 0 || hud.playScreen.getSolmu().getID().equals("0")) {
+        if (timer > 0.1f || hud.playScreen.getSolmu().getID().equals("0")) {
             return false;
         }
 
@@ -92,17 +91,13 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
-        if (hud.playScreen.zoomedOut || timer < 0.1f) {
-            if(hud.playScreen.getSolmu().getID().equals("0") && !hud.playScreen.zoomedOut){
-                hud.playScreen.siirryPanorointiPisteenLahimpaanSolmuun();
-                hud.playScreen.resetPan();
-            }
+        if (hud.playScreen.getSolmu().getID().equals("0") && timer < 0.1f) {
+            hud.playScreen.siirryPanorointiPisteenLahimpaanSolmuun();
+            hud.playScreen.resetPan();
             return false;
         }
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
-        hud.playScreen.resetPan();
 
+        hud.playScreen.resetPan();
         timer = 0;
         return false;
     }
@@ -125,7 +120,8 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
         return false;
     }
-    public void paivitaDelta(float delta){
+
+    public void paivitaDelta(float delta) {
         this.delta = delta;
     }
 }
