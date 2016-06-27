@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+import fi.ymcafinland.demo.screens.PlayScreen;
 import fi.ymcafinland.demo.transitions.CameraTransition;
 import fi.ymcafinland.demo.transitions.ZoomTransition;
 

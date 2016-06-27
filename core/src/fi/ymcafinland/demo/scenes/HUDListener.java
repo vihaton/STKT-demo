@@ -78,7 +78,7 @@ public class HUDListener implements GestureDetector.GestureListener {
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "pan -metodia kutsuttu " + timer);
+        if (SelviytyjanPurjeet.SPAMLOG) Gdx.app.log("HLIST", "pan -metodia kutsuttu, timer: " + timer);
 
         timer += delta;
         hud.playScreen.panoroi(deltaX, deltaY);
@@ -91,11 +91,11 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
-        if (hud.playScreen.getSolmu().getID().equals("0") && timer < 0.1f) {
-            hud.playScreen.siirryPanorointiPisteenLahimpaanSolmuun();
-            hud.playScreen.resetPan();
-            return false;
-        }
+//        if (hud.playScreen.getSolmu().getID().equals("0") && timer < 0.1f) {
+//            hud.playScreen.siirryPanorointiPisteenLahimpaanSolmuun();
+//            hud.playScreen.resetPan();
+//            return false;
+//        }
 
         hud.playScreen.resetPan();
         timer = 0;
