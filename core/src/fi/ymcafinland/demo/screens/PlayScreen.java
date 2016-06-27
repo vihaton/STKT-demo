@@ -47,8 +47,6 @@ public class PlayScreen extends PohjaScreen {
     private float timeSinceLastZoomEvent = 0;   // kumulatiivinen deltalukema, nollataan zoomatessa
     private final float minFPS = 45;         //fps
     private final float renderinLoggausAlaraja = (float) Math.pow(minFPS, -1.0);  //s, eli deltan maximiarvo (jos delta on isompi kuin tämä, niin fps on liian pieni
-    private final float maxDuration = 1000f;
-    private final int idleTime = 3000; //ms
     public boolean ensimmainenSiirtyma = true;
 
 
@@ -248,7 +246,6 @@ public class PlayScreen extends PohjaScreen {
     public void hoidaKosketus(float x, float y) {
 
         Vector3 vect = new Vector3(x, y, 0);
-        //todo unproject ei toimi täysin oikein kun ollaan zoomattu ulos
         camera.unproject(vect); // camera is your game camera
 
         float trueX = vect.x;
@@ -269,12 +266,10 @@ public class PlayScreen extends PohjaScreen {
             Gdx.app.log("PS", "kosketus osui tarpeeksi lähelle solmua " + tappaustaLahinSolmu.getID() + "\n" +
                     "täppäyksen etäisyys solmuun " + Math.hypot(tappaustaLahinSolmu.getXKoordinaatti() - trueX, tappaustaLahinSolmu.getYKoordinaatti() - trueY));
 
-        int solmunID = Integer.parseInt(tappaustaLahinSolmu.getID());
-
         if (ZOOMED_OUT_FLAG) {
             setSolmu(tappaustaLahinSolmu);
             asetaAlkuZoom();
-        } else if (solmunID == 0) {
+        } else if (tappaustaLahinSolmu.getID().equals("0")) {
             sp.setPalauteScreen();
         } else {
             naytaDialogi(tappaustaLahinSolmu);
