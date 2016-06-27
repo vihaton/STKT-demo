@@ -83,7 +83,7 @@ public class HUD {
 
         //HUD EI implementoi inputProcessorin rajapintaa, vaan asettaa inputprocessoriksi tuntemansa inputmultiplexerin.
         this.stage = new Stage(viewport, sb);
-        hudListener = new HUDListener(this, kameranKasittelija, 0);
+        hudListener = new HUDListener(this, kameranKasittelija);
         this.im = new InputMultiplexer(this.stage, new GestureDetector(hudListener), playScreen.stage);
 //        playScreen.lisaaStage(stage); //lisää hudin stagen playscreenin tietoon näkymien vaihdoksia varten.
 

@@ -14,15 +14,13 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     private HUD hud;
     private KameranKasittelija kameranKasittelija;
-    float delta;
-    float timer;
+    float delta = 0.02f;
+    float timer = 0;
     boolean ENSIMMAINEN_PANOROINTI_FLAG = true;
 
-    public HUDListener(HUD hud, KameranKasittelija kameranKasittelija, float delta) {
+    public HUDListener(HUD hud, KameranKasittelija kameranKasittelija) {
         this.hud = hud;
         this.kameranKasittelija = kameranKasittelija;
-        this.delta = delta;
-        this.timer = 0;
     }
 
     @Override
@@ -48,9 +46,11 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean fling(float velocityX, float velocityY, int button) {
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "fling -metodia kutsuttu");
 
-        if (timer > 0.1f) {
+        if (timer > 0.1f || timer == 0 || hud.playScreen.ZOOMED_OUT_FLAG) { //jos panoroinnin alusta on kulunut yli 0.1s tai panStop on jo käsitellyt tapahtuman tai ollaan zoomattu ulos
             return false;
         }
+
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "suoritetaan fling toiminnallisuus");
 
         if (hud.playScreen.getSolmu().getID().equals("0")) {
             flingKeskella(velocityX, velocityY);
@@ -80,6 +80,7 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     /**
      * Hoitaa flingauksen, kun ollaan keskipisteessä. Toistaiseksi tynkä, laajennettavissa myöhemmin.
+     *
      * @param velocityX
      * @param velocityY
      */
@@ -103,10 +104,10 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
-        //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
-        if (timer > 0.1f) {
+        if (timer > 0.1f || hud.playScreen.ZOOMED_OUT_FLAG) {
+            if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "suoritetaan panStop toiminnallisuus");
             hud.playScreen.siirraPanPistePolttopisteeseen();
             timer = 0;
             ENSIMMAINEN_PANOROINTI_FLAG = true;
