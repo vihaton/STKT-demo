@@ -40,7 +40,7 @@ public class KameranKasittelija {
 
     public void actZoom(float delta) {
         camera.zoom = zoomTransition.zoomAct(delta);
-        if (SelviytyjanPurjeet.LOG) Gdx.app.log("KK", "camera.zoom: " + camera.zoom);
+        if (SelviytyjanPurjeet.SPAMLOG) Gdx.app.log("KK", "camera.zoom: " + camera.zoom);
 
         //Zoom alaraja on 3/4 nykyisestä zoomista, yläraja 1.75 * normaali zoomi.
         this.zoomAlaraja = (camera.zoom / 4) * 3;
@@ -59,8 +59,19 @@ public class KameranKasittelija {
         }
     }
 
-    public void actTransition(float delta) {
+    /**
+     *
+     * @param delta
+     * @return tekeekö mitään.
+     */
+    public boolean actTransition(float delta) {
+//        if (!transition.onkoValmis()) {
+//        transition.act(delta);
+//            return true;
+//        }
+//        return false;
         transition.act(delta);
+        return true;
     }
 
     public void transitionFromTo(Vector3 start, Vector3 finish) {
@@ -100,8 +111,17 @@ public class KameranKasittelija {
         this.zoomTransition = new ZoomTransition(camera.zoom, 1f, transDuration * 2, true);
     }
 
-    public void reset(Vector3 kpy) {
-        transitionFromTo(polttopiste, kpy);
+    public void siirryPolttopisteestaKohteeseen(Vector3 kohde) {
+        transitionFromTo(polttopiste, kohde);
         seurataanPolttoa = true;
+    }
+
+    public void nopeaSiirtyminenPPtoKP() {
+        transition = new CameraTransition(panpiste, polttopiste, transDuration / 2);
+    }
+
+    public void keskeytaKameranTransitio() {
+        Vector3 keskenerainenSiirtymaPiste = transition.act(0);
+        transition = new CameraTransition(keskenerainenSiirtymaPiste, keskenerainenSiirtymaPiste, 0);
     }
 }

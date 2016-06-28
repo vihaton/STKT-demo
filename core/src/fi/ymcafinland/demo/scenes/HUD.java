@@ -83,7 +83,7 @@ public class HUD {
 
         //HUD EI implementoi inputProcessorin rajapintaa, vaan asettaa inputprocessoriksi tuntemansa inputmultiplexerin.
         this.stage = new Stage(viewport, sb);
-        hudListener = new HUDListener(this, kameranKasittelija, 0);
+        hudListener = new HUDListener(this, kameranKasittelija);
         this.im = new InputMultiplexer(this.stage, new GestureDetector(hudListener), playScreen.stage);
 //        playScreen.lisaaStage(stage); //lisää hudin stagen playscreenin tietoon näkymien vaihdoksia varten.
 
@@ -95,10 +95,11 @@ public class HUD {
         lapsia = solmu.getLapset().size() > 1;
         sidePad = 10;
 
-        createButtons();
-        updateButtons(solmu);
+//        createButtons();
+        createNuolet();
+//        updateButtons(solmu);
         createTables();
-        updateTables();
+//        updateTables();
         createListeners();
     }
 
@@ -110,7 +111,7 @@ public class HUD {
      * Tapahtumankuuntelijat nappuloille
      */
     private void createListeners() {
-//        luoLapsienKuuntelijat();
+        //luoLapsienKuuntelijat();
         mutsi = new Solmu("0", null);
         vasenSisko = new Solmu("0", null);
         oikeaSisko = new Solmu("0", null);
@@ -181,31 +182,6 @@ public class HUD {
 
     }
 
-    private void luoLapsienKuuntelijat() {
-        lapsi1 = new Solmu("0", null);
-        lapsi2 = new Solmu("0", null);
-        lapsi3 = new Solmu("0", null);
-
-        child1.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi1);
-            }
-        });
-
-        child2.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi2);
-
-            }
-        });
-
-        child3.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                playScreen.setSolmu(lapsi3);
-            }
-        });
-    }
-
     public void siirryQuestionScreeniin(Solmu solmu) {
         QuestionScreen qs = playScreen.getSp().getQuestionScreen();
         qs.setSolmu(solmu);
@@ -221,11 +197,13 @@ public class HUD {
             st.fadeTransition();
         }
     }
+
     public void siirryInfoScreeniin() {
         InfoScreen is = playScreen.getSp().getInfoScreen();
         ScreenTransition st = new ScreenTransition(playScreen, is, 0.5f);
         st.fadeTransition();
     }
+
     public void siirryAlkuScreeniin() {
         LauncherScreen as = playScreen.getSp().getAlkuScreen();
         ScreenTransition st = new ScreenTransition(playScreen, as, 0.5f);
@@ -245,13 +223,14 @@ public class HUD {
         menuTable.remove();
 
 
-        updateButtons(solmu);
-        updateTables();
+//        updateButtons(solmu);
+        updateTables(solmu);
         updateListeners(solmu);
 
         karttaNappi.setChecked(zoomedOut);
         setZoomedHUDState(zoomedOut);
     }
+
 
     private void updateListeners(Solmu solmu) {
         this.solmu = solmu;
@@ -274,14 +253,17 @@ public class HUD {
      * @param solmu
      */
     private void updateButtons(Solmu solmu) {
-        if (hasParent) {
+        //Tilapäislisäehto, muutetaan kun hudi laitetaan toimimaan nollasolmun kanssa
+        if (hasParent && !solmu.getMutsi().getID().equals("0")) {
             styleParent.up = skin.getDrawable(solmu.getMutsi().getMinikuvanNimi());
         }
         parent.setVisible(hasParent);
         parent.setDisabled(!hasParent);
 
-        styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMinikuvanNimi());
-        styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMinikuvanNimi());
+        if (!solmu.getID().equals("0")) {
+            styleLeft.up = skin.getDrawable(solmu.getVasenSisarus().getMinikuvanNimi());
+            styleRight.up = skin.getDrawable(solmu.getOikeaSisarus().getMinikuvanNimi());
+        }
 
         ArrayList<Solmu> lapset = solmu.getLapset();
 
@@ -295,20 +277,19 @@ public class HUD {
     /**
      * päivittää taulukot ja napit siten, että oikeat asiat näkyvät
      */
-    private void updateTables() {
-        topTable.clearChildren();
-        topTable.top().left().add(menu);
-        topTable.add(parent).expandX();
-//        minimapTable.right().top().add(karttaNappi).size(230);
-
-        botTable.clearChildren();
-        if (lapsia) {
-            botTable.bottom().add(child1);
-            botTable.add(child2).expandX();
-            botTable.add(child3);
+    private void updateTables(Solmu solmu) {
+        if (solmu.getID().equals("0")) {
+            parent.setVisible(false);
+            menu.setVisible(false);
+            midTable.setVisible(false);
+            botTable.setVisible(false);
         } else {
-            botTable.bottom().add(kysymys);
+            parent.setVisible(true);
+            menu.setVisible(true);
+            midTable.setVisible(true);
+            botTable.setVisible(true);
         }
+
     }
 
 
@@ -324,6 +305,7 @@ public class HUD {
         }
     }
 
+
     public void resetInputProcessor() {
         Gdx.input.setInputProcessor(im);
     }
@@ -336,10 +318,12 @@ public class HUD {
     private void createTables() {
         topTable = new Table();
         topTable.setFillParent(true);
-        topTable.pad(sidePad);
+        topTable.top().left().add(menu).expandX();
+        topTable.add(parent).expandX();
 
-        minimapTable = new Table();
-        minimapTable.setFillParent(true);
+
+        topTable.add(karttaNappi).size(64).expandX();
+
 
 
         midTable = new Table();
@@ -351,18 +335,62 @@ public class HUD {
 
         botTable = new Table();
         botTable.setFillParent(true);
+        botTable.bottom().add(kysymys);
         botTable.pad(sidePad);
 
         stage.clear();
         stage.addActor(topTable);
-        stage.addActor(minimapTable);
         stage.addActor(midTable);
         stage.addActor(botTable);
+
     }
 
     /**
      * Luo nappulat HUDiin
      */
+    private void createNuolet() {
+        float scale = 1.2f;
+
+        parent = new Button(skin.get("styleNuoliYlos", Button.ButtonStyle.class));
+        parent.setScale(scale);
+
+
+        leftSister = new Button(skin.get("styleNuoliVasen", Button.ButtonStyle.class));
+        leftSister.setScale(scale);
+
+
+        rightSister = new Button(skin.get("styleNuoliOikea", Button.ButtonStyle.class));
+        rightSister.setScale(scale);
+
+
+        kysymys = new Button(skin.get("styleNuoliAlas", Button.ButtonStyle.class));
+        kysymys.setScale(scale);
+
+
+        karttaNappi = new Button(skin.get("styleKartta", Button.ButtonStyle.class));
+        karttaNappi.setScale(scale);
+        karttaNappi.align(Align.right);
+
+        palaute = new TextButton("Palaute", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        palaute.setScale(scale);
+
+        info = new TextButton("Info", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        info.setScale(scale);
+
+        quit = new TextButton("QUIT", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        quit.setScale(scale);
+
+        menu = new Button(skin.get("styleMenu", Button.ButtonStyle.class));
+        menu.setScale(scale);
+
+        midJaBotTablejenNapit = new ArrayList<>();
+        Collections.addAll(midJaBotTablejenNapit, leftSister, rightSister, kysymys);
+
+        ylarivinNapit = new ArrayList<>();
+        Collections.addAll(ylarivinNapit, karttaNappi, parent, menu);
+
+    }
+
     private void createButtons() {
         styleParent = skin.get("styleParent", Button.ButtonStyle.class);
         styleLeft = skin.get("styleLeft", Button.ButtonStyle.class);
@@ -385,13 +413,13 @@ public class HUD {
         menu.setScale(scale);
 
 
-        palaute = new TextButton("Palaute",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        palaute = new TextButton("Palaute", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         palaute.setScale(scale);
 
-        info = new TextButton("Info",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        info = new TextButton("Info", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         info.setScale(scale);
 
-        quit = new TextButton("QUIT",skin.get("styleMenubar", TextButton.TextButtonStyle.class));
+        quit = new TextButton("QUIT", skin.get("styleMenubar", TextButton.TextButtonStyle.class));
         quit.setScale(scale);
 
 
@@ -423,56 +451,50 @@ public class HUD {
 
     public void right() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HList", "Swaipattu oikealle");
-        playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
+            Gdx.app.log("HUD", "Swaipattu oikealle");
+        playScreen.paivitaPisteenKoordinaatit(playScreen.polttopiste, playScreen.panpiste);
 
         playScreen.setSolmu(solmu.getVasenSisarus());
     }
 
     public void left() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HList", "Swaipattu vasemmalle");
-        playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
+            Gdx.app.log("HUD", "Swaipattu vasemmalle");
+        playScreen.paivitaPisteenKoordinaatit(playScreen.polttopiste, playScreen.panpiste);
 
         playScreen.setSolmu(solmu.getOikeaSisarus());
     }
 
     public void down() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("Hlist", "Swaipattu alas");
+            Gdx.app.log("HUD", "Swaipattu alas");
 
         if (hasParent) {
-            playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
+            playScreen.paivitaPisteenKoordinaatit(playScreen.polttopiste, playScreen.panpiste);
             playScreen.setSolmu(solmu.getMutsi());
-        }else{
+        } else {
             playScreen.setSolmu(solmu);
-            playScreen.resetPan();
+            playScreen.siirraPanPistePolttopisteeseen();
         }
 
     }
 
     public void up() {
         if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HList", "Swaipattu ylös");
+            Gdx.app.log("HUD", "Swaipattu ylös");
 
-        if (lapsia) {
-
-            playScreen.paivitaPiste(playScreen.polttopiste, playScreen.panpiste);
-
-            playScreen.setSolmu(solmu.getLapset().get(1));
-        } else if (kysymys.isVisible()) {
+        if (!solmu.getID().equals("0")) {
+            playScreen.setSolmu(solmu);
+            playScreen.siirraPanPistePolttopisteeseen();
             siirryQuestionScreeniin(solmu);
         }
-    }
-
-    public void siirryLahinpaanPalloon(float x, float y) {
-        playScreen.siirryLahinpaanSolmuun(x, y);
     }
 
     public void resize(int width, int height) {
         viewport.update(width, height);
     }
-    public void paivitaDelta(float delta){
+
+    public void paivitaDelta(float delta) {
         hudListener.paivitaDelta(delta);
     }
 }
