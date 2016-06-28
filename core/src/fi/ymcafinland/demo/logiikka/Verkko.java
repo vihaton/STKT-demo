@@ -33,7 +33,7 @@ public class Verkko {
     public Verkko(int taustakuvanLeveys, int taustakuvanKorkeus) {
         this.leveysPalikka = taustakuvanLeveys / 100;
         this.korkeusPalikka = taustakuvanKorkeus / 100;
-        keskipiste = new Vector2(korkeusPalikka * 50, leveysPalikka * 50);
+        keskipiste = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2);
         solmut = new ArrayList<>();
 
         luoBundle();
@@ -204,8 +204,8 @@ public class Verkko {
      * @param sade        muodostettavan ympyrän säde.
      */
     private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, boolean toinenTaso, float sade) {
-        final float keskiX = (int) keskipiste.x;
-        final float keskiY = (int) keskipiste.y;
+        final float keskiX = SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2;
+        final float keskiY = SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2;
         int solmuja = tasonSolmut.size();
 
         final double kulma = Math.toRadians(360 / solmuja);
