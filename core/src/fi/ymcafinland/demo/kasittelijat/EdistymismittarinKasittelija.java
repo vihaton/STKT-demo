@@ -1,10 +1,14 @@
 package fi.ymcafinland.demo.kasittelijat;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
@@ -27,6 +31,18 @@ public class EdistymismittarinKasittelija {
         this.pelaaja = pelaaja;
 
         luoProgressTable();
+//        luoDebugTaulukko();
+    }
+
+    /**
+     * Luo tyhjän taulukon, joka asetetaan keskipisteeseen. Helpottaa debuggaamista, kun näkee missä
+     * on peliavaruuden y- ja x-akselit sekä keskipisteen paikan.
+     */
+    private void luoDebugTaulukko() {
+        Table aputable = new Table();
+        aputable.setSize(100, 50);
+        aputable.setPosition(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2);
+        stage.addActor(aputable);
     }
 
     public void luoProgressTable() {
@@ -37,14 +53,16 @@ public class EdistymismittarinKasittelija {
         otsikko.setAlignment(Align.center);
 
         this.progressTable = new Table();
-        progressTable.add(otsikko);
-        progressTable.row();
+        progressTable.setBackground(new TextureRegionDrawable(new TextureRegion(skin.get("gray", Texture.class))));
+        progressTable.add(otsikko).row();
         progressTable.add(progressBar).minWidth(SelviytyjanPurjeet.V_WIDTH * 0.9f);
+        progressTable.setBounds(0, 0, progressTable.getPrefWidth(), progressTable.getPrefHeight()); //Ilman tätä tausta ei renderöidy
 
-        //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Esim kiertäminen tehdään suhteessa origoon.
-        progressTable.setOrigin(Align.center);
-        //asettaa taulukon vasemman alakulman sijainnin
-        progressTable.setPosition(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2);
+        progressTable.setOrigin(Align.center);        //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Kiertäminen ja skaalaaminen tehdään suhteessa origoon.
+
+        float x = (SelviytyjanPurjeet.TAUSTAN_LEVEYS - progressTable.getWidth()) / 2;
+        float y = (SelviytyjanPurjeet.TAUSTAN_KORKEUS - progressTable.getHeight()) / 2;
+        progressTable.setPosition(x, y);        //asettaa taulukon VASEMMAN ALAKULMAN (ei siis riipu originin muuttamisesta!!) sijainnin
 
         stage.addActor(progressTable);
     }
