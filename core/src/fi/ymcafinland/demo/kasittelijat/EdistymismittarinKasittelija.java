@@ -31,6 +31,18 @@ public class EdistymismittarinKasittelija {
         this.pelaaja = pelaaja;
 
         luoProgressTable();
+//        luoDebugTaulukko();
+    }
+
+    /**
+     * Luo tyhjän taulukon, joka asetetaan keskipisteeseen. Helpottaa debuggaamista, kun näkee missä
+     * on peliavaruuden y- ja x-akselit sekä keskipisteen paikan.
+     */
+    private void luoDebugTaulukko() {
+        Table aputable = new Table();
+        aputable.setSize(100, 50);
+        aputable.setPosition(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2);
+        stage.addActor(aputable);
     }
 
     public void luoProgressTable() {
@@ -46,10 +58,11 @@ public class EdistymismittarinKasittelija {
         progressTable.add(progressBar).minWidth(SelviytyjanPurjeet.V_WIDTH * 0.9f);
         progressTable.setBounds(0, 0, progressTable.getPrefWidth(), progressTable.getPrefHeight()); //Ilman tätä tausta ei renderöidy
 
-        //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Esim kiertäminen tehdään suhteessa origoon.
-        progressTable.setOrigin(Align.center);
-        //asettaa taulukon vasemman alakulman sijainnin
-        progressTable.setPosition(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2);
+        progressTable.setOrigin(Align.center);        //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Kiertäminen ja skaalaaminen tehdään suhteessa origoon.
+
+        float x = (SelviytyjanPurjeet.TAUSTAN_LEVEYS - progressTable.getWidth()) / 2;
+        float y = (SelviytyjanPurjeet.TAUSTAN_KORKEUS - progressTable.getHeight()) / 2;
+        progressTable.setPosition(x, y);        //asettaa taulukon VASEMMAN ALAKULMAN (ei siis riipu originin muuttamisesta!!) sijainnin
 
         stage.addActor(progressTable);
     }
@@ -62,12 +75,5 @@ public class EdistymismittarinKasittelija {
     public void paivitaMittarinArvo(float delta) {
         progressBar.setValue(pelaaja.getVastausprosentti());
         progressBar.act(delta);
-    }
-
-    private Image luoTausta() {
-        Texture emptynode = skin.get("gray", Texture.class);
-        TextureRegion region = new TextureRegion(emptynode, 0, 0, emptynode.getWidth(), emptynode.getHeight());
-
-        return new Image(region);
     }
 }

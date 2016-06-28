@@ -13,6 +13,8 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+
 /**
  * Selviytyjän purjeiden solmujen kokoelma. Vastaa solmujen luomisesta ja ylläpidosta.
  */
@@ -20,8 +22,8 @@ public class Verkko {
 
     private ArrayList<Solmu> solmut;
     private I18NBundle myBundle;
-    private final int leveysPalikka;
-    private final int korkeusPalikka;
+    private final float leveysPalikka;
+    private final float korkeusPalikka;
     private final Vector2 keskipiste;
     private Solmu edellistaKosketustaLahinSolmu;
     private float lahimmanSolmunEtaisyys;
@@ -201,9 +203,9 @@ public class Verkko {
      * @param tasonSolmut ympyrään asetettavat solmut.
      * @param sade        muodostettavan ympyrän säde.
      */
-    private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, boolean toinenTaso, int sade) {
-        final int keskiX = (int) keskipiste.x;
-        final int keskiY = (int) keskipiste.y;
+    private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, boolean toinenTaso, float sade) {
+        final float keskiX = (int) keskipiste.x;
+        final float keskiY = (int) keskipiste.y;
         int solmuja = tasonSolmut.size();
 
         final double kulma = Math.toRadians(360 / solmuja);
@@ -215,11 +217,11 @@ public class Verkko {
         }
 
         for (int i = 0; i < solmuja; i++) {
-            int x = (int) (sade * Math.cos(k)) + keskiX;
-            int y = (int) (sade * Math.sin(k) + keskiY);
+            double x = (sade * Math.cos(k)) + keskiX;
+            double y = (sade * Math.sin(k) + keskiY);
 
             Gdx.app.log("Verkko", "Solmun " + i + " sijainti: " + x + " " + y);
-            s.setSijainti(x, y);
+            s.setSijainti((float) x, (float) y);
             asetaSolmulleKulmaKeskipisteeseen(s);
             s = s.getOikeaSisarus();
             k += kulma;
@@ -233,7 +235,7 @@ public class Verkko {
      */
     private void asetaSolmulleKulmaKeskipisteeseen(Solmu solmu) {
         Vector2 lahto = new Vector2(solmu.getXKoordinaatti(), solmu.getYKoordinaatti());
-        float angleToPoint = (float) Math.toDegrees(Math.atan2(keskipiste.y - lahto.y, keskipiste.x - lahto.x));
+        float angleToPoint = (float) Math.toDegrees(Math.atan2(SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2 - lahto.y, SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2 - lahto.x));
 
         solmu.setKulma(angleToPoint - 90f);
     }

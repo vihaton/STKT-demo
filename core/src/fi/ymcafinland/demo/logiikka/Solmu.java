@@ -81,7 +81,7 @@ public class Solmu {
     }
     public void setMutsi(Solmu solmu){mutsi = solmu;}
 
-    public void setSijainti(int x, int y) {
+    public void setSijainti(float x, float y) {
         this.x = x;
         this.y = y;
     }
