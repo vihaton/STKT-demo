@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
@@ -37,9 +35,12 @@ public class SolmunKasittelija {
     private Skin skin;
     private float pallonLeveys;
     private float pallonKorkeus;
+    private float keskipisteenLeveys = 700;
+    private float keskiPisteenKorkeus = 500;
     private ArrayList<Table> solmuTaulukot;
     private ArrayList<Table> solmuKuvaTaulukot;
     private ArrayList<Table> glowKuvaTaulukot;
+    private Table keskipisteTable;
     private Pelaaja pelaaja;
     private Vaittamat vaittamat;
 
@@ -54,6 +55,7 @@ public class SolmunKasittelija {
         pallonLeveys = pallonKuva.getWidth();
         pallonKorkeus = pallonKuva.getHeight();
         this.pelaaja = pelaaja;
+
         solmuKuvaTaulukot = new ArrayList<>();
         solmuTaulukot = new ArrayList<>();
         glowKuvaTaulukot = new ArrayList<>();
@@ -67,17 +69,20 @@ public class SolmunKasittelija {
             float x = s.getXKoordinaatti();
             float y = s.getYKoordinaatti();
 
-            Image taustapallo = luoTaustapallo();
-            if (s.getID().equals("0")) taustapallo.setScale(1.15f);
-            taustapallo.setOrigin(Align.center);
+            Image tausta = luoTausta(s.getID().equals("0"));
 
+            tausta.setOrigin(Align.center);
             Table tekstit = luoTekstitaulukko(s);
             Table pallontaulukko = new Table();
 
             tekstit.setPosition(x, y);
             asetaTauluSolmujenPaikalle(s, x, y, pallontaulukko);
 
-            pallontaulukko.add(taustapallo).minSize(pallonLeveys, pallonKorkeus);
+             if (s.getID().equals("0")) {
+                 pallontaulukko.add(tausta).minSize(keskipisteenLeveys, keskiPisteenKorkeus);
+             } else {
+                 pallontaulukko.add(tausta).minSize(pallonLeveys, pallonKorkeus);
+             }
 
             Table glowiTaulu = new Table();
             Image glowimage = luoGlowKuva("glow");
@@ -85,6 +90,8 @@ public class SolmunKasittelija {
             glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
 
             final int solmunID = Integer.parseInt(s.getID());
+
+            if (solmunID == 0) this.keskipisteTable = pallontaulukko;
 
             if (solmunID < 25 && solmunID > 6) {
                 pallontaulukko.setTouchable(Touchable.enabled);
@@ -137,8 +144,6 @@ public void paivitaGlowAnimaatiot() {
                 t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 1f), Actions.alpha((solmunAlpha + 0.3f), 1f))));
                 t.addAction(Actions.forever(Actions.rotateBy(2, 0.25f)));
                 t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
-//            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));
-//            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 2.5f), Actions.moveBy(1, -2, 2.5f))));
             }
             nykyisenSolmunID++;
         }
@@ -167,8 +172,11 @@ public void paivitaGlowAnimaatiot() {
         return tekstit;
     }
 
-    private Image luoTaustapallo() {
-        Texture emptynode = skin.get("emptynode", Texture.class);
+    private Image luoTausta(boolean onKeskipiste) {
+        String asset = "emptynode";
+        if (onKeskipiste) asset = "gray";
+
+        Texture emptynode = skin.get(asset, Texture.class);
         TextureRegion region = new TextureRegion(emptynode, 0, 0, emptynode.getWidth(), emptynode.getHeight());
 
         return new Image(region);
@@ -194,7 +202,6 @@ public void paivitaGlowAnimaatiot() {
             t.setScale(pelaaja.getSelviytymisprosentit(i) * 0.07f);
             i++;
         }
-
     }
 
     public void rotateTables(float angleToPointCamera) {
@@ -202,6 +209,8 @@ public void paivitaGlowAnimaatiot() {
             t.setTransform(true);
             t.setRotation(angleToPointCamera - 90);
         }
+        keskipisteTable.setTransform(true);
+        keskipisteTable.setRotation(angleToPointCamera - 90);
     }
 
 }

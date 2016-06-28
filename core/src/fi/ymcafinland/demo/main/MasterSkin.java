@@ -57,6 +57,8 @@ public class MasterSkin extends Skin {
 
         this.add("emptynode", new Texture("emptynode.png"));
 
+        this.add("gray", new Texture("gray.png"));
+
         this.add("glow", new Texture("glow.png"));
 
         this.add("glowReady", new Texture("glowReady1.png"));
