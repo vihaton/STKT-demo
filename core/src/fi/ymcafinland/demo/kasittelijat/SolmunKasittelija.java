@@ -35,12 +35,9 @@ public class SolmunKasittelija {
     private Skin skin;
     private float pallonLeveys;
     private float pallonKorkeus;
-    private float keskipisteenLeveys = 700;
-    private float keskiPisteenKorkeus = 500;
     private ArrayList<Table> solmuTaulukot;
     private ArrayList<Table> solmuKuvaTaulukot;
     private ArrayList<Table> glowKuvaTaulukot;
-    private Table keskipisteTable;
     private Pelaaja pelaaja;
     private Vaittamat vaittamat;
 
@@ -66,10 +63,12 @@ public class SolmunKasittelija {
 
     private void lisaaSolmutStageen() {
         for (Solmu s : solmut) {
+            if (s.getID().equals("0")) continue;
+
             float x = s.getXKoordinaatti();
             float y = s.getYKoordinaatti();
 
-            Image tausta = luoTausta(s.getID().equals("0"));
+            Image tausta = luoTaustapallo();
 
             tausta.setOrigin(Align.center);
             Table tekstit = luoTekstitaulukko(s);
@@ -78,11 +77,7 @@ public class SolmunKasittelija {
             tekstit.setPosition(x, y);
             asetaTauluSolmujenPaikalle(s, x, y, pallontaulukko);
 
-             if (s.getID().equals("0")) {
-                 pallontaulukko.add(tausta).minSize(keskipisteenLeveys, keskiPisteenKorkeus);
-             } else {
-                 pallontaulukko.add(tausta).minSize(pallonLeveys, pallonKorkeus);
-             }
+            pallontaulukko.add(tausta).minSize(pallonLeveys, pallonKorkeus);
 
             Table glowiTaulu = new Table();
             Image glowimage = luoGlowKuva("glow");
@@ -90,8 +85,6 @@ public class SolmunKasittelija {
             glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
 
             final int solmunID = Integer.parseInt(s.getID());
-
-            if (solmunID == 0) this.keskipisteTable = pallontaulukko;
 
             if (solmunID < 25 && solmunID > 6) {
                 pallontaulukko.setTouchable(Touchable.enabled);
@@ -172,11 +165,8 @@ public void paivitaGlowAnimaatiot() {
         return tekstit;
     }
 
-    private Image luoTausta(boolean onKeskipiste) {
-        String asset = "emptynode";
-        if (onKeskipiste) asset = "gray";
-
-        Texture emptynode = skin.get(asset, Texture.class);
+    private Image luoTaustapallo() {
+        Texture emptynode = skin.get("emptynode", Texture.class);
         TextureRegion region = new TextureRegion(emptynode, 0, 0, emptynode.getWidth(), emptynode.getHeight());
 
         return new Image(region);
@@ -209,8 +199,6 @@ public void paivitaGlowAnimaatiot() {
             t.setTransform(true);
             t.setRotation(angleToPointCamera - 90);
         }
-        keskipisteTable.setTransform(true);
-        keskipisteTable.setRotation(angleToPointCamera - 90);
     }
 
 }

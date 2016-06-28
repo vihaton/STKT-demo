@@ -1,10 +1,14 @@
 package fi.ymcafinland.demo.kasittelijat;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import fi.ymcafinland.demo.logiikka.Pelaaja;
@@ -37,9 +41,10 @@ public class EdistymismittarinKasittelija {
         otsikko.setAlignment(Align.center);
 
         this.progressTable = new Table();
-        progressTable.add(otsikko);
-        progressTable.row();
+        progressTable.setBackground(new TextureRegionDrawable(new TextureRegion(skin.get("gray", Texture.class))));
+        progressTable.add(otsikko).row();
         progressTable.add(progressBar).minWidth(SelviytyjanPurjeet.V_WIDTH * 0.9f);
+        progressTable.setBounds(0, 0, progressTable.getPrefWidth(), progressTable.getPrefHeight()); //Ilman tätä tausta ei renderöidy
 
         //siirtää taulukon "origoa" suhteessa taulukon vasempaan alakulmaan. Esim kiertäminen tehdään suhteessa origoon.
         progressTable.setOrigin(Align.center);
@@ -57,5 +62,12 @@ public class EdistymismittarinKasittelija {
     public void paivitaMittarinArvo(float delta) {
         progressBar.setValue(pelaaja.getVastausprosentti());
         progressBar.act(delta);
+    }
+
+    private Image luoTausta() {
+        Texture emptynode = skin.get("gray", Texture.class);
+        TextureRegion region = new TextureRegion(emptynode, 0, 0, emptynode.getWidth(), emptynode.getHeight());
+
+        return new Image(region);
     }
 }
