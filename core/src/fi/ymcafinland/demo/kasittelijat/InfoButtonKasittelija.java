@@ -38,7 +38,7 @@ public class InfoButtonKasittelija {
     private void luoListaEnsimmaisenTasonSolmuista(Verkko verkko) {
         this.solmut = new ArrayList<>();
         for (Solmu s : verkko.getSolmut()) {
-            if (Integer.parseInt(s.getID()) < 7) {
+            if ((Integer.parseInt(s.getID()) < 7 && Integer.parseInt(s.getID()) != 0)) {
                 solmut.add(s);
             }
         }

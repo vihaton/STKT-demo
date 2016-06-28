@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
@@ -35,6 +37,8 @@ public class MasterSkin extends Skin {
         generoiProgressBarStylet();
         generoiButtonStylet();
         generoiTextureAtlakset();
+        generoiWindowStylet();
+        generoiScrollPaneStylet();
     }
 
     private void generoiTexturet() {
@@ -53,6 +57,8 @@ public class MasterSkin extends Skin {
 
         this.add("emptynode", new Texture("emptynode.png"));
 
+        this.add("gray", new Texture("gray.png"));
+
         this.add("glow", new Texture("glow.png"));
 
         this.add("glowReady", new Texture("glowReady1.png"));
@@ -65,7 +71,7 @@ public class MasterSkin extends Skin {
         this.add("transparent", new Texture("transparent.png"));
 
         //minimap placeholder kuva
-        this.add("minimap", new Texture("minimap.png"));
+        this.add("minimap", new Texture("mini_karttakuva.png"));
 
         this.add("launcher", new Texture("launcherBackground.png"));
 
@@ -81,7 +87,24 @@ public class MasterSkin extends Skin {
         this.add("menutausta", new Texture("menutausta.png"));
 
         this.add("vaittama", new Texture("vaittama.png"));
+        this.add("popupskin", new Texture("popupskin.png"));
 
+        this.add("nuoliOikea", new Texture("nuoliOikea.png"));
+
+        this.add("nuoliVasen", new Texture("nuoliVasen.png"));
+
+        this.add("nuoliAlas", new Texture("nuoliAlas.png"));
+
+        this.add("nuoliYlos", new Texture("nuoliYlos.png"));
+
+
+    }
+
+    private void generoiScrollPaneStylet() {
+        ScrollPane.ScrollPaneStyle scrollPaneKnob = new ScrollPane.ScrollPaneStyle();
+        scrollPaneKnob.vScrollKnob = this.getDrawable("sliderknob");
+
+        this.add("scrollPaneKnob", scrollPaneKnob);
     }
 
     //todo fonttien päivitys järkevämpiin
@@ -96,6 +119,11 @@ public class MasterSkin extends Skin {
 
         BitmapFont hieroFont = new BitmapFont(Gdx.files.internal("font/fonttihiero.fnt"), false);
         this.add("hieroFont", hieroFont);
+    }
+
+    private void generoiWindowStylet() {
+        Window.WindowStyle windowStyle = new Window.WindowStyle(this.getFont("hieroFont"),Color.BLACK, this.getDrawable("popupskin"));
+        this.add("windowStyle", windowStyle);
     }
 
     private void generoiLabelStylet() {
@@ -129,6 +157,7 @@ public class MasterSkin extends Skin {
         Slider.SliderStyle sliderStyleMid = new Slider.SliderStyle(this.getDrawable("sliderbackgroundmid"), this.getDrawable("sliderknob"));
         this.add("sliderStyleMid", sliderStyleMid);
     }
+
 
     private void generoiProgressBarStylet() {
         ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();
@@ -207,6 +236,10 @@ public class MasterSkin extends Skin {
         Button.ButtonStyle styleKysymys = new Button.ButtonStyle();
         Button.ButtonStyle styleMenu = new Button.ButtonStyle();
         TextButton.TextButtonStyle styleMenubar = new TextButton.TextButtonStyle();
+        Button.ButtonStyle styleNuoliOikea = new Button.ButtonStyle();
+        Button.ButtonStyle styleNuoliYlos = new Button.ButtonStyle();
+        Button.ButtonStyle styleNuoliVasen = new Button.ButtonStyle();
+        Button.ButtonStyle styleNuoliAlas = new Button.ButtonStyle();
 
         styleKartta.up = this.getDrawable("minimap");
         styleKysymys.up = this.getDrawable("mini_kysymys");
@@ -214,6 +247,10 @@ public class MasterSkin extends Skin {
         styleMenu.up = this.getDrawable("menubutton");
         styleMenubar.font = this.getFont("libgdxFont");
         styleMenubar.up = this.getDrawable("menubar");
+        styleNuoliOikea.up = this.getDrawable("nuoliOikea");
+        styleNuoliYlos.up = this.getDrawable("nuoliYlos");
+        styleNuoliVasen.up = this.getDrawable("nuoliVasen");
+        styleNuoliAlas.up = this.getDrawable("nuoliAlas");
 
         this.add("styleParent", styleParent);
         this.add("styleLeft", styleLeft);
@@ -226,6 +263,12 @@ public class MasterSkin extends Skin {
         this.add("styleKysymys", styleKysymys);
         this.add("styleMenu", styleMenu);
         this.add("styleMenubar", styleMenubar);
+        this.add("styleNuoliOikea", styleNuoliOikea);
+        this.add("styleNuoliVasen", styleNuoliVasen);
+        this.add("styleNuoliAlas", styleNuoliAlas);
+        this.add("styleNuoliYlos", styleNuoliYlos);
+
+
     }
 
 }

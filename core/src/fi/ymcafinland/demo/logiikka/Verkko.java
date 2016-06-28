@@ -13,6 +13,8 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import fi.ymcafinland.demo.main.SelviytyjanPurjeet;
+
 /**
  * Selviytyjän purjeiden solmujen kokoelma. Vastaa solmujen luomisesta ja ylläpidosta.
  */
@@ -20,21 +22,24 @@ public class Verkko {
 
     private ArrayList<Solmu> solmut;
     private I18NBundle myBundle;
-    private final int leveysPalikka;
-    private final int korkeusPalikka;
+    private final float leveysPalikka;
+    private final float korkeusPalikka;
     private final Vector2 keskipiste;
     private Solmu edellistaKosketustaLahinSolmu;
-    private double lahimmanSolmunEtaisyys;
+    private float lahimmanSolmunEtaisyys;
+    private float[] solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan;
+    Solmu keski;
 
     public Verkko(int taustakuvanLeveys, int taustakuvanKorkeus) {
         this.leveysPalikka = taustakuvanLeveys / 100;
         this.korkeusPalikka = taustakuvanKorkeus / 100;
-        keskipiste = new Vector2(korkeusPalikka * 50, leveysPalikka * 50);
+        keskipiste = new Vector2(SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2, SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2);
         solmut = new ArrayList<>();
 
         luoBundle();
         generoiSolmut();
         edellistaKosketustaLahinSolmu = solmut.get(0);
+        solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan = new float[solmut.size()];
     }
 
     public void luoBundle() {
@@ -76,13 +81,26 @@ public class Verkko {
 
     private void generoiSolmut() {
 
-        solmut.addAll(luoEnsimmainenTaso(6));
-        solmut.addAll(luoToinenTaso());
+
+//        solmut.addAll(luoToinenTaso());
+        solmut.add(luoKeskiSolmu());
+        solmut.addAll(luoEnsimmainenTaso(6, null));
+
 
         asetaOtsikotJaSisallot();
     }
 
-    private ArrayList<Solmu> luoEnsimmainenTaso(int montako) {
+    private Solmu luoKeskiSolmu() {
+        Solmu s = new Solmu("0", null);
+        s.setVasenSisarus(s);
+        s.setOikeaSisarus(s);
+        s.setSijainti((int) keskipiste.x, (int) keskipiste.y);
+        keski = s;
+
+        return s;
+    }
+
+    private ArrayList<Solmu> luoEnsimmainenTaso(int montako, Solmu keskisolmu) {
         ArrayList<Solmu> lista = new ArrayList<>();
 
         for (int i = 1; i < montako + 1; i++) {
@@ -92,13 +110,30 @@ public class Verkko {
 
         asetaTasonSolmutToistensaSisaruksiksi(lista);
         asetaTasonSolmujenSijainnit(lista, false, leveysPalikka * 10);
+        asetaDialogienTekstit(lista);
 
         return lista;
+    }
+
+    private void asetaDialogienTekstit(ArrayList<Solmu> lista) {
+        for (Solmu s : lista) {
+            int mutsinID = Integer.parseInt(s.getID());
+            int lapsenID = 7 + (mutsinID - 1) * 3;
+            String dialoginSisalto = "";
+            for (int i = lapsenID; i < lapsenID + 3; i++) {
+                String otsikko = haeSolmunSisalto("solmun_sisalto_" + i);
+                dialoginSisalto += "\n" + otsikko;
+            }
+            s.setDialoginSisalto(dialoginSisalto);
+        }
     }
 
     private ArrayList<Solmu> luoToinenTaso() {
         ArrayList<Solmu> toinenTaso = new ArrayList<>();
         for (Solmu s : solmut) {
+            if (s.getID().equals("0")) {
+                continue;
+            }
             toinenTaso.addAll(luoLapset(s));
         }
 
@@ -114,12 +149,18 @@ public class Verkko {
         Solmu vasen = tasonSolmut.get(montako - 1);
         Solmu s = tasonSolmut.get(0);
         asetaSisaruksiksi(s, vasen);
+        asetaVanhempi(s);
 
         for (int i = 1; i < montako; i++) {
             vasen = tasonSolmut.get(i - 1);
             s = tasonSolmut.get(i);
+            asetaVanhempi(s);
             asetaSisaruksiksi(s, vasen);
         }
+    }
+
+    private void asetaVanhempi(Solmu s) {
+        s.setMutsi(keski);
     }
 
     private void asetaSisaruksiksi(Solmu s, Solmu vasen) {
@@ -141,11 +182,19 @@ public class Verkko {
 
     private void asetaOtsikotJaSisallot() {
         for (Solmu s : solmut) {
-            String otsikko = myBundle.format("solmun_otsikko_" + s.getID());
+            String otsikko = haeSolmunOtsikko("solmun_otsikko_" + s.getID());
             s.setOtsikko(otsikko);
-            String sisalto = myBundle.format("solmun_sisalto_" + s.getID());
+            String sisalto = haeSolmunSisalto("solmun_sisalto_" + s.getID());
             s.setSisalto(sisalto);
         }
+    }
+
+    private String haeSolmunSisalto(String avain) {
+        return myBundle.format(avain);
+    }
+
+    private String haeSolmunOtsikko(String avain) {
+        return myBundle.format(avain);
     }
 
     /**
@@ -154,9 +203,9 @@ public class Verkko {
      * @param tasonSolmut ympyrään asetettavat solmut.
      * @param sade        muodostettavan ympyrän säde.
      */
-    private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, boolean toinenTaso, int sade) {
-        final int keskiX = (int) keskipiste.x;
-        final int keskiY = (int) keskipiste.y;
+    private void asetaTasonSolmujenSijainnit(ArrayList<Solmu> tasonSolmut, boolean toinenTaso, float sade) {
+        final float keskiX = SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2;
+        final float keskiY = SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2;
         int solmuja = tasonSolmut.size();
 
         final double kulma = Math.toRadians(360 / solmuja);
@@ -168,10 +217,11 @@ public class Verkko {
         }
 
         for (int i = 0; i < solmuja; i++) {
-            int x = (int) (sade * Math.cos(k)) + keskiX;
-            int y = (int) (sade * Math.sin(k) + keskiY);
+            double x = (sade * Math.cos(k)) + keskiX;
+            double y = (sade * Math.sin(k) + keskiY);
 
-            s.setSijainti(x, y);
+            Gdx.app.log("Verkko", "Solmun " + i + " sijainti: " + x + " " + y);
+            s.setSijainti((float) x, (float) y);
             asetaSolmulleKulmaKeskipisteeseen(s);
             s = s.getOikeaSisarus();
             k += kulma;
@@ -185,7 +235,7 @@ public class Verkko {
      */
     private void asetaSolmulleKulmaKeskipisteeseen(Solmu solmu) {
         Vector2 lahto = new Vector2(solmu.getXKoordinaatti(), solmu.getYKoordinaatti());
-        float angleToPoint = (float) Math.toDegrees(Math.atan2(keskipiste.y - lahto.y, keskipiste.x - lahto.x));
+        float angleToPoint = (float) Math.toDegrees(Math.atan2(SelviytyjanPurjeet.TAUSTAN_KORKEUS / 2 - lahto.y, SelviytyjanPurjeet.TAUSTAN_LEVEYS / 2 - lahto.x));
 
         solmu.setKulma(angleToPoint - 90f);
     }
@@ -194,28 +244,105 @@ public class Verkko {
         return solmut;
     }
 
+    /**
+     * @param x peliavaruuden oikea x
+     * @param y peliavaruuden oikea y
+     * @return onko tarpeeksi lähellä jotain solmua
+     */
     public boolean kosketusTarpeeksiLahelleJotainSolmua(float x, float y) {
-        lahimmanSolmunEtaisyys = Double.MAX_VALUE;
-        Solmu lahinSolmu = null;
+        jarjestaSolmutEtaisyydenMukaan(x, y);
 
-        for (Solmu s : solmut) {
-            double etaisyys = Math.hypot(s.getXKoordinaatti() - x, s.getYKoordinaatti() - y);
+        if (lahimmanSolmunEtaisyys < 250) {
+            return true;
+        }
 
-            if (etaisyys < lahimmanSolmunEtaisyys) {
-                lahinSolmu = s;
-                lahimmanSolmunEtaisyys = etaisyys;
+        return false;
+    }
+
+    /**
+     * Järjestää solmut etäisyyden mukaan. Järjestelyperusteena etäisyys annettuihin koordinaatteihin.
+     *
+     * @param x peliavaruuden oikea x
+     * @param y peliavaruuden oikea y
+     */
+    public void jarjestaSolmutEtaisyydenMukaan(float x, float y) {
+        float[] etaisyydet = laskeEtaisyydet(x, y);
+
+        for (int i = 0; i < solmut.size(); i++) {
+            etsiSolmunPaikka(i, etaisyydet);
+        }
+    }
+
+    /**
+     * Päivittää solmujen paikat listaan solmujenJarjestys... sekä luokkamuuttujat lahimmanSolmunEtaisyys ja edellistaKosketustaLahinSolmu.
+     *
+     * @param solmunInd  tarkasteltavan solmun indeksi listassa solmut
+     * @param etaisyydet taulukko solmujen etaisyyksista viimeiseen kosketukseen
+     */
+    private void etsiSolmunPaikka(int solmunInd, float[] etaisyydet) {
+        float etaisyys = etaisyydet[solmunInd];
+        int solmunPaikka = 0;
+        for (int i = 0; i < etaisyydet.length; i++) {
+            if (i == solmunInd) continue;
+
+            if (etaisyys > etaisyydet[i]) {
+                solmunPaikka++;
             }
         }
 
-        if (lahimmanSolmunEtaisyys < 250) {
-            edellistaKosketustaLahinSolmu = lahinSolmu;
-            return true;
+        if (solmunPaikka == 0) {
+            lahimmanSolmunEtaisyys = etaisyys;
+            edellistaKosketustaLahinSolmu = solmut.get(solmunInd);
         }
-        return false;
+
+        solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan[solmunInd] = solmunPaikka;
+    }
+
+    /**
+     * laskee solmujen etaisyydet annetuista koordinaateista
+     *
+     * @param x
+     * @param y
+     * @return taulukko etaisyyksista, indeksit samat kuin listassa solmut
+     */
+    private float[] laskeEtaisyydet(float x, float y) {
+        float[] etaisyydet = new float[solmut.size()];
+
+        for (int i = 0; i < solmut.size(); i++) {
+            Solmu solmu = solmut.get(i);
+
+            float etaisyys = (float) Math.hypot(solmu.getXKoordinaatti() - x, solmu.getYKoordinaatti() - y);
+
+            etaisyydet[i] = etaisyys;
+        }
+
+        return etaisyydet;
     }
 
     public Solmu annaEdellistaKosketustaLahinSolmu() {
         return edellistaKosketustaLahinSolmu;
+    }
+
+    /**
+     * Palauttaa kosketusta lähimmän solmun, joka ei ole keskipiste.
+     *
+     * @return
+     */
+    public Solmu annaKosketustaLahinSolmuEiKeskipistetta() {
+        int etsittavaIndeksi = 0;
+
+        if (solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan[0] == 0) {
+            etsittavaIndeksi = 1;
+        }
+
+        Solmu s = null;
+        for (int i = 0; i < solmut.size(); i++) {
+            if (solmujenJarjestysViimeisenKosketuksenEtaisyydenMukaan[i] == etsittavaIndeksi) {
+                s = solmut.get(i);
+                break;
+            }
+        }
+        return s;
     }
 
 }

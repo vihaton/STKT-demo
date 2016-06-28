@@ -19,8 +19,13 @@ public class SliderVaittama implements Vaittama {
         arvo = 0f;
         this.antiVaittama = antiVaittama;
     }
-
+    public String getID(){
+        return solmunID;
+    }
     private void asetaVaikutusSelviytyjaan(int id) {
+        if(id == -1){
+            return;
+        }
         this.mihinSelviytymiskeinoonVaikuttaa = (id - 7) / 3;
     }
 

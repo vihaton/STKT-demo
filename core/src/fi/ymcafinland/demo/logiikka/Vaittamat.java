@@ -100,6 +100,9 @@ public class Vaittamat {
             Gdx.app.log("VAITTAMAT", "generoidaan väittämät");
         ArrayList<Vaittama> alkutestinVaittamat = new ArrayList<>();
 
+        SliderVaittama showCaseVaittama = new SliderVaittama("Eri mieltä ------- Samaa mieltä","-1",false);
+
+        alkutestinVaittamat.add(showCaseVaittama);
         for (int i = 0; i < 18; i++) { //jokaisen solmun...
             String id = "" + (i + 7);
             ArrayList<Vaittama> solmunVaittamat = new ArrayList<>();
@@ -140,7 +143,7 @@ public class Vaittamat {
             karttaSolmujenVaittamista.put(id, solmunVaittamat); //...talletetaan väittämälista karttaan kyseisen solmun id.llä
         }
 
-        karttaSolmujenVaittamista.put("25", alkutestinVaittamat); //lisätään lopuksi alkutestiin valitut väittämät erikseen karttaan
+        karttaSolmujenVaittamista.put("0", alkutestinVaittamat); //lisätään lopuksi alkutestiin valitut väittämät erikseen karttaan
     }
 
 
@@ -161,7 +164,16 @@ public class Vaittamat {
      * @return lista väittämistä
      */
     public ArrayList<Vaittama> getYhdenSolmunVaittamat(String solmunID) {
-        return karttaSolmujenVaittamista.get(solmunID);
+        if (solmunID.equals("0")) {
+            return karttaSolmujenVaittamista.get(solmunID);
+        }
+        int mutsinID = Integer.parseInt(solmunID);
+        int lapsenID = 7 + (mutsinID - 1) * 3;
+        ArrayList<Vaittama> lapsienVaittamat = new ArrayList<>();
+        for (int i = lapsenID; i < lapsenID + 3; i++) {
+            lapsienVaittamat.addAll(karttaSolmujenVaittamista.get("" + lapsenID));
+        }
+        return lapsienVaittamat;
     }
 
     public int getMaara() {

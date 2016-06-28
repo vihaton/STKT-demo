@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
@@ -55,6 +53,7 @@ public class SolmunKasittelija {
         pallonLeveys = pallonKuva.getWidth();
         pallonKorkeus = pallonKuva.getHeight();
         this.pelaaja = pelaaja;
+
         solmuKuvaTaulukot = new ArrayList<>();
         solmuTaulukot = new ArrayList<>();
         glowKuvaTaulukot = new ArrayList<>();
@@ -65,19 +64,21 @@ public class SolmunKasittelija {
 
     private void lisaaSolmutStageen() {
         for (Solmu s : solmut) {
+            if (s.getID().equals("0")) continue;
+
             float x = s.getXKoordinaatti();
             float y = s.getYKoordinaatti();
 
-            Image taustapallo = luoTaustapallo();
-            taustapallo.setOrigin(Align.center);
+            Image tausta = luoTaustapallo();
 
+            tausta.setOrigin(Align.center);
             Table tekstit = luoTekstitaulukko(s);
             Table pallontaulukko = new Table();
 
             tekstit.setPosition(x, y);
             asetaTauluSolmujenPaikalle(s, x, y, pallontaulukko);
 
-            pallontaulukko.add(taustapallo).minSize(pallonLeveys, pallonKorkeus);
+            pallontaulukko.add(tausta).minSize(pallonLeveys, pallonKorkeus);
 
             Table glowiTaulu = new Table();
             Image glowimage = luoGlowKuva("glow");
@@ -93,10 +94,18 @@ public class SolmunKasittelija {
                 asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
             }
             if (solmunID < 25 && solmunID > 6) {
+                pallontaulukko.setTouchable(Touchable.enabled);
+                pallontaulukko.addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        Gdx.app.log("SK", "solmua " + solmunID + " painettu");
+                    }
+                });
                 asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
                 glowKuvaTaulukot.add(glowiTaulu);
             }
-            if (solmunID < 25) {
+
+            if (solmunID < 25 && solmunID > 0) {
                 solmuKuvaTaulukot.add(pallontaulukko);
             }
 
@@ -135,8 +144,6 @@ public void paivitaGlowAnimaatiot() {
                 t.addAction(Actions.forever(Actions.sequence(Actions.alpha(solmunAlpha, 1f), Actions.alpha((solmunAlpha + 0.3f), 1f))));
                 t.addAction(Actions.forever(Actions.rotateBy(2, 0.25f)));
                 t.addAction(Actions.forever(Actions.sequence(Actions.scaleTo(1.02f, 1.02f, 1.5f), Actions.scaleTo(1, 1, 1.5f))));
-//            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(2, 2, 1.5f), Actions.moveBy(-2, -2, 1.5f))));
-//            t.addAction(Actions.forever(Actions.sequence(Actions.moveBy(-2, 1, 2.5f), Actions.moveBy(1, -2, 2.5f))));
             }
             nykyisenSolmunID++;
         }
@@ -186,10 +193,11 @@ public void paivitaGlowAnimaatiot() {
      * Päivittää ylemmäntason pallojen koot pelaajan selviytymispreferenssin mukaan
      */
     private void paivitaSolmujenKoko() {
-        for (int i = 0; i < 6; i++) {
-            Table t = solmuKuvaTaulukot.get(i);
+        int i = 0;
+        for(Table t : solmuKuvaTaulukot) {
             t.setTransform(true);
-            t.setScale(pelaaja.getSelviytymisprosentit(i)*0.07f);
+            t.setScale(pelaaja.getSelviytymisprosentit(i) * 0.07f);
+            i++;
         }
     }
 

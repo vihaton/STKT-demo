@@ -25,9 +25,9 @@ public class InfoScreen extends PohjaScreen {
     protected Label otsikko;
     private Texture tausta;
     private ScrollPane pane;
-    private Button exitButton;
+    private Table nappiTaulukko;
+    private Button jatkaButton;
     private Button alkuButton;
-
 
     private static final String infoText =
             "Selvitä millainen selviytyjä olet!\n" +
@@ -71,23 +71,22 @@ public class InfoScreen extends PohjaScreen {
         luoScrollPane();
 
         rootTable.add(pane).pad(SelviytyjanPurjeet.V_WIDTH / 10).minSize(SelviytyjanPurjeet.V_WIDTH * 0.8f, SelviytyjanPurjeet.V_HEIGHT * 0.5f);
+
         rootTable.row();
 
-        createExitButton(sp);
+        createJatkaButton(sp);
         createAlkuTestiButton(sp);
 
-        Table nappiTaulukko = new Table();
-
+        nappiTaulukko = new Table();
         nappiTaulukko.add(alkuButton).expandX();
-        nappiTaulukko.add(exitButton).expandX();
 
         rootTable.add(nappiTaulukko).padBottom(64).fillX();
-
         rootTable.validate();
     }
 
     private void luoScrollPane() {
-        pane = new ScrollPane(luoInfoteksti());
+        pane = new ScrollPane(luoInfoteksti(), skin.get("scrollPaneKnob", ScrollPane.ScrollPaneStyle.class));
+        pane.setFadeScrollBars(false);
         pane.validate();
     }
 
@@ -101,21 +100,20 @@ public class InfoScreen extends PohjaScreen {
     }
 
     private void createAlkuTestiButton(final SelviytyjanPurjeet sp) {
-        //Todo alkutesti näkyy nyt joka kerta kun infoscreen avataan, pitäiskö se olla näkyvissä vaan kerran?
-        alkuButton = new Button(skin.get("alkuButtonStyle", Button.ButtonStyle.class));
+        alkuButton = new Button(skin.get("jatkaButtonStyle", Button.ButtonStyle.class));
         alkuButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.log("IS", "alkutestibuttonia painettiin");
-                sp.setQuestionScreen(new Solmu("25", null));
+                sp.setQuestionScreen(new Solmu("0", null));
             }
         });
     }
 
-    public void createExitButton(final SelviytyjanPurjeet sp) {
-        exitButton = new Button(skin.get("jatkaButtonStyle", Button.ButtonStyle.class));
-        exitButton.addListener(new ChangeListener() {
+    public void createJatkaButton(final SelviytyjanPurjeet sp) {
+        jatkaButton = new Button(skin.get("jatkaButtonStyle", Button.ButtonStyle.class));
+        jatkaButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log("IS", "exitbuttonia painettiin");
+                Gdx.app.log("IS", "jatkabuttonia painettiin");
                 sp.setPlayScreenMaxSelviytyjaan();
             }
         });
@@ -141,5 +139,17 @@ public class InfoScreen extends PohjaScreen {
 
         pane.act(delta);
         stage.draw();
+    }
+
+    /**
+     * Kun alkutesti on suoritettu kerran, vaihdetaan jatkamisnappulan toiminnoksi jatkaButton
+     *
+     */
+    public void paivitaJatkaButton() {
+        nappiTaulukko.clear();
+        nappiTaulukko.add(jatkaButton).expandX();
+
+        rootTable.add(nappiTaulukko).padBottom(64).fillX();
+        rootTable.validate();
     }
 }

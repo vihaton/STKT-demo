@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Solmu {
 
     private final String id;
-    private final Solmu mutsi;
+    private  Solmu mutsi;
     private String otsikko;
     private String sisalto;
     private Solmu vasenSisarus;
@@ -24,6 +24,7 @@ public class Solmu {
     private float x;
     private float y;
     private float kulma;
+    private String dialoginSisalto;
 
     /**
      * Luo solmun, jolla on tunnusluku ja vanhempi.
@@ -78,8 +79,9 @@ public class Solmu {
     public Solmu getMutsi() {
         return mutsi;
     }
+    public void setMutsi(Solmu solmu){mutsi = solmu;}
 
-    public void setSijainti(int x, int y) {
+    public void setSijainti(float x, float y) {
         this.x = x;
         this.y = y;
     }
@@ -119,6 +121,14 @@ public class Solmu {
 
     public float getKulma() {
         return this.kulma;
+    }
+
+    public String getDialoginSisalto() {
+        return dialoginSisalto;
+    }
+
+    public void setDialoginSisalto(String dialoginSisalto) {
+        this.dialoginSisalto = dialoginSisalto;
     }
 
 }

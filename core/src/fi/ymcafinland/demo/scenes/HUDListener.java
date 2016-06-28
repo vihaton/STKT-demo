@@ -14,14 +14,13 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     private HUD hud;
     private KameranKasittelija kameranKasittelija;
-    float delta;
-    float timer;
+    float delta = 0.02f;
+    float timer = 0;
+    boolean ENSIMMAINEN_PANOROINTI_FLAG = true;
 
-    public HUDListener(HUD hud, KameranKasittelija kameranKasittelija, float delta) {
+    public HUDListener(HUD hud, KameranKasittelija kameranKasittelija) {
         this.hud = hud;
         this.kameranKasittelija = kameranKasittelija;
-        this.delta = delta;
-        this.timer = 0;
     }
 
     @Override
@@ -34,7 +33,7 @@ public class HUDListener implements GestureDetector.GestureListener {
         //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "tap -metodia kutsuttu");
 
-        hud.siirryLahinpaanPalloon(x, y);
+        hud.playScreen.hoidaKosketus(x, y);
         return false; //kertoo, että eventti on jo käsitelty: jätetään täpissä falseksi jotta playscreenin stagen buttonit toimivat.
     }
 
@@ -45,19 +44,25 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        fling(velocityX,  velocityY,button, delta);
-        return false;
-    }
-
-
-    public boolean fling(float velocityX, float velocityY, int button, float delta) {
-        //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "fling -metodia kutsuttu");
 
-        if (timer > 0.1f || timer == 0) {
+        if (timer > 0.1f || timer == 0 || hud.playScreen.ZOOMED_OUT_FLAG) { //jos panoroinnin alusta on kulunut yli 0.1s tai panStop on jo käsitellyt tapahtuman tai ollaan zoomattu ulos
             return false;
         }
 
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "suoritetaan fling toiminnallisuus");
+
+        if (hud.playScreen.getSolmu().getID().equals("0")) {
+            flingKeskella(velocityX, velocityY);
+        } else {
+            flingReunalla(velocityX, velocityY);
+        }
+
+        timer = 0;
+        return false;
+    }
+
+    private void flingReunalla(float velocityX, float velocityY) {
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
             if (velocityX > 0) {
                 hud.right();
@@ -71,15 +76,25 @@ public class HUDListener implements GestureDetector.GestureListener {
                 hud.up();
             }
         }
+    }
 
-        timer = 0;
-        return false;
+    /**
+     * Hoitaa flingauksen, kun ollaan keskipisteessä. Toistaiseksi tynkä, laajennettavissa myöhemmin.
+     *
+     * @param velocityX
+     * @param velocityY
+     */
+    private void flingKeskella(float velocityX, float velocityY) {
+        hud.playScreen.siirryKeskipisteestaLahinpaanSolmuun();
     }
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         //debug
-        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "pan -metodia kutsuttu " + timer);
+        if (ENSIMMAINEN_PANOROINTI_FLAG) kameranKasittelija.keskeytaKameranTransitio();
+        ENSIMMAINEN_PANOROINTI_FLAG = false;
+
+        if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "pan -metodia kutsuttu, timer: " + timer);
 
         timer += delta;
         hud.playScreen.panoroi(deltaX, deltaY);
@@ -89,17 +104,14 @@ public class HUDListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
-        //debug
         if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
 
-        if (hud.playScreen.zoomedOut || timer < 0.1f) {
-            return false;
+        if (timer > 0.1f || hud.playScreen.ZOOMED_OUT_FLAG) {
+            if (SelviytyjanPurjeet.LOG) Gdx.app.log("HLIST", "suoritetaan panStop toiminnallisuus");
+            hud.playScreen.siirraPanPistePolttopisteeseen();
+            timer = 0;
+            ENSIMMAINEN_PANOROINTI_FLAG = true;
         }
-        if (SelviytyjanPurjeet.LOG)
-            Gdx.app.log("HLIST", "panStop -metodia kutsuttu");
-        hud.playScreen.resetPan();
-
-        timer = 0;
         return false;
     }
 
@@ -121,7 +133,8 @@ public class HUDListener implements GestureDetector.GestureListener {
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
         return false;
     }
-    public void paivitaDelta(float delta){
+
+    public void paivitaDelta(float delta) {
         this.delta = delta;
     }
 }
