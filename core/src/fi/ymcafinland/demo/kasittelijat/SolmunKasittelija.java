@@ -87,20 +87,13 @@ public class SolmunKasittelija {
 
             final int solmunID = Integer.parseInt(s.getID());
 
-            //Nää iffit refaktoroidaan varmaan rakennemuutoksen yhteydessä
             if (solmunID < 7) {
                 glowimage.setColor(glowimage.getColor().sub(pelaaja.getSelviytymisenVari(solmunID - 1)));
                 glowimage.setScale(1.15f);
                 asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
             }
-            if (solmunID < 25 && solmunID > 6) {
-                asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
-                glowKuvaTaulukot.add(glowiTaulu);
-            }
-            if (solmunID < 25) {
-                solmuKuvaTaulukot.add(pallontaulukko);
-            }
 
+            solmuKuvaTaulukot.add(pallontaulukko);
             solmuTaulukot.add(tekstit);
             stage.addActor(pallontaulukko);
             stage.addActor(tekstit);
