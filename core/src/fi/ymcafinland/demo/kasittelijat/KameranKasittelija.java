@@ -65,11 +65,13 @@ public class KameranKasittelija {
      * @return tekeekö mitään.
      */
     public boolean actTransition(float delta) {
-        if (!transition.onkoValmis()) {
+//        if (!transition.onkoValmis()) {
+//        transition.act(delta);
+//            return true;
+//        }
+//        return false;
         transition.act(delta);
-            return true;
-        }
-        return false;
+        return true;
     }
 
     public void transitionFromTo(Vector3 start, Vector3 finish) {

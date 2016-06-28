@@ -2,7 +2,6 @@ package fi.ymcafinland.demo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -159,6 +158,7 @@ public class PlayScreen extends PohjaScreen {
         solmunKasittelija.paivitaSolmut(angleToPoint);
         edistymismittarinKasittelija.pyoritaMittaria(angleToPoint);
         infoButtonKasittelija.paivitaInfoButtonit(delta, angleToPoint, ZOOMED_OUT_FLAG);
+        dialoginKasittelija.update(angleToPoint);
     }
 
     public void actTransition(float delta) {
@@ -277,13 +277,15 @@ public class PlayScreen extends PohjaScreen {
     }
 
     private void naytaDialogi(Solmu solmu) {
+
         if (ZOOMED_OUT_FLAG || dialoginKasittelija.DIALOG_FLAG) {
+            kameranKasittelija.siirryPolttopisteestaKohteeseen(new Vector3(solmu.getXKoordinaatti(),solmu.getYKoordinaatti(),0));
             dialoginKasittelija.poistaDialogit();
             return;
         }
 
-        float PPtoKP = getAngleToPoint(polttopiste, keskipiste);
-        dialoginKasittelija.naytaDialogi(stage, solmu, solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), PPtoKP);
+        kameranKasittelija.transitionFromTo(polttopiste, dialoginKasittelija.getDialoginKeskiPisteNykyisestaPisteesta(polttopiste));
+        dialoginKasittelija.naytaDialogi(stage, solmu, solmu.getXKoordinaatti(), solmu.getYKoordinaatti(), angleToPoint);
     }
 
     public void asetaAlkuZoom() {
