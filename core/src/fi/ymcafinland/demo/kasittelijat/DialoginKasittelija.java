@@ -1,6 +1,7 @@
 package fi.ymcafinland.demo.kasittelijat;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -23,6 +24,7 @@ public class DialoginKasittelija {
     private Dialog d;
     private Skin skin;
     public boolean DIALOG_FLAG = false;
+
 
     public DialoginKasittelija(Verkko verkko, Skin skin) {
         this.skin = skin;
@@ -74,7 +76,7 @@ public class DialoginKasittelija {
 
         sisalto.setAlignment(Align.center);
         sisalto.setWrap(true);
-        dialogi.getContentTable().center().add(sisalto).minSize(220,300).row();
+        dialogi.getContentTable().center().add(sisalto).minSize(220, 300).row();
 
         dialogi.setModal(false);
         dialogi.layout();
@@ -91,8 +93,31 @@ public class DialoginKasittelija {
         }
         d.setWidth(SelviytyjanPurjeet.V_WIDTH / 1.7f);
         d.setHeight(SelviytyjanPurjeet.V_HEIGHT / 2f);
+        d.setKeepWithinStage(false);
+        d.setOrigin(Align.bottomLeft);
+        d.setPosition(xKoordinaatti, yKoordinaatti, Align.bottomLeft);
 
-        d.setPosition(xKoordinaatti, yKoordinaatti);
-        d.setRotation(PPtoKP - 90);
+    }
+
+
+    public Vector3 getDialoginKeskiPisteNykyisestaPisteesta(Vector3 alkupiste) {
+        //Todo Pikkasen Bad HardCoDingss voisi poistaa jos jollain intoa löytyy
+
+        float muutos = (float) Math.hypot(d.getWidth()/3f, d.getHeight()/1.8f);
+        float atanRadians = (float) Math.atan2(d.getWidth() / 3f, d.getHeight() / 1.8f);
+        float cos = (float) Math.cos(Math.toRadians(d.getRotation()-90) - atanRadians);
+        float sin = (float) Math.sin(Math.toRadians(d.getRotation()-90) - atanRadians);
+
+        float keskiX = muutos * -cos;
+        float keskiY = muutos * -sin;
+
+        Vector3 dialoginKeskipiste = new Vector3(alkupiste.x+keskiX, alkupiste.y+keskiY,0);
+        if(SelviytyjanPurjeet.LOG)
+            Gdx.app.log("DK","dialoginKeskipiste: " + d.getX(Align.center) + ", " + d.getY(Align.center));
+
+        return dialoginKeskipiste;
+    }
+    public void update(float PPtoKP){
+        d.setRotation(PPtoKP-90);
     }
 }
