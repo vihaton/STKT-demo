@@ -1,6 +1,7 @@
 package fi.ymcafinland.demo.logiikka;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
@@ -213,5 +214,36 @@ public class Pelaaja {
 
     public void setVaittamienMaara(int vaittamienMaara) {
         this.vaittamienMaara = vaittamienMaara;
+    }
+
+    /**
+     * Palauttaa tietyn selviytymiskeinon värin graafista esitystä varten
+     *
+     * @param selviytymisKeino selviytymiskeinon indeksi
+     * @return selviytymiskeinon väri
+     */
+    public Color getSelviytymisenVari(int selviytymisKeino){
+        Color vari = null;
+        switch (selviytymisKeino) {
+            case 0:
+                vari = Color.SCARLET;
+                break;
+            case 1:
+                vari = Color.ORANGE;
+                break;
+            case 2:
+                vari = Color.GOLD;
+                break;
+            case 3:
+                vari = Color.FOREST;
+                break;
+            case 4:
+                vari = Color.BLUE;
+                break;
+            case 5:
+                vari =  Color.PURPLE;
+                break;
+        }
+        return vari;
     }
 }
