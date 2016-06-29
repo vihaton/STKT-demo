@@ -83,14 +83,14 @@ public class SolmunKasittelija {
             Table glowiTaulu = new Table();
             Image glowimage = luoGlowKuva("glow");
             glowimage.setOrigin(Align.center);
-            glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.27f, pallonKorkeus * 1.27f);
+            glowiTaulu.add(glowimage).minSize(pallonLeveys * 1.5f, pallonKorkeus * 1.5f);
 
             final int solmunID = Integer.parseInt(s.getID());
 
             if (solmunID < 7) {
-                glowimage.setColor(glowimage.getColor().sub(pelaaja.getSelviytymisenVari(solmunID - 1)));
-                glowimage.setScale(1.15f);
+                glowimage.setColor(pelaaja.getSelviytymisenVari(solmunID - 1));
                 asetaTauluSolmujenPaikalle(s, x, y, glowiTaulu);
+                glowKuvaTaulukot.add(glowiTaulu);
             }
 
             solmuKuvaTaulukot.add(pallontaulukko);
@@ -107,8 +107,9 @@ public class SolmunKasittelija {
         glowiTaulu.setPosition(x, y);
         glowiTaulu.setRotation(s.getKulma());
     }
-//ToDo parempi glow kuva.
-public void paivitaGlowAnimaatiot() {
+
+    //ToDo parempi glow kuva.
+    public void paivitaGlowAnimaatiot() {
         int nykyisenSolmunID = 7;
         for (Table t : glowKuvaTaulukot) {
             for (Action a : t.getActions()) {
