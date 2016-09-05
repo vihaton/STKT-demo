@@ -45,7 +45,7 @@ public class LinkillinenVaittama implements Vaittama {
 
     @Override
     public String getID() {
-        return null;
+        return vaittama.getID();
     }
 
     @Override
