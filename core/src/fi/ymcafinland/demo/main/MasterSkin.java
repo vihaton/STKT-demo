@@ -93,7 +93,7 @@ public class MasterSkin extends Skin {
 
         this.add("nuoliVasen", new Texture("nuoliVasen.png"));
 
-        this.add("nuoliAlas", new Texture("nuoliAlas.png"));
+        this.add("kysymyksiin", new Texture("vaittama.png"));
 
         this.add("nuoliYlos", new Texture("nuoliYlos.png"));
 
@@ -239,7 +239,7 @@ public class MasterSkin extends Skin {
         Button.ButtonStyle styleNuoliOikea = new Button.ButtonStyle();
         Button.ButtonStyle styleNuoliYlos = new Button.ButtonStyle();
         Button.ButtonStyle styleNuoliVasen = new Button.ButtonStyle();
-        Button.ButtonStyle styleNuoliAlas = new Button.ButtonStyle();
+        Button.ButtonStyle styleKysymyksiin = new Button.ButtonStyle();
 
         styleKartta.up = this.getDrawable("minimap");
         styleKysymys.up = this.getDrawable("mini_kysymys");
@@ -250,7 +250,7 @@ public class MasterSkin extends Skin {
         styleNuoliOikea.up = this.getDrawable("nuoliOikea");
         styleNuoliYlos.up = this.getDrawable("nuoliYlos");
         styleNuoliVasen.up = this.getDrawable("nuoliVasen");
-        styleNuoliAlas.up = this.getDrawable("nuoliAlas");
+        styleKysymyksiin.up = this.getDrawable("vaittama");
 
         this.add("styleParent", styleParent);
         this.add("styleLeft", styleLeft);
@@ -265,7 +265,7 @@ public class MasterSkin extends Skin {
         this.add("styleMenubar", styleMenubar);
         this.add("styleNuoliOikea", styleNuoliOikea);
         this.add("styleNuoliVasen", styleNuoliVasen);
-        this.add("styleNuoliAlas", styleNuoliAlas);
+        this.add("styleNuoliAlas", styleKysymyksiin);
         this.add("styleNuoliYlos", styleNuoliYlos);
 
 
