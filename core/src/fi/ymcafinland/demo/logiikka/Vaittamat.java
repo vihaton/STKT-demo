@@ -171,7 +171,7 @@ public class Vaittamat {
         int lapsenID = 7 + (mutsinID - 1) * 3;
         ArrayList<Vaittama> lapsienVaittamat = new ArrayList<>();
         for (int i = lapsenID; i < lapsenID + 3; i++) {
-            lapsienVaittamat.addAll(karttaSolmujenVaittamista.get("" + lapsenID));
+            lapsienVaittamat.addAll(karttaSolmujenVaittamista.get("" + i));
         }
         return lapsienVaittamat;
     }
